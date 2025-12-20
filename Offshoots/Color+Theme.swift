@@ -12,28 +12,84 @@
 //  Created by Coding Partner.
 //
 
+//
+//  Color+Theme.swift
+//  Offshoots
+//
+//  Created by Geoffrey Silva on 12/16/25.
+//
+
 internal import SwiftUI
 
 extension Color {
-    // MARK: - Brand Colors
-    /// A deep, calming forest green for primary actions and headers
-    static let offshootPrimary = Color(red: 45/255, green: 78/255, blue: 65/255)
+    // MARK: - Hex Initializer
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (1, 1, 1, 0)
+        }
+
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue:  Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
+
+    // MARK: - Offshoots Muted Botanical Theme
     
-    /// A soft organic background (optional, or use system background)
-    static let offshootBackground = Color(red: 250/255, green: 249/255, blue: 246/255)
+    // The Soil (Backgrounds)
+    /// Deep Pine Charcoal - Main Background
+    static let offshootsBackground = Color(hex: "131614")
+    /// Lighter Loam - Surface/Card Background
+    static let offshootsSurface    = Color(hex: "232624")
     
-    // MARK: - Semantic / Outcome Colors
-    /// Sage Green - Success/Good
-    static let outcomeGood = Color(red: 106/255, green: 142/255, blue: 109/255)
+    // The Sprout (Brand Accent)
+    /// Fern / Matcha - Primary Action & Brand
+    static let offshootsAccent     = Color(hex: "A4C639")
     
-    /// Stone Gray - Neutral
-    static let outcomeNeutral = Color(red: 141/255, green: 153/255, blue: 174/255)
+    // The Fruit (Outcomes)
+    /// Sage - Good Outcome
+    static let offshootsPositive   = Color(hex: "8FB996")
+    /// Sand - Neutral Outcome
+    static let offshootsNeutral    = Color(hex: "D0C9B6")
+    /// Muted Clay - Bad Outcome
+    static let offshootsNegative   = Color(hex: "B87D75")
     
-    /// Muted Terracotta - Bad/Failure (Less aggressive than system Red)
-    static let outcomeBad = Color(red: 205/255, green: 91/255, blue: 69/255)
+    // MARK: - Semantic Mapping
     
-    /// Goldenrod - Pending
-    static let outcomePending = Color(red: 212/255, green: 163/255, blue: 73/255)
+    /// Brand primary color (Matches The Sprout)
+    static let offshootPrimary = offshootsAccent
+    
+    /// App background color (Matches The Soil)
+    static let offshootBackground = offshootsBackground
+    
+    /// Surface/Card background color (Matches Lighter Loam)
+    static let offshootCardBackground = offshootsSurface
+    
+    /// Success/Good outcome (Matches Sage)
+    static let outcomeGood = offshootsPositive
+    
+    /// Neutral outcome (Matches Sand)
+    static let outcomeNeutral = offshootsNeutral
+    
+    /// Failure/Bad outcome (Matches Muted Clay)
+    static let outcomeBad = offshootsNegative
+    
+    /// Pending state (Matches Sand for a neutral, waiting state)
+    static let outcomePending = offshootsNeutral
 }
 
 // Helper to map outcomes to colors easily
