@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct LogDecisionView: View {
     @EnvironmentObject var store: DecisionStore
+    @FocusState private var isTitleFocused: Bool
 
     @State private var title = ""
     @State private var category: DecisionCategory = .work
@@ -21,6 +22,9 @@ struct LogDecisionView: View {
             ZStack {
                 Color(.systemGroupedBackground)
                     .ignoresSafeArea()
+                    .onTapGesture {
+                        isTitleFocused = false
+                    }
 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -49,6 +53,7 @@ struct LogDecisionView: View {
                                 .foregroundStyle(Color.offshootPrimary)
 
                             TextField("What decision are you making?", text: $title, axis: .vertical)
+                                .focused($isTitleFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
                                 .background(Color(.systemBackground))
@@ -57,6 +62,10 @@ struct LogDecisionView: View {
                                     RoundedRectangle(cornerRadius: 12)
                                         .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
                                 )
+                                .submitLabel(.done)
+                                .onSubmit {
+                                    isTitleFocused = false
+                                }
 
                             Picker("Category", selection: $category) {
                                 ForEach(DecisionCategory.allCases) { cat in
@@ -141,8 +150,18 @@ struct LogDecisionView: View {
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
                 }
+                .scrollDismissesKeyboard(.immediately)
             }
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isTitleFocused = false
+                    }
+                    .fontWeight(.semibold)
+                }
+            }
             .overlay(
                 Group {
                     if showingSavedConfirmation {

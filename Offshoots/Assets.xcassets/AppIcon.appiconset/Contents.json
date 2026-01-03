@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "offshoots icon.png",
+      "filename" : "offshoots.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "offshootsdar.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

@@ -6,6 +6,7 @@
 //
 
 internal import SwiftUI
+internal import Charts
 
 struct AnalyticsView: View {
     @EnvironmentObject var store: DecisionStore
@@ -31,11 +32,17 @@ struct AnalyticsView: View {
                             // Overall Stats
                             OverallStatsCard(decisions: store.decisions)
 
+                            // Decision Timeline
+                            DecisionTimelineCard(decisions: store.decisions)
+
                             // Category Breakdown
                             CategoryBreakdownCard(decisions: store.decisions)
 
                             // Outcome Distribution
                             OutcomeDistributionCard(decisions: store.decisions)
+
+                            // Outcome Trends
+                            OutcomeTrendCard(decisions: store.decisions)
 
                             // Prediction Accuracy
                             PredictionAccuracyCard(decisions: store.decisions)
@@ -139,95 +146,121 @@ struct StatBox: View {
 struct CategoryBreakdownCard: View {
     let decisions: [Decision]
 
+    private var categoryData: [(category: DecisionCategory, count: Int)] {
+        Dictionary(grouping: decisions, by: { $0.category })
+            .mapValues { $0.count }
+            .sorted { $0.value > $1.value }
+            .map { (category: $0.key, count: $0.value) }
+    }
+
+    private func color(for category: DecisionCategory) -> Color {
+        switch category {
+        case .work: return .blue
+        case .money: return .green
+        case .health: return .red
+        case .relationships: return .pink
+        case .home: return .orange
+        case .other: return .purple
+        }
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label("Categories", systemImage: "tag.fill")
                 .font(.headline)
                 .foregroundStyle(Color.offshootPrimary)
 
-            let categoryCounts = Dictionary(grouping: decisions, by: { $0.category })
-                .mapValues { $0.count }
-                .sorted { $0.value > $1.value }
-
-            if categoryCounts.isEmpty {
+            if categoryData.isEmpty {
                 Text("No categories yet")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {
-                VStack(spacing: 12) {
-                    ForEach(categoryCounts, id: \.key) { category, count in
-                        CategoryRow(category: category.rawValue.capitalized, count: count, total: decisions.count)
+                Chart(categoryData, id: \.category) { item in
+                    BarMark(
+                        x: .value("Count", item.count),
+                        y: .value("Category", item.category.rawValue.capitalized)
+                    )
+                    .foregroundStyle(color(for: item.category))
+                    .cornerRadius(4)
+                    .annotation(position: .trailing, alignment: .leading, spacing: 8) {
+                        Text("\(item.count)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                     }
                 }
+                .chartXAxis(.hidden)
+                .chartYAxis {
+                    AxisMarks { _ in
+                        AxisValueLabel()
+                            .foregroundStyle(Color.primary)
+                    }
+                }
+                .frame(height: CGFloat(categoryData.count) * 44)
             }
         }
         .padding(20)
         .background(Color(.secondarySystemGroupedBackground))
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
-    }
-}
-
-struct CategoryRow: View {
-    let category: String
-    let count: Int
-    let total: Int
-
-    var percentage: Double {
-        Double(count) / Double(total)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Text(category)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                Spacer()
-                Text("\(count)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-            }
-
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.offshootPrimary.opacity(0.1))
-                        .frame(height: 8)
-
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(Color.offshootPrimary)
-                        .frame(width: geometry.size.width * percentage, height: 8)
-                }
-            }
-            .frame(height: 8)
-        }
     }
 }
 
 struct OutcomeDistributionCard: View {
     let decisions: [Decision]
 
+    private var outcomeData: [(outcome: String, count: Int, color: Color)] {
+        let completed = decisions.filter { $0.actual != nil }
+        return [
+            (outcome: "Good", count: completed.filter { $0.actual == .good }.count, color: .outcomeGood),
+            (outcome: "Neutral", count: completed.filter { $0.actual == .neutral }.count, color: .outcomeNeutral),
+            (outcome: "Bad", count: completed.filter { $0.actual == .bad }.count, color: .outcomeBad)
+        ].filter { $0.count > 0 }
+    }
+
+    private var totalCompleted: Int {
+        decisions.filter { $0.actual != nil }.count
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Outcomes", systemImage: "chart.bar.fill")
+            Label("Outcomes", systemImage: "chart.pie.fill")
                 .font(.headline)
                 .foregroundStyle(Color.offshootPrimary)
 
-            let completed = decisions.filter { $0.actual != nil }
-            let goodCount = completed.filter { $0.actual == .good }.count
-            let neutralCount = completed.filter { $0.actual == .neutral }.count
-            let badCount = completed.filter { $0.actual == .bad }.count
-
-            if completed.isEmpty {
+            if totalCompleted == 0 {
                 Text("No completed decisions yet")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {
-                VStack(spacing: 12) {
-                    OutcomeBar(outcome: "Good", count: goodCount, total: completed.count, color: .outcomeGood)
-                    OutcomeBar(outcome: "Neutral", count: neutralCount, total: completed.count, color: .outcomeNeutral)
-                    OutcomeBar(outcome: "Bad", count: badCount, total: completed.count, color: .outcomeBad)
+                HStack(spacing: 20) {
+                    Chart(outcomeData, id: \.outcome) { item in
+                        SectorMark(
+                            angle: .value("Count", item.count),
+                            innerRadius: .ratio(0.6),
+                            angularInset: 2
+                        )
+                        .foregroundStyle(item.color)
+                        .cornerRadius(4)
+                    }
+                    .frame(width: 120, height: 120)
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        ForEach(outcomeData, id: \.outcome) { item in
+                            HStack(spacing: 8) {
+                                Circle()
+                                    .fill(item.color)
+                                    .frame(width: 10, height: 10)
+                                Text(item.outcome)
+                                    .font(.subheadline)
+                                Spacer()
+                                Text("\(Int(Double(item.count) / Double(totalCompleted) * 100))%")
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(item.color)
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
                 }
             }
         }
@@ -238,61 +271,29 @@ struct OutcomeDistributionCard: View {
     }
 }
 
-struct OutcomeBar: View {
-    let outcome: String
-    let count: Int
-    let total: Int
-    let color: Color
-
-    var percentage: Double {
-        Double(count) / Double(total)
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                HStack(spacing: 6) {
-                    Circle()
-                        .fill(color)
-                        .frame(width: 8, height: 8)
-                    Text(outcome)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                }
-                Spacer()
-                Text("\(Int(percentage * 100))%")
-                    .font(.subheadline)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(color)
-            }
-
-            GeometryReader { geometry in
-                ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(color.opacity(0.1))
-                        .frame(height: 8)
-
-                    RoundedRectangle(cornerRadius: 4)
-                        .fill(color)
-                        .frame(width: geometry.size.width * percentage, height: 8)
-                }
-            }
-            .frame(height: 8)
-        }
-    }
-}
-
 struct PredictionAccuracyCard: View {
     let decisions: [Decision]
+
+    private var completed: [Decision] {
+        decisions.filter { $0.actual != nil }
+    }
+
+    private var accurate: Int {
+        completed.filter { $0.expected == $0.actual }.count
+    }
+
+    private var accuracyData: [(label: String, count: Int, color: Color)] {
+        [
+            (label: "Correct", count: accurate, color: .outcomeGood),
+            (label: "Incorrect", count: completed.count - accurate, color: .outcomeBad)
+        ].filter { $0.count > 0 }
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label("Prediction Accuracy", systemImage: "target")
                 .font(.headline)
                 .foregroundStyle(Color.offshootPrimary)
-
-            let completed = decisions.filter { $0.actual != nil }
-            let accurate = completed.filter { $0.expected == $0.actual }.count
 
             if completed.isEmpty {
                 Text("No completed decisions to analyze")
@@ -303,26 +304,20 @@ struct PredictionAccuracyCard: View {
 
                 VStack(spacing: 16) {
                     ZStack {
-                        Circle()
-                            .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 20)
-                            .frame(width: 140, height: 140)
-
-                        Circle()
-                            .trim(from: 0, to: accuracy)
-                            .stroke(
-                                LinearGradient(
-                                    colors: [Color.offshootPrimary, Color.offshootPrimary.opacity(0.7)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ),
-                                style: StrokeStyle(lineWidth: 20, lineCap: .round)
+                        Chart(accuracyData, id: \.label) { item in
+                            SectorMark(
+                                angle: .value("Count", item.count),
+                                innerRadius: .ratio(0.7),
+                                angularInset: 2
                             )
-                            .frame(width: 140, height: 140)
-                            .rotationEffect(.degrees(-90))
+                            .foregroundStyle(item.color)
+                            .cornerRadius(4)
+                        }
+                        .frame(width: 140, height: 140)
 
                         VStack(spacing: 4) {
                             Text("\(Int(accuracy * 100))%")
-                                .font(.system(size: 36, weight: .bold))
+                                .font(.system(size: 32, weight: .bold))
                                 .foregroundStyle(Color.offshootPrimary)
 
                             Text("Accurate")
@@ -357,6 +352,186 @@ struct PredictionAccuracyCard: View {
                     }
                     .padding(.horizontal)
                 }
+            }
+        }
+        .padding(20)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+    }
+}
+
+struct DecisionTimelineCard: View {
+    let decisions: [Decision]
+
+    private var timelineData: [(date: Date, count: Int)] {
+        let calendar = Calendar.current
+        let now = Date()
+
+        // Get the last 30 days
+        var result: [(date: Date, count: Int)] = []
+        for dayOffset in (0..<30).reversed() {
+            guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: now) else { continue }
+            let startOfDay = calendar.startOfDay(for: date)
+            let count = decisions.filter { calendar.isDate($0.createdAt, inSameDayAs: startOfDay) }.count
+            result.append((date: startOfDay, count: count))
+        }
+        return result
+    }
+
+    private var totalRecent: Int {
+        timelineData.reduce(0) { $0 + $1.count }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Label("Decision Activity", systemImage: "chart.line.uptrend.xyaxis")
+                    .font(.headline)
+                    .foregroundStyle(Color.offshootPrimary)
+                Spacer()
+                Text("Last 30 days")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            if totalRecent == 0 {
+                Text("No decisions in the last 30 days")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            } else {
+                Chart(timelineData, id: \.date) { item in
+                    AreaMark(
+                        x: .value("Date", item.date, unit: .day),
+                        y: .value("Decisions", item.count)
+                    )
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Color.offshootPrimary.opacity(0.3), Color.offshootPrimary.opacity(0.05)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .interpolationMethod(.catmullRom)
+
+                    LineMark(
+                        x: .value("Date", item.date, unit: .day),
+                        y: .value("Decisions", item.count)
+                    )
+                    .foregroundStyle(Color.offshootPrimary)
+                    .interpolationMethod(.catmullRom)
+                    .lineStyle(StrokeStyle(lineWidth: 2))
+                }
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .day, count: 7)) { _ in
+                        AxisGridLine()
+                        AxisValueLabel(format: .dateTime.month(.abbreviated).day(), centered: true)
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { _ in
+                        AxisGridLine()
+                        AxisValueLabel()
+                    }
+                }
+                .frame(height: 180)
+            }
+        }
+        .padding(20)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+    }
+}
+
+struct OutcomeTrendCard: View {
+    let decisions: [Decision]
+
+    private struct WeekData: Identifiable {
+        let id = UUID()
+        let weekStart: Date
+        let outcome: String
+        let count: Int
+        let color: Color
+    }
+
+    private var weeklyData: [WeekData] {
+        let calendar = Calendar.current
+        let now = Date()
+        var result: [WeekData] = []
+
+        // Get the last 8 weeks
+        for weekOffset in (0..<8).reversed() {
+            guard let weekStart = calendar.date(byAdding: .weekOfYear, value: -weekOffset, to: now) else { continue }
+            let startOfWeek = calendar.startOfDay(for: calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: weekStart))!)
+            guard let endOfWeek = calendar.date(byAdding: .day, value: 7, to: startOfWeek) else { continue }
+
+            let weekDecisions = decisions.filter { decision in
+                decision.actual != nil &&
+                decision.createdAt >= startOfWeek &&
+                decision.createdAt < endOfWeek
+            }
+
+            let goodCount = weekDecisions.filter { $0.actual == .good }.count
+            let neutralCount = weekDecisions.filter { $0.actual == .neutral }.count
+            let badCount = weekDecisions.filter { $0.actual == .bad }.count
+
+            result.append(WeekData(weekStart: startOfWeek, outcome: "Good", count: goodCount, color: .outcomeGood))
+            result.append(WeekData(weekStart: startOfWeek, outcome: "Neutral", count: neutralCount, color: .outcomeNeutral))
+            result.append(WeekData(weekStart: startOfWeek, outcome: "Bad", count: badCount, color: .outcomeBad))
+        }
+
+        return result
+    }
+
+    private var hasData: Bool {
+        weeklyData.contains { $0.count > 0 }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Label("Outcome Trends", systemImage: "chart.bar.fill")
+                    .font(.headline)
+                    .foregroundStyle(Color.offshootPrimary)
+                Spacer()
+                Text("Last 8 weeks")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            if !hasData {
+                Text("No completed decisions to show trends")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            } else {
+                Chart(weeklyData) { item in
+                    BarMark(
+                        x: .value("Week", item.weekStart, unit: .weekOfYear),
+                        y: .value("Count", item.count)
+                    )
+                    .foregroundStyle(by: .value("Outcome", item.outcome))
+                    .cornerRadius(2)
+                }
+                .chartForegroundStyleScale([
+                    "Good": Color.outcomeGood,
+                    "Neutral": Color.outcomeNeutral,
+                    "Bad": Color.outcomeBad
+                ])
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .weekOfYear)) { value in
+                        AxisGridLine()
+                        AxisValueLabel(format: .dateTime.month(.abbreviated).day())
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { _ in
+                        AxisGridLine()
+                        AxisValueLabel()
+                    }
+                }
+                .chartLegend(position: .bottom, spacing: 16)
+                .frame(height: 200)
             }
         }
         .padding(20)
