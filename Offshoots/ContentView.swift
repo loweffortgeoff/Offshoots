@@ -7,30 +7,49 @@
 
 internal import SwiftUI
 
+enum AppTab: Hashable {
+    case dashboard
+    case log
+    case decisions
+    case insights
+    case settings
+}
+
 struct ContentView: View {
     @StateObject private var store = DecisionStore()
     @State private var deepLinkDecisionID: UUID?
+    @State private var selectedTab: AppTab = .dashboard
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             DashboardView()
+                .tag(AppTab.dashboard)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
 
-            LogDecisionView()
+            LogDecisionView(selectedTab: $selectedTab)
+                .tag(AppTab.log)
                 .tabItem {
                     Label("Log", systemImage: "plus.circle.fill")
                 }
 
             DecisionsListView()
+                .tag(AppTab.decisions)
                 .tabItem {
                     Label("Decisions", systemImage: "checklist")
                 }
 
             AnalyticsView()
+                .tag(AppTab.insights)
                 .tabItem {
                     Label("Insights", systemImage: "brain.head.profile")
+                }
+
+            SettingsView()
+                .tag(AppTab.settings)
+                .tabItem {
+                    Label("Settings", systemImage: "gearshape.fill")
                 }
         }
         .tint(Color.offshootPrimary)

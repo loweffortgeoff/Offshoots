@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct LogDecisionView: View {
     @EnvironmentObject var store: DecisionStore
+    @Binding var selectedTab: AppTab
     @FocusState private var isTitleFocused: Bool
 
     @State private var title = ""
@@ -91,11 +92,8 @@ struct LogDecisionView: View {
 
                             Picker("Outcome", selection: $expected) {
                                 ForEach(DecisionOutcome.allCases) { outcome in
-                                    HStack {
-                                        OutcomeIcon(outcome: outcome)
-                                        Text(outcome.rawValue.capitalized)
-                                    }
-                                    .tag(outcome)
+                                    Text(outcome.rawValue.capitalized)
+                                        .tag(outcome)
                                 }
                             }
                             .pickerStyle(.segmented)
@@ -188,11 +186,16 @@ struct LogDecisionView: View {
             showingSavedConfirmation = true
         }
 
+        // Reset form
         title = ""
+        category = .work
+        expected = .neutral
+        followUpDate = Date().addingTimeInterval(86400)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             withAnimation {
                 showingSavedConfirmation = false
+                selectedTab = .dashboard
             }
         }
     }
@@ -219,6 +222,6 @@ struct SavedConfirmationView: View {
 }
 
 #Preview {
-    LogDecisionView()
+    LogDecisionView(selectedTab: .constant(.log))
         .environmentObject(DecisionStore())
 }

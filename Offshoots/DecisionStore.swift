@@ -123,7 +123,9 @@ final class DecisionStore: ObservableObject {
 
         do {
             let data = try Data(contentsOf: saveURL)
-            let decoded = try JSONDecoder().decode([Decision].self, from: data)
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            let decoded = try decoder.decode([Decision].self, from: data)
             decisions = decoded
         } catch {
             print("[DecisionStore] ❌ Failed to load decisions:", error)

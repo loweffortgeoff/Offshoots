@@ -1,0 +1,207 @@
+//
+//  EditDecisionView.swift
+//  Offshoots
+//
+//  Created by Geoffrey Silva on 1/3/26.
+//
+
+internal import SwiftUI
+
+struct EditDecisionView: View {
+    @EnvironmentObject var store: DecisionStore
+    @Environment(\.dismiss) private var dismiss
+    @FocusState private var isTitleFocused: Bool
+
+    let decision: Decision
+
+    @State private var title: String
+    @State private var category: DecisionCategory
+    @State private var expected: DecisionOutcome
+    @State private var followUpDate: Date
+    @State private var notes: String
+
+    init(decision: Decision) {
+        self.decision = decision
+        _title = State(initialValue: decision.title)
+        _category = State(initialValue: decision.category)
+        _expected = State(initialValue: decision.expected)
+        _followUpDate = State(initialValue: decision.followUpDate)
+        _notes = State(initialValue: decision.notes ?? "")
+    }
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
+
+                ScrollView {
+                    VStack(spacing: 24) {
+                        // Decision Input
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Decision", systemImage: "pencil.circle.fill")
+                                .font(.headline)
+                                .foregroundStyle(Color.offshootPrimary)
+
+                            TextField("What decision are you making?", text: $title, axis: .vertical)
+                                .focused($isTitleFocused)
+                                .textFieldStyle(.plain)
+                                .padding(12)
+                                .background(Color(.systemBackground))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
+                                )
+                                .submitLabel(.done)
+                                .onSubmit {
+                                    isTitleFocused = false
+                                }
+
+                            Picker("Category", selection: $category) {
+                                ForEach(DecisionCategory.allCases) { cat in
+                                    Text(cat.rawValue.capitalized).tag(cat)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                            .tint(Color.offshootPrimary)
+                        }
+                        .padding(16)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(16)
+
+                        // Expected Outcome (only editable if pending)
+                        if decision.actual == nil {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Label("Expected Outcome", systemImage: "sparkles")
+                                    .font(.headline)
+                                    .foregroundStyle(Color.offshootPrimary)
+
+                                Text("How do you think this will turn out?")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+
+                                Picker("Outcome", selection: $expected) {
+                                    ForEach(DecisionOutcome.allCases) { outcome in
+                                        HStack {
+                                            OutcomeIcon(outcome: outcome)
+                                            Text(outcome.rawValue.capitalized)
+                                        }
+                                        .tag(outcome)
+                                    }
+                                }
+                                .pickerStyle(.segmented)
+                            }
+                            .padding(16)
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(16)
+                        }
+
+                        // Follow-up Date (only editable if pending)
+                        if decision.actual == nil {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Label("Follow-Up", systemImage: "calendar.badge.clock")
+                                    .font(.headline)
+                                    .foregroundStyle(Color.offshootPrimary)
+
+                                Text("When should you review this decision?")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+
+                                DatePicker("Review date", selection: $followUpDate, displayedComponents: .date)
+                                    .datePickerStyle(.graphical)
+                                    .tint(Color.offshootPrimary)
+                            }
+                            .padding(16)
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(16)
+                        }
+
+                        // Notes
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Notes", systemImage: "note.text")
+                                .font(.headline)
+                                .foregroundStyle(Color.offshootPrimary)
+
+                            TextField("Add any additional notes...", text: $notes, axis: .vertical)
+                                .textFieldStyle(.plain)
+                                .padding(12)
+                                .background(Color(.systemBackground))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
+                                )
+                                .lineLimit(3...6)
+                        }
+                        .padding(16)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(16)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 24)
+                }
+                .scrollDismissesKeyboard(.immediately)
+            }
+            .navigationTitle("Edit Decision")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        saveChanges()
+                    }
+                    .fontWeight(.semibold)
+                    .disabled(title.trimmingCharacters(in: .whitespaces).isEmpty)
+                }
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isTitleFocused = false
+                    }
+                    .fontWeight(.semibold)
+                }
+            }
+        }
+    }
+
+    private func saveChanges() {
+        var updatedDecision = decision
+        updatedDecision.title = title.trimmingCharacters(in: .whitespaces)
+        updatedDecision.category = category
+        updatedDecision.notes = notes.isEmpty ? nil : notes
+
+        // Only update these if decision is still pending
+        if decision.actual == nil {
+            updatedDecision.expected = expected
+            updatedDecision.followUpDate = followUpDate
+
+            // Reschedule notification if follow-up date changed
+            if decision.followUpDate != followUpDate {
+                ReminderManager.shared.cancelReminder(for: decision)
+                ReminderManager.shared.scheduleFollowUp(for: updatedDecision)
+            }
+        }
+
+        store.update(updatedDecision)
+
+        let impact = UIImpactFeedbackGenerator(style: .medium)
+        impact.impactOccurred()
+
+        dismiss()
+    }
+}
+
+#Preview {
+    EditDecisionView(decision: Decision(
+        title: "Test Decision",
+        category: .work,
+        expected: .good,
+        followUpDate: Date().addingTimeInterval(86400 * 7)
+    ))
+    .environmentObject(DecisionStore())
+}

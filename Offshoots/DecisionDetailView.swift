@@ -19,6 +19,7 @@ struct DecisionDetailView: View {
     @Environment(\.dismiss) private var dismiss
     let decision: Decision
     @State private var showDeleteAlert = false
+    @State private var showEditSheet = false
 
     var body: some View {
         ZStack {
@@ -304,6 +305,13 @@ struct DecisionDetailView: View {
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    showEditSheet = true
+                } label: {
+                    Text("Edit")
+                }
+            }
             ToolbarItem(placement: .destructiveAction) {
                 Button(role: .destructive) {
                     showDeleteAlert = true
@@ -312,6 +320,9 @@ struct DecisionDetailView: View {
                         .foregroundStyle(.red)
                 }
             }
+        }
+        .sheet(isPresented: $showEditSheet) {
+            EditDecisionView(decision: decision)
         }
         .alert("Delete Decision?", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) { }
