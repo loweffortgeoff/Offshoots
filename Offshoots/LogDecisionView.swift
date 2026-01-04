@@ -14,6 +14,7 @@ struct LogDecisionView: View {
 
     @State private var title = ""
     @State private var category: DecisionCategory = .work
+    @State private var stakes: DecisionStakes = .medium
     @State private var expected: DecisionOutcome = .neutral
     @State private var followUpDate = Date().addingTimeInterval(86400)
     @State private var showingSavedConfirmation = false
@@ -80,6 +81,27 @@ struct LogDecisionView: View {
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(16)
 
+                        // Stakes
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Stakes", systemImage: "flag.fill")
+                                .font(.headline)
+                                .foregroundStyle(Color.offshootPrimary)
+
+                            Text("How significant is this decision?")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            Picker("Stakes", selection: $stakes) {
+                                ForEach(DecisionStakes.allCases) { stake in
+                                    Text(stake.label).tag(stake)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        .padding(16)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(16)
+
                         // Expected Outcome
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Expected Outcome", systemImage: "sparkles")
@@ -90,13 +112,7 @@ struct LogDecisionView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
-                            Picker("Outcome", selection: $expected) {
-                                ForEach(DecisionOutcome.allCases) { outcome in
-                                    Text(outcome.rawValue.capitalized)
-                                        .tag(outcome)
-                                }
-                            }
-                            .pickerStyle(.segmented)
+                            OutcomePickerView(selection: $expected)
                         }
                         .padding(16)
                         .background(Color(.secondarySystemGroupedBackground))
@@ -178,6 +194,7 @@ struct LogDecisionView: View {
         store.createDecision(
             title: title,
             category: category,
+            stakes: stakes,
             expected: expected,
             followUpDate: followUpDate
         )
@@ -189,6 +206,7 @@ struct LogDecisionView: View {
         // Reset form
         title = ""
         category = .work
+        stakes = .medium
         expected = .neutral
         followUpDate = Date().addingTimeInterval(86400)
 
@@ -218,6 +236,58 @@ struct SavedConfirmationView: View {
                 .fill(Color.offshootPrimary)
                 .shadow(color: .black.opacity(0.2), radius: 20, y: 10)
         )
+    }
+}
+
+// MARK: - Outcome Picker View
+
+struct OutcomePickerView: View {
+    @Binding var selection: DecisionOutcome
+
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(DecisionOutcome.allCases) { outcome in
+                OutcomeButton(
+                    outcome: outcome,
+                    isSelected: selection == outcome
+                ) {
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        selection = outcome
+                    }
+                }
+            }
+        }
+    }
+}
+
+struct OutcomeButton: View {
+    let outcome: DecisionOutcome
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                OutcomeIcon(outcome: outcome)
+                    .font(.system(size: isSelected ? 24 : 20))
+
+                Text(outcome.compactLabel)
+                    .font(.caption2)
+                    .fontWeight(isSelected ? .semibold : .regular)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ? outcome.themeColor.opacity(0.15) : Color.clear)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(isSelected ? outcome.themeColor : Color.clear, lineWidth: 2)
+            )
+        }
+        .buttonStyle(.plain)
+        .foregroundStyle(isSelected ? outcome.themeColor : .secondary)
     }
 }
 

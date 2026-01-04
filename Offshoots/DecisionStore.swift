@@ -36,6 +36,7 @@ final class DecisionStore: ObservableObject {
     func createDecision(
         title: String,
         category: DecisionCategory,
+        stakes: DecisionStakes = .medium,
         expected: DecisionOutcome,
         notes: String? = nil,
         followUpDate: Date
@@ -43,6 +44,7 @@ final class DecisionStore: ObservableObject {
         let decision = Decision(
             title: title,
             category: category,
+            stakes: stakes,
             expected: expected,
             notes: notes,
             followUpDate: followUpDate
@@ -84,7 +86,8 @@ final class DecisionStore: ObservableObject {
     func resolveDecision(
         id: UUID,
         actual: DecisionOutcome,
-        reflection: String? = nil
+        reflection: String? = nil,
+        secondaryFollowUpDate: Date? = nil
     ) {
         guard let index = decisions.firstIndex(where: { $0.id == id }) else { return }
 
@@ -93,6 +96,11 @@ final class DecisionStore: ObservableObject {
         decisions[index].actual = actual
         if let reflection, !reflection.isEmpty {
             decisions[index].reflection = reflection
+        }
+        if let secondaryFollowUpDate {
+            decisions[index].secondaryFollowUpDate = secondaryFollowUpDate
+            // Schedule secondary reminder
+            ReminderManager.shared.scheduleSecondaryFollowUp(for: decisions[index])
         }
 
         save()

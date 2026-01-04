@@ -71,9 +71,40 @@ final class ReminderManager {
         UNUserNotificationCenter.current().add(request)
     }
 
+    // MARK: Schedule secondary follow-up reminder
+    func scheduleSecondaryFollowUp(for decision: Decision) {
+        guard let secondaryDate = decision.secondaryFollowUpDate else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = "Revisit Your Decision"
+        content.body = "How does \"\(decision.title)\" look now?"
+        content.sound = .default
+        content.userInfo = ["decisionID": decision.id.uuidString, "isSecondary": true]
+
+        let adjustedDate = normalizedFollowUpTime(from: secondaryDate)
+
+        let triggerDate = Calendar.current.dateComponents(
+            [.year, .month, .day, .hour, .minute],
+            from: adjustedDate
+        )
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate, repeats: false)
+
+        let request = UNNotificationRequest(
+            identifier: "\(decision.id.uuidString)-secondary",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request)
+    }
+
     // MARK: Remove reminder
     func cancelReminder(for decision: Decision) {
         UNUserNotificationCenter.current()
-            .removePendingNotificationRequests(withIdentifiers: [decision.id.uuidString])
+            .removePendingNotificationRequests(withIdentifiers: [
+                decision.id.uuidString,
+                "\(decision.id.uuidString)-secondary"
+            ])
     }
 }

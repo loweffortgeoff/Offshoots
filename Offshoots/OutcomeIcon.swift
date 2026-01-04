@@ -25,9 +25,11 @@ struct OutcomeIcon: View {
 
     var symbol: String {
         switch outcome {
-        case .good: return "checkmark.circle.fill" 
+        case .veryGood: return "star.circle.fill"
+        case .good: return "checkmark.circle.fill"
         case .neutral: return "minus.circle.fill"
         case .bad: return "xmark.circle.fill"
+        case .veryBad: return "exclamationmark.circle.fill"
         }
     }
 }

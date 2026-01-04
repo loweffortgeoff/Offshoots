@@ -96,13 +96,13 @@ struct OverallStatsCard: View {
             let total = decisions.count
             let completed = decisions.filter { $0.actual != nil }.count
             let pending = total - completed
-            let qualityScore = AnalyticsEngine.decisionQualityScore(from: decisions)
+            let accuracy = AnalyticsEngine.predictionAccuracy(from: decisions)
 
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                 StatBox(title: "Total", value: "\(total)", icon: "square.stack.3d.up.fill", color: .offshootPrimary)
                 StatBox(title: "Completed", value: "\(completed)", icon: "checkmark.circle.fill", color: .outcomeGood)
                 StatBox(title: "Pending", value: "\(pending)", icon: "hourglass", color: .outcomePending)
-                StatBox(title: "Quality", value: "\(qualityScore)%", icon: "star.fill", color: .yellow)
+                StatBox(title: "Accuracy", value: "\(accuracy)%", icon: "target", color: .offshootPrimary)
             }
         }
         .padding(20)
@@ -208,13 +208,12 @@ struct CategoryBreakdownCard: View {
 struct OutcomeDistributionCard: View {
     let decisions: [Decision]
 
-    private var outcomeData: [(outcome: String, count: Int, color: Color)] {
+    private var outcomeData: [(outcome: DecisionOutcome, count: Int)] {
         let completed = decisions.filter { $0.actual != nil }
-        return [
-            (outcome: "Good", count: completed.filter { $0.actual == .good }.count, color: .outcomeGood),
-            (outcome: "Neutral", count: completed.filter { $0.actual == .neutral }.count, color: .outcomeNeutral),
-            (outcome: "Bad", count: completed.filter { $0.actual == .bad }.count, color: .outcomeBad)
-        ].filter { $0.count > 0 }
+        return DecisionOutcome.allCases.compactMap { outcome in
+            let count = completed.filter { $0.actual == outcome }.count
+            return count > 0 ? (outcome: outcome, count: count) : nil
+        }
     }
 
     private var totalCompleted: Int {
@@ -239,24 +238,24 @@ struct OutcomeDistributionCard: View {
                             innerRadius: .ratio(0.6),
                             angularInset: 2
                         )
-                        .foregroundStyle(item.color)
+                        .foregroundStyle(item.outcome.themeColor)
                         .cornerRadius(4)
                     }
                     .frame(width: 120, height: 120)
 
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 8) {
                         ForEach(outcomeData, id: \.outcome) { item in
                             HStack(spacing: 8) {
                                 Circle()
-                                    .fill(item.color)
-                                    .frame(width: 10, height: 10)
-                                Text(item.outcome)
-                                    .font(.subheadline)
+                                    .fill(item.outcome.themeColor)
+                                    .frame(width: 8, height: 8)
+                                Text(item.outcome.compactLabel)
+                                    .font(.caption)
                                 Spacer()
                                 Text("\(Int(Double(item.count) / Double(totalCompleted) * 100))%")
-                                    .font(.subheadline)
+                                    .font(.caption)
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(item.color)
+                                    .foregroundStyle(item.outcome.themeColor)
                             }
                         }
                     }
@@ -450,9 +449,8 @@ struct OutcomeTrendCard: View {
     private struct WeekData: Identifiable {
         let id = UUID()
         let weekStart: Date
-        let outcome: String
+        let category: String
         let count: Int
-        let color: Color
     }
 
     private var weeklyData: [WeekData] {
@@ -472,13 +470,14 @@ struct OutcomeTrendCard: View {
                 decision.createdAt < endOfWeek
             }
 
-            let goodCount = weekDecisions.filter { $0.actual == .good }.count
+            // Group into Positive (VeryGood, Good), Neutral, Negative (Bad, VeryBad)
+            let positiveCount = weekDecisions.filter { $0.actual?.isPositive == true }.count
             let neutralCount = weekDecisions.filter { $0.actual == .neutral }.count
-            let badCount = weekDecisions.filter { $0.actual == .bad }.count
+            let negativeCount = weekDecisions.filter { $0.actual?.isNegative == true }.count
 
-            result.append(WeekData(weekStart: startOfWeek, outcome: "Good", count: goodCount, color: .outcomeGood))
-            result.append(WeekData(weekStart: startOfWeek, outcome: "Neutral", count: neutralCount, color: .outcomeNeutral))
-            result.append(WeekData(weekStart: startOfWeek, outcome: "Bad", count: badCount, color: .outcomeBad))
+            result.append(WeekData(weekStart: startOfWeek, category: "Positive", count: positiveCount))
+            result.append(WeekData(weekStart: startOfWeek, category: "Neutral", count: neutralCount))
+            result.append(WeekData(weekStart: startOfWeek, category: "Negative", count: negativeCount))
         }
 
         return result
@@ -510,16 +509,16 @@ struct OutcomeTrendCard: View {
                         x: .value("Week", item.weekStart, unit: .weekOfYear),
                         y: .value("Count", item.count)
                     )
-                    .foregroundStyle(by: .value("Outcome", item.outcome))
+                    .foregroundStyle(by: .value("Category", item.category))
                     .cornerRadius(2)
                 }
                 .chartForegroundStyleScale([
-                    "Good": Color.outcomeGood,
+                    "Positive": Color.outcomeGood,
                     "Neutral": Color.outcomeNeutral,
-                    "Bad": Color.outcomeBad
+                    "Negative": Color.outcomeBad
                 ])
                 .chartXAxis {
-                    AxisMarks(values: .stride(by: .weekOfYear)) { value in
+                    AxisMarks(values: .stride(by: .weekOfYear)) { _ in
                         AxisGridLine()
                         AxisValueLabel(format: .dateTime.month(.abbreviated).day())
                     }

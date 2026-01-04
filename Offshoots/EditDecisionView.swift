@@ -16,6 +16,7 @@ struct EditDecisionView: View {
 
     @State private var title: String
     @State private var category: DecisionCategory
+    @State private var stakes: DecisionStakes
     @State private var expected: DecisionOutcome
     @State private var followUpDate: Date
     @State private var notes: String
@@ -24,6 +25,7 @@ struct EditDecisionView: View {
         self.decision = decision
         _title = State(initialValue: decision.title)
         _category = State(initialValue: decision.category)
+        _stakes = State(initialValue: decision.stakes)
         _expected = State(initialValue: decision.expected)
         _followUpDate = State(initialValue: decision.followUpDate)
         _notes = State(initialValue: decision.notes ?? "")
@@ -70,6 +72,29 @@ struct EditDecisionView: View {
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(16)
 
+                        // Stakes (only editable if pending)
+                        if decision.actual == nil {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Label("Stakes", systemImage: "flag.fill")
+                                    .font(.headline)
+                                    .foregroundStyle(Color.offshootPrimary)
+
+                                Text("How significant is this decision?")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+
+                                Picker("Stakes", selection: $stakes) {
+                                    ForEach(DecisionStakes.allCases) { stake in
+                                        Text(stake.label).tag(stake)
+                                    }
+                                }
+                                .pickerStyle(.segmented)
+                            }
+                            .padding(16)
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(16)
+                        }
+
                         // Expected Outcome (only editable if pending)
                         if decision.actual == nil {
                             VStack(alignment: .leading, spacing: 12) {
@@ -81,16 +106,7 @@ struct EditDecisionView: View {
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
 
-                                Picker("Outcome", selection: $expected) {
-                                    ForEach(DecisionOutcome.allCases) { outcome in
-                                        HStack {
-                                            OutcomeIcon(outcome: outcome)
-                                            Text(outcome.rawValue.capitalized)
-                                        }
-                                        .tag(outcome)
-                                    }
-                                }
-                                .pickerStyle(.segmented)
+                                OutcomePickerView(selection: $expected)
                             }
                             .padding(16)
                             .background(Color(.secondarySystemGroupedBackground))
@@ -177,6 +193,7 @@ struct EditDecisionView: View {
 
         // Only update these if decision is still pending
         if decision.actual == nil {
+            updatedDecision.stakes = stakes
             updatedDecision.expected = expected
             updatedDecision.followUpDate = followUpDate
 

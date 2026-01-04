@@ -39,13 +39,23 @@ struct AnalyticsEngine {
         return topCategory?.key.rawValue.capitalized ?? "None"
     }
 
-    /// Returns the percentage of good outcomes from completed decisions
+    /// Returns the percentage of positive outcomes (good or very good) from completed decisions
     static func goodOutcomePercentage(from decisions: [Decision]) -> Int {
         let completed = decisions.filter { $0.actual != nil }
         guard !completed.isEmpty else { return 0 }
 
-        let goodCount = completed.filter { $0.actual == .good }.count
-        let percentage = Double(goodCount) / Double(completed.count) * 100
+        let positiveCount = completed.filter { $0.actual?.isPositive == true }.count
+        let percentage = Double(positiveCount) / Double(completed.count) * 100
+        return Int(percentage.rounded())
+    }
+
+    /// Returns the prediction accuracy percentage from all completed decisions
+    static func predictionAccuracy(from decisions: [Decision]) -> Int {
+        let completed = decisions.filter { $0.actual != nil }
+        guard !completed.isEmpty else { return 0 }
+
+        let matches = completed.filter { $0.expected == $0.actual }.count
+        let percentage = Double(matches) / Double(completed.count) * 100
         return Int(percentage.rounded())
     }
 

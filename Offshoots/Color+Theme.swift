@@ -61,12 +61,16 @@ extension Color {
     static let offshootsAccent     = Color(hex: "A4C639")
     
     // The Fruit (Outcomes)
+    /// Deep Sage - Very Good Outcome
+    static let offshootsVeryPositive = Color(hex: "5A9A6E")
     /// Sage - Good Outcome
     static let offshootsPositive   = Color(hex: "8FB996")
     /// Sand - Neutral Outcome
     static let offshootsNeutral    = Color(hex: "D0C9B6")
     /// Muted Clay - Bad Outcome
     static let offshootsNegative   = Color(hex: "B87D75")
+    /// Deep Clay - Very Bad Outcome
+    static let offshootsVeryNegative = Color(hex: "8B4E47")
     
     // MARK: - Semantic Mapping
     
@@ -79,15 +83,21 @@ extension Color {
     /// Surface/Card background color (Matches Lighter Loam)
     static let offshootCardBackground = offshootsSurface
     
+    /// Very Good outcome (Matches Deep Sage)
+    static let outcomeVeryGood = offshootsVeryPositive
+
     /// Success/Good outcome (Matches Sage)
     static let outcomeGood = offshootsPositive
-    
+
     /// Neutral outcome (Matches Sand)
     static let outcomeNeutral = offshootsNeutral
-    
+
     /// Failure/Bad outcome (Matches Muted Clay)
     static let outcomeBad = offshootsNegative
-    
+
+    /// Very Bad outcome (Matches Deep Clay)
+    static let outcomeVeryBad = offshootsVeryNegative
+
     /// Pending state (Matches Sand for a neutral, waiting state)
     static let outcomePending = offshootsNeutral
 }
@@ -96,9 +106,11 @@ extension Color {
 extension DecisionOutcome {
     var themeColor: Color {
         switch self {
+        case .veryGood: return .outcomeVeryGood
         case .good: return .outcomeGood
         case .neutral: return .outcomeNeutral
         case .bad: return .outcomeBad
+        case .veryBad: return .outcomeVeryBad
         }
     }
 }

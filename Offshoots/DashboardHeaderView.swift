@@ -17,46 +17,72 @@ internal import SwiftUI
 struct DashboardHeaderView: View {
     @EnvironmentObject var store: DecisionStore
 
+    private var pendingCount: Int {
+        store.pendingDecisions.count
+    }
+
+    private var completedCount: Int {
+        store.completedDecisions.count
+    }
+
+    private var totalCount: Int {
+        store.decisions.count
+    }
+
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 16) {
             HStack {
-                Image(systemName: "chart.line.uptrend.xyaxis.circle.fill")
+                Image(systemName: "leaf.circle.fill")
                     .font(.system(size: 24))
                     .foregroundStyle(Color.offshootPrimary)
 
-                Text("Decision Quality")
+                Text("Your Decisions")
                     .font(.headline)
                     .foregroundStyle(Color.offshootPrimary)
 
                 Spacer()
             }
 
-            let score = AnalyticsEngine.decisionQualityScore(from: store.decisions)
-
-            HStack(alignment: .lastTextBaseline, spacing: 8) {
-                Text("\(score)")
-                    .font(.system(size: 56, weight: .bold, design: .rounded))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color.offshootPrimary, Color.offshootPrimary.opacity(0.7)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Score")
+            HStack(spacing: 20) {
+                // Pending
+                VStack(spacing: 4) {
+                    Text("\(pendingCount)")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.outcomePending)
+                    Text("Pending")
                         .font(.caption)
                         .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
 
-                    Text("Past 30 Days")
-                        .font(.caption2)
+                Divider()
+                    .frame(height: 40)
+
+                // Completed
+                VStack(spacing: 4) {
+                    Text("\(completedCount)")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.outcomeGood)
+                    Text("Completed")
+                        .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                .frame(maxWidth: .infinity)
 
-                Spacer()
+                Divider()
+                    .frame(height: 40)
+
+                // Total
+                VStack(spacing: 4) {
+                    Text("\(totalCount)")
+                        .font(.system(size: 32, weight: .bold, design: .rounded))
+                        .foregroundStyle(Color.offshootPrimary)
+                    Text("Total")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity)
             }
-            .padding(.top, 4)
         }
         .frame(maxWidth: .infinity)
         .padding(24)
