@@ -10,6 +10,7 @@ internal import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject var store: DecisionStore
     @AppStorage("notificationsEnabled") private var notificationsEnabled = true
+    @State private var showTipJar = false
 
     var body: some View {
         NavigationStack {
@@ -73,11 +74,32 @@ struct SettingsView: View {
                     Text("Appearance")
                 }
 
+                // MARK: - Support
+                Section {
+                    Button {
+                        showTipJar = true
+                    } label: {
+                        HStack {
+                            Label("Tip Jar", systemImage: "heart.fill")
+                                .foregroundStyle(.pink)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.footnote)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                } header: {
+                    Text("Support")
+                }
+
                 // MARK: - About Section
                 AboutSectionView(currentAppName: "Offshoots")
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
+            .sheet(isPresented: $showTipJar) {
+                TipJarView()
+            }
         }
     }
 }

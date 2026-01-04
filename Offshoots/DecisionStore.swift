@@ -66,8 +66,9 @@ final class DecisionStore: ObservableObject {
     }
 
     func delete(at offsets: IndexSet) {
-        // Note: This method deletes directly from the main array based on index.
-        // Be careful not to use this with filtered lists (like pending/completed).
+        for index in offsets {
+            ReminderManager.shared.cancelReminder(for: decisions[index])
+        }
         decisions.remove(atOffsets: offsets)
         save()
     }
