@@ -22,17 +22,17 @@ enum DecisionOutcome: String, Codable, CaseIterable, Identifiable {
         case .bad: return "Bad"
         case .neutral: return "Neutral"
         case .good: return "Good"
-        case .veryGood: return "Very Good"
+        case .veryGood: return "Great"
         }
     }
 
     var compactLabel: String {
         switch self {
-        case .veryBad: return "V. Bad"
+        case .veryBad: return "Very Bad"
         case .bad: return "Bad"
         case .neutral: return "Neutral"
         case .good: return "Good"
-        case .veryGood: return "V. Good"
+        case .veryGood: return "Great"
         }
     }
 
