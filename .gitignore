@@ -1,0 +1,10 @@
+.DS_Store
+*.xcuserstate
+xcuserdata/
+DerivedData/
+
+# Docs (except README)
+*.md
+!README.md
+*.txt
+*.pdf
