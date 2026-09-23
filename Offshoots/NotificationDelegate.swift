@@ -19,6 +19,14 @@ final class NotificationDelegate: NSObject, ObservableObject, UNUserNotification
 
     private override init() {}
 
+    // Called when a reminder fires while the app is open; without this iOS hides it
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        [.banner, .list, .sound]
+    }
+
     // Called when user taps the notification
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
