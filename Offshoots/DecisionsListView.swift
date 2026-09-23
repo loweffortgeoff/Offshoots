@@ -23,12 +23,12 @@ internal import SwiftUI
 
 struct DecisionsListView: View {
     @EnvironmentObject var store: DecisionStore
-    @State private var navigationPath = NavigationPath()
+    @Binding var path: NavigationPath
     @State private var decisionToDelete: Decision?
     @State private var showDeleteAlert = false
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack(path: $path) {
             ZStack {
                 Color(.systemGroupedBackground)
                     .ignoresSafeArea()
@@ -89,12 +89,6 @@ struct DecisionsListView: View {
             }
             .navigationTitle("Decisions")
             .navigationBarTitleDisplayMode(.large)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .navigateToDecision)) { notification in
-            if let decision = notification.object as? Decision {
-                navigationPath = NavigationPath()
-                navigationPath.append(decision)
-            }
         }
         .alert("Delete Decision?", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
@@ -181,10 +175,7 @@ struct DecisionsListView: View {
 }
 
 #Preview {
-    DecisionsListView()
+    DecisionsListView(path: .constant(NavigationPath()))
         .environmentObject(DecisionStore())
 }
 
-extension Notification.Name {
-    static let navigateToDecision = Notification.Name("navigateToDecision")
-}

@@ -95,6 +95,7 @@ final class DecisionStore: ObservableObject {
         ReminderManager.shared.cancelReminder(for: decisions[index])
 
         decisions[index].actual = actual
+        decisions[index].resolvedAt = Date()
         if let reflection, !reflection.isEmpty {
             decisions[index].reflection = reflection
         }
@@ -138,7 +139,24 @@ final class DecisionStore: ObservableObject {
             decisions = decoded
         } catch {
             print("[DecisionStore] ❌ Failed to load decisions:", error)
+            backUpUnreadableFile()
             decisions = []
+        }
+    }
+
+    /// Copies an unreadable decisions.json aside before the next save overwrites it,
+    /// so a decode failure (e.g. after a model change) never silently destroys data.
+    private func backUpUnreadableFile() {
+        let timestamp = Int(Date().timeIntervalSince1970)
+        let backupURL = saveURL
+            .deletingLastPathComponent()
+            .appendingPathComponent("decisions-unreadable-\(timestamp).json")
+
+        do {
+            try FileManager.default.copyItem(at: saveURL, to: backupURL)
+            print("[DecisionStore] Backed up unreadable file to", backupURL.lastPathComponent)
+        } catch {
+            print("[DecisionStore] ❌ Failed to back up unreadable file:", error)
         }
     }
 

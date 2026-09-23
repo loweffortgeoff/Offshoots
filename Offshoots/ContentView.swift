@@ -17,12 +17,13 @@ enum AppTab: Hashable {
 
 struct ContentView: View {
     @StateObject private var store = DecisionStore()
-    @State private var deepLinkDecisionID: UUID?
+    @ObservedObject private var notificationDelegate = NotificationDelegate.shared
     @State private var selectedTab: AppTab = .dashboard
+    @State private var decisionsPath = NavigationPath()
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            DashboardView()
+            DashboardView(selectedTab: $selectedTab)
                 .tag(AppTab.dashboard)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")
@@ -34,7 +35,7 @@ struct ContentView: View {
                     Label("Log", systemImage: "plus.circle.fill")
                 }
 
-            DecisionsListView()
+            DecisionsListView(path: $decisionsPath)
                 .tag(AppTab.decisions)
                 .tabItem {
                     Label("Decisions", systemImage: "checklist")
@@ -54,27 +55,23 @@ struct ContentView: View {
         }
         .tint(Color.offshootPrimary)
         .environmentObject(store)
-        .onReceive(NotificationCenter.default.publisher(for: .openDecision)) { notification in
-            if let id = notification.object as? UUID {
-                deepLinkDecisionID = id
-            }
-        }
-        .onChange(of: deepLinkDecisionID) { oldValue, newValue in
-            guard let newValue else { return }
-            handleDeepLink(newValue)
+        // initial: true catches a tap that cold-launched the app before this view existed
+        .onChange(of: notificationDelegate.pendingDecisionID, initial: true) { _, id in
+            guard let id else { return }
+            openDecision(id)
         }
     }
 
-    private func handleDeepLink(_ id: UUID) {
-        // Let's leverage your store to find the decision
-        if let target = store.decisions.first(where: { $0.id == id }) {
-            // Navigate to Decisions tab & trigger its destination
-            // We'll add a route binding in DecisionsListView next
-            NotificationCenter.default.post(
-                name: .navigateToDecision,
-                object: target
-            )
-        }
+    private func openDecision(_ id: UUID) {
+        // Clear it so tapping a reminder for the same decision again still fires
+        notificationDelegate.pendingDecisionID = nil
+
+        guard let target = store.decisions.first(where: { $0.id == id }) else { return }
+
+        selectedTab = .decisions
+        var path = NavigationPath()
+        path.append(target)
+        decisionsPath = path
     }
 }
 

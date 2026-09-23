@@ -21,6 +21,12 @@ struct EditDecisionView: View {
     @State private var followUpDate: Date
     @State private var notes: String
 
+    /// Blocks moving the review into the past, but keeps an already-overdue date selectable
+    private var earliestReviewDate: Date {
+        let tomorrow = Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
+        return min(decision.followUpDate, tomorrow)
+    }
+
     init(decision: Decision) {
         self.decision = decision
         _title = State(initialValue: decision.title)
@@ -124,7 +130,7 @@ struct EditDecisionView: View {
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
 
-                                DatePicker("Review date", selection: $followUpDate, displayedComponents: .date)
+                                DatePicker("Review date", selection: $followUpDate, in: earliestReviewDate..., displayedComponents: .date)
                                     .datePickerStyle(.graphical)
                                     .tint(Color.offshootPrimary)
                             }

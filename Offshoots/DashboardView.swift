@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject var store: DecisionStore
+    @Binding var selectedTab: AppTab
 
     var body: some View {
         NavigationStack {
@@ -29,7 +30,7 @@ struct DashboardView: View {
 
                         QuickStatsSection()
 
-                        RecentDecisionsSection()
+                        RecentDecisionsSection(selectedTab: $selectedTab)
 
                         Spacer(minLength: 20)
                     }
@@ -53,6 +54,6 @@ struct DashboardView: View {
 }
 
 #Preview {
-    DashboardView()
+    DashboardView(selectedTab: .constant(.dashboard))
         .environmentObject(DecisionStore())
 }

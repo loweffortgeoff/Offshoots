@@ -9,7 +9,7 @@ internal import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var store: DecisionStore
-    @AppStorage("notificationsEnabled") private var notificationsEnabled = true
+    @AppStorage(ReminderManager.enabledKey) private var notificationsEnabled = true
     @State private var showTipJar = false
 
     var body: some View {
@@ -18,6 +18,14 @@ struct SettingsView: View {
                 // MARK: - Notifications
                 Section {
                     Toggle("Follow-up Reminders", isOn: $notificationsEnabled)
+                        .onChange(of: notificationsEnabled) { _, isEnabled in
+                            if isEnabled {
+                                ReminderManager.shared.requestAuthorization()
+                                ReminderManager.shared.rescheduleAll(for: store.decisions)
+                            } else {
+                                ReminderManager.shared.cancelAllReminders()
+                            }
+                        }
                 } header: {
                     Text("Notifications")
                 } footer: {

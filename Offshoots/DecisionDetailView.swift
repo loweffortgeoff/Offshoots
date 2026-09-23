@@ -17,10 +17,22 @@ internal import SwiftUI
 struct DecisionDetailView: View {
     @EnvironmentObject var store: DecisionStore
     @Environment(\.dismiss) private var dismiss
-    let decision: Decision
+    private let decisionID: UUID
+    private let snapshot: Decision
     @State private var showDeleteAlert = false
     @State private var showEditSheet = false
     @State private var showMarkOutcomeSheet = false
+
+    init(decision: Decision) {
+        self.decisionID = decision.id
+        self.snapshot = decision
+    }
+
+    /// Live copy from the store so edits and outcomes show immediately;
+    /// falls back to the snapshot while the view dismisses after a delete.
+    private var decision: Decision {
+        store.decisions.first { $0.id == decisionID } ?? snapshot
+    }
 
     var body: some View {
         ZStack {

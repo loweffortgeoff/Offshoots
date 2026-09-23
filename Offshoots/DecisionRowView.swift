@@ -30,7 +30,8 @@ struct DecisionRowView: View {
             let dateText = decision.followUpDate.formatted(date: .abbreviated, time: .omitted)
             return "\(categoryText) • Review on \(dateText)"
         } else {
-            let dateText = decision.followUpDate.formatted(date: .abbreviated, time: .omitted)
+            // Decisions resolved before resolvedAt existed fall back to their review date
+            let dateText = (decision.resolvedAt ?? decision.followUpDate).formatted(date: .abbreviated, time: .omitted)
             return "\(categoryText) • Completed \(dateText)"
         }
     }

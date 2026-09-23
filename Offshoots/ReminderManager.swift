@@ -12,7 +12,14 @@ final class ReminderManager {
 
     static let shared = ReminderManager()
 
+    /// Backing key for the Settings "Follow-up Reminders" toggle
+    static let enabledKey = "notificationsEnabled"
+
     private init() {}
+
+    var isEnabled: Bool {
+        UserDefaults.standard.object(forKey: Self.enabledKey) as? Bool ?? true
+    }
 
     // Normalize follow-up time to avoid firing at overnight hours
     private func normalizedFollowUpTime(from date: Date) -> Date {
@@ -47,6 +54,8 @@ final class ReminderManager {
 
     // MARK: Schedule reminder
     func scheduleFollowUp(for decision: Decision) {
+        guard isEnabled else { return }
+
         let content = UNMutableNotificationContent()
         content.title = "Review Your Decision"
         content.body = decision.title
@@ -73,7 +82,7 @@ final class ReminderManager {
 
     // MARK: Schedule secondary follow-up reminder
     func scheduleSecondaryFollowUp(for decision: Decision) {
-        guard let secondaryDate = decision.secondaryFollowUpDate else { return }
+        guard isEnabled, let secondaryDate = decision.secondaryFollowUpDate else { return }
 
         let content = UNMutableNotificationContent()
         content.title = "Revisit Your Decision"
@@ -106,5 +115,23 @@ final class ReminderManager {
                 decision.id.uuidString,
                 "\(decision.id.uuidString)-secondary"
             ])
+    }
+
+    // MARK: Toggle support
+    func cancelAllReminders() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+
+    /// Re-creates every reminder that is still in the future (used when reminders are re-enabled)
+    func rescheduleAll(for decisions: [Decision]) {
+        let now = Date()
+        for decision in decisions {
+            if decision.actual == nil, decision.followUpDate > now {
+                scheduleFollowUp(for: decision)
+            } else if decision.actual != nil,
+                      let secondary = decision.secondaryFollowUpDate, secondary > now {
+                scheduleSecondaryFollowUp(for: decision)
+            }
+        }
     }
 }

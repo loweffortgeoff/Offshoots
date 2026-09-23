@@ -100,6 +100,7 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
     var notes: String?
     var reflection: String?
     var createdAt: Date
+    var resolvedAt: Date?
     var followUpDate: Date
     var secondaryFollowUpDate: Date?
 
@@ -113,6 +114,7 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         notes: String? = nil,
         reflection: String? = nil,
         createdAt: Date = Date(),
+        resolvedAt: Date? = nil,
         followUpDate: Date,
         secondaryFollowUpDate: Date? = nil
     ) {
@@ -125,6 +127,7 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         self.notes = notes
         self.reflection = reflection
         self.createdAt = createdAt
+        self.resolvedAt = resolvedAt
         self.followUpDate = followUpDate
         self.secondaryFollowUpDate = secondaryFollowUpDate
     }

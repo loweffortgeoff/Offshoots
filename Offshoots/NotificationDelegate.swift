@@ -1,16 +1,21 @@
 //
-//  NotificationDelegare.swift
+//  NotificationDelegate.swift
 //  Offshoots
 //
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
 import Foundation
+import Combine
 import UserNotifications
 
-final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+final class NotificationDelegate: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
 
     static let shared = NotificationDelegate()
+
+    /// Decision the user tapped a reminder for. Held until ContentView consumes it,
+    /// so a tap that cold-launches the app isn't lost before the UI is listening.
+    @Published var pendingDecisionID: UUID?
 
     private override init() {}
 
@@ -24,14 +29,7 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 
         if let idString = userInfo["decisionID"] as? String,
            let uuid = UUID(uuidString: idString) {
-            NotificationCenter.default.post(name: .openDecision, object: uuid)
-            
-            
-            
+            pendingDecisionID = uuid
         }
     }
-}
-
-extension Notification.Name {
-    static let openDecision = Notification.Name("openDecision")
 }

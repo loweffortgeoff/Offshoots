@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct RecentDecisionsSection: View {
     @EnvironmentObject var store: DecisionStore
+    @Binding var selectedTab: AppTab
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -22,8 +23,9 @@ struct RecentDecisionsSection: View {
                 Spacer()
 
                 if !store.decisions.isEmpty {
-                    NavigationLink {
-                        DecisionsListView()
+                    // Switch tabs rather than pushing a second NavigationStack
+                    Button {
+                        selectedTab = .decisions
                     } label: {
                         HStack(spacing: 4) {
                             Text("See All")
@@ -78,6 +80,6 @@ struct EmptyRecentDecisionsView: View {
 }
 
 #Preview {
-    RecentDecisionsSection()
+    RecentDecisionsSection(selectedTab: .constant(.dashboard))
         .environmentObject(DecisionStore())
 }

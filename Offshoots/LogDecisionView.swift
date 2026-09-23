@@ -19,6 +19,11 @@ struct LogDecisionView: View {
     @State private var followUpDate = Date().addingTimeInterval(86400)
     @State private var showingSavedConfirmation = false
 
+    /// Earliest selectable review date; a past date would schedule a reminder that never fires
+    private var earliestReviewDate: Date {
+        Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -128,7 +133,7 @@ struct LogDecisionView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
-                            DatePicker("Review date", selection: $followUpDate, displayedComponents: .date)
+                            DatePicker("Review date", selection: $followUpDate, in: earliestReviewDate..., displayedComponents: .date)
                                 .datePickerStyle(.graphical)
                                 .tint(Color.offshootPrimary)
                         }
