@@ -108,6 +108,32 @@ final class DecisionStore: ObservableObject {
         save()
     }
 
+    /// Records a re-rating of an already-marked decision. Passing a next date
+    /// schedules another revisit; nil ends the chain.
+    func addRevisit(
+        id: UUID,
+        outcome: DecisionOutcome,
+        note: String? = nil,
+        nextRevisitDate: Date? = nil
+    ) {
+        guard let index = decisions.firstIndex(where: { $0.id == id }),
+              decisions[index].actual != nil else { return }
+
+        ReminderManager.shared.cancelReminder(for: decisions[index])
+
+        let trimmedNote = note?.trimmingCharacters(in: .whitespacesAndNewlines)
+        decisions[index].revisits.append(
+            Revisit(outcome: outcome, note: trimmedNote?.isEmpty == false ? trimmedNote : nil)
+        )
+        decisions[index].secondaryFollowUpDate = nextRevisitDate
+
+        if nextRevisitDate != nil {
+            ReminderManager.shared.scheduleSecondaryFollowUp(for: decisions[index])
+        }
+
+        save()
+    }
+
     /// Review readiness depends on the clock, not just data. Call when the app
     /// returns to the foreground so "Ready to Review" reflects today.
     func refreshReviewState() {
@@ -120,11 +146,11 @@ final class DecisionStore: ObservableObject {
         decisions.filter { $0.actual == nil }
     }
 
-    /// Pending decisions whose review day has arrived, oldest review date first
+    /// Reviews and revisits whose day has arrived, most overdue first
     var readyForReviewDecisions: [Decision] {
         decisions
             .filter(\.isReadyForReview)
-            .sorted { $0.followUpDate < $1.followUpDate }
+            .sorted { ($0.nextReviewDate ?? .distantPast) < ($1.nextReviewDate ?? .distantPast) }
     }
 
     /// Pending decisions still waiting on their review day, soonest first
@@ -136,6 +162,11 @@ final class DecisionStore: ObservableObject {
 
     var completedDecisions: [Decision] {
         decisions.filter { $0.actual != nil }
+    }
+
+    /// Completed decisions not currently waiting on a revisit
+    var historyDecisions: [Decision] {
+        completedDecisions.filter { !$0.isReadyForReview }
     }
 
     func decisions(in category: DecisionCategory?) -> [Decision] {

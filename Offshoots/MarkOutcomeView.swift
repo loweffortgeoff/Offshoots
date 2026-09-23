@@ -89,44 +89,13 @@ struct MarkOutcomeView: View {
                         .cornerRadius(16)
 
                         // Follow-up Reminder
-                        VStack(alignment: .leading, spacing: 12) {
-                            Label("Revisit Later", systemImage: "calendar.badge.clock")
-                                .font(.headline)
-                                .foregroundStyle(Color.offshootPrimary)
-
-                            Text("Set a reminder to check if your assessment still holds")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-
-                            Toggle("Schedule a follow-up", isOn: $setFollowUpReminder)
-                                .tint(Color.offshootPrimary)
-
-                            if setFollowUpReminder {
-                                DatePicker("Revisit date", selection: $secondaryFollowUpDate, in: Date()..., displayedComponents: .date)
-                                    .datePickerStyle(.compact)
-                                    .tint(Color.offshootPrimary)
-
-                                // Quick interval buttons
-                                HStack(spacing: 8) {
-                                    ForEach([7, 30, 90], id: \.self) { days in
-                                        Button {
-                                            secondaryFollowUpDate = Date().addingTimeInterval(Double(days) * 86400)
-                                        } label: {
-                                            Text(days == 7 ? "1 week" : days == 30 ? "1 month" : "3 months")
-                                                .font(.caption)
-                                                .padding(.horizontal, 12)
-                                                .padding(.vertical, 8)
-                                                .background(Color.offshootPrimary.opacity(0.1))
-                                                .foregroundStyle(Color.offshootPrimary)
-                                                .cornerRadius(8)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
-                        .cornerRadius(16)
+                        NextRevisitPicker(
+                            isOn: $setFollowUpReminder,
+                            date: $secondaryFollowUpDate,
+                            title: "Revisit Later",
+                            caption: "Set a reminder to check if your assessment still holds",
+                            toggleLabel: "Schedule a follow-up"
+                        )
 
                         // Save Button
                         Button {

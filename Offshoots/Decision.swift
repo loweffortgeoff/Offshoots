@@ -90,19 +90,38 @@ enum DecisionStakes: String, Codable, CaseIterable, Identifiable {
     }
 }
 
+/// A later re-rating of a decision after its outcome was first marked
+struct Revisit: Identifiable, Codable, Equatable, Hashable {
+    let id: UUID
+    var date: Date
+    var outcome: DecisionOutcome
+    var note: String?
+
+    init(id: UUID = UUID(), date: Date = Date(), outcome: DecisionOutcome, note: String? = nil) {
+        self.id = id
+        self.date = date
+        self.outcome = outcome
+        self.note = note
+    }
+}
+
 struct Decision: Identifiable, Codable, Equatable, Hashable {
     let id: UUID
     var title: String
     var category: DecisionCategory
     var stakes: DecisionStakes
     var expected: DecisionOutcome
+    /// The outcome as first marked; prediction accuracy is measured against this
     var actual: DecisionOutcome?
     var notes: String?
     var reflection: String?
     var createdAt: Date
     var resolvedAt: Date?
     var followUpDate: Date
+    /// Next scheduled revisit once an outcome is marked
     var secondaryFollowUpDate: Date?
+    /// Re-ratings after the first outcome, oldest first
+    var revisits: [Revisit]
 
     init(
         id: UUID = UUID(),
@@ -116,7 +135,8 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         createdAt: Date = Date(),
         resolvedAt: Date? = nil,
         followUpDate: Date,
-        secondaryFollowUpDate: Date? = nil
+        secondaryFollowUpDate: Date? = nil,
+        revisits: [Revisit] = []
     ) {
         self.id = id
         self.title = title
@@ -130,12 +150,48 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         self.resolvedAt = resolvedAt
         self.followUpDate = followUpDate
         self.secondaryFollowUpDate = secondaryFollowUpDate
+        self.revisits = revisits
+    }
+
+    // Custom decoding so files saved before `revisits` existed still load
+    private enum CodingKeys: String, CodingKey {
+        case id, title, category, stakes, expected, actual, notes, reflection
+        case createdAt, resolvedAt, followUpDate, secondaryFollowUpDate, revisits
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        category = try container.decode(DecisionCategory.self, forKey: .category)
+        stakes = try container.decodeIfPresent(DecisionStakes.self, forKey: .stakes) ?? .medium
+        expected = try container.decode(DecisionOutcome.self, forKey: .expected)
+        actual = try container.decodeIfPresent(DecisionOutcome.self, forKey: .actual)
+        notes = try container.decodeIfPresent(String.self, forKey: .notes)
+        reflection = try container.decodeIfPresent(String.self, forKey: .reflection)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        resolvedAt = try container.decodeIfPresent(Date.self, forKey: .resolvedAt)
+        followUpDate = try container.decode(Date.self, forKey: .followUpDate)
+        secondaryFollowUpDate = try container.decodeIfPresent(Date.self, forKey: .secondaryFollowUpDate)
+        revisits = try container.decodeIfPresent([Revisit].self, forKey: .revisits) ?? []
     }
 }
 
 extension Decision {
-    /// Pending and its review day has arrived (review dates are day-granular in the UI)
+    /// Latest assessment: the most recent revisit, else the first marked outcome
+    var currentOutcome: DecisionOutcome? {
+        revisits.last?.outcome ?? actual
+    }
+
+    /// When this decision next needs attention: the review date while pending,
+    /// then the next revisit date once an outcome is marked
+    var nextReviewDate: Date? {
+        actual == nil ? followUpDate : secondaryFollowUpDate
+    }
+
+    /// Its review or revisit day has arrived (dates are day-granular in the UI)
     var isReadyForReview: Bool {
-        actual == nil && Calendar.current.startOfDay(for: followUpDate) <= Date()
+        guard let nextReviewDate else { return false }
+        return Calendar.current.startOfDay(for: nextReviewDate) <= Date()
     }
 }

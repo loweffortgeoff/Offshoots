@@ -56,7 +56,7 @@ struct DecisionsListView: View {
                                 "History",
                                 icon: "checkmark.circle.fill",
                                 color: .offshootPrimary,
-                                decisions: store.completedDecisions
+                                decisions: store.historyDecisions
                             )
                         }
                         .padding(.horizontal, 20)

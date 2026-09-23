@@ -22,6 +22,7 @@ struct DecisionDetailView: View {
     @State private var showDeleteAlert = false
     @State private var showEditSheet = false
     @State private var showMarkOutcomeSheet = false
+    @State private var showRevisitSheet = false
 
     init(decision: Decision) {
         self.decisionID = decision.id
@@ -41,9 +42,9 @@ struct DecisionDetailView: View {
 
             ScrollView {
                 VStack(spacing: 0) {
-                    // Hero Header
+                    // Hero Header (reflects the latest assessment)
                     let heroColor: Color = {
-                        if let actual = decision.actual {
+                        if let actual = decision.currentOutcome {
                             return actual.themeColor.opacity(0.15)
                         } else {
                             return Color.outcomePending.opacity(0.15)
@@ -51,7 +52,7 @@ struct DecisionDetailView: View {
                     }()
 
                     let heroIcon: String = {
-                        if let actual = decision.actual {
+                        if let actual = decision.currentOutcome {
                             switch actual {
                             case .veryGood: return "star.fill"
                             case .good: return "leaf.fill"
@@ -65,7 +66,7 @@ struct DecisionDetailView: View {
                     }()
 
                     let heroIconColor: Color = {
-                        if let actual = decision.actual {
+                        if let actual = decision.currentOutcome {
                             return actual.themeColor
                         } else {
                             return Color.outcomePending
@@ -106,7 +107,7 @@ struct DecisionDetailView: View {
 
                                 Spacer()
 
-                                if let actual = decision.actual {
+                                if let actual = decision.currentOutcome {
                                     HStack(spacing: 6) {
                                         OutcomeIcon(outcome: actual)
                                             .font(.system(size: 18))
@@ -202,7 +203,7 @@ struct DecisionDetailView: View {
                                             .fontWeight(.semibold)
                                             .foregroundStyle(actual.themeColor)
 
-                                        Text("How it actually turned out")
+                                        Text(decision.revisits.isEmpty ? "How it actually turned out" : "How it first turned out")
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
                                     }
@@ -246,6 +247,11 @@ struct DecisionDetailView: View {
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                         }
 
+                        // Revisit history
+                        if !decision.revisits.isEmpty {
+                            RevisitHistoryCard(decision: decision)
+                        }
+
                         // Follow-up Date
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Follow-Up Date", systemImage: "calendar")
@@ -261,10 +267,10 @@ struct DecisionDetailView: View {
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
 
-                        // Secondary Follow-up Date (if set)
+                        // Next revisit date (if set)
                         if let secondaryDate = decision.secondaryFollowUpDate {
                             VStack(alignment: .leading, spacing: 12) {
-                                Label("Revisit Date", systemImage: "calendar.badge.clock")
+                                Label("Next Revisit", systemImage: "calendar.badge.clock")
                                     .font(.headline)
                                     .foregroundStyle(Color.offshootPrimary)
 
@@ -305,6 +311,23 @@ struct DecisionDetailView: View {
                                 .cornerRadius(14)
                                 .shadow(color: Color.offshootPrimary.opacity(0.3), radius: 8, y: 4)
                             }
+                        } else {
+                            // Revisit is always available; emphasized once it's due
+                            let isDue = decision.isReadyForReview
+                            Button {
+                                showRevisitSheet = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "arrow.triangle.2.circlepath")
+                                    Text("Revisit Decision")
+                                        .fontWeight(.semibold)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16)
+                                .background(isDue ? Color.offshootPrimary : Color.offshootPrimary.opacity(0.1))
+                                .foregroundStyle(isDue ? Color.white : Color.offshootPrimary)
+                                .cornerRadius(14)
+                            }
                         }
                     }
                     .padding(20)
@@ -336,6 +359,9 @@ struct DecisionDetailView: View {
         .sheet(isPresented: $showMarkOutcomeSheet) {
             MarkOutcomeView(decision: decision)
         }
+        .sheet(isPresented: $showRevisitSheet) {
+            RevisitView(decision: decision)
+        }
         .alert("Delete Decision?", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
@@ -345,5 +371,72 @@ struct DecisionDetailView: View {
         } message: {
             Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone.")
         }
+    }
+}
+
+// MARK: - Revisit History
+
+/// Timeline of re-ratings, each shown against the assessment before it
+private struct RevisitHistoryCard: View {
+    let decision: Decision
+
+    /// Pairs each revisit with the outcome it replaced
+    private var entries: [(revisit: Revisit, previous: DecisionOutcome?)] {
+        decision.revisits.enumerated().map { index, revisit in
+            let previous = index == 0 ? decision.actual : decision.revisits[index - 1].outcome
+            return (revisit: revisit, previous: previous)
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Label("Revisits", systemImage: "arrow.triangle.2.circlepath")
+                .font(.headline)
+                .foregroundStyle(Color.offshootPrimary)
+
+            ForEach(entries, id: \.revisit.id) { entry in
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(spacing: 8) {
+                        if let previous = entry.previous, previous != entry.revisit.outcome {
+                            OutcomeIcon(outcome: previous)
+                                .font(.system(size: 16))
+                                .opacity(0.4)
+                            Image(systemName: "arrow.right")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        OutcomeIcon(outcome: entry.revisit.outcome)
+                            .font(.system(size: 18))
+
+                        Text(entry.revisit.outcome.shortLabel)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(entry.revisit.outcome.themeColor)
+
+                        Spacer()
+
+                        Text(entry.revisit.date.formatted(date: .abbreviated, time: .omitted))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    if let note = entry.revisit.note {
+                        Text(note)
+                            .font(.subheadline)
+                            .foregroundStyle(.primary)
+                    }
+                }
+
+                if entry.revisit.id != decision.revisits.last?.id {
+                    Divider()
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(20)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }
 }

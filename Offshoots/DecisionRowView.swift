@@ -27,7 +27,7 @@ struct DecisionRowView: View {
 
     private var secondaryLine: String {
         if decision.isReadyForReview {
-            return "\(categoryText) • Ready to review"
+            return "\(categoryText) • Ready to \(isPending ? "review" : "revisit")"
         } else if isPending {
             let dateText = decision.followUpDate.formatted(date: .abbreviated, time: .omitted)
             return "\(categoryText) • Review on \(dateText)"
@@ -79,13 +79,13 @@ struct DecisionRowView: View {
                         )
                         .foregroundStyle(statusColor) // Text matches tint
                 }
-            } else if let actual = decision.actual {
+            } else if let current = decision.currentOutcome {
                 HStack(spacing: 6) {
                     OutcomeIcon(outcome: decision.expected)
                         .opacity(0.3)
                         .font(.system(size: 16))
 
-                    OutcomeIcon(outcome: actual)
+                    OutcomeIcon(outcome: current)
                         .font(.system(size: 20))
                 }
             }
@@ -94,8 +94,8 @@ struct DecisionRowView: View {
         .padding(.horizontal, 12)
         .background(
             Group {
-                if isPending {
-                    // Subtle Goldenrod/Parchment tint for pending items
+                if isPending || decision.isReadyForReview {
+                    // Subtle tint for items waiting on you
                     statusColor.opacity(0.08)
                 } else {
                     Color.clear
@@ -106,7 +106,7 @@ struct DecisionRowView: View {
         // Add a subtle border to pending items to make them look like "cards"
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(isPending ? statusColor.opacity(0.15) : Color.clear, lineWidth: 1)
+                .stroke(isPending || decision.isReadyForReview ? statusColor.opacity(0.15) : Color.clear, lineWidth: 1)
         )
     }
 }
