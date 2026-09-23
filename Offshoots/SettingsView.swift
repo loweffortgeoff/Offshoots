@@ -20,7 +20,6 @@ struct SettingsView: View {
                     Toggle("Follow-up Reminders", isOn: $notificationsEnabled)
                         .onChange(of: notificationsEnabled) { _, isEnabled in
                             if isEnabled {
-                                ReminderManager.shared.requestAuthorization()
                                 ReminderManager.shared.rescheduleAll(for: store.decisions)
                             } else {
                                 ReminderManager.shared.cancelAllReminders()

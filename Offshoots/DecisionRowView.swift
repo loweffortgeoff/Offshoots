@@ -26,7 +26,9 @@ struct DecisionRowView: View {
     }
 
     private var secondaryLine: String {
-        if isPending {
+        if decision.isReadyForReview {
+            return "\(categoryText) • Ready to review"
+        } else if isPending {
             let dateText = decision.followUpDate.formatted(date: .abbreviated, time: .omitted)
             return "\(categoryText) • Review on \(dateText)"
         } else {
@@ -34,6 +36,11 @@ struct DecisionRowView: View {
             let dateText = (decision.resolvedAt ?? decision.followUpDate).formatted(date: .abbreviated, time: .omitted)
             return "\(categoryText) • Completed \(dateText)"
         }
+    }
+
+    /// Brand accent once the review day arrives; neutral sand while waiting
+    private var statusColor: Color {
+        decision.isReadyForReview ? .offshootPrimary : .outcomePending
     }
 
     var body: some View {
@@ -61,16 +68,16 @@ struct DecisionRowView: View {
                         .font(.system(size: 18))
                         .opacity(0.4) // Increased visibility slightly
 
-                    Text("Pending")
+                    Text(decision.isReadyForReview ? "Review" : "Pending")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
                         .background(
                             Capsule()
-                                .fill(Color.outcomePending.opacity(0.15)) // Theme color
+                                .fill(statusColor.opacity(0.15)) // Theme color
                         )
-                        .foregroundStyle(Color.outcomePending) // Text matches tint
+                        .foregroundStyle(statusColor) // Text matches tint
                 }
             } else if let actual = decision.actual {
                 HStack(spacing: 6) {
@@ -89,7 +96,7 @@ struct DecisionRowView: View {
             Group {
                 if isPending {
                     // Subtle Goldenrod/Parchment tint for pending items
-                    Color.outcomePending.opacity(0.08)
+                    statusColor.opacity(0.08)
                 } else {
                     Color.clear
                 }
@@ -99,7 +106,7 @@ struct DecisionRowView: View {
         // Add a subtle border to pending items to make them look like "cards"
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(isPending ? Color.outcomePending.opacity(0.15) : Color.clear, lineWidth: 1)
+                .stroke(isPending ? statusColor.opacity(0.15) : Color.clear, lineWidth: 1)
         )
     }
 }

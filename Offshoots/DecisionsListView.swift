@@ -38,46 +38,26 @@ struct DecisionsListView: View {
                 } else {
                     ScrollView {
                         VStack(spacing: 24) {
-                            let pending = store.pendingDecisions
-                            let completed = store.completedDecisions
+                            decisionSection(
+                                "Ready to Review",
+                                icon: "bell.badge.fill",
+                                color: .offshootPrimary,
+                                decisions: store.readyForReviewDecisions
+                            )
 
-                            if !pending.isEmpty {
-                                VStack(alignment: .leading, spacing: 12) {
-                                    customHeader("Pending", icon: "hourglass.circle.fill", color: .outcomePending)
+                            decisionSection(
+                                "Upcoming",
+                                icon: "hourglass.circle.fill",
+                                color: .outcomePending,
+                                decisions: store.upcomingDecisions
+                            )
 
-                                    VStack(spacing: 12) {
-                                        ForEach(pending) { decision in
-                                            NavigationLink(value: decision) {
-                                                DecisionRowView(decision: decision)
-                                            }
-                                            .buttonStyle(.plain)
-                                            .onLongPressGesture {
-                                                decisionToDelete = decision
-                                                showDeleteAlert = true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            if !completed.isEmpty {
-                                VStack(alignment: .leading, spacing: 12) {
-                                    customHeader("History", icon: "checkmark.circle.fill", color: .offshootPrimary)
-
-                                    VStack(spacing: 12) {
-                                        ForEach(completed) { decision in
-                                            NavigationLink(value: decision) {
-                                                DecisionRowView(decision: decision)
-                                            }
-                                            .buttonStyle(.plain)
-                                            .onLongPressGesture {
-                                                decisionToDelete = decision
-                                                showDeleteAlert = true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            decisionSection(
+                                "History",
+                                icon: "checkmark.circle.fill",
+                                color: .offshootPrimary,
+                                decisions: store.completedDecisions
+                            )
                         }
                         .padding(.horizontal, 20)
                         .padding(.vertical, 24)
@@ -145,6 +125,33 @@ struct DecisionsListView: View {
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    private func decisionSection(
+        _ title: String,
+        icon: String,
+        color: Color,
+        decisions: [Decision]
+    ) -> some View {
+        if !decisions.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                customHeader(title, icon: icon, color: color)
+
+                VStack(spacing: 12) {
+                    ForEach(decisions) { decision in
+                        NavigationLink(value: decision) {
+                            DecisionRowView(decision: decision)
+                        }
+                        .buttonStyle(.plain)
+                        .onLongPressGesture {
+                            decisionToDelete = decision
+                            showDeleteAlert = true
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private func customHeader(_ text: String, icon: String, color: Color) -> some View {

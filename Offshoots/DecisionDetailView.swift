@@ -140,6 +140,24 @@ struct DecisionDetailView: View {
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
 
+                        // Notes (context captured when logging or editing)
+                        if let notes = decision.notes, !notes.isEmpty {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Label("Notes", systemImage: "note.text")
+                                    .font(.headline)
+                                    .foregroundStyle(Color.offshootPrimary)
+
+                                Text(notes)
+                                    .font(.body)
+                                    .foregroundStyle(.primary)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(20)
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(16)
+                            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                        }
+
                         // Expected Outcome
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Expected Outcome", systemImage: "sparkles")

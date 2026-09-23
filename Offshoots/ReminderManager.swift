@@ -77,7 +77,7 @@ final class ReminderManager {
             trigger: trigger
         )
 
-        UNUserNotificationCenter.current().add(request)
+        add(request)
     }
 
     // MARK: Schedule secondary follow-up reminder
@@ -105,7 +105,19 @@ final class ReminderManager {
             trigger: trigger
         )
 
-        UNUserNotificationCenter.current().add(request)
+        add(request)
+    }
+
+    /// Asks for permission the first time a reminder is actually needed (a no-op
+    /// once the user has answered), then schedules only if allowed.
+    private func add(_ request: UNNotificationRequest) {
+        Task {
+            let center = UNUserNotificationCenter.current()
+            let granted = (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+            // Re-check in case reminders were switched off while the prompt was up
+            guard granted, isEnabled else { return }
+            try? await center.add(request)
+        }
     }
 
     // MARK: Remove reminder

@@ -21,7 +21,6 @@ struct OffshootsApp: App {
 
     init() {
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
-        ReminderManager.shared.requestAuthorization()
     }
 
     var body: some Scene {

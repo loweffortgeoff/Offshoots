@@ -17,6 +17,7 @@ enum AppTab: Hashable {
 
 struct ContentView: View {
     @StateObject private var store = DecisionStore()
+    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var notificationDelegate = NotificationDelegate.shared
     @State private var selectedTab: AppTab = .dashboard
     @State private var decisionsPath = NavigationPath()
@@ -55,6 +56,11 @@ struct ContentView: View {
         }
         .tint(Color.offshootPrimary)
         .environmentObject(store)
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active {
+                store.refreshReviewState()
+            }
+        }
         // initial: true catches a tap that cold-launched the app before this view existed
         .onChange(of: notificationDelegate.pendingDecisionID, initial: true) { _, id in
             guard let id else { return }

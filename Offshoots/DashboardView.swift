@@ -28,6 +28,8 @@ struct DashboardView: View {
                     VStack(spacing: 28) {
                         DashboardHeaderView()
 
+                        ReadyToReviewSection()
+
                         QuickStatsSection()
 
                         RecentDecisionsSection(selectedTab: $selectedTab)

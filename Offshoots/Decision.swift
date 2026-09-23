@@ -132,3 +132,10 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         self.secondaryFollowUpDate = secondaryFollowUpDate
     }
 }
+
+extension Decision {
+    /// Pending and its review day has arrived (review dates are day-granular in the UI)
+    var isReadyForReview: Bool {
+        actual == nil && Calendar.current.startOfDay(for: followUpDate) <= Date()
+    }
+}

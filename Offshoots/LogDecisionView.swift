@@ -11,13 +11,19 @@ struct LogDecisionView: View {
     @EnvironmentObject var store: DecisionStore
     @Binding var selectedTab: AppTab
     @FocusState private var isTitleFocused: Bool
+    @FocusState private var isNotesFocused: Bool
 
     @State private var title = ""
+    @State private var notes = ""
     @State private var category: DecisionCategory = .work
     @State private var stakes: DecisionStakes = .medium
     @State private var expected: DecisionOutcome = .neutral
     @State private var followUpDate = Date().addingTimeInterval(86400)
     @State private var showingSavedConfirmation = false
+
+    private var trimmedNotes: String {
+        notes.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 
     /// Earliest selectable review date; a past date would schedule a reminder that never fires
     private var earliestReviewDate: Date {
@@ -30,7 +36,7 @@ struct LogDecisionView: View {
                 Color(.systemGroupedBackground)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        isTitleFocused = false
+                        dismissKeyboard()
                     }
 
                 ScrollView {
@@ -81,6 +87,32 @@ struct LogDecisionView: View {
                             }
                             .pickerStyle(.menu)
                             .tint(Color.offshootPrimary)
+                        }
+                        .padding(16)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(16)
+
+                        // Notes
+                        VStack(alignment: .leading, spacing: 12) {
+                            Label("Notes", systemImage: "note.text")
+                                .font(.headline)
+                                .foregroundStyle(Color.offshootPrimary)
+
+                            Text("Optional - what you know and why you're leaning this way")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+
+                            TextField("What's driving this decision?", text: $notes, axis: .vertical)
+                                .focused($isNotesFocused)
+                                .textFieldStyle(.plain)
+                                .padding(12)
+                                .background(Color(.systemBackground))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
+                                )
+                                .lineLimit(3...6)
                         }
                         .padding(16)
                         .background(Color(.secondarySystemGroupedBackground))
@@ -176,7 +208,7 @@ struct LogDecisionView: View {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") {
-                        isTitleFocused = false
+                        dismissKeyboard()
                     }
                     .fontWeight(.semibold)
                 }
@@ -192,6 +224,11 @@ struct LogDecisionView: View {
         }
     }
 
+    private func dismissKeyboard() {
+        isTitleFocused = false
+        isNotesFocused = false
+    }
+
     private func saveDecision() {
         let impact = UIImpactFeedbackGenerator(style: .medium)
         impact.impactOccurred()
@@ -201,6 +238,7 @@ struct LogDecisionView: View {
             category: category,
             stakes: stakes,
             expected: expected,
+            notes: trimmedNotes.isEmpty ? nil : trimmedNotes,
             followUpDate: followUpDate
         )
 
@@ -210,6 +248,7 @@ struct LogDecisionView: View {
 
         // Reset form
         title = ""
+        notes = ""
         category = .work
         stakes = .medium
         expected = .neutral

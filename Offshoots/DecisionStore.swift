@@ -108,10 +108,30 @@ final class DecisionStore: ObservableObject {
         save()
     }
 
+    /// Review readiness depends on the clock, not just data. Call when the app
+    /// returns to the foreground so "Ready to Review" reflects today.
+    func refreshReviewState() {
+        objectWillChange.send()
+    }
+
     // Convenience helpers for views
 
     var pendingDecisions: [Decision] {
         decisions.filter { $0.actual == nil }
+    }
+
+    /// Pending decisions whose review day has arrived, oldest review date first
+    var readyForReviewDecisions: [Decision] {
+        decisions
+            .filter(\.isReadyForReview)
+            .sorted { $0.followUpDate < $1.followUpDate }
+    }
+
+    /// Pending decisions still waiting on their review day, soonest first
+    var upcomingDecisions: [Decision] {
+        decisions
+            .filter { $0.actual == nil && !$0.isReadyForReview }
+            .sorted { $0.followUpDate < $1.followUpDate }
     }
 
     var completedDecisions: [Decision] {
