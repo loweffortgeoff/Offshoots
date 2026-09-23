@@ -47,11 +47,6 @@ final class ReminderManager {
         return date
     }
 
-    // MARK: Request permission
-    func requestAuthorization() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
-    }
-
     // MARK: Schedule reminder
     func scheduleFollowUp(for decision: Decision) {
         guard isEnabled else { return }
