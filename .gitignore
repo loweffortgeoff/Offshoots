@@ -3,9 +3,12 @@
 xcuserdata/
 DerivedData/
 
-# Docs (except README)
+# Docs (except README, project docs and docs/)
 *.md
 !README.md
 !docs/**/*.md
+!CHANGELOG.md
+!DECISIONS.md
+!TODO.md
 *.txt
 *.pdf
