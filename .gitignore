@@ -6,5 +6,6 @@ DerivedData/
 # Docs (except README)
 *.md
 !README.md
+!docs/**/*.md
 *.txt
 *.pdf
