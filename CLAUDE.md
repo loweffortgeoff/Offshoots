@@ -1,7 +1,6 @@
 # CLAUDE.md — Offshoots
 
-Project notes for Offshoots. They override the Build Verification section in
-`../CLAUDE.md`, which describes a different app (BookmarkCollections).
+Project notes for Offshoots. General guidelines live in `../CLAUDE.md`.
 
 # Development Commands
 
