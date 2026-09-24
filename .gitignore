@@ -10,5 +10,6 @@ DerivedData/
 !CHANGELOG.md
 !DECISIONS.md
 !TODO.md
+!CLAUDE.md
 *.txt
 *.pdf
