@@ -66,6 +66,34 @@ final class DecisionStoreTests {
         #expect(store.upcomingDecisions.isEmpty)
     }
 
+    @Test func exportMatchesTheSavedFile() throws {
+        let decisions = try Fixture.load("insights-seed")
+        let store = DecisionStore(saveURL: saveURL)
+        for decision in decisions.reversed() {
+            store.add(decision)
+        }
+        store.waitForPendingSaves()
+
+        let exported = try DecisionStore.encode(store.decisions)
+
+        // The export is the same file the store reads, so it can be restored
+        #expect(exported == (try Data(contentsOf: saveURL)))
+        #expect(try DecisionStore.decode(exported) == decisions)
+    }
+
+    @Test func deleteAllEmptiesTheStoreAndTheFile() throws {
+        let store = DecisionStore(saveURL: saveURL)
+        for decision in try Fixture.load("insights-seed") {
+            store.add(decision)
+        }
+
+        store.deleteAll()
+        store.waitForPendingSaves()
+
+        #expect(store.decisions.isEmpty)
+        #expect(DecisionStore(saveURL: saveURL).decisions.isEmpty)
+    }
+
     @Test func unreadableFileIsBackedUpNotLost() throws {
         try Data("not json".utf8).write(to: saveURL)
 

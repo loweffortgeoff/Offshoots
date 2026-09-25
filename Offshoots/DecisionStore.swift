@@ -95,6 +95,13 @@ final class DecisionStore {
         save()
     }
 
+    /// Removes every decision and every pending reminder. The view asks for confirmation first.
+    func deleteAll() {
+        ReminderManager.shared.cancelAllReminders()
+        decisions = []
+        save()
+    }
+
     func resolveDecision(
         id: UUID,
         actual: DecisionOutcome,
@@ -205,10 +212,7 @@ final class DecisionStore {
 
         do {
             let data = try Data(contentsOf: saveURL)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let decoded = try decoder.decode([Decision].self, from: data)
-            decisions = decoded
+            decisions = try Self.decode(data)
         } catch {
             print("[DecisionStore] ❌ Failed to load decisions:", error)
             backUpUnreadableFile()
@@ -242,13 +246,28 @@ final class DecisionStore {
 
         queue.async { [saveURL] in
             do {
-                let encoder = JSONEncoder()
-                encoder.dateEncodingStrategy = .iso8601
-                let data = try encoder.encode(currentDecisions)
+                let data = try Self.encode(currentDecisions)
                 try data.write(to: saveURL, options: [.atomic])
             } catch {
                 print("[DecisionStore] ❌ Failed to save decisions:", error)
             }
         }
+    }
+
+    // MARK: - File format
+
+    /// The decisions.json format, shared by saving and exporting so an export can be restored.
+    nonisolated static func encode(_ decisions: [Decision]) throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        // Stable key order: the same decisions always give the same bytes
+        encoder.outputFormatting = .sortedKeys
+        return try encoder.encode(decisions)
+    }
+
+    nonisolated static func decode(_ data: Data) throws -> [Decision] {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode([Decision].self, from: data)
     }
 }
