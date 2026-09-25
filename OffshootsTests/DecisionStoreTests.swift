@@ -47,6 +47,21 @@ struct DecisionStoreTests {
             .isReadyForReview(asOf: now))
     }
 
+    @Test func refreshMovesDecisionsIntoReadyToReview() {
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        let decision = Decision(title: "Tomorrow", category: .work, expected: .good, followUpDate: tomorrow)
+        let store = DecisionStore(saveURL: saveURL)
+        store.add(decision)
+
+        #expect(store.readyForReviewDecisions.isEmpty)
+        #expect(store.upcomingDecisions == [decision])
+
+        store.refreshReviewState(now: tomorrow)
+
+        #expect(store.readyForReviewDecisions == [decision])
+        #expect(store.upcomingDecisions.isEmpty)
+    }
+
     @Test func unreadableFileIsBackedUpNotLost() throws {
         try Data("not json".utf8).write(to: saveURL)
 

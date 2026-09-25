@@ -156,8 +156,8 @@ final class DecisionStore {
 
     /// Review readiness depends on the clock, not just data. Call when the app
     /// returns to the foreground so "Ready to Review" reflects today.
-    func refreshReviewState() {
-        today = Date()
+    func refreshReviewState(now: Date = Date()) {
+        today = now
     }
 
     // Convenience helpers for views
