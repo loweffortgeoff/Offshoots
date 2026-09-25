@@ -44,7 +44,7 @@ struct CategoryBreakdownCard: View {
                 .chartYAxis {
                     AxisMarks { _ in
                         AxisValueLabel()
-                            .foregroundStyle(Color.primary)
+                            .foregroundStyle(.primary)
                     }
                 }
                 .frame(height: CGFloat(categoryData.count) * 44)
