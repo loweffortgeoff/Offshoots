@@ -15,6 +15,12 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Fixed: tied categories keep a stable order (by name). Before, they swapped places on each redraw.
 - Fixed: `AccentColor` had no value. The date picker selection uses the accent on iOS 26.5. On iOS 27.0 the system draws it in the label color.
 
+### 2026-09-25 — Audit section 5, UI: chunk 2a, Dynamic Type
+- Changed: no fixed font sizes remain. Small icons use text styles. Large icons and the tip emoji use `@ScaledMetric`, so they keep their size at the default setting and scale with it.
+- Changed: the Quick Stats tiles are one `QuickStatTile` view with equal heights. The Outcomes tile reads "Outcomes / 50% good", so the value no longer wraps.
+- Changed: at accessibility text sizes, the dashboard header, the Quick Stats tiles, the Recent Decisions header and the decision rows stack vertically, so no word breaks in the middle.
+- Known: Insights, the Log screen and the decision detail screen still break words at accessibility sizes (chunk 2b).
+
 ## Merged to `main` — branch `section-4-architecture`
 
 ### 2026-09-25 — Audit section 4, Architecture

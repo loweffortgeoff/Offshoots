@@ -8,7 +8,7 @@
   - The Appearance rows in Settings are placeholders.
   - There is no export or delete-all.
   - The 2-second splash shows on every launch.
-  - Font sizes are hardcoded, so Dynamic Type does not apply.
+  - Dynamic Type, chunk 2b: at accessibility text sizes, Insights (Overview grid, card titles, chart axis labels, Categories rows, Outcomes legend, accuracy counts, Optimism card), the Log screen headers and the decision detail screen break words in the middle. The fixed font sizes are gone (chunk 2a); these layouts still need to stack at large sizes. The outcome picker's layout belongs to chunk 3.
   - Delete is only in the long-press menu.
 - [ ] **Section 5, found by the 2026-09-24 simulator run.**
   - VoiceOver reads rating icons as generic symbol names ("Favorite", "Close").
@@ -17,7 +17,6 @@
   - In the Revisit and Mark Outcome sheets, the keyboard does not close when you tap outside it and covers Save.
   - The Save Outcome button sits at the bottom edge of the screen when a follow-up is on.
   - Some detail cards are narrower than the rest.
-  - The Quick Stats "Outcomes" tile wraps "Good 100%" onto two lines, so the three tiles have different heights.
 - [ ] **Section 5, open question.** A revisit-due row shows "Ready to revisit" but no "Review" pill. Keep it that way (the recommendation) or add the pill?
 - [ ] **Section 6, Housekeeping.**
   - File header comments are duplicated.
@@ -25,6 +24,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Section 5, chunk 2a: Dynamic Type — no fixed font sizes; Quick Stats tiles equal height; dashboard and rows stack at accessibility sizes — 2026-09-25
 - [x] Section 5, chunk 1: adaptive palette (contrast, Soil/Loam dark mode, category chart, Upcoming/Pending contrast, accent value for the date picker) — 2026-09-25
 - [x] Merge `section-4-architecture` to `main` (fast-forward) — 2026-09-25
 - [x] Unit tests pass on the iPhone 17 Pro (15 of 15, after fixtures moved into the test bundle) — 2026-09-25
