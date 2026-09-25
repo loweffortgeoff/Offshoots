@@ -12,6 +12,7 @@
   - File header comments are duplicated.
   - Header typos: `NotificationDelegare`, `DasbboardView`.
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
+  - Unused code: `SectionHeader.swift` is never used, and `DecisionsListView` has two unused helpers, `deletePending(at:)` and `deleteCompleted(at:)`. Delete them after a check that nothing calls them.
 
 ## Done
 - [x] Section 5, chunk 5: row context menu (Edit, Delete), JSON export, Delete All with confirmation — 2026-09-25
