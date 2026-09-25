@@ -26,6 +26,7 @@ struct DecisionsListView: View {
     @Binding var path: NavigationPath
     @State private var decisionToDelete: Decision?
     @State private var showDeleteAlert = false
+    @State private var decisionToEdit: Decision?
     @ScaledMetric(relativeTo: .largeTitle) private var emptyIconSize: CGFloat = 60
 
     var body: some View {
@@ -70,6 +71,9 @@ struct DecisionsListView: View {
             }
             .navigationTitle("Decisions")
             .navigationBarTitleDisplayMode(.large)
+        }
+        .sheet(item: $decisionToEdit) { decision in
+            EditDecisionView(decision: decision)
         }
         .alert("Delete Decision?", isPresented: $showDeleteAlert) {
             Button("Cancel", role: .cancel) {
@@ -146,9 +150,14 @@ struct DecisionsListView: View {
                             DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
                         }
                         .buttonStyle(.plain)
-                        .onLongPressGesture {
-                            decisionToDelete = decision
-                            showDeleteAlert = true
+                        .contextMenu {
+                            Button("Edit", systemImage: "pencil") {
+                                decisionToEdit = decision
+                            }
+                            Button("Delete", systemImage: "trash", role: .destructive) {
+                                decisionToDelete = decision
+                                showDeleteAlert = true
+                            }
                         }
                     }
                 }

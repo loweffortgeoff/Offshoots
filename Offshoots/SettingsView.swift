@@ -11,6 +11,7 @@ struct SettingsView: View {
     @Environment(DecisionStore.self) private var store
     @AppStorage(ReminderManager.enabledKey) private var notificationsEnabled = true
     @State private var showTipJar = false
+    @State private var showDeleteAllConfirmation = false
 
     var body: some View {
         NavigationStack {
@@ -52,8 +53,37 @@ struct SettingsView: View {
                         Text("\(store.pendingDecisions.count)")
                             .foregroundStyle(.secondary)
                     }
+
+                    ShareLink(
+                        item: DecisionsExport(decisions: store.decisions),
+                        preview: SharePreview("Offshoots Decisions")
+                    ) {
+                        Label("Export Decisions", systemImage: "square.and.arrow.up")
+                    }
+                    .disabled(store.decisions.isEmpty)
+
+                    Button(role: .destructive) {
+                        showDeleteAllConfirmation = true
+                    } label: {
+                        Label("Delete All Decisions", systemImage: "trash")
+                    }
+                    .disabled(store.decisions.isEmpty)
+                    // Attached to the button, so the dialog points at this row
+                    .confirmationDialog(
+                        "Delete all \(store.decisions.count) decisions?",
+                        isPresented: $showDeleteAllConfirmation,
+                        titleVisibility: .visible
+                    ) {
+                        Button("Delete All Decisions", role: .destructive) {
+                            store.deleteAll()
+                        }
+                    } message: {
+                        Text("This also cancels their reminders. It cannot be undone. Export first to keep a copy.")
+                    }
                 } header: {
                     Text("Data")
+                } footer: {
+                    Text("Export saves a JSON file you can keep as a backup.")
                 }
 
                 // MARK: - Appearance (Placeholder)
