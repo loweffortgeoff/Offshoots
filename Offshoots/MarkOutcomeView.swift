@@ -31,7 +31,7 @@ struct MarkOutcomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGroupedBackground)
+                Color.offshootBackground
                     .ignoresSafeArea()
 
                 ScrollView {
@@ -60,7 +60,7 @@ struct MarkOutcomeView: View {
                             OutcomePickerView(selection: $selectedOutcome)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Reflection
@@ -76,7 +76,7 @@ struct MarkOutcomeView: View {
                             TextField(currentHint, text: $reflection, axis: .vertical)
                                 .textFieldStyle(.plain)
                                 .padding(12)
-                                .background(Color(.systemBackground))
+                                .background(Color.offshootBackground)
                                 .cornerRadius(12)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -85,7 +85,7 @@ struct MarkOutcomeView: View {
                                 .lineLimit(3...6)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Follow-up Reminder
@@ -108,14 +108,8 @@ struct MarkOutcomeView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(
-                                LinearGradient(
-                                    colors: [Color.offshootPrimary, Color.offshootPrimary.opacity(0.8)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .foregroundStyle(.white)
+                            .background(Color.offshootPrimary)
+                            .foregroundStyle(Color.offshootOnPrimary)
                             .cornerRadius(14)
                             .shadow(color: Color.offshootPrimary.opacity(0.3), radius: 8, y: 4)
                         }

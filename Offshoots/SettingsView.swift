@@ -98,6 +98,9 @@ struct SettingsView: View {
                 // MARK: - About Section
                 AboutSectionView(currentAppName: "Offshoots")
             }
+            .listRowBackground(Color.offshootCardBackground)
+            .scrollContentBackground(.hidden)
+            .background(Color.offshootBackground)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $showTipJar) {

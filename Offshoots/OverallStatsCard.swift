@@ -29,7 +29,7 @@ struct OverallStatsCard: View {
             }
         }
         .padding(20)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(Color.offshootCardBackground)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }

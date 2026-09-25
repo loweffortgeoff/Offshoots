@@ -17,7 +17,7 @@ struct AnalyticsView: View {
                 LinearGradient(
                     colors: [
                         Color.offshootPrimary.opacity(0.05),
-                        Color(.systemBackground)
+                        Color.offshootBackground
                     ],
                     startPoint: .top,
                     endPoint: .center
@@ -113,7 +113,7 @@ struct StatBox: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemBackground))
+        .background(Color.offshootCardBackground)
         .cornerRadius(12)
     }
 }
@@ -174,7 +174,7 @@ struct CategoryBreakdownCard: View {
             }
         }
         .padding(20)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(Color.offshootCardBackground)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }
@@ -257,7 +257,7 @@ struct DecisionTimelineCard: View {
             }
         }
         .padding(20)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(Color.offshootCardBackground)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }

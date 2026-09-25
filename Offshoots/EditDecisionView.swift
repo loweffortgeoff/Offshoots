@@ -40,7 +40,7 @@ struct EditDecisionView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGroupedBackground)
+                Color.offshootBackground
                     .ignoresSafeArea()
 
                 ScrollView {
@@ -55,7 +55,7 @@ struct EditDecisionView: View {
                                 .focused($isTitleFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
-                                .background(Color(.systemBackground))
+                                .background(Color.offshootBackground)
                                 .cornerRadius(12)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -75,7 +75,7 @@ struct EditDecisionView: View {
                             .tint(Color.offshootPrimary)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Stakes (only editable if pending)
@@ -97,7 +97,7 @@ struct EditDecisionView: View {
                                 .pickerStyle(.segmented)
                             }
                             .padding(16)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                         }
 
@@ -115,7 +115,7 @@ struct EditDecisionView: View {
                                 OutcomePickerView(selection: $expected)
                             }
                             .padding(16)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                         }
 
@@ -135,7 +135,7 @@ struct EditDecisionView: View {
                                     .tint(Color.offshootPrimary)
                             }
                             .padding(16)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                         }
 
@@ -148,7 +148,7 @@ struct EditDecisionView: View {
                             TextField("Add any additional notes...", text: $notes, axis: .vertical)
                                 .textFieldStyle(.plain)
                                 .padding(12)
-                                .background(Color(.systemBackground))
+                                .background(Color.offshootBackground)
                                 .cornerRadius(12)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -157,7 +157,7 @@ struct EditDecisionView: View {
                                 .lineLimit(3...6)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
                     }
                     .padding(.horizontal, 20)

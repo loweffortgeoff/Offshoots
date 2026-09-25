@@ -37,7 +37,7 @@ struct DecisionDetailView: View {
 
     var body: some View {
         ZStack {
-            Color(.systemGroupedBackground)
+            Color.offshootBackground
                 .ignoresSafeArea()
 
             ScrollView {
@@ -137,7 +137,7 @@ struct DecisionDetailView: View {
                             }
                         }
                         .padding(20)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
 
@@ -154,7 +154,7 @@ struct DecisionDetailView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(20)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                         }
@@ -182,7 +182,7 @@ struct DecisionDetailView: View {
                             }
                         }
                         .padding(20)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
 
@@ -225,7 +225,7 @@ struct DecisionDetailView: View {
                                 }
                             }
                             .padding(20)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                         }
@@ -242,7 +242,7 @@ struct DecisionDetailView: View {
                                     .foregroundStyle(.primary)
                             }
                             .padding(20)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                         }
@@ -263,7 +263,7 @@ struct DecisionDetailView: View {
                                 .foregroundStyle(.secondary)
                         }
                         .padding(20)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
                         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
 
@@ -283,7 +283,7 @@ struct DecisionDetailView: View {
                                     .foregroundStyle(.tertiary)
                             }
                             .padding(20)
-                            .background(Color(.secondarySystemGroupedBackground))
+                            .background(Color.offshootCardBackground)
                             .cornerRadius(16)
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                         }
@@ -300,14 +300,8 @@ struct DecisionDetailView: View {
                                 }
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 16)
-                                .background(
-                                    LinearGradient(
-                                        colors: [Color.offshootPrimary, Color.offshootPrimary.opacity(0.8)],
-                                        startPoint: .topLeading,
-                                        endPoint: .bottomTrailing
-                                    )
-                                )
-                                .foregroundStyle(.white)
+                                .background(Color.offshootPrimary)
+                                .foregroundStyle(Color.offshootOnPrimary)
                                 .cornerRadius(14)
                                 .shadow(color: Color.offshootPrimary.opacity(0.3), radius: 8, y: 4)
                             }
@@ -325,7 +319,7 @@ struct DecisionDetailView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 16)
                                 .background(isDue ? Color.offshootPrimary : Color.offshootPrimary.opacity(0.1))
-                                .foregroundStyle(isDue ? Color.white : Color.offshootPrimary)
+                                .foregroundStyle(isDue ? Color.offshootOnPrimary : Color.offshootPrimary)
                                 .cornerRadius(14)
                             }
                         }
@@ -435,7 +429,7 @@ private struct RevisitHistoryCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
-        .background(Color(.secondarySystemGroupedBackground))
+        .background(Color.offshootCardBackground)
         .cornerRadius(16)
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }

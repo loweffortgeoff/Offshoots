@@ -33,7 +33,7 @@ struct LogDecisionView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(.systemGroupedBackground)
+                Color.offshootBackground
                     .ignoresSafeArea()
                     .onTapGesture {
                         dismissKeyboard()
@@ -69,7 +69,7 @@ struct LogDecisionView: View {
                                 .focused($isTitleFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
-                                .background(Color(.systemBackground))
+                                .background(Color.offshootBackground)
                                 .cornerRadius(12)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -89,7 +89,7 @@ struct LogDecisionView: View {
                             .tint(Color.offshootPrimary)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Notes
@@ -106,7 +106,7 @@ struct LogDecisionView: View {
                                 .focused($isNotesFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
-                                .background(Color(.systemBackground))
+                                .background(Color.offshootBackground)
                                 .cornerRadius(12)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
@@ -115,7 +115,7 @@ struct LogDecisionView: View {
                                 .lineLimit(3...6)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Stakes
@@ -136,7 +136,7 @@ struct LogDecisionView: View {
                             .pickerStyle(.segmented)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Expected Outcome
@@ -152,7 +152,7 @@ struct LogDecisionView: View {
                             OutcomePickerView(selection: $expected)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Follow-up Date
@@ -170,7 +170,7 @@ struct LogDecisionView: View {
                                 .tint(Color.offshootPrimary)
                         }
                         .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
+                        .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
                         // Save Button
@@ -184,14 +184,8 @@ struct LogDecisionView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(
-                                LinearGradient(
-                                    colors: [Color.offshootPrimary, Color.offshootPrimary.opacity(0.8)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .foregroundStyle(.white)
+                            .background(Color.offshootPrimary)
+                            .foregroundStyle(Color.offshootOnPrimary)
                             .cornerRadius(14)
                             .shadow(color: Color.offshootPrimary.opacity(0.3), radius: 8, y: 4)
                         }
@@ -268,11 +262,11 @@ struct SavedConfirmationView: View {
         VStack(spacing: 12) {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 50))
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.offshootOnPrimary)
 
             Text("Decision Saved!")
                 .font(.headline)
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.offshootOnPrimary)
         }
         .padding(32)
         .background(

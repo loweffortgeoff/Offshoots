@@ -73,33 +73,18 @@ extension Color {
     static let offshootsVeryNegative = Color(hex: "8B4E47")
     
     // MARK: - Semantic Mapping
-    
-    /// Brand primary color (Matches The Sprout)
-    static let offshootPrimary = offshootsAccent
-    
-    /// App background color (Matches The Soil)
-    static let offshootBackground = offshootsBackground
-    
-    /// Surface/Card background color (Matches Lighter Loam)
-    static let offshootCardBackground = offshootsSurface
-    
-    /// Very Good outcome (Matches Deep Sage)
-    static let outcomeVeryGood = offshootsVeryPositive
+    // Adaptive colors live in the asset catalog. Xcode generates their
+    // symbols: offshootOnPrimary, offshootBackground, offshootCardBackground,
+    // outcomeVeryGood, outcomeGood, outcomeNeutral, outcomeBad, outcomeVeryBad.
+    // Light mode uses darker shades of the palette so text reaches 4.5:1 on
+    // white. Dark mode uses the palette above, on Soil and Loam. The raw
+    // palette stays fixed for places that must match the app icon (splash).
 
-    /// Success/Good outcome (Matches Sage)
-    static let outcomeGood = offshootsPositive
+    /// Brand primary color (Sprout in dark mode, a darker olive in light mode)
+    static let offshootPrimary = Color(.accent)
 
-    /// Neutral outcome (Matches Sand)
-    static let outcomeNeutral = offshootsNeutral
-
-    /// Failure/Bad outcome (Matches Muted Clay)
-    static let outcomeBad = offshootsNegative
-
-    /// Very Bad outcome (Matches Deep Clay)
-    static let outcomeVeryBad = offshootsVeryNegative
-
-    /// Pending state (Matches Sand for a neutral, waiting state)
-    static let outcomePending = offshootsNeutral
+    /// Pending state (Sand, for a neutral, waiting state)
+    static let outcomePending = outcomeNeutral
 }
 
 // Helper to map outcomes to colors easily

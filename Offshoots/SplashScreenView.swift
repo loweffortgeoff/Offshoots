@@ -20,7 +20,7 @@ struct SplashScreenView: View {
     var body: some View {
         ZStack {
             // Background: Matches App Icon
-            Color.offshootPrimary
+            Color.offshootsAccent
                 .ignoresSafeArea()
             
             VStack(spacing: 24) {
@@ -37,7 +37,7 @@ struct SplashScreenView: View {
                 Text("Welcome to Offshoots")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundStyle(Color.offshootBackground)
+                    .foregroundStyle(Color.offshootsBackground)
                     .multilineTextAlignment(.center)
                     .frame(maxWidth: .infinity)
                     .opacity(isAnimating ? 1 : 0)

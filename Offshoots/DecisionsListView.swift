@@ -30,7 +30,7 @@ struct DecisionsListView: View {
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
-                Color(.systemGroupedBackground)
+                Color.offshootBackground
                     .ignoresSafeArea()
 
                 if store.decisions.isEmpty {

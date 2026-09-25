@@ -74,7 +74,7 @@ struct EmptyRecentDecisionsView: View {
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 40)
-        .background(Color(.secondarySystemBackground))
+        .background(Color.offshootCardBackground)
         .cornerRadius(16)
     }
 }

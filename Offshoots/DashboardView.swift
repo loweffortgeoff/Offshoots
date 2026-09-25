@@ -17,7 +17,7 @@ struct DashboardView: View {
                 LinearGradient(
                     colors: [
                         Color.offshootPrimary.opacity(0.05),
-                        Color(.systemBackground)
+                        Color.offshootBackground
                     ],
                     startPoint: .top,
                     endPoint: .center
