@@ -40,6 +40,13 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Fixed: on Log and Edit, a tap outside a text field did not close the keyboard. In Edit, Done did nothing while the notes field was focused.
 - Fixed: every card on the decision detail screen takes the full width.
 
+### 2026-09-25 — Audit section 5, UI: chunk 5, delete and data
+- Changed: rows in the Decisions list have a context menu with Edit and Delete. It replaces a hidden long-press gesture that went straight to the delete alert.
+- Added: Settings > Data > Export Decisions shares a JSON file in the same format as `decisions.json`.
+- Added: Settings > Data > Delete All Decisions, with a confirmation. It also cancels every reminder.
+- Changed: `decisions.json` is written with sorted keys, so the same decisions always give the same file. Existing files load unchanged.
+- Added: store tests for the export and for Delete All (17 tests).
+
 ## Merged to `main` — branch `section-4-architecture`
 
 ### 2026-09-25 — Audit section 4, Architecture
