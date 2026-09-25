@@ -13,6 +13,7 @@ struct MarkOutcomeView: View {
 
     let decision: Decision
 
+    @FocusState private var isNoteFocused: Bool
     @State private var selectedOutcome: DecisionOutcome = .neutral
     @State private var reflection: String = ""
     @State private var setFollowUpReminder: Bool = false
@@ -74,6 +75,7 @@ struct MarkOutcomeView: View {
                                 .foregroundStyle(.secondary)
 
                             TextField(currentHint, text: $reflection, axis: .vertical)
+                                .focused($isNoteFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
                                 .background(Color.offshootBackground)
@@ -96,31 +98,47 @@ struct MarkOutcomeView: View {
                             caption: "Set a reminder to check if your assessment still holds",
                             toggleLabel: "Schedule a follow-up"
                         )
-
-                        // Save Button
-                        Button {
-                            saveOutcome()
-                        } label: {
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill")
-                                Text("Save Outcome")
-                                    .fontWeight(.semibold)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(Color.offshootPrimary)
-                            .foregroundStyle(Color.offshootOnPrimary)
-                            .cornerRadius(14)
-                            .shadow(color: Color.offshootPrimary.opacity(0.3), radius: 8, y: 4)
-                        }
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
+                    // A tap anywhere outside a control closes the keyboard.
+                    // Controls (the text field, buttons) keep their own taps.
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        isNoteFocused = false
+                    }
                 }
                 .scrollDismissesKeyboard(.immediately)
+                // Save stays in view: above the keyboard, and never at the screen edge.
+                .safeAreaInset(edge: .bottom) {
+                    Button {
+                        saveOutcome()
+                    } label: {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("Save Outcome")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color.offshootPrimary)
+                        .foregroundStyle(Color.offshootOnPrimary)
+                        .cornerRadius(14)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(Color.offshootBackground)
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isNoteFocused = false
+                    }
+                    .fontWeight(.semibold)
+                }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()

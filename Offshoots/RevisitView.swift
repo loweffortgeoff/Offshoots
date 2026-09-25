@@ -13,6 +13,7 @@ struct RevisitView: View {
 
     let decision: Decision
 
+    @FocusState private var isNoteFocused: Bool
     @State private var selectedOutcome: DecisionOutcome
     @State private var note: String = ""
     @State private var scheduleNext: Bool = false
@@ -76,6 +77,7 @@ struct RevisitView: View {
                                 .foregroundStyle(.secondary)
 
                             TextField("What shifted since you last looked?", text: $note, axis: .vertical)
+                                .focused($isNoteFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
                                 .background(Color.offshootBackground)
@@ -98,31 +100,47 @@ struct RevisitView: View {
                             caption: "Keep checking in on decisions that play out slowly",
                             toggleLabel: "Schedule another revisit"
                         )
-
-                        // Save Button
-                        Button {
-                            saveRevisit()
-                        } label: {
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill")
-                                Text("Save Revisit")
-                                    .fontWeight(.semibold)
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(Color.offshootPrimary)
-                            .foregroundStyle(Color.offshootOnPrimary)
-                            .cornerRadius(14)
-                            .shadow(color: Color.offshootPrimary.opacity(0.3), radius: 8, y: 4)
-                        }
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
+                    // A tap anywhere outside a control closes the keyboard.
+                    // Controls (the text field, buttons) keep their own taps.
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        isNoteFocused = false
+                    }
                 }
                 .scrollDismissesKeyboard(.immediately)
+                // Save stays in view: above the keyboard, and never at the screen edge.
+                .safeAreaInset(edge: .bottom) {
+                    Button {
+                        saveRevisit()
+                    } label: {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                            Text("Save Revisit")
+                                .fontWeight(.semibold)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(Color.offshootPrimary)
+                        .foregroundStyle(Color.offshootOnPrimary)
+                        .cornerRadius(14)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .background(Color.offshootBackground)
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        isNoteFocused = false
+                    }
+                    .fontWeight(.semibold)
+                }
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()

@@ -36,9 +36,6 @@ struct LogDecisionView: View {
             ZStack {
                 Color.offshootBackground
                     .ignoresSafeArea()
-                    .onTapGesture {
-                        dismissKeyboard()
-                    }
 
                 ScrollView {
                     VStack(spacing: 24) {
@@ -196,6 +193,12 @@ struct LogDecisionView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
+                    // A tap anywhere outside a control closes the keyboard.
+                    // Controls (the text fields, buttons) keep their own taps.
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        dismissKeyboard()
+                    }
                 }
                 .scrollDismissesKeyboard(.immediately)
             }

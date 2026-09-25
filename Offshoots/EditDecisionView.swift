@@ -11,6 +11,7 @@ struct EditDecisionView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isTitleFocused: Bool
+    @FocusState private var isNotesFocused: Bool
 
     let decision: Decision
 
@@ -146,6 +147,7 @@ struct EditDecisionView: View {
                                 .foregroundStyle(Color.offshootPrimary)
 
                             TextField("Add any additional notes...", text: $notes, axis: .vertical)
+                                .focused($isNotesFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
                                 .background(Color.offshootBackground)
@@ -162,6 +164,12 @@ struct EditDecisionView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 24)
+                    // A tap anywhere outside a control closes the keyboard.
+                    // Controls (the text fields, buttons) keep their own taps.
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        dismissKeyboard()
+                    }
                 }
                 .scrollDismissesKeyboard(.immediately)
             }
@@ -183,12 +191,17 @@ struct EditDecisionView: View {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") {
-                        isTitleFocused = false
+                        dismissKeyboard()
                     }
                     .fontWeight(.semibold)
                 }
             }
         }
+    }
+
+    private func dismissKeyboard() {
+        isTitleFocused = false
+        isNotesFocused = false
     }
 
     private func saveChanges() {

@@ -148,6 +148,7 @@ struct DecisionDetailView: View {
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(20)
                         .background(Color.offshootCardBackground)
                         .cornerRadius(16)
@@ -194,6 +195,7 @@ struct DecisionDetailView: View {
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(20)
                         .background(Color.offshootCardBackground)
                         .cornerRadius(16)
@@ -239,6 +241,7 @@ struct DecisionDetailView: View {
                                     .cornerRadius(12)
                                 }
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(20)
                             .background(Color.offshootCardBackground)
                             .cornerRadius(16)
@@ -256,6 +259,7 @@ struct DecisionDetailView: View {
                                     .font(.body)
                                     .foregroundStyle(.primary)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(20)
                             .background(Color.offshootCardBackground)
                             .cornerRadius(16)
@@ -277,6 +281,7 @@ struct DecisionDetailView: View {
                                 .font(.body)
                                 .foregroundStyle(.secondary)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(20)
                         .background(Color.offshootCardBackground)
                         .cornerRadius(16)
@@ -297,6 +302,7 @@ struct DecisionDetailView: View {
                                     .font(.caption)
                                     .foregroundStyle(.tertiary)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(20)
                             .background(Color.offshootCardBackground)
                             .cornerRadius(16)
