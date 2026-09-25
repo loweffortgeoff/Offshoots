@@ -9,25 +9,6 @@ import Foundation
 
 struct AnalyticsEngine {
 
-    /// Returns the decision quality score (0–100) for the last 30 days.
-    /// Score = % of decisions where expected outcome == actual outcome.
-    static func decisionQualityScore(from decisions: [Decision]) -> Int {
-        let now = Date()
-        let thirtyDaysAgo = Calendar.current.date(byAdding: .day, value: -30, to: now)!
-
-        // Filter: Only include completed decisions within last 30 days
-        let recent = decisions.filter {
-            $0.createdAt >= thirtyDaysAgo && $0.actual != nil
-        }
-
-        guard !recent.isEmpty else { return 0 }
-
-        let matches = recent.filter { $0.expected == $0.actual }.count
-
-        let score = Double(matches) / Double(recent.count) * 100
-        return Int(score.rounded())
-    }
-
     /// Returns the most common category from all decisions, or "Tied" when
     /// two or more categories share the top count
     static func topCategory(from decisions: [Decision]) -> String {
@@ -53,12 +34,31 @@ struct AnalyticsEngine {
         return Int(percentage.rounded())
     }
 
-    /// Counts first ratings that match the prediction exactly, and those that do not
+    /// Sorts first ratings into exact matches, misses by one step, and misses by more
     static func accuracyBreakdown(from decisions: [Decision]) -> AccuracyBreakdown {
-        let completed = decisions.filter { $0.actual != nil }
-        let correct = completed.filter { $0.expected == $0.actual }.count
-        return AccuracyBreakdown(correct: correct, incorrect: completed.count - correct)
+        var correct = 0, close = 0, incorrect = 0
+        for decision in decisions {
+            guard let actual = decision.actual else { continue }
+            switch abs(decision.expected.numericValue - actual.numericValue) {
+            case 0: correct += 1
+            case 1: close += 1
+            default: incorrect += 1
+            }
+        }
+        return AccuracyBreakdown(correct: correct, close: close, incorrect: incorrect)
     }
+
+    /// Average of expected minus first rating, in steps on the 5-point scale.
+    /// Positive means predictions run better than results. Nil below 3 decisions
+    static func optimismBias(from decisions: [Decision]) -> OptimismBias? {
+        let gaps = decisions.compactMap { decision in
+            decision.actual.map { decision.expected.numericValue - $0.numericValue }
+        }
+        guard gaps.count >= minimumBiasSample else { return nil }
+        return OptimismBias(averageGap: Double(gaps.reduce(0, +)) / Double(gaps.count), sample: gaps.count)
+    }
+
+    static let minimumBiasSample = 3
 
     /// Returns the prediction accuracy percentage from all completed decisions
     static func predictionAccuracy(from decisions: [Decision]) -> Int {
@@ -95,10 +95,14 @@ struct AnalyticsEngine {
 }
 
 struct AccuracyBreakdown: Equatable {
+    /// Exact match
     let correct: Int
+    /// Off by one step
+    let close: Int
+    /// Off by two steps or more
     let incorrect: Int
 
-    var total: Int { correct + incorrect }
+    var total: Int { correct + close + incorrect }
 
     var fraction: Double {
         total == 0 ? 0 : Double(correct) / Double(total)
@@ -122,5 +126,23 @@ enum QualityTrend: Equatable {
         case .declining: return "Declining"
         case .tooEarly: return "Too early"
         }
+    }
+}
+
+struct OptimismBias: Equatable {
+    let averageGap: Double
+    let sample: Int
+
+    enum Lean: Equatable {
+        case optimistic
+        case calibrated
+        case pessimistic
+    }
+
+    /// Within a quarter step either way counts as calibrated
+    var lean: Lean {
+        if averageGap >= 0.25 { return .optimistic }
+        if averageGap <= -0.25 { return .pessimistic }
+        return .calibrated
     }
 }

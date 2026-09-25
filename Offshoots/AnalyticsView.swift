@@ -46,6 +46,9 @@ struct AnalyticsView: View {
 
                             // Prediction Accuracy
                             PredictionAccuracyCard(decisions: store.decisions)
+
+                            // Optimism Bias
+                            OptimismCard(bias: AnalyticsEngine.optimismBias(from: store.decisions))
                         }
 
                         Spacer(minLength: 20)

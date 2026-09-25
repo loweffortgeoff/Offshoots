@@ -21,11 +21,12 @@ Offshoots helps you become a better decision maker. Log your decisions, predict 
 - **Reflection Notes** — Add written reflections to any decision
 
 ### Analytics & Insights
-- **Decision Quality Score** — Percentage of accurate predictions in the last 30 days
-- **Prediction Accuracy** — How often your guesses match reality
+- **Prediction Accuracy** — How often your guesses match reality, with near misses (one step off) shown apart
+- **Optimism Bias** — Whether you tend to expect better or worse than what happens
 - **Outcome Distribution** — Positive vs. negative breakdown
 - **Category Breakdown** — Which areas you decide on most
-- **Outcome Trends** — Improving, Declining, or Stable over time
+- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days
+- **Outcome Trends** — Positive, neutral and negative outcomes by week
 - **Visual Charts** — Built with the Charts framework
 
 ### Navigation

@@ -18,7 +18,8 @@ struct PredictionAccuracyCard: View {
     private var accuracyData: [(label: String, count: Int, color: Color)] {
         [
             (label: "Correct", count: breakdown.correct, color: .outcomeGood),
-            (label: "Incorrect", count: breakdown.incorrect, color: .outcomeBad)
+            (label: "Close", count: breakdown.close, color: .outcomeNeutral),
+            (label: "Missed", count: breakdown.incorrect, color: .outcomeBad)
         ].filter { $0.count > 0 }
     }
 
@@ -71,7 +72,18 @@ struct PredictionAccuracyCard: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                         VStack(alignment: .leading, spacing: 4) {
-                            Text("Incorrect")
+                            Text("Close")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text("\(breakdown.close)")
+                                .font(.title3)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(Color.outcomeNeutral)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Missed")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                             Text("\(breakdown.incorrect)")
@@ -82,6 +94,11 @@ struct PredictionAccuracyCard: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .padding(.horizontal)
+
+                    Text("Correct is an exact match. Close is one step off. Missed is two or more.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
