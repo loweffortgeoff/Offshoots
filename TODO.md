@@ -2,7 +2,6 @@
 
 ## Next
 - [ ] Review and merge `section-4-architecture` to `main`.
-- [ ] Run the unit tests on the iPhone 17 Pro once to confirm the test bundle signs (team 2R5TZD4XAH was added but not tried on device).
 - [ ] Section 5, UI — start in a new session (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
@@ -32,6 +31,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Unit tests pass on the iPhone 17 Pro (15 of 15, after fixtures moved into the test bundle) — 2026-09-25
 - [x] Section 4 code review fixes (store created once, title reschedules reminder, test target hygiene) — 2026-09-25
 - [x] Section 4, chunk 1: Swift 6 language mode; JSON storage decision — 2026-09-25
 - [x] Section 4, chunk 5: README tech stack matches the code — 2026-09-25
