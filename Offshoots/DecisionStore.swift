@@ -66,8 +66,9 @@ final class DecisionStore {
         let previous = decisions[index]
         decisions[index] = decision
 
-        // A pending decision's reminder follows its review date
-        if decision.actual == nil, decision.followUpDate != previous.followUpDate {
+        // A pending decision's reminder follows its review date and shows its title
+        if decision.actual == nil,
+           decision.followUpDate != previous.followUpDate || decision.title != previous.title {
             ReminderManager.shared.cancelReminder(for: previous)
             ReminderManager.shared.scheduleFollowUp(for: decision)
         }
