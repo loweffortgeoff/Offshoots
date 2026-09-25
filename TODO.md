@@ -1,7 +1,6 @@
 # TODO
 
 ## Next
-- [ ] Merge `section-3-insights` to `main` after Geoff reviews chunk 3.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 4, Architecture.**
@@ -47,4 +46,5 @@
 - [x] Section 3, chunk 2: resolved-date time windows, "Too early" trend, "Tied" top category — 2026-09-25
 - [x] Section 3, chunk 3: Close accuracy, Optimism card, quality score removed, stakes weights left unused — 2026-09-25
 - [x] Seed script `scripts/seed.sh` — 2026-09-25
+- [x] Merge `section-3-insights` to `main` — 2026-09-25
 - [x] Start CHANGELOG, DECISIONS, TODO — 2026-09-24

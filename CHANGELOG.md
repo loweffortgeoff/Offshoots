@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## Unreleased — branch `section-3-insights`
+## Merged to `main` — branch `section-3-insights`
 
 ### 2026-09-25 — Audit section 3, Insights correctness
 - Fixed: Good %, the Outcomes chart and Outcome Trends now use the latest revisit rating.
