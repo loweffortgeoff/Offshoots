@@ -202,12 +202,6 @@ struct EditDecisionView: View {
             updatedDecision.stakes = stakes
             updatedDecision.expected = expected
             updatedDecision.followUpDate = followUpDate
-
-            // Reschedule notification if follow-up date changed
-            if decision.followUpDate != followUpDate {
-                ReminderManager.shared.cancelReminder(for: decision)
-                ReminderManager.shared.scheduleFollowUp(for: updatedDecision)
-            }
         }
 
         store.update(updatedDecision)

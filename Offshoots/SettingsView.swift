@@ -19,11 +19,7 @@ struct SettingsView: View {
                 Section {
                     Toggle("Follow-up Reminders", isOn: $notificationsEnabled)
                         .onChange(of: notificationsEnabled) { _, isEnabled in
-                            if isEnabled {
-                                ReminderManager.shared.rescheduleAll(for: store.decisions)
-                            } else {
-                                ReminderManager.shared.cancelAllReminders()
-                            }
+                            store.setRemindersEnabled(isEnabled)
                         }
                 } header: {
                     Text("Notifications")

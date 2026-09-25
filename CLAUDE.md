@@ -65,8 +65,20 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   `xcrun simctl io <UDID> screenshot`. Coordinates are device points: the
   iPhone 18 Pro screen is 402 × 874 pt. Xcode's device-interaction tools
   (`XcodeOpenWorkspace`, then `DeviceInteractionStartSession`) are the backup.
-- **Uninstalling resets both permission and data.** Use it to get a clean
-  first-run state.
+- **Uninstalling resets both permission and data, but not a `defaults write`.**
+  A value written with `simctl spawn … defaults write` lives outside the app
+  container and survives an uninstall. On 2026-09-25 a leftover
+  `notificationsEnabled = 0` on the iPhone 18 Pro simulator turned reminders
+  off after a fresh install. Check with `simctl spawn <UDID> defaults read
+  com.geoffrey.silva.Offshoots`, and clear it with `defaults delete`.
+- **The iPhone 18 Pro simulator's notification store is broken** (seen
+  2026-09-25). Every `add` logs `Added notification request: [ hasError: 1 ]`
+  and no permission prompt appears. The iPhone 18 Pro Max (iOS 27.0) works.
+  Erasing the iPhone 18 Pro simulator should fix it. Check the result in the
+  log: `simctl spawn <UDID> log show --last 1m --info --predicate 'process ==
+  "Offshoots" AND subsystem BEGINSWITH "com.apple.UserNotifications"'`.
+- **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
+  a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
 
 ## Test Device
 

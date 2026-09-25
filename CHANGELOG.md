@@ -9,6 +9,9 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Decided: keep JSON storage and add no schema version yet (see DECISIONS).
 - Added: an `OffshootsTests` target (Swift Testing, iOS 18.6) with `AnalyticsEngine` tests built on the Insights fixtures.
 - Added: a shared `Offshoots` scheme with a Test action.
+- Changed: all reminder scheduling goes through `DecisionStore`. `update()` reschedules a pending decision's reminder when its review date changes. Settings calls `store.setRemindersEnabled(_:)`. Views no longer call `ReminderManager`.
+- Added: `DecisionStore(saveURL:)` and store tests for save-then-load and for the backup of an unreadable file.
+- Removed: `xcschememanagement.plist` from git (per-user Xcode state; the file stays on disk).
 
 ## Merged to `main` — branch `section-3-insights`
 

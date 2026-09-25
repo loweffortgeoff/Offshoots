@@ -22,11 +22,8 @@ final class DecisionStore: ObservableObject {
     private let saveURL: URL
     private let queue = DispatchQueue(label: "DecisionStoreQueue", qos: .background)
 
-    init() {
-        let fileManager = FileManager.default
-        let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
-
-        self.saveURL = documentsDirectory.appendingPathComponent("decisions.json")
+    init(saveURL: URL = URL.documentsDirectory.appendingPathComponent("decisions.json")) {
+        self.saveURL = saveURL
 
         load()
     }
@@ -61,7 +58,15 @@ final class DecisionStore: ObservableObject {
 
     func update(_ decision: Decision) {
         guard let index = decisions.firstIndex(where: { $0.id == decision.id }) else { return }
+        let previous = decisions[index]
         decisions[index] = decision
+
+        // A pending decision's reminder follows its review date
+        if decision.actual == nil, decision.followUpDate != previous.followUpDate {
+            ReminderManager.shared.cancelReminder(for: previous)
+            ReminderManager.shared.scheduleFollowUp(for: decision)
+        }
+
         save()
     }
 
@@ -132,6 +137,16 @@ final class DecisionStore: ObservableObject {
         }
 
         save()
+    }
+
+    /// Call after the Settings toggle changes. Turning reminders on re-creates
+    /// every future reminder; turning them off removes all of them.
+    func setRemindersEnabled(_ isEnabled: Bool) {
+        if isEnabled {
+            ReminderManager.shared.rescheduleAll(for: decisions)
+        } else {
+            ReminderManager.shared.cancelAllReminders()
+        }
     }
 
     /// Review readiness depends on the clock, not just data. Call when the app
@@ -209,6 +224,11 @@ final class DecisionStore: ObservableObject {
         } catch {
             print("[DecisionStore] ❌ Failed to back up unreadable file:", error)
         }
+    }
+
+    /// Blocks until queued writes finish. Tests use it before reading the file back
+    func waitForPendingSaves() {
+        queue.sync {}
     }
 
     private func save() {
