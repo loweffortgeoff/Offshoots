@@ -21,3 +21,24 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** `.gitignore` ignores `*.md` but makes an exception for `docs/**/*.md`.
 **Why:** Plans, specs and session notes must live in git with their history.
 **Alternative considered:** Force-add single files. That is easy to forget and hides new docs.
+
+## 2026-09-25 (Outcome stats use the latest rating; accuracy uses the first)
+**Decision:** Good %, the Outcomes chart and Outcome Trends use `currentOutcome` (the latest revisit, else the first rating). Prediction accuracy, the quality trend and optimism bias use `actual` (the first rating).
+**Why:** This applies the 2026-09-23 revisit rule to Insights. Outcome stats describe how decisions turned out. Accuracy measures the prediction against the first result.
+**Alternative considered:** Use the first rating everywhere. Then a revisit never changes Insights, and the Dashboard hero and Insights disagree.
+
+## 2026-09-25 (Insights time windows use the resolved date)
+**Decision:** Trend windows and Outcome Trends group decisions by `resolvedDate`: `resolvedAt`, else `followUpDate` for rows resolved before `resolvedAt` existed. Decision Activity still uses `createdAt`.
+**Why:** An outcome belongs to the week it was marked, not the week the decision was logged. Activity is about logging, so `createdAt` is right there.
+**Alternative considered:** Keep `createdAt`. Most outcomes then fall outside the recent windows, so the trend almost never has data.
+
+## 2026-09-25 (Trend compares 30-day windows and can say "Too early")
+**Decision:** The trend compares accuracy in the last 30 days with the 30 days before. Each window needs 3 marked decisions, otherwise the tile shows "Too early". The trend is a typed `QualityTrend`, not a string.
+**Why:** Review dates are often weeks away, so 7-day windows were nearly always empty and showed a false "Stable".
+**Alternative considered:** Keep 7-day windows. Rejected for the reason above.
+
+## 2026-09-25 (Top Category shows "Tied")
+**Decision:** When two or more categories share the top count, the tile shows "Tied".
+**Why:** The old code picked from dictionary order, so the tile could change between launches.
+**Alternative considered:** A fixed tie-break order. It is stable, but it states a winner that does not exist.
+

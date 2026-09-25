@@ -2,7 +2,17 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## Unreleased — branch `claude/sleepy-newton-ru1q7c`
+## Unreleased — branch `section-3-insights`
+
+### 2026-09-25 — Audit section 3, Insights correctness
+- Fixed: Good %, the Outcomes chart and Outcome Trends now use the latest revisit rating.
+- Fixed: the trend and Outcome Trends group decisions by the date the outcome was marked, not the date the decision was logged.
+- Fixed: the trend shows "Too early" when there is too little data, instead of "Stable". It now compares 30-day windows.
+- Fixed: Top Category shows "Tied" on a tie, instead of a random pick.
+- Changed: the Prediction Accuracy card gets its numbers from `AnalyticsEngine`, and its percentage now rounds the same way as the Overview tile.
+- Moved four Insights cards out of `AnalyticsView.swift` into their own files (no behavior change).
+
+## Merged to `main` — branch `claude/sleepy-newton-ru1q7c`
 
 ### 2026-09-25
 - Device check passed on the iPhone 17 Pro (iOS 27.2 Beta 2). A real reminder arrived the next day and a tap opened the decision. The sections 1–2 testing gate is closed.

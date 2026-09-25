@@ -40,12 +40,11 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   before launch reaches the app. `defaults read` afterwards can return an
   out-of-date value. Read the app's own plist instead:
   `$C/Library/Preferences/com.geoffrey.silva.Offshoots.plist`.
-- **Tapping in the simulator:** use Xcode's device-interaction tools. Call
-  `XcodeOpenWorkspace` first, then `DeviceInteractionStartSession`. A
-  subagent must run the interactions. On the Mac mini (2026-09-24), Claude's
-  own simulator tool reported "Xcode is installed but not selected", although
-  `xcode-select -p` pointed at Xcode. Do not rely on that tool until this is
-  fixed.
+- **Tapping in the simulator:** Claude's own simulator tool (`tap`, `swipe`)
+  works on the Mac mini (checked 2026-09-25). Take screenshots with
+  `xcrun simctl io <UDID> screenshot`. Coordinates are device points: the
+  iPhone 18 Pro screen is 402 × 874 pt. Xcode's device-interaction tools
+  (`XcodeOpenWorkspace`, then `DeviceInteractionStartSession`) are the backup.
 - **Uninstalling resets both permission and data.** Use it to get a clean
   first-run state.
 

@@ -1,7 +1,7 @@
 # TODO
 
 ## Next
-- [ ] Section 3 — decide first: should outcome stats (Good %, distribution chart) use the first rating or the latest revisit? Accuracy stays on the first rating.
+- [ ] Section 3, chunk 3: add a "Close" (off by one step) part to the accuracy donut, add the optimism-bias card, remove `decisionQualityScore()` and its README line, and add a note that the stakes weights stay unused.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 3, Insights correctness.**
@@ -9,16 +9,13 @@
   - `numericValue` and the stakes weights are not used.
   - There is no optimism-bias metric, but the README promises one.
   - `decisionQualityScore()` is never shown.
-  - Time windows use `createdAt`, not `resolvedAt`.
-  - The trend shows "Stable" when there is too little data.
-  - Top Category picks one category when counts are tied.
 - [ ] **Section 4, Architecture.**
   - Move the store to `@Observable`/`@MainActor`.
   - Route all reminder scheduling through the store. Edit still calls `ReminderManager` directly.
   - Decide between JSON with schema versioning and SwiftData.
   - Add tests, starting with `AnalyticsEngine`.
   - `SWIFT_VERSION` is 5.0, but the README says Swift 6.
-  - The test target deploys to 26.1, but the app deploys to 18.6.
+  - There is no test target yet (checked with `xcodebuild -list`, 2026-09-25). Add one.
 - [ ] **Section 5, UI.**
   - Matcha `#A4C639` text has low contrast (about 2:1).
   - The dark palette is defined but not used.
@@ -37,6 +34,7 @@
   - Some detail cards are narrower than the rest.
   - The Upcoming header and the Pending badge have low contrast.
   - The date picker selection is black, not the accent color.
+  - The Quick Stats "Outcomes" tile wraps "Good 100%" onto two lines, so the three tiles have different heights.
 - [ ] **Section 5, open question.** A revisit-due row shows "Ready to revisit" but no "Review" pill. Keep it that way (the recommendation) or add the pill?
 - [ ] **Section 6, Housekeeping.**
   - File header comments are duplicated.
@@ -50,4 +48,6 @@
 - [x] Track `docs/` in git — 2026-09-24
 - [x] Device check on the iPhone 17 Pro: the reminder arrives by itself and a tap opens the decision. Sections 1–2 testing gate closed — 2026-09-25
 - [x] Merge `claude/sleepy-newton-ru1q7c` to `main` — 2026-09-25
+- [x] Section 3 decision: outcome stats use the latest rating and accuracy uses the first — 2026-09-25
+- [x] Section 3, chunk 2: resolved-date time windows, "Too early" trend, "Tied" top category — 2026-09-25
 - [x] Start CHANGELOG, DECISIONS, TODO — 2026-09-24
