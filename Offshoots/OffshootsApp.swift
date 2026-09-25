@@ -16,8 +16,10 @@ internal import SwiftUI
 
 @main
 struct OffshootsApp: App {
-    // State to track if splash screen is active
-    @State private var showSplash = true
+    /// The splash is a first-launch welcome, not a wait on every launch
+    @AppStorage("hasSeenSplash") private var hasSeenSplash = false
+    @State private var showSplash = !UserDefaults.standard.bool(forKey: "hasSeenSplash")
+    @AppStorage(AppTheme.storageKey) private var theme: AppTheme = .system
     /// Owned here, not in ContentView: App.init runs once, while ContentView is
     /// rebuilt when the splash ends and would decode the file again
     @State private var store = DecisionStore()
@@ -41,12 +43,15 @@ struct OffshootsApp: App {
                         .zIndex(1) // Ensure it sits on top
                 }
             }
+            .preferredColorScheme(theme.colorScheme)
             .onAppear {
+                guard showSplash else { return }
                 // Wait 2 seconds, then dismiss splash
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     withAnimation(.easeOut(duration: 0.5)) {
                         showSplash = false
                     }
+                    hasSeenSplash = true
                 }
             }
         }

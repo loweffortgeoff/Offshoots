@@ -10,6 +10,7 @@ internal import SwiftUI
 struct SettingsView: View {
     @Environment(DecisionStore.self) private var store
     @AppStorage(ReminderManager.enabledKey) private var notificationsEnabled = true
+    @AppStorage(AppTheme.storageKey) private var theme: AppTheme = .system
     @State private var showTipJar = false
     @State private var showDeleteAllConfirmation = false
 
@@ -86,22 +87,12 @@ struct SettingsView: View {
                     Text("Export saves a JSON file you can keep as a backup.")
                 }
 
-                // MARK: - Appearance (Placeholder)
+                // MARK: - Appearance
                 Section {
-                    HStack {
-                        Text("App Theme")
-                            .foregroundStyle(.primary)
-                        Spacer()
-                        Text("System")
-                            .foregroundStyle(.secondary)
-                    }
-
-                    HStack {
-                        Text("App Icon")
-                            .foregroundStyle(.primary)
-                        Spacer()
-                        Text("Default")
-                            .foregroundStyle(.secondary)
+                    Picker("App Theme", selection: $theme) {
+                        ForEach(AppTheme.allCases) { theme in
+                            Text(theme.label).tag(theme)
+                        }
                     }
                 } header: {
                     Text("Appearance")

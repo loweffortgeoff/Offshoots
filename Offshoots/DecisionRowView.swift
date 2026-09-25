@@ -51,6 +51,20 @@ struct DecisionRowView: View {
         dynamicTypeSize.isAccessibilitySize
     }
 
+    private func statusPill(_ text: String) -> some View {
+        Text(text)
+            .font(.caption2)
+            .fontWeight(.medium)
+            .fixedSize()
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2)
+            .background(
+                Capsule()
+                    .fill(statusColor.opacity(0.15)) // Theme color
+            )
+            .foregroundStyle(statusColor) // Text matches tint
+    }
+
     var body: some View {
         let rowLayout = isStacked
             ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
@@ -86,29 +100,26 @@ struct DecisionRowView: View {
                         .opacity(0.4) // Increased visibility slightly
                         .accessibilityLabel("Expected \(decision.expected.shortLabel)")
 
-                    Text(isReadyForReview ? "Review" : "Pending")
-                        .font(.caption2)
-                        .fontWeight(.medium)
-                        .fixedSize()
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 2)
-                        .background(
-                            Capsule()
-                                .fill(statusColor.opacity(0.15)) // Theme color
-                        )
-                        .foregroundStyle(statusColor) // Text matches tint
+                    statusPill(isReadyForReview ? "Review" : "Pending")
                 }
             } else if let current = decision.currentOutcome {
-                HStack(spacing: 6) {
-                    OutcomeIcon(outcome: decision.expected)
-                        .opacity(0.3)
-                        .font(.callout)
+                statusLayout {
+                    HStack(spacing: 6) {
+                        OutcomeIcon(outcome: decision.expected)
+                            .opacity(0.3)
+                            .font(.callout)
 
-                    OutcomeIcon(outcome: current)
-                        .font(.title3)
+                        OutcomeIcon(outcome: current)
+                            .font(.title3)
+                    }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("Expected \(decision.expected.shortLabel), turned out \(current.shortLabel)")
+
+                    // Due for a revisit: same pill as a pending review
+                    if isReadyForReview {
+                        statusPill("Revisit")
+                    }
                 }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Expected \(decision.expected.shortLabel), turned out \(current.shortLabel)")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
