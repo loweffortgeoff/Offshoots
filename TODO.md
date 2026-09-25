@@ -5,7 +5,6 @@
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 4, Architecture.**
-  - Move the store to `@Observable`/`@MainActor`.
   - Decide between JSON with schema versioning and SwiftData.
 - [ ] **Section 5, UI.**
   - Matcha `#A4C639` text has low contrast (about 2:1).
@@ -34,6 +33,7 @@
 
 ## Done
 - [x] Section 4, chunk 1: Swift 6 language mode; JSON storage decision — 2026-09-25
+- [x] Section 4, chunk 4: `@Observable` store with a stored `today` for review readiness — 2026-09-25
 - [x] Section 4, chunk 3: all reminder scheduling goes through the store (Edit and Settings) — 2026-09-25
 - [x] Section 4, chunk 2: `OffshootsTests` target and `AnalyticsEngine` tests — 2026-09-25
 - [x] Audit section 1: bug fixes — 2026-09-23

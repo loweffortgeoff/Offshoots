@@ -8,7 +8,7 @@ internal import SwiftUI
 /// Re-rate a decision after its outcome was first marked, optionally
 /// scheduling the next revisit so slow-burn decisions can be tracked over time.
 struct RevisitView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
     let decision: Decision
@@ -219,5 +219,5 @@ struct NextRevisitPicker: View {
         actual: .good,
         followUpDate: Date()
     ))
-    .environmentObject(DecisionStore())
+    .environment(DecisionStore())
 }

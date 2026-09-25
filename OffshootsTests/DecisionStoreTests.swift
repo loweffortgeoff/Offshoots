@@ -33,6 +33,20 @@ struct DecisionStoreTests {
         #expect(reloaded.decisions == decisions)
     }
 
+    @Test func readinessFollowsTheGivenDay() {
+        let calendar = Calendar.current
+        let now = AnalyticsEngineTests.now
+        let laterToday = calendar.date(byAdding: .hour, value: 6, to: calendar.startOfDay(for: now))!
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: now)!
+        let decision = Decision(title: "Due", category: .work, expected: .good, followUpDate: laterToday)
+
+        // Day-granular: due any time on its review day, not before
+        #expect(decision.isReadyForReview(asOf: now))
+        #expect(!decision.isReadyForReview(asOf: calendar.date(byAdding: .day, value: -1, to: now)!))
+        #expect(!Decision(title: "Later", category: .work, expected: .good, followUpDate: tomorrow)
+            .isReadyForReview(asOf: now))
+    }
+
     @Test func unreadableFileIsBackedUpNotLost() throws {
         try Data("not json".utf8).write(to: saveURL)
 

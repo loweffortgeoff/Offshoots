@@ -9,7 +9,7 @@ internal import SwiftUI
 internal import Charts
 
 struct AnalyticsView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
 
     var body: some View {
         NavigationStack {
@@ -265,5 +265,5 @@ struct DecisionTimelineCard: View {
 
 #Preview {
     AnalyticsView()
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }   

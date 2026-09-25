@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct LogDecisionView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isNotesFocused: Bool
@@ -337,5 +337,5 @@ struct OutcomeButton: View {
 
 #Preview {
     LogDecisionView(selectedTab: .constant(.log))
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }

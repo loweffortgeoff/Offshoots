@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct EditDecisionView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isTitleFocused: Bool
 
@@ -220,5 +220,5 @@ struct EditDecisionView: View {
         expected: .good,
         followUpDate: Date().addingTimeInterval(86400 * 7)
     ))
-    .environmentObject(DecisionStore())
+    .environment(DecisionStore())
 }

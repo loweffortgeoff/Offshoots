@@ -16,6 +16,8 @@ internal import SwiftUI
 
 struct DecisionRowView: View {
     let decision: Decision
+    /// Passed in so the row redraws when the store's day moves forward
+    let isReadyForReview: Bool
 
     private var isPending: Bool {
         decision.actual == nil
@@ -26,7 +28,7 @@ struct DecisionRowView: View {
     }
 
     private var secondaryLine: String {
-        if decision.isReadyForReview {
+        if isReadyForReview {
             return "\(categoryText) • Ready to \(isPending ? "review" : "revisit")"
         } else if isPending {
             let dateText = decision.followUpDate.formatted(date: .abbreviated, time: .omitted)
@@ -40,7 +42,7 @@ struct DecisionRowView: View {
 
     /// Brand accent once the review day arrives; neutral sand while waiting
     private var statusColor: Color {
-        decision.isReadyForReview ? .offshootPrimary : .outcomePending
+        isReadyForReview ? .offshootPrimary : .outcomePending
     }
 
     var body: some View {
@@ -68,7 +70,7 @@ struct DecisionRowView: View {
                         .font(.system(size: 18))
                         .opacity(0.4) // Increased visibility slightly
 
-                    Text(decision.isReadyForReview ? "Review" : "Pending")
+                    Text(isReadyForReview ? "Review" : "Pending")
                         .font(.caption2)
                         .fontWeight(.medium)
                         .padding(.horizontal, 8)
@@ -94,7 +96,7 @@ struct DecisionRowView: View {
         .padding(.horizontal, 12)
         .background(
             Group {
-                if isPending || decision.isReadyForReview {
+                if isPending || isReadyForReview {
                     // Subtle tint for items waiting on you
                     statusColor.opacity(0.08)
                 } else {
@@ -106,7 +108,7 @@ struct DecisionRowView: View {
         // Add a subtle border to pending items to make them look like "cards"
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(isPending || decision.isReadyForReview ? statusColor.opacity(0.15) : Color.clear, lineWidth: 1)
+                .stroke(isPending || isReadyForReview ? statusColor.opacity(0.15) : Color.clear, lineWidth: 1)
         )
     }
 }
@@ -119,7 +121,7 @@ struct DecisionRowView: View {
             expected: .good,
             actual: nil,
             followUpDate: Date().addingTimeInterval(86400 * 3)
-        ))
+        ), isReadyForReview: false)
 
         DecisionRowView(decision: Decision(
             title: "Change app icon for Task(ed)",
@@ -127,6 +129,6 @@ struct DecisionRowView: View {
             expected: .good,
             actual: .good,
             followUpDate: Date()
-        ))
+        ), isReadyForReview: false)
     }
 }

@@ -13,11 +13,16 @@
 //
 
 import Foundation
-import Combine
+import Observation
 internal import SwiftUI
 
-final class DecisionStore: ObservableObject {
-    @Published private(set) var decisions: [Decision] = []
+@Observable
+final class DecisionStore {
+    private(set) var decisions: [Decision] = []
+
+    /// The clock that review readiness is measured against. Stored, so views
+    /// that depend on it redraw when `refreshReviewState()` moves it forward
+    private(set) var today = Date()
 
     private let saveURL: URL
     private let queue = DispatchQueue(label: "DecisionStoreQueue", qos: .background)
@@ -152,7 +157,7 @@ final class DecisionStore: ObservableObject {
     /// Review readiness depends on the clock, not just data. Call when the app
     /// returns to the foreground so "Ready to Review" reflects today.
     func refreshReviewState() {
-        objectWillChange.send()
+        today = Date()
     }
 
     // Convenience helpers for views
@@ -164,14 +169,14 @@ final class DecisionStore: ObservableObject {
     /// Reviews and revisits whose day has arrived, most overdue first
     var readyForReviewDecisions: [Decision] {
         decisions
-            .filter(\.isReadyForReview)
+            .filter { $0.isReadyForReview(asOf: today) }
             .sorted { ($0.nextReviewDate ?? .distantPast) < ($1.nextReviewDate ?? .distantPast) }
     }
 
     /// Pending decisions still waiting on their review day, soonest first
     var upcomingDecisions: [Decision] {
         decisions
-            .filter { $0.actual == nil && !$0.isReadyForReview }
+            .filter { $0.actual == nil && !$0.isReadyForReview(asOf: today) }
             .sorted { $0.followUpDate < $1.followUpDate }
     }
 
@@ -181,7 +186,7 @@ final class DecisionStore: ObservableObject {
 
     /// Completed decisions not currently waiting on a revisit
     var historyDecisions: [Decision] {
-        completedDecisions.filter { !$0.isReadyForReview }
+        completedDecisions.filter { !$0.isReadyForReview(asOf: today) }
     }
 
     func decisions(in category: DecisionCategory?) -> [Decision] {

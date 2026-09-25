@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct MarkOutcomeView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
 
     let decision: Decision
@@ -161,5 +161,5 @@ struct MarkOutcomeView: View {
         expected: .good,
         followUpDate: Date()
     ))
-    .environmentObject(DecisionStore())
+    .environment(DecisionStore())
 }

@@ -15,7 +15,7 @@
 internal import SwiftUI
 
 struct DashboardHeaderView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
 
     private var pendingCount: Int {
         store.pendingDecisions.count

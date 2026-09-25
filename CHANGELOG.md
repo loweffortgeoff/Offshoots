@@ -12,6 +12,8 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: all reminder scheduling goes through `DecisionStore`. `update()` reschedules a pending decision's reminder when its review date changes. Settings calls `store.setRemindersEnabled(_:)`. Views no longer call `ReminderManager`.
 - Added: `DecisionStore(saveURL:)` and store tests for save-then-load and for the backup of an unreadable file.
 - Removed: `xcschememanagement.plist` from git (per-user Xcode state; the file stays on disk).
+- Changed: `DecisionStore` is `@Observable` instead of `ObservableObject`. Views read it with `@Environment(DecisionStore.self)`. The store no longer imports Combine.
+- Changed: review readiness is measured against the store's stored `today`, which moves forward when the app becomes active. `Decision.isReadyForReview` is now `isReadyForReview(asOf:)`, and rows get the result as a parameter.
 
 ## Merged to `main` — branch `section-3-insights`
 

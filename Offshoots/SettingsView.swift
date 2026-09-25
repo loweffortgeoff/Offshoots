@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @AppStorage(ReminderManager.enabledKey) private var notificationsEnabled = true
     @State private var showTipJar = false
 
@@ -109,5 +109,5 @@ struct SettingsView: View {
 
 #Preview {
     SettingsView()
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }

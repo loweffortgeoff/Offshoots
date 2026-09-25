@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct RecentDecisionsSection: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
 
     var body: some View {
@@ -46,7 +46,7 @@ struct RecentDecisionsSection: View {
                         NavigationLink {
                             DecisionDetailView(decision: decision)
                         } label: {
-                            DecisionRowView(decision: decision)
+                            DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
                         }
                         .buttonStyle(.plain)
                     }
@@ -81,5 +81,5 @@ struct EmptyRecentDecisionsView: View {
 
 #Preview {
     RecentDecisionsSection(selectedTab: .constant(.dashboard))
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }

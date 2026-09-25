@@ -15,7 +15,7 @@
 internal import SwiftUI
 
 struct DecisionDetailView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     private let decisionID: UUID
     private let snapshot: Decision
@@ -313,7 +313,7 @@ struct DecisionDetailView: View {
                             }
                         } else {
                             // Revisit is always available; emphasized once it's due
-                            let isDue = decision.isReadyForReview
+                            let isDue = decision.isReadyForReview(asOf: store.today)
                             Button {
                                 showRevisitSheet = true
                             } label: {

@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct DashboardView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
 
     var body: some View {
@@ -57,5 +57,5 @@ struct DashboardView: View {
 
 #Preview {
     DashboardView(selectedTab: .constant(.dashboard))
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }

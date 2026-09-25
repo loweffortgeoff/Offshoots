@@ -8,7 +8,7 @@
 internal import SwiftUI
 
 struct QuickStatsSection: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {

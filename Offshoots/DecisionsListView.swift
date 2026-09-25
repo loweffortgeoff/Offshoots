@@ -22,7 +22,7 @@
 internal import SwiftUI
 
 struct DecisionsListView: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
     @Binding var path: NavigationPath
     @State private var decisionToDelete: Decision?
     @State private var showDeleteAlert = false
@@ -141,7 +141,7 @@ struct DecisionsListView: View {
                 VStack(spacing: 12) {
                     ForEach(decisions) { decision in
                         NavigationLink(value: decision) {
-                            DecisionRowView(decision: decision)
+                            DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
                         }
                         .buttonStyle(.plain)
                         .onLongPressGesture {
@@ -183,6 +183,6 @@ struct DecisionsListView: View {
 
 #Preview {
     DecisionsListView(path: .constant(NavigationPath()))
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }
 

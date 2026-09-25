@@ -8,7 +8,7 @@ internal import SwiftUI
 /// Dashboard callout for pending decisions whose review day has arrived.
 /// Renders nothing when there's nothing to review.
 struct ReadyToReviewSection: View {
-    @EnvironmentObject var store: DecisionStore
+    @Environment(DecisionStore.self) private var store
 
     var body: some View {
         let ready = store.readyForReviewDecisions
@@ -38,7 +38,7 @@ struct ReadyToReviewSection: View {
                         NavigationLink {
                             DecisionDetailView(decision: decision)
                         } label: {
-                            DecisionRowView(decision: decision)
+                            DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
                         }
                         .buttonStyle(.plain)
                     }
@@ -50,5 +50,5 @@ struct ReadyToReviewSection: View {
 
 #Preview {
     ReadyToReviewSection()
-        .environmentObject(DecisionStore())
+        .environment(DecisionStore())
 }

@@ -62,3 +62,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Keep `decisions.json` as the store. Do not move to SwiftData. Do not add a schema version wrapper until a model change needs one that the tolerant decoder cannot handle. The wrapper must still read plain arrays.
 **Why:** The data is one small flat array. The decoder already handles new fields with defaults, and the store backs up a file it cannot read. `scripts/seed.sh`, the fixtures and the simulator steps all depend on the JSON file. CloudKit sync is not on the roadmap, and that is the main thing SwiftData would give.
 **Alternative considered:** SwiftData. It adds migration risk and breaks the seed workflow for no user-facing gain. Reconsider if sync is planned.
+
+## 2026-09-25 (Review readiness uses the store's stored day)
+**Decision:** `DecisionStore` keeps a stored `today`. `refreshReviewState()` sets it when the app becomes active. Readiness is `isReadyForReview(asOf:)`, and callers pass `store.today`. Rows take the result as a parameter.
+**Why:** `@Observable` tracks stored properties, not `Date()`. The old `objectWillChange.send()` trick does not exist on `@Observable`. A stored value makes the dependency visible, and rows redraw when it changes.
+**Alternative considered:** A timer that ticks at midnight. It adds work for a case the foreground refresh already covers well enough.
