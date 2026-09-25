@@ -189,6 +189,12 @@ extension Decision {
         actual == nil ? followUpDate : secondaryFollowUpDate
     }
 
+    /// When the outcome was first marked. Decisions resolved before
+    /// `resolvedAt` existed fall back to their review date
+    var resolvedDate: Date? {
+        actual == nil ? nil : (resolvedAt ?? followUpDate)
+    }
+
     /// Its review or revisit day has arrived (dates are day-granular in the UI)
     var isReadyForReview: Bool {
         guard let nextReviewDate else { return false }

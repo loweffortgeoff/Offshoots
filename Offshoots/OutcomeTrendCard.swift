@@ -30,15 +30,14 @@ struct OutcomeTrendCard: View {
             guard let endOfWeek = calendar.date(byAdding: .day, value: 7, to: startOfWeek) else { continue }
 
             let weekDecisions = decisions.filter { decision in
-                decision.actual != nil &&
-                decision.createdAt >= startOfWeek &&
-                decision.createdAt < endOfWeek
+                guard let resolvedDate = decision.resolvedDate else { return false }
+                return resolvedDate >= startOfWeek && resolvedDate < endOfWeek
             }
 
             // Group into Positive (VeryGood, Good), Neutral, Negative (Bad, VeryBad)
-            let positiveCount = weekDecisions.filter { $0.actual?.isPositive == true }.count
-            let neutralCount = weekDecisions.filter { $0.actual == .neutral }.count
-            let negativeCount = weekDecisions.filter { $0.actual?.isNegative == true }.count
+            let positiveCount = weekDecisions.filter { $0.currentOutcome?.isPositive == true }.count
+            let neutralCount = weekDecisions.filter { $0.currentOutcome == .neutral }.count
+            let negativeCount = weekDecisions.filter { $0.currentOutcome?.isNegative == true }.count
 
             result.append(WeekData(weekStart: startOfWeek, category: "Positive", count: positiveCount))
             result.append(WeekData(weekStart: startOfWeek, category: "Neutral", count: neutralCount))

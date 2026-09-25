@@ -14,7 +14,7 @@ struct OutcomeDistributionCard: View {
     private var outcomeData: [(outcome: DecisionOutcome, count: Int)] {
         let completed = decisions.filter { $0.actual != nil }
         return DecisionOutcome.allCases.compactMap { outcome in
-            let count = completed.filter { $0.actual == outcome }.count
+            let count = completed.filter { $0.currentOutcome == outcome }.count
             return count > 0 ? (outcome: outcome, count: count) : nil
         }
     }

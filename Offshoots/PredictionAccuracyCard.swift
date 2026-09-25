@@ -11,18 +11,14 @@ internal import Charts
 struct PredictionAccuracyCard: View {
     let decisions: [Decision]
 
-    private var completed: [Decision] {
-        decisions.filter { $0.actual != nil }
-    }
-
-    private var accurate: Int {
-        completed.filter { $0.expected == $0.actual }.count
+    private var breakdown: AccuracyBreakdown {
+        AnalyticsEngine.accuracyBreakdown(from: decisions)
     }
 
     private var accuracyData: [(label: String, count: Int, color: Color)] {
         [
-            (label: "Correct", count: accurate, color: .outcomeGood),
-            (label: "Incorrect", count: completed.count - accurate, color: .outcomeBad)
+            (label: "Correct", count: breakdown.correct, color: .outcomeGood),
+            (label: "Incorrect", count: breakdown.incorrect, color: .outcomeBad)
         ].filter { $0.count > 0 }
     }
 
@@ -32,13 +28,11 @@ struct PredictionAccuracyCard: View {
                 .font(.headline)
                 .foregroundStyle(Color.offshootPrimary)
 
-            if completed.isEmpty {
+            if breakdown.total == 0 {
                 Text("No completed decisions to analyze")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {
-                let accuracy = Double(accurate) / Double(completed.count)
-
                 VStack(spacing: 16) {
                     ZStack {
                         Chart(accuracyData, id: \.label) { item in
@@ -53,7 +47,7 @@ struct PredictionAccuracyCard: View {
                         .frame(width: 140, height: 140)
 
                         VStack(spacing: 4) {
-                            Text("\(Int(accuracy * 100))%")
+                            Text("\(breakdown.percent)%")
                                 .font(.system(size: 32, weight: .bold))
                                 .foregroundStyle(Color.offshootPrimary)
 
@@ -69,7 +63,7 @@ struct PredictionAccuracyCard: View {
                             Text("Correct")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text("\(accurate)")
+                            Text("\(breakdown.correct)")
                                 .font(.title3)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color.outcomeGood)
@@ -80,7 +74,7 @@ struct PredictionAccuracyCard: View {
                             Text("Incorrect")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Text("\(completed.count - accurate)")
+                            Text("\(breakdown.incorrect)")
                                 .font(.title3)
                                 .fontWeight(.semibold)
                                 .foregroundStyle(Color.outcomeBad)

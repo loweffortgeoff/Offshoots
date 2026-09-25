@@ -73,7 +73,7 @@ struct QuickStatsSection: View {
                         Text("Trend")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        Text(trend)
+                        Text(trend.label)
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(trendColor(for: trend))
@@ -84,19 +84,20 @@ struct QuickStatsSection: View {
         }
     }
 
-    private func trendIcon(for trend: String) -> String {
+    private func trendIcon(for trend: QualityTrend) -> String {
         switch trend {
-        case "Improving": return "arrow.up.circle.fill"
-        case "Declining": return "arrow.down.circle.fill"
-        default: return "minus.circle.fill"
+        case .improving: return "arrow.up.circle.fill"
+        case .declining: return "arrow.down.circle.fill"
+        case .stable: return "minus.circle.fill"
+        case .tooEarly: return "hourglass.circle.fill"
         }
     }
 
-    private func trendColor(for trend: String) -> Color {
+    private func trendColor(for trend: QualityTrend) -> Color {
         switch trend {
-        case "Improving": return .outcomeGood
-        case "Declining": return .outcomeBad
-        default: return .outcomeNeutral
+        case .improving: return .outcomeGood
+        case .declining: return .outcomeBad
+        case .stable, .tooEarly: return .outcomeNeutral
         }
     }
 }
