@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## In progress — branch `tip-jar-native`
+## Merged to `main` — branch `tip-jar-native`
 
 ### 2026-09-25 — Native Tip Jar (carried over from `dev/offshoots-development`)
 - Changed: the Tip Jar opens as a screen pushed from Settings, not a sheet. It is a plain form with one row per tip and its price, a loading row, and a "Tip Jar Unavailable" state with Try Again. The green gradient background is gone.

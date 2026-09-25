@@ -14,6 +14,7 @@
   - Unused code: `SectionHeader.swift` is never used, and `DecisionsListView` has two unused helpers, `deletePending(at:)` and `deleteCompleted(at:)`. Delete them after a check that nothing calls them.
 
 ## Done
+- [x] Native Tip Jar carried over from `dev/offshoots-development` and merged; that branch deleted — 2026-09-25
 - [x] Section 5 code review fixes (splash icon, dark Settings rows, Delete All wording) — 2026-09-25
 - [x] Merge `section-5-ui` to `main` (fast-forward) — 2026-09-25
 - [x] Section 5, chunk 6: App Theme picker, first-launch splash, Revisit pill (open question closed: add the pill) — 2026-09-25
