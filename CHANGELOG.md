@@ -34,6 +34,12 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: decorative header and empty-state icons are hidden from VoiceOver.
 - Changed: `OutcomePickerView` and `OutcomeButton` have their own file.
 
+### 2026-09-25 — Audit section 5, UI: chunk 4, sheet layout
+- Fixed: in Revisit and Mark Outcome, a tap outside a control or the keyboard's Done button closes the keyboard.
+- Changed: the Save button in Revisit and Mark Outcome is pinned at the bottom. It stays above the keyboard and no longer sits at the screen edge when a follow-up is on.
+- Fixed: on Log and Edit, a tap outside a text field did not close the keyboard. In Edit, Done did nothing while the notes field was focused.
+- Fixed: every card on the decision detail screen takes the full width.
+
 ## Merged to `main` — branch `section-4-architecture`
 
 ### 2026-09-25 — Audit section 4, Architecture
