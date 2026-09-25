@@ -16,7 +16,7 @@ enum AppTab: Hashable {
 }
 
 struct ContentView: View {
-    @State private var store = DecisionStore()
+    @Environment(DecisionStore.self) private var store
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var notificationDelegate = NotificationDelegate.shared
     @State private var selectedTab: AppTab = .dashboard
@@ -55,7 +55,6 @@ struct ContentView: View {
                 }
         }
         .tint(Color.offshootPrimary)
-        .environment(store)
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 store.refreshReviewState()
@@ -83,4 +82,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(DecisionStore())
 }
