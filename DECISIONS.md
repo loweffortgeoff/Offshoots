@@ -57,3 +57,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Why:** The score was never shown, and the Accuracy tile and the 30-day trend already cover it. A stakes-weighted accuracy is a feature nobody asked for, so it waits for a real need.
 **Alternative considered:** Show the score as another tile. It would repeat Accuracy with a different window.
 
+
+## 2026-09-25 (Keep JSON storage; no schema version yet)
+**Decision:** Keep `decisions.json` as the store. Do not move to SwiftData. Do not add a schema version wrapper until a model change needs one that the tolerant decoder cannot handle. The wrapper must still read plain arrays.
+**Why:** The data is one small flat array. The decoder already handles new fields with defaults, and the store backs up a file it cannot read. `scripts/seed.sh`, the fixtures and the simulator steps all depend on the JSON file. CloudKit sync is not on the roadmap, and that is the main thing SwiftData would give.
+**Alternative considered:** SwiftData. It adds migration risk and breaks the seed workflow for no user-facing gain. Reconsider if sync is planned.
