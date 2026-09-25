@@ -1,16 +1,13 @@
 # TODO
 
 ## Next
-- [ ] Section 4, Architecture — start in a new session (see Backlog).
+- [ ] Section 4, Architecture — in progress on `section-4-architecture` (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 4, Architecture.**
   - Move the store to `@Observable`/`@MainActor`.
   - Route all reminder scheduling through the store. Edit still calls `ReminderManager` directly.
   - Decide between JSON with schema versioning and SwiftData.
-  - Add tests, starting with `AnalyticsEngine`.
-  - `SWIFT_VERSION` is 5.0, but the README says Swift 6.
-  - There is no test target yet (checked with `xcodebuild -list`, 2026-09-25). Add one.
 - [ ] **Section 5, UI.**
   - Matcha `#A4C639` text has low contrast (about 2:1).
   - The dark palette is defined but not used.
@@ -37,6 +34,8 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Section 4, chunk 1: Swift 6 language mode; JSON storage decision — 2026-09-25
+- [x] Section 4, chunk 2: `OffshootsTests` target and `AnalyticsEngine` tests — 2026-09-25
 - [x] Audit section 1: bug fixes — 2026-09-23
 - [x] Audit section 2: core loop (Ready to Review, notes, in-context permission, revisits) — 2026-09-23
 - [x] Testing gate for sections 1–2 on the simulator (checks 1–5 pass) — 2026-09-24

@@ -7,6 +7,8 @@ In-flight changes from coding sessions. The release pass turns these into releas
 ### 2026-09-25 — Audit section 4, Architecture
 - Changed: the app builds in Swift 6 language mode (`SWIFT_VERSION` 5.0 to 6.0). No code changes were needed.
 - Decided: keep JSON storage and add no schema version yet (see DECISIONS).
+- Added: an `OffshootsTests` target (Swift Testing, iOS 18.6) with `AnalyticsEngine` tests built on the Insights fixtures.
+- Added: a shared `Offshoots` scheme with a Test action.
 
 ## Merged to `main` — branch `section-3-insights`
 

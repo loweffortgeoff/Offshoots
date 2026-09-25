@@ -6,14 +6,25 @@ Project notes for Offshoots. General guidelines live in `../CLAUDE.md`.
 
 ## Build Verification
 
-One scheme, one target: `Offshoots`. There is no test target, so testing means
-building and then checking behavior on the simulator.
+One shared scheme, `Offshoots`. Targets: `Offshoots` (the app) and
+`OffshootsTests` (Swift Testing, hosted by the app). Unit tests cover logic.
+Check UI behavior on the simulator.
 
 ```
 xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
 ```
 
 Leave the output verbose. Do not add `-quiet`.
+
+## Tests
+
+```
+xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
+```
+
+`AnalyticsEngineTests` reads `docs/fixtures/*.json` directly, and pins "now"
+to 2026-09-27. If you change a fixture, update the expected values in the
+tests too.
 
 Bundle ID: `com.geoffrey.silva.Offshoots`.
 
