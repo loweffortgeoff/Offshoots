@@ -1,0 +1,106 @@
+//
+//  OutcomeTrendCard.swift
+//  Offshoots
+//
+//  Created by Geoffrey Silva on 12/8/25.
+//
+
+internal import SwiftUI
+internal import Charts
+
+struct OutcomeTrendCard: View {
+    let decisions: [Decision]
+
+    private struct WeekData: Identifiable {
+        let id = UUID()
+        let weekStart: Date
+        let category: String
+        let count: Int
+    }
+
+    private var weeklyData: [WeekData] {
+        let calendar = Calendar.current
+        let now = Date()
+        var result: [WeekData] = []
+
+        // Get the last 8 weeks
+        for weekOffset in (0..<8).reversed() {
+            guard let weekStart = calendar.date(byAdding: .weekOfYear, value: -weekOffset, to: now) else { continue }
+            let startOfWeek = calendar.startOfDay(for: calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: weekStart))!)
+            guard let endOfWeek = calendar.date(byAdding: .day, value: 7, to: startOfWeek) else { continue }
+
+            let weekDecisions = decisions.filter { decision in
+                decision.actual != nil &&
+                decision.createdAt >= startOfWeek &&
+                decision.createdAt < endOfWeek
+            }
+
+            // Group into Positive (VeryGood, Good), Neutral, Negative (Bad, VeryBad)
+            let positiveCount = weekDecisions.filter { $0.actual?.isPositive == true }.count
+            let neutralCount = weekDecisions.filter { $0.actual == .neutral }.count
+            let negativeCount = weekDecisions.filter { $0.actual?.isNegative == true }.count
+
+            result.append(WeekData(weekStart: startOfWeek, category: "Positive", count: positiveCount))
+            result.append(WeekData(weekStart: startOfWeek, category: "Neutral", count: neutralCount))
+            result.append(WeekData(weekStart: startOfWeek, category: "Negative", count: negativeCount))
+        }
+
+        return result
+    }
+
+    private var hasData: Bool {
+        weeklyData.contains { $0.count > 0 }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                Label("Outcome Trends", systemImage: "chart.bar.fill")
+                    .font(.headline)
+                    .foregroundStyle(Color.offshootPrimary)
+                Spacer()
+                Text("Last 8 weeks")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            if !hasData {
+                Text("No completed decisions to show trends")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            } else {
+                Chart(weeklyData) { item in
+                    BarMark(
+                        x: .value("Week", item.weekStart, unit: .weekOfYear),
+                        y: .value("Count", item.count)
+                    )
+                    .foregroundStyle(by: .value("Category", item.category))
+                    .cornerRadius(2)
+                }
+                .chartForegroundStyleScale([
+                    "Positive": Color.outcomeGood,
+                    "Neutral": Color.outcomeNeutral,
+                    "Negative": Color.outcomeBad
+                ])
+                .chartXAxis {
+                    AxisMarks(values: .stride(by: .weekOfYear)) { _ in
+                        AxisGridLine()
+                        AxisValueLabel(format: .dateTime.month(.abbreviated).day())
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { _ in
+                        AxisGridLine()
+                        AxisValueLabel()
+                    }
+                }
+                .chartLegend(position: .bottom, spacing: 16)
+                .frame(height: 200)
+            }
+        }
+        .padding(20)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+    }
+}
