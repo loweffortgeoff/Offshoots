@@ -10,6 +10,10 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Fixed: the trend shows "Too early" when there is too little data, instead of "Stable". It now compares 30-day windows.
 - Fixed: Top Category shows "Tied" on a tie, instead of a random pick.
 - Changed: the Prediction Accuracy card gets its numbers from `AnalyticsEngine`, and its percentage now rounds the same way as the Overview tile.
+- Added: the Prediction Accuracy card shows near misses (Close, one step off) apart from misses by two or more.
+- Added: an Optimism card on Insights. It says whether your predictions run better or worse than the first result.
+- Removed: the unused Decision Quality Score function and its README line.
+- Added: `scripts/seed.sh` and Insights fixtures in `docs/fixtures/` for simulator checks.
 - Moved four Insights cards out of `AnalyticsView.swift` into their own files (no behavior change).
 
 ## Merged to `main` — branch `claude/sleepy-newton-ru1q7c`

@@ -1,14 +1,9 @@
 # TODO
 
 ## Next
-- [ ] Section 3, chunk 3: add a "Close" (off by one step) part to the accuracy donut, add the optimism-bias card, remove `decisionQualityScore()` and its README line, and add a note that the stakes weights stay unused.
+- [ ] Merge `section-3-insights` to `main` after Geoff reviews chunk 3.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
-- [ ] **Section 3, Insights correctness.**
-  - Accuracy is exact-match only on a 5-point scale.
-  - `numericValue` and the stakes weights are not used.
-  - There is no optimism-bias metric, but the README promises one.
-  - `decisionQualityScore()` is never shown.
 - [ ] **Section 4, Architecture.**
   - Move the store to `@Observable`/`@MainActor`.
   - Route all reminder scheduling through the store. Edit still calls `ReminderManager` directly.
@@ -50,4 +45,6 @@
 - [x] Merge `claude/sleepy-newton-ru1q7c` to `main` — 2026-09-25
 - [x] Section 3 decision: outcome stats use the latest rating and accuracy uses the first — 2026-09-25
 - [x] Section 3, chunk 2: resolved-date time windows, "Too early" trend, "Tied" top category — 2026-09-25
+- [x] Section 3, chunk 3: Close accuracy, Optimism card, quality score removed, stakes weights left unused — 2026-09-25
+- [x] Seed script `scripts/seed.sh` — 2026-09-25
 - [x] Start CHANGELOG, DECISIONS, TODO — 2026-09-24

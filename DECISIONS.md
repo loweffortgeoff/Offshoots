@@ -42,3 +42,18 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Why:** The old code picked from dictionary order, so the tile could change between launches.
 **Alternative considered:** A fixed tie-break order. It is stable, but it states a winner that does not exist.
 
+## 2026-09-25 (Accuracy shows near misses apart; the headline stays exact)
+**Decision:** The accuracy donut has three parts: Correct (exact match), Close (one step off) and Missed (two or more). The percentage counts exact matches only.
+**Why:** On a 5-point scale, exact-only makes a Good/Great miss look the same as a Great/Very Bad miss. The headline stays strict so it does not rise just because the scale is wide.
+**Alternative considered:** Count one step off as accurate. It inflates the number and changes what "Accuracy" means.
+
+## 2026-09-25 (Optimism bias card)
+**Decision:** Insights shows the average of expected minus first rating, in steps. At a quarter step or more either way it says Optimistic or Pessimistic, otherwise Well calibrated. It needs 3 marked decisions.
+**Why:** The README promises to show where you are optimistic. This is the simplest measure of that, and it uses `numericValue`.
+**Alternative considered:** Optimism per category. It needs more data per category than most users will have. Revisit later.
+
+## 2026-09-25 (Remove decisionQualityScore; stakes weights stay unused)
+**Decision:** Remove `AnalyticsEngine.decisionQualityScore()` and its README line. Leave `DecisionStakes.weight` in place but unused.
+**Why:** The score was never shown, and the Accuracy tile and the 30-day trend already cover it. A stakes-weighted accuracy is a feature nobody asked for, so it waits for a real need.
+**Alternative considered:** Show the score as another tile. It would repeat Accuracy with a different window.
+

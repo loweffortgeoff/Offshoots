@@ -35,8 +35,8 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   Run it with no argument to list fixtures. `SIM=<UDID>` picks another
   simulator. The app must be installed there first.
 - **Insights fixtures:** `docs/fixtures/insights-seed.json` gives Good 50%,
-  Top Category Tied, Trend Improving and Accuracy 67% (4 correct, 2
-  incorrect) when today is 2026-09-25 to 2026-09-30. The trend windows move
+  Top Category Tied, Trend Improving, Accuracy 67% (4 correct, 1 close,
+  1 missed) and Optimistic (0.5 steps, 6 decisions) when today is 2026-09-25 to 2026-09-30. The trend windows move
   with today's date, so update the dates later. `insights-seed-too-early.json`
   gives Trend "Too early".
 - **Test pushes need permission first.** `xcrun simctl push` fails with "Source
