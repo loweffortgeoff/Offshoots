@@ -9,7 +9,6 @@
   - There is no export or delete-all.
   - The 2-second splash shows on every launch.
   - Delete is only in the long-press menu.
-- [ ] **Section 5, found by the 2026-09-24 simulator run.**
 - [ ] **Section 5, open question.** A revisit-due row shows "Ready to revisit" but no "Review" pill. Keep it that way (the recommendation) or add the pill?
 - [ ] **Section 6, Housekeeping.**
   - File header comments are duplicated.
@@ -17,6 +16,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Section 5, all nine findings from the 2026-09-24 simulator run (chunks 1–4) — 2026-09-25
 - [x] Section 5, chunk 4: sheet layout — keyboard closes on outside tap and Done (Revisit, Mark Outcome, Log, Edit); Save pinned above the keyboard; detail cards full width — 2026-09-25
 - [x] Section 5, chunk 3: outcome picker and VoiceOver (labels, selected state, 60 × 68 pt targets, rows at accessibility sizes, decorative icons hidden) — 2026-09-25
 - [x] Section 5, chunk 2b: Dynamic Type layouts — Insights cards, detail metadata and chart text work at accessibility sizes — 2026-09-25
