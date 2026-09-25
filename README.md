@@ -34,7 +34,7 @@ Offshoots helps you become a better decision maker. Log your decisions, predict 
 - **Log Decision** — Quick entry form
 - **Decisions List** — Browse all decisions
 - **Insights** — Full analytics dashboard
-- **Settings** — Notifications, data overview, tip jar
+- **Settings** — Notifications, data overview, JSON export, delete all, app theme (System, Light, Dark), tip jar
 
 ## Tech Stack
 
