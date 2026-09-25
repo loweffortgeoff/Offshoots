@@ -30,6 +30,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   Terminate the app before you write the file, because the store saves on
   every change. Keys that are missing (`stakes`, `revisits`, `resolvedAt`)
   decode to their defaults.
+- **Seed script:** `scripts/seed.sh <fixture>` closes the app, copies
+  `docs/fixtures/<fixture>.json` in as `decisions.json` and relaunches.
+  Run it with no argument to list fixtures. `SIM=<UDID>` picks another
+  simulator. The app must be installed there first.
 - **Insights fixtures:** `docs/fixtures/insights-seed.json` gives Good 50%,
   Top Category Tied, Trend Improving and Accuracy 67% (4 correct, 2
   incorrect) when today is 2026-09-25 to 2026-09-30. The trend windows move
