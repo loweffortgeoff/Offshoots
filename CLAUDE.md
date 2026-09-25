@@ -30,6 +30,11 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   Terminate the app before you write the file, because the store saves on
   every change. Keys that are missing (`stakes`, `revisits`, `resolvedAt`)
   decode to their defaults.
+- **Insights fixtures:** `docs/fixtures/insights-seed.json` gives Good 50%,
+  Top Category Tied, Trend Improving and Accuracy 67% (4 correct, 2
+  incorrect) when today is 2026-09-25 to 2026-09-30. The trend windows move
+  with today's date, so update the dates later. `insights-seed-too-early.json`
+  gives Trend "Too early".
 - **Test pushes need permission first.** `xcrun simctl push` fails with "Source
   is not authorized" until someone taps Allow in the app. The app asks the
   first time it schedules a reminder. `simctl privacy grant notifications`

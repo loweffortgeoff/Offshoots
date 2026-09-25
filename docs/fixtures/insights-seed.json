@@ -1,0 +1,89 @@
+[
+ {
+  "id": "853d6fbc-5606-45ac-9d9e-3751c9c55121",
+  "title": "R1 correct recent",
+  "category": "work",
+  "stakes": "medium",
+  "expected": "good",
+  "createdAt": "2026-06-01T12:00:00Z",
+  "followUpDate": "2026-09-19T12:00:00Z",
+  "revisits": [],
+  "actual": "good",
+  "resolvedAt": "2026-09-20T12:00:00Z"
+ },
+ {
+  "id": "5c39e0e3-a182-408a-9807-d4097209f574",
+  "title": "R2 correct recent",
+  "category": "work",
+  "stakes": "medium",
+  "expected": "very good",
+  "createdAt": "2026-06-01T12:00:00Z",
+  "followUpDate": "2026-09-09T12:00:00Z",
+  "revisits": [],
+  "actual": "very good",
+  "resolvedAt": "2026-09-10T12:00:00Z"
+ },
+ {
+  "id": "09995921-8ff2-47df-9aea-4d883917f162",
+  "title": "R3 bad then revisit good",
+  "category": "money",
+  "stakes": "medium",
+  "expected": "bad",
+  "createdAt": "2026-06-01T12:00:00Z",
+  "followUpDate": "2026-08-31T12:00:00Z",
+  "revisits": [
+   {
+    "id": "cec1d52d-eb79-42c4-b62f-f77b39302fc9",
+    "date": "2026-09-15T12:00:00Z",
+    "outcome": "good"
+   }
+  ],
+  "actual": "bad",
+  "resolvedAt": "2026-09-01T12:00:00Z"
+ },
+ {
+  "id": "570ff462-74ac-4712-b05b-60290ed06375",
+  "title": "P1 miss previous",
+  "category": "money",
+  "stakes": "medium",
+  "expected": "good",
+  "createdAt": "2026-06-01T12:00:00Z",
+  "followUpDate": "2026-08-19T12:00:00Z",
+  "revisits": [],
+  "actual": "bad",
+  "resolvedAt": "2026-08-20T12:00:00Z"
+ },
+ {
+  "id": "43d00a4e-1faa-47d7-82a6-697355ffc59a",
+  "title": "P2 miss previous",
+  "category": "money",
+  "stakes": "medium",
+  "expected": "good",
+  "createdAt": "2026-06-01T12:00:00Z",
+  "followUpDate": "2026-08-09T12:00:00Z",
+  "revisits": [],
+  "actual": "neutral",
+  "resolvedAt": "2026-08-10T12:00:00Z"
+ },
+ {
+  "id": "db295b22-cea2-4843-b37d-03ef0ec8e729",
+  "title": "P3 legacy no resolvedAt",
+  "category": "work",
+  "stakes": "medium",
+  "expected": "neutral",
+  "createdAt": "2026-06-01T12:00:00Z",
+  "followUpDate": "2026-08-05T12:00:00Z",
+  "revisits": [],
+  "actual": "neutral"
+ },
+ {
+  "id": "7b9c37ae-d9a6-4d73-a130-b20e8dffa160",
+  "title": "Pending home",
+  "category": "home",
+  "stakes": "medium",
+  "expected": "good",
+  "createdAt": "2026-09-20T12:00:00Z",
+  "followUpDate": "2026-10-10T12:00:00Z",
+  "revisits": []
+ }
+]
