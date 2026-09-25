@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## In progress — branch `section-4-architecture`
+## Merged to `main` — branch `section-4-architecture`
 
 ### 2026-09-25 — Audit section 4, Architecture
 - Changed: the app builds in Swift 6 language mode (`SWIFT_VERSION` 5.0 to 6.0). No code changes were needed.

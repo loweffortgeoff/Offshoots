@@ -1,8 +1,7 @@
 # TODO
 
 ## Next
-- [ ] Review and merge `section-4-architecture` to `main`.
-- [ ] Section 5, UI — start in a new session (see Backlog).
+- [ ] Section 5, UI — in progress on `section-5-ui` (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 5, UI.**
@@ -31,6 +30,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Merge `section-4-architecture` to `main` (fast-forward) — 2026-09-25
 - [x] Unit tests pass on the iPhone 17 Pro (15 of 15, after fixtures moved into the test bundle) — 2026-09-25
 - [x] Section 4 code review fixes (store created once, title reschedules reminder, test target hygiene) — 2026-09-25
 - [x] Section 4, chunk 1: Swift 6 language mode; JSON storage decision — 2026-09-25

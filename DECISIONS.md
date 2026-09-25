@@ -66,3 +66,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** `DecisionStore` keeps a stored `today`. `refreshReviewState()` sets it when the app becomes active. Readiness is `isReadyForReview(asOf:)`, and callers pass `store.today`. Rows take the result as a parameter.
 **Why:** `@Observable` tracks stored properties, not `Date()`. The old `objectWillChange.send()` trick does not exist on `@Observable`. A stored value makes the dependency visible, and rows redraw when it changes.
 **Alternative considered:** A timer that ticks at midnight. It adds work for a case the foreground refresh already covers well enough.
+
+## 2026-09-25 (Section 5 UI decisions)
+**Decision:** The accent is an adaptive asset: a darker olive in light mode for contrast, Matcha `#A4C639` in dark mode. Dark mode uses the Soil and Loam colors for background and cards; light mode uses system colors. Category chart bars all use the accent. Rows get a context menu (Edit, Delete) in place of the hidden long press. Settings gets JSON export through `ShareLink` and Delete All with confirmation. "App Theme" becomes a System/Light/Dark picker; the "App Icon" row goes. The splash shows on first launch only. Revisit-due rows get a "Revisit" pill.
+**Why:** Matcha text is about 2:1 on white (fails WCAG AA). Outcome colors already mean good and bad, so they should not also mean categories. Swipe actions outside `List` need iOS 27, and the app targets iOS 18.6. Every row in the Ready section should have the same shape.
+**Alternative considered:** Delete the unused dark palette; keep a shorter splash on every launch; keep revisit rows without a pill.
