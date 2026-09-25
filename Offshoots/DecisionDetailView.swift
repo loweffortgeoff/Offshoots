@@ -17,6 +17,8 @@ internal import SwiftUI
 struct DecisionDetailView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 56
+    @ScaledMetric(relativeTo: .largeTitle) private var outcomeIconSize: CGFloat = 40
     private let decisionID: UUID
     private let snapshot: Decision
     @State private var showDeleteAlert = false
@@ -81,7 +83,7 @@ struct DecisionDetailView: View {
                         )
 
                         Image(systemName: heroIcon)
-                            .font(.system(size: 56))
+                            .font(.system(size: heroIconSize))
                             .foregroundStyle(heroIconColor.opacity(0.4))
                     }
                     .frame(height: 140)
@@ -110,7 +112,7 @@ struct DecisionDetailView: View {
                                 if let actual = decision.currentOutcome {
                                     HStack(spacing: 6) {
                                         OutcomeIcon(outcome: actual)
-                                            .font(.system(size: 18))
+                                            .font(.body)
                                         Text(actual.shortLabel)
                                             .font(.subheadline)
                                             .fontWeight(.semibold)
@@ -123,7 +125,7 @@ struct DecisionDetailView: View {
                                 } else {
                                     HStack(spacing: 6) {
                                         Image(systemName: "hourglass")
-                                            .font(.system(size: 16))
+                                            .font(.callout)
                                         Text("Pending")
                                             .font(.subheadline)
                                             .fontWeight(.semibold)
@@ -167,7 +169,7 @@ struct DecisionDetailView: View {
 
                             HStack(spacing: 16) {
                                 OutcomeIcon(outcome: decision.expected)
-                                    .font(.system(size: 40))
+                                    .font(.system(size: outcomeIconSize))
 
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(decision.expected.shortLabel)
@@ -195,7 +197,7 @@ struct DecisionDetailView: View {
 
                                 HStack(spacing: 16) {
                                     OutcomeIcon(outcome: actual)
-                                        .font(.system(size: 40))
+                                        .font(.system(size: outcomeIconSize))
 
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(actual.shortLabel)
@@ -393,7 +395,7 @@ private struct RevisitHistoryCard: View {
                     HStack(spacing: 8) {
                         if let previous = entry.previous, previous != entry.revisit.outcome {
                             OutcomeIcon(outcome: previous)
-                                .font(.system(size: 16))
+                                .font(.callout)
                                 .opacity(0.4)
                             Image(systemName: "arrow.right")
                                 .font(.caption)
@@ -401,7 +403,7 @@ private struct RevisitHistoryCard: View {
                         }
 
                         OutcomeIcon(outcome: entry.revisit.outcome)
-                            .font(.system(size: 18))
+                            .font(.body)
 
                         Text(entry.revisit.outcome.shortLabel)
                             .font(.subheadline)

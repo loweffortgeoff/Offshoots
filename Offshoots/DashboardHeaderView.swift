@@ -16,6 +16,7 @@ internal import SwiftUI
 
 struct DashboardHeaderView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var pendingCount: Int {
         store.pendingDecisions.count
@@ -29,11 +30,26 @@ struct DashboardHeaderView: View {
         store.decisions.count
     }
 
+    /// Side by side normally; stacked at accessibility sizes so labels never break mid-word.
+    private var statsLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 20))
+    }
+
+    @ViewBuilder
+    private var divider: some View {
+        if !dynamicTypeSize.isAccessibilitySize {
+            Divider()
+                .frame(height: 40)
+        }
+    }
+
     var body: some View {
         VStack(spacing: 16) {
             HStack {
                 Image(systemName: "leaf.circle.fill")
-                    .font(.system(size: 24))
+                    .font(.title2)
                     .foregroundStyle(Color.offshootPrimary)
 
                 Text("Your Decisions")
@@ -43,45 +59,12 @@ struct DashboardHeaderView: View {
                 Spacer()
             }
 
-            HStack(spacing: 20) {
-                // Pending
-                VStack(spacing: 4) {
-                    Text("\(pendingCount)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.outcomePending)
-                    Text("Pending")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-
-                Divider()
-                    .frame(height: 40)
-
-                // Completed
-                VStack(spacing: 4) {
-                    Text("\(completedCount)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.outcomeGood)
-                    Text("Completed")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
-
-                Divider()
-                    .frame(height: 40)
-
-                // Total
-                VStack(spacing: 4) {
-                    Text("\(totalCount)")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundStyle(Color.offshootPrimary)
-                    Text("Total")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                .frame(maxWidth: .infinity)
+            statsLayout {
+                HeaderStat(value: pendingCount, label: "Pending", color: .outcomePending)
+                divider
+                HeaderStat(value: completedCount, label: "Completed", color: .outcomeGood)
+                divider
+                HeaderStat(value: totalCount, label: "Total", color: .offshootPrimary)
             }
         }
         .frame(maxWidth: .infinity)
@@ -105,5 +88,23 @@ struct DashboardHeaderView: View {
             }
         )
         .shadow(color: Color.offshootPrimary.opacity(0.1), radius: 12, y: 6)
+    }
+}
+
+private struct HeaderStat: View {
+    let value: Int
+    let label: String
+    let color: Color
+
+    var body: some View {
+        VStack(spacing: 4) {
+            Text("\(value)")
+                .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                .foregroundStyle(color)
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
     }
 }

@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct QuickStatsSection: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -20,68 +21,42 @@ struct QuickStatsSection: View {
                     .foregroundStyle(Color.offshootPrimary)
             }
 
-            HStack(spacing: 12) {
-                let goodPercentage = AnalyticsEngine.goodOutcomePercentage(from: store.decisions)
-                let topCategory = AnalyticsEngine.topCategory(from: store.decisions)
-                let trend = AnalyticsEngine.qualityTrend(from: store.decisions)
+            let goodPercentage = AnalyticsEngine.goodOutcomePercentage(from: store.decisions)
+            let topCategory = AnalyticsEngine.topCategory(from: store.decisions)
+            let trend = AnalyticsEngine.qualityTrend(from: store.decisions)
 
-                PrimaryCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "leaf.fill")
-                                .font(.system(size: 16))
-                                .foregroundStyle(Color.outcomeGood)
-                            Spacer()
-                        }
-                        Text("Outcomes")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text("Good \(goodPercentage)%")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(Color.outcomeGood)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-
-                PrimaryCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: "star.fill")
-                                .font(.system(size: 16))
-                                .foregroundStyle(Color.offshootPrimary)
-                            Spacer()
-                        }
-                        Text("Top Category")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(topCategory)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-
-                PrimaryCard {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Image(systemName: trendIcon(for: trend))
-                                .font(.system(size: 16))
-                                .foregroundStyle(trendColor(for: trend))
-                            Spacer()
-                        }
-                        Text("Trend")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                        Text(trend.label)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(trendColor(for: trend))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
+            tileLayout {
+                QuickStatTile(
+                    icon: "leaf.fill",
+                    iconColor: .outcomeGood,
+                    title: "Outcomes",
+                    value: "\(goodPercentage)% good",
+                    valueColor: .outcomeGood
+                )
+                QuickStatTile(
+                    icon: "star.fill",
+                    iconColor: .offshootPrimary,
+                    title: "Top Category",
+                    value: topCategory
+                )
+                QuickStatTile(
+                    icon: trendIcon(for: trend),
+                    iconColor: trendColor(for: trend),
+                    title: "Trend",
+                    value: trend.label,
+                    valueColor: trendColor(for: trend)
+                )
             }
+            // Equal tile heights: the row takes its tallest tile's height.
+            .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    /// Three across normally; stacked at accessibility sizes so words never break.
+    private var tileLayout: AnyLayout {
+        dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 12))
     }
 
     private func trendIcon(for trend: QualityTrend) -> String {

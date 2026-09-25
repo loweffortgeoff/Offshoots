@@ -12,6 +12,7 @@ struct LogDecisionView: View {
     @Binding var selectedTab: AppTab
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isNotesFocused: Bool
+    @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 50
 
     @State private var title = ""
     @State private var notes = ""
@@ -44,7 +45,7 @@ struct LogDecisionView: View {
                         // Hero section
                         VStack(spacing: 8) {
                             Image(systemName: "leaf.circle.fill")
-                                .font(.system(size: 50))
+                                .font(.system(size: heroIconSize))
                                 .foregroundStyle(Color.offshootPrimary)
 
                             Text("Log a Decision")
@@ -258,10 +259,11 @@ struct LogDecisionView: View {
 }
 
 struct SavedConfirmationView: View {
+    @ScaledMetric(relativeTo: .largeTitle) private var iconSize: CGFloat = 50
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 50))
+                .font(.system(size: iconSize))
                 .foregroundStyle(Color.offshootOnPrimary)
 
             Text("Decision Saved!")
@@ -307,7 +309,7 @@ struct OutcomeButton: View {
         Button(action: action) {
             VStack(spacing: 6) {
                 OutcomeIcon(outcome: outcome)
-                    .font(.system(size: isSelected ? 24 : 20))
+                    .font(isSelected ? .title2 : .title3)
 
                 Text(outcome.compactLabel)
                     .font(.caption2)

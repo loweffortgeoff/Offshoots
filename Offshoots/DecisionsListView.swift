@@ -26,6 +26,7 @@ struct DecisionsListView: View {
     @Binding var path: NavigationPath
     @State private var decisionToDelete: Decision?
     @State private var showDeleteAlert = false
+    @ScaledMetric(relativeTo: .largeTitle) private var emptyIconSize: CGFloat = 60
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -101,10 +102,10 @@ struct DecisionsListView: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 120, height: 120)
+                        .frame(width: emptyIconSize * 2, height: emptyIconSize * 2)
 
                     Image(systemName: "leaf.circle.fill")
-                        .font(.system(size: 60))
+                        .font(.system(size: emptyIconSize))
                         .foregroundStyle(Color.offshootPrimary.opacity(0.6))
                 }
 

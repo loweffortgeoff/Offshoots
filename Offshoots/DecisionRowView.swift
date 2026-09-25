@@ -18,6 +18,7 @@ struct DecisionRowView: View {
     let decision: Decision
     /// Passed in so the row redraws when the store's day moves forward
     let isReadyForReview: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var isPending: Bool {
         decision.actual == nil
@@ -45,34 +46,49 @@ struct DecisionRowView: View {
         isReadyForReview ? .offshootPrimary : .outcomePending
     }
 
+    /// At accessibility sizes the row stacks, so the title gets the full width.
+    private var isStacked: Bool {
+        dynamicTypeSize.isAccessibilitySize
+    }
+
     var body: some View {
-        HStack(spacing: 12) {
+        let rowLayout = isStacked
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout(spacing: 12))
+        let statusLayout = isStacked
+            ? AnyLayout(HStackLayout(spacing: 8))
+            : AnyLayout(VStackLayout(alignment: .trailing, spacing: 4))
+
+        rowLayout {
             // Left side: Text stack
             VStack(alignment: .leading, spacing: 4) {
                 Text(decision.title)
                     .font(.body)
                     .fontWeight(isPending ? .medium : .semibold) // Slightly adjusted weight
                     .foregroundStyle(Color.primary)
-                    .lineLimit(2)
+                    .lineLimit(isStacked ? nil : 2)
 
                 Text(secondaryLine)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
 
-            Spacer()
+            if !isStacked {
+                Spacer()
+            }
 
             // Right side: Outcome visuals
             if isPending {
-                VStack(alignment: .trailing, spacing: 4) {
+                statusLayout {
                     // Show expected icon faintly
                     OutcomeIcon(outcome: decision.expected)
-                        .font(.system(size: 18))
+                        .font(.body)
                         .opacity(0.4) // Increased visibility slightly
 
                     Text(isReadyForReview ? "Review" : "Pending")
                         .font(.caption2)
                         .fontWeight(.medium)
+                        .fixedSize()
                         .padding(.horizontal, 8)
                         .padding(.vertical, 2)
                         .background(
@@ -85,13 +101,14 @@ struct DecisionRowView: View {
                 HStack(spacing: 6) {
                     OutcomeIcon(outcome: decision.expected)
                         .opacity(0.3)
-                        .font(.system(size: 16))
+                        .font(.callout)
 
                     OutcomeIcon(outcome: current)
-                        .font(.system(size: 20))
+                        .font(.title3)
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, 10) // Slightly more breathing room
         .padding(.horizontal, 12)
         .background(

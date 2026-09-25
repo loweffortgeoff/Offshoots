@@ -20,7 +20,7 @@ struct OutcomeIcon: View {
     var body: some View {
         Image(systemName: symbol)
             .foregroundStyle(outcome.themeColor) // Uses our new theme extension
-            .font(.system(size: 20))
+            .font(.title3)
     }
 
     var symbol: String {

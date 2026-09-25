@@ -65,10 +65,11 @@ struct AnalyticsView: View {
 }
 
 struct EmptyAnalyticsView: View {
+    @ScaledMetric(relativeTo: .largeTitle) private var iconSize: CGFloat = 60
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "chart.bar.xaxis")
-                .font(.system(size: 60))
+                .font(.system(size: iconSize))
                 .foregroundStyle(Color.offshootPrimary.opacity(0.3))
 
             Text("No Data Yet")
@@ -97,7 +98,7 @@ struct StatBox: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: icon)
-                    .font(.system(size: 16))
+                    .font(.callout)
                     .foregroundStyle(color)
                 Spacer()
             }

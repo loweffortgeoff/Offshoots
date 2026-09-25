@@ -49,7 +49,10 @@ struct PredictionAccuracyCard: View {
 
                         VStack(spacing: 4) {
                             Text("\(breakdown.percent)%")
-                                .font(.system(size: 32, weight: .bold))
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
                                 .foregroundStyle(Color.offshootPrimary)
 
                             Text("Accurate")

@@ -144,6 +144,7 @@ struct TipJarView: View {
 // MARK: - Tip Button
 
 struct TipButton: View {
+    @ScaledMetric(relativeTo: .largeTitle) private var emojiSize: CGFloat = 32
     let product: Product
     let isLoading: Bool
     let action: () -> Void
@@ -199,7 +200,7 @@ struct TipButton: View {
         Button(action: action) {
             HStack(spacing: 16) {
                 Text(emoji)
-                    .font(.system(size: 32))
+                    .font(.system(size: emojiSize))
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(tipName)

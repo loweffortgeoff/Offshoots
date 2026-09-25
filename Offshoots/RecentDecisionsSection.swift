@@ -10,17 +10,27 @@ internal import SwiftUI
 struct RecentDecisionsSection: View {
     @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Image(systemName: "clock.arrow.circlepath")
-                    .foregroundStyle(Color.offshootPrimary)
-                Text("Recent Decisions")
-                    .font(.headline)
-                    .foregroundStyle(Color.offshootPrimary)
+        // At accessibility sizes "See All" moves under the title so neither breaks mid-word.
+        let headerLayout = dynamicTypeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout())
 
-                Spacer()
+        VStack(alignment: .leading, spacing: 16) {
+            headerLayout {
+                HStack {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .foregroundStyle(Color.offshootPrimary)
+                    Text("Recent Decisions")
+                        .font(.headline)
+                        .foregroundStyle(Color.offshootPrimary)
+                }
+
+                if !dynamicTypeSize.isAccessibilitySize {
+                    Spacer()
+                }
 
                 if !store.decisions.isEmpty {
                     // Switch tabs rather than pushing a second NavigationStack
@@ -57,10 +67,11 @@ struct RecentDecisionsSection: View {
 }
 
 struct EmptyRecentDecisionsView: View {
+    @ScaledMetric(relativeTo: .largeTitle) private var iconSize: CGFloat = 40
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: "tray")
-                .font(.system(size: 40))
+                .font(.system(size: iconSize))
                 .foregroundStyle(Color.offshootPrimary.opacity(0.3))
 
             Text("No decisions yet")
