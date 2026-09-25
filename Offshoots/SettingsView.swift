@@ -11,7 +11,6 @@ struct SettingsView: View {
     @Environment(DecisionStore.self) private var store
     @AppStorage(ReminderManager.enabledKey) private var notificationsEnabled = true
     @AppStorage(AppTheme.storageKey) private var theme: AppTheme = .system
-    @State private var showTipJar = false
     @State private var showDeleteAllConfirmation = false
 
     private var deleteAllTitle: String {
@@ -108,17 +107,11 @@ struct SettingsView: View {
 
                 // MARK: - Support
                 Section {
-                    Button {
-                        showTipJar = true
+                    NavigationLink {
+                        TipJarView()
                     } label: {
-                        HStack {
-                            Label("Tip Jar", systemImage: "heart.fill")
-                                .foregroundStyle(.pink)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.footnote)
-                                .foregroundStyle(.secondary)
-                        }
+                        Label("Tip Jar", systemImage: "heart.fill")
+                            .foregroundStyle(.pink)
                     }
                 } header: {
                     Text("Support")
@@ -134,9 +127,6 @@ struct SettingsView: View {
             .background(Color.offshootBackground)
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $showTipJar) {
-                TipJarView()
-            }
         }
     }
 }

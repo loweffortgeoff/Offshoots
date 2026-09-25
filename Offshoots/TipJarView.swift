@@ -10,163 +10,59 @@ import StoreKit
 
 struct TipJarView: View {
     @State private var tipJarManager = TipJarManager.shared
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.colorScheme) private var colorScheme
-
-    private var gradientColors: [Color] {
-        colorScheme == .dark ?
-            [Color(hex: "1A2F1A"), Color(hex: "2D4A2D"), Color(hex: "3D5A3D")] :
-            [Color(hex: "8FB996"), Color(hex: "A4C639"), Color(hex: "5A9A6E")]
-    }
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Header
-                    headerSection
-
-                    // Tip options
-                    if tipJarManager.products.isEmpty {
-                        loadingView
-                    } else {
-                        tipOptionsSection
-                    }
-
-                    // Footer message
-                    footerSection
-                }
-                .padding()
+        Form {
+            Section {
+                productRows
+            } footer: {
+                Text("Tips are one-time purchases and do not unlock any features.")
             }
-            .background(
-                LinearGradient(
-                    colors: gradientColors,
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
+            .listRowBackground(Color.offshootCardBackground)
+        }
+        .scrollContentBackground(.hidden)
+        .background(Color.offshootBackground)
+        .navigationTitle("Tip Jar")
+        .navigationBarTitleDisplayMode(.inline)
+        .alert("Thank You", isPresented: Bindable(tipJarManager).showThankYou) {
+            Button("OK", action: resetPurchaseState)
+        } message: {
+            Text("Thank you for supporting Offshoots.")
+        }
+    }
+
+    @ViewBuilder
+    private var productRows: some View {
+        if tipJarManager.products.isEmpty {
+            switch tipJarManager.purchaseState {
+            case .failed(let message):
+                ContentUnavailableView(
+                    "Tip Jar Unavailable",
+                    systemImage: "exclamationmark.triangle",
+                    description: Text(message)
                 )
-                .ignoresSafeArea()
-            )
-            .navigationTitle("Support Development")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
+
+                Button("Try Again", action: reloadProducts)
+            default:
+                HStack {
+                    ProgressView()
+                    Text("Loading tip options")
                 }
             }
-            .alert("Thank You!", isPresented: Bindable(tipJarManager).showThankYou) {
-                Button("You're Welcome!") {
-                    tipJarManager.resetState()
-                }
-            } message: {
-                Text("Your support means the world! Thank you for helping keep Offshoots growing.")
-            }
-        }
-    }
-
-    // MARK: - Header
-
-    private var headerSection: some View {
-        VStack(spacing: 16) {
-            Image("AppIcon")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 80, height: 80)
-                .clipShape(RoundedRectangle(cornerRadius: 18))
-                .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
-
-            Text("Support Offshoots")
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-
-            Text("Offshoots is free with no ads or subscriptions. If you find it useful, consider leaving a tip to support future development.")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.8))
-                .multilineTextAlignment(.center)
-        }
-        .padding(.top, 20)
-    }
-
-    // MARK: - Loading View
-
-    private var loadingView: some View {
-        VStack(spacing: 16) {
-            ProgressView()
-                .scaleEffect(1.2)
-                .tint(.white)
-
-            Text("Loading tip options...")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.8))
-        }
-        .frame(height: 200)
-    }
-
-    // MARK: - Tip Options
-
-    private var tipOptionsSection: some View {
-        VStack(spacing: 16) {
+        } else {
             ForEach(tipJarManager.products, id: \.id) { product in
-                TipButton(
+                TipProductRow(
                     product: product,
-                    isLoading: tipJarManager.purchaseState == .purchasing
+                    title: title(for: product),
+                    isPurchasing: tipJarManager.purchaseState == .purchasing
                 ) {
-                    Task {
-                        await tipJarManager.purchase(product)
-                    }
+                    purchase(product)
                 }
             }
         }
     }
 
-    // MARK: - Footer
-
-    private var footerSection: some View {
-        VStack(spacing: 8) {
-            Text("Tips are one-time purchases and do not unlock any features.")
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.7))
-                .multilineTextAlignment(.center)
-
-            if case .failed(let message) = tipJarManager.purchaseState {
-                Text(message)
-                    .font(.caption)
-                    .foregroundStyle(.red)
-                    .padding(.top, 8)
-            }
-        }
-        .padding(.top, 16)
-    }
-}
-
-// MARK: - Tip Button
-
-struct TipButton: View {
-    @ScaledMetric(relativeTo: .largeTitle) private var emojiSize: CGFloat = 32
-    let product: Product
-    let isLoading: Bool
-    let action: () -> Void
-
-    @Environment(\.colorScheme) private var colorScheme
-
-    private var emoji: String {
-        switch product.id {
-        case TipJarManager.smallTipID:
-            return "🌱"
-        case TipJarManager.mediumTipID:
-            return "🌿"
-        case TipJarManager.largeTipID:
-            return "🌳"
-        case TipJarManager.heroTipID:
-            return "🌲"
-        default:
-            return "💚"
-        }
-    }
-
-    private var tipName: String {
+    private func title(for product: Product) -> String {
         switch product.id {
         case TipJarManager.smallTipID:
             return "Small Tip"
@@ -181,60 +77,51 @@ struct TipButton: View {
         }
     }
 
-    private var subtitle: String {
-        switch product.id {
-        case TipJarManager.smallTipID:
-            return "Plant a seed"
-        case TipJarManager.mediumTipID:
-            return "Grow a branch"
-        case TipJarManager.largeTipID:
-            return "You're amazing!"
-        case TipJarManager.heroTipID:
-            return "You're a legend!"
-        default:
-            return ""
+    private func reloadProducts() {
+        Task {
+            await tipJarManager.loadProducts()
         }
     }
 
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 16) {
-                Text(emoji)
-                    .font(.system(size: emojiSize))
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(tipName)
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-
-                    Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-
-                if isLoading {
-                    ProgressView()
-                } else {
-                    Text(product.displayPrice)
-                        .font(.headline)
-                        .foregroundStyle(Color.offshootsAccent)
-                }
-            }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(uiColor: .secondarySystemBackground))
-            )
+    private func purchase(_ product: Product) {
+        Task {
+            await tipJarManager.purchase(product)
         }
-        .disabled(isLoading)
-        .buttonStyle(.plain)
+    }
+
+    private func resetPurchaseState() {
+        tipJarManager.resetState()
     }
 }
 
-// MARK: - Preview
+private struct TipProductRow: View {
+    let product: Product
+    let title: String
+    let isPurchasing: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Label(title, systemImage: "heart")
+                    .foregroundStyle(.primary)
+
+                Spacer()
+
+                if isPurchasing {
+                    ProgressView()
+                } else {
+                    Text(product.displayPrice)
+                        .foregroundStyle(.secondary)
+                }
+            }
+        }
+        .disabled(isPurchasing)
+    }
+}
 
 #Preview {
-    TipJarView()
+    NavigationStack {
+        TipJarView()
+    }
 }

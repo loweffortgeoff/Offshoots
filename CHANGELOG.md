@@ -2,6 +2,13 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
+## In progress — branch `tip-jar-native`
+
+### 2026-09-25 — Native Tip Jar (carried over from `dev/offshoots-development`)
+- Changed: the Tip Jar opens as a screen pushed from Settings, not a sheet. It is a plain form with one row per tip and its price, a loading row, and a "Tip Jar Unavailable" state with Try Again. The green gradient background is gone.
+- Changed: the Tip Jar uses the Soil and Loam backgrounds, like Settings.
+- Source: commit `4655cdf` on the unmerged April branch. Its build-number change (3 to 1) was not carried over.
+
 ## Merged to `main` — branch `section-5-ui`
 
 ### 2026-09-25 — Audit section 5, UI: chunk 1, color foundation
