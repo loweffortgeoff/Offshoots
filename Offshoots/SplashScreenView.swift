@@ -24,8 +24,8 @@ struct SplashScreenView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 24) {
-                // App Icon
-                Image("offshootsdar")
+                // App Icon: the dark icon, sized for the splash (AppIcon images cannot be loaded by name)
+                Image("splashicon")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 120, height: 120)

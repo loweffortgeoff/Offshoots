@@ -14,6 +14,11 @@ struct SettingsView: View {
     @State private var showTipJar = false
     @State private var showDeleteAllConfirmation = false
 
+    private var deleteAllTitle: String {
+        let count = store.decisions.count
+        return count == 1 ? "Delete 1 decision?" : "Delete all \(count) decisions?"
+    }
+
     var body: some View {
         NavigationStack {
             Form {
@@ -28,6 +33,7 @@ struct SettingsView: View {
                 } footer: {
                     Text("Receive reminders when it's time to review your decisions.")
                 }
+                .listRowBackground(Color.offshootCardBackground)
 
                 // MARK: - Data
                 Section {
@@ -71,7 +77,7 @@ struct SettingsView: View {
                     .disabled(store.decisions.isEmpty)
                     // Attached to the button, so the dialog points at this row
                     .confirmationDialog(
-                        "Delete all \(store.decisions.count) decisions?",
+                        deleteAllTitle,
                         isPresented: $showDeleteAllConfirmation,
                         titleVisibility: .visible
                     ) {
@@ -86,6 +92,7 @@ struct SettingsView: View {
                 } footer: {
                     Text("Export saves a JSON file you can keep as a backup.")
                 }
+                .listRowBackground(Color.offshootCardBackground)
 
                 // MARK: - Appearance
                 Section {
@@ -97,6 +104,7 @@ struct SettingsView: View {
                 } header: {
                     Text("Appearance")
                 }
+                .listRowBackground(Color.offshootCardBackground)
 
                 // MARK: - Support
                 Section {
@@ -115,11 +123,13 @@ struct SettingsView: View {
                 } header: {
                     Text("Support")
                 }
+                .listRowBackground(Color.offshootCardBackground)
 
                 // MARK: - About Section
                 AboutSectionView(currentAppName: "Offshoots")
+                    // Row fills are set per section: on the Form itself the modifier has no effect
+                    .listRowBackground(Color.offshootCardBackground)
             }
-            .listRowBackground(Color.offshootCardBackground)
             .scrollContentBackground(.hidden)
             .background(Color.offshootBackground)
             .navigationTitle("Settings")

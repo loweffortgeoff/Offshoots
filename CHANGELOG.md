@@ -51,6 +51,9 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Added: Settings > Appearance > App Theme picks System, Light or Dark. The placeholder App Icon row is gone.
 - Changed: the splash ("Welcome to Offshoots") shows on the first launch only, not for 2 seconds on every launch.
 - Added: a completed decision that is due for a revisit shows a "Revisit" pill, like the "Review" pill on a pending decision.
+- Fixed: the first-launch splash showed an empty space instead of the app icon (`offshootsdar` was not an image set). It now uses a `splashicon` image set made from the dark app icon.
+- Fixed: in dark mode, Settings rows used the system grey instead of the Loam card color. The row color is now set on each section.
+- Fixed: the Delete All dialog reads "Delete 1 decision?" when one decision is left, not "Delete all 1 decisions?".
 - Changed: Settings > We Also Make shows each app's real icon, with a light and a dark variant taken from that app's own icon set. The Task(ed) placeholder icon is gone. Muzzletoff is now listed as EveryPaw (same App Store ID).
 
 ## Merged to `main` — branch `section-4-architecture`
