@@ -1,6 +1,7 @@
 # TODO
 
 ## Next
+- [ ] Section 4, Architecture — start in a new session (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 4, Architecture.**

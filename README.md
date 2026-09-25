@@ -25,7 +25,7 @@ Offshoots helps you become a better decision maker. Log your decisions, predict 
 - **Optimism Bias** — Whether you tend to expect better or worse than what happens
 - **Outcome Distribution** — Positive vs. negative breakdown
 - **Category Breakdown** — Which areas you decide on most
-- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days
+- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (Too early until there is enough data)
 - **Outcome Trends** — Positive, neutral and negative outcomes by week
 - **Visual Charts** — Built with the Charts framework
 
