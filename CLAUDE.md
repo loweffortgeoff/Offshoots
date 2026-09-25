@@ -79,6 +79,18 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   `simctl erase`, fixed it. The erase also resets the simulator to light mode.
   Check with `simctl spawn <UDID> log show --last 1m --info --predicate
   'process == "Offshoots" AND subsystem BEGINSWITH "com.apple.UserNotifications"'`.
+- **A test run shuts the simulator down.** After `xcodebuild … test`, the
+  iPhone 18 Pro is Shutdown (checked 2026-09-25, with `name=` and `id=`).
+  Boot it again with `xcrun simctl boot <UDID>` before `simctl ui`,
+  `install` or `seed.sh`.
+- **Reattach after a reinstall.** After `simctl install` or a reboot, the
+  simulator tool's taps can stop reaching the app. Call `attach` again.
+- **Do not start a swipe near the tab bar.** A swipe that starts at y ≥ 800
+  on the iPhone 18 Pro taps the tab under it. Start at y = 720 or higher up.
+- **Dynamic Type checks:** `xcrun simctl ui <UDID> content_size
+  accessibility-extra-extra-extra-large`, then `large` to reset. At
+  accessibility sizes, layouts switch with `dynamicTypeSize.isAccessibilitySize`
+  (AnyLayout: side by side, or stacked). Chart text is capped at `.xxxLarge`.
 - **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
   a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
 

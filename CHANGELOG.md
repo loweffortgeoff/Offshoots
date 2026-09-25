@@ -19,7 +19,12 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: no fixed font sizes remain. Small icons use text styles. Large icons and the tip emoji use `@ScaledMetric`, so they keep their size at the default setting and scale with it.
 - Changed: the Quick Stats tiles are one `QuickStatTile` view with equal heights. The Outcomes tile reads "Outcomes / 50% good", so the value no longer wraps.
 - Changed: at accessibility text sizes, the dashboard header, the Quick Stats tiles, the Recent Decisions header and the decision rows stack vertically, so no word breaks in the middle.
-- Known: Insights, the Log screen and the decision detail screen still break words at accessibility sizes (chunk 2b).
+
+### 2026-09-25 — Audit section 5, UI: chunk 2b, Dynamic Type layouts
+- Added: `CardTitle`, one title row for the seven Insights cards. At accessibility sizes it drops the decorative icon and puts the note ("Last 30 days") under the title.
+- Changed: at accessibility sizes the Overview grid is one column, the Outcomes legend sits under the ring, and the accuracy counts, the Optimism card and the detail screen's category, stakes and status stack.
+- Changed: chart text stops growing at the largest non-accessibility size, because axis labels cannot wrap. Outcome Trends labels every second week above the default size.
+- Known: the placeholder in the decision title field is cut off at accessibility sizes. SwiftUI draws a placeholder on one line. The Stakes segmented control does not grow with the text (system control).
 
 ## Merged to `main` — branch `section-4-architecture`
 

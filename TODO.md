@@ -8,7 +8,6 @@
   - The Appearance rows in Settings are placeholders.
   - There is no export or delete-all.
   - The 2-second splash shows on every launch.
-  - Dynamic Type, chunk 2b: at accessibility text sizes, Insights (Overview grid, card titles, chart axis labels, Categories rows, Outcomes legend, accuracy counts, Optimism card), the Log screen headers and the decision detail screen break words in the middle. The fixed font sizes are gone (chunk 2a); these layouts still need to stack at large sizes. The outcome picker's layout belongs to chunk 3.
   - Delete is only in the long-press menu.
 - [ ] **Section 5, found by the 2026-09-24 simulator run.**
   - VoiceOver reads rating icons as generic symbol names ("Favorite", "Close").
@@ -24,6 +23,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Section 5, chunk 2b: Dynamic Type layouts — Insights cards, detail metadata and chart text work at accessibility sizes — 2026-09-25
 - [x] Section 5, chunk 2a: Dynamic Type — no fixed font sizes; Quick Stats tiles equal height; dashboard and rows stack at accessibility sizes — 2026-09-25
 - [x] Section 5, chunk 1: adaptive palette (contrast, Soil/Loam dark mode, category chart, Upcoming/Pending contrast, accent value for the date picker) — 2026-09-25
 - [x] Merge `section-4-architecture` to `main` (fast-forward) — 2026-09-25

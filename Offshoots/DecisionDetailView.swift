@@ -18,6 +18,7 @@ struct DecisionDetailView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 56
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .largeTitle) private var outcomeIconSize: CGFloat = 40
     private let decisionID: UUID
     private let snapshot: Decision
@@ -98,7 +99,11 @@ struct DecisionDetailView: View {
                                 .fontWeight(.bold)
                                 .foregroundStyle(Color.offshootPrimary)
 
-                            HStack {
+                            // At accessibility sizes the category, stakes and status stack.
+                            let metaLayout = dynamicTypeSize.isAccessibilitySize
+                                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                                : AnyLayout(HStackLayout())
+                            metaLayout {
                                 Label(decision.category.rawValue.capitalized, systemImage: "tag.fill")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
@@ -107,7 +112,9 @@ struct DecisionDetailView: View {
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
 
-                                Spacer()
+                                if !dynamicTypeSize.isAccessibilitySize {
+                                    Spacer()
+                                }
 
                                 if let actual = decision.currentOutcome {
                                     HStack(spacing: 6) {
