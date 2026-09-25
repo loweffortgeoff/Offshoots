@@ -47,6 +47,11 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: `decisions.json` is written with sorted keys, so the same decisions always give the same file. Existing files load unchanged.
 - Added: store tests for the export and for Delete All (17 tests).
 
+### 2026-09-25 — Audit section 5, UI: chunk 6, settings and launch
+- Added: Settings > Appearance > App Theme picks System, Light or Dark. The placeholder App Icon row is gone.
+- Changed: the splash ("Welcome to Offshoots") shows on the first launch only, not for 2 seconds on every launch.
+- Added: a completed decision that is due for a revisit shows a "Revisit" pill, like the "Review" pill on a pending decision.
+
 ## Merged to `main` — branch `section-4-architecture`
 
 ### 2026-09-25 — Audit section 4, Architecture

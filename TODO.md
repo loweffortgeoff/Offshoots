@@ -1,13 +1,11 @@
 # TODO
 
 ## Next
-- [ ] Section 5, UI — in progress on `section-5-ui` (see Backlog).
+- [ ] Review and merge `section-5-ui` to `main`.
+- [ ] VoiceOver pass on the iPhone 17 Pro with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
+- [ ] Section 6, Housekeeping — start in a new session (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
-- [ ] **Section 5, UI.**
-  - The Appearance rows in Settings are placeholders.
-  - The 2-second splash shows on every launch.
-- [ ] **Section 5, open question.** A revisit-due row shows "Ready to revisit" but no "Review" pill. Keep it that way (the recommendation) or add the pill?
 - [ ] **Section 6, Housekeeping.**
   - File header comments are duplicated.
   - Header typos: `NotificationDelegare`, `DasbboardView`.
@@ -15,6 +13,8 @@
   - Unused code: `SectionHeader.swift` is never used, and `DecisionsListView` has two unused helpers, `deletePending(at:)` and `deleteCompleted(at:)`. Delete them after a check that nothing calls them.
 
 ## Done
+- [x] Section 5, chunk 6: App Theme picker, first-launch splash, Revisit pill (open question closed: add the pill) — 2026-09-25
+- [x] Audit section 5: UI — 2026-09-25
 - [x] Section 5, chunk 5: row context menu (Edit, Delete), JSON export, Delete All with confirmation — 2026-09-25
 - [x] Section 5, all nine findings from the 2026-09-24 simulator run (chunks 1–4) — 2026-09-25
 - [x] Section 5, chunk 4: sheet layout — keyboard closes on outside tap and Done (Revisit, Mark Outcome, Log, Edit); Save pinned above the keyboard; detail cards full width — 2026-09-25

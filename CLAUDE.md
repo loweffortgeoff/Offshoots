@@ -96,6 +96,14 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   accessibility-extra-extra-extra-large`, then `large` to reset. At
   accessibility sizes, layouts switch with `dynamicTypeSize.isAccessibilitySize`
   (AnyLayout: side by side, or stacked). Chart text is capped at `.xxxLarge`.
+- **Splash on first launch only.** After a fresh install the splash shows
+  once for 2 seconds; taps in that time miss. Later launches skip it
+  (`hasSeenSplash` in the app's plist). To see it again, uninstall, or
+  `simctl spawn <UDID> defaults delete com.geoffrey.silva.Offshoots hasSeenSplash`
+  with the app closed.
+- **Menus close on their own.** Take a screenshot after opening a Picker
+  menu and tap the item at once. A late tap can land on the row behind it;
+  on 2026-09-25 one opened an App Store link in Safari from Settings.
 - **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
   a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
 
