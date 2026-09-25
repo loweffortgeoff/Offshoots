@@ -1,7 +1,6 @@
 # TODO
 
 ## Next
-- [ ] Review and merge `section-5-ui` to `main`.
 - [ ] VoiceOver pass on the iPhone 17 Pro with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
 - [ ] Section 6, Housekeeping — start in a new session (see Backlog).
 
@@ -13,6 +12,8 @@
   - Unused code: `SectionHeader.swift` is never used, and `DecisionsListView` has two unused helpers, `deletePending(at:)` and `deleteCompleted(at:)`. Delete them after a check that nothing calls them.
 
 ## Done
+- [x] Section 5 code review fixes (splash icon, dark Settings rows, Delete All wording) — 2026-09-25
+- [x] Merge `section-5-ui` to `main` (fast-forward) — 2026-09-25
 - [x] Section 5, chunk 6: App Theme picker, first-launch splash, Revisit pill (open question closed: add the pill) — 2026-09-25
 - [x] Audit section 5: UI — 2026-09-25
 - [x] Section 5, chunk 5: row context menu (Edit, Delete), JSON export, Delete All with confirmation — 2026-09-25

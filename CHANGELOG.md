@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## In progress — branch `section-5-ui`
+## Merged to `main` — branch `section-5-ui`
 
 ### 2026-09-25 — Audit section 5, UI: chunk 1, color foundation
 - Changed: accent, outcome and background colors are adaptive asset-catalog colors. Light mode uses darker shades, so accent and outcome text reach 4.5:1 on white (Matcha was about 2:1). Dark mode uses the Matcha, Sage, Sand and Clay palette on the Soil and Loam backgrounds, which were defined before but not used.
