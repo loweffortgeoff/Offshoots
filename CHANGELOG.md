@@ -11,7 +11,8 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: accent buttons (Save, Mark Outcome, Revisit) use a solid fill. Their text is white in light mode and Soil in dark mode.
 - Changed: all screens, cards, fields and the Settings form use the palette backgrounds.
 - Changed: the Categories chart draws every bar in the accent color, not six off-palette colors. `CategoryBreakdownCard` has its own file.
-- Fixed: Categories chart labels were black in dark mode.
+- Fixed: Categories chart labels were black in dark mode, and kept their old color after a live switch between light and dark. The chart now rebuilds when the color scheme changes.
+- Fixed: tied categories keep a stable order (by name). Before, they swapped places on each redraw.
 - Fixed: `AccentColor` had no value. The date picker selection uses the accent on iOS 26.5. On iOS 27.0 the system draws it in the label color.
 
 ## Merged to `main` — branch `section-4-architecture`

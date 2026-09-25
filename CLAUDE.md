@@ -99,6 +99,11 @@ fixed raw palette (`offshoots…`) for the splash, plus `offshootPrimary` and
 On iOS 27.0 the graphical `DatePicker` draws the selected day in the label
 color and ignores the tint. iOS 26.5 uses the tint (checked 2026-09-25).
 
+Swift Charts axis labels keep the color they had at launch when light and
+dark mode switch while the app runs. `CategoryBreakdownCard` uses
+`.id(colorScheme)` to rebuild. To test a color change, switch the appearance
+while the app is running, not only before launch.
+
 # Docs
 
 - The audit and plan docs live in `docs/`. The 2026-09-23 audit doc lists the

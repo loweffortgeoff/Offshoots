@@ -8,11 +8,12 @@ internal import Charts
 
 struct CategoryBreakdownCard: View {
     let decisions: [Decision]
+    @Environment(\.colorScheme) private var colorScheme
 
     private var categoryData: [(category: DecisionCategory, count: Int)] {
         Dictionary(grouping: decisions, by: { $0.category })
             .mapValues { $0.count }
-            .sorted { $0.value > $1.value }
+            .sorted { $0.value != $1.value ? $0.value > $1.value : $0.key.rawValue < $1.key.rawValue }
             .map { (category: $0.key, count: $0.value) }
     }
 
@@ -47,6 +48,9 @@ struct CategoryBreakdownCard: View {
                             .foregroundStyle(.primary)
                     }
                 }
+                // The axis labels keep their launch color when the color
+                // scheme changes, so rebuild the chart on a change.
+                .id(colorScheme)
                 .frame(height: CGFloat(categoryData.count) * 44)
             }
         }
