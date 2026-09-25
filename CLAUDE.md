@@ -88,7 +88,7 @@ mini (confirmed 2026-09-24).
 # Docs
 
 - The audit and plan docs live in `docs/`. The 2026-09-23 audit doc lists the
-  remaining sections (3–6).
+  remaining sections (5–6).
 - `.gitignore` ignores `*.md` except `README.md`, `CHANGELOG.md`,
   `DECISIONS.md`, `TODO.md`, `CLAUDE.md` and `docs/**/*.md`. When you add a
   new root Markdown file that belongs in git, add an exception for it.
