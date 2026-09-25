@@ -22,8 +22,10 @@ Leave the output verbose. Do not add `-quiet`.
 xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
 ```
 
-`AnalyticsEngineTests` reads `docs/fixtures/*.json` directly, and pins "now"
-to 2026-09-27. If you change a fixture, update the expected values in the
+The tests load `docs/fixtures/*.json` from the test bundle. The folder is a
+synced group in `OffshootsTests` only, so tests also run on a device, and a
+new fixture file is picked up with no project change. `AnalyticsEngineTests`
+pins "now" to 2026-09-27. If you change a fixture, update the expected values in the
 tests too.
 
 Bundle ID: `com.geoffrey.silva.Offshoots`.

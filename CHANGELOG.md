@@ -18,6 +18,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Fixed: the store is created once, in `OffshootsApp`. Owned by `ContentView`, it decoded the file a second time when the splash ended.
 - Fixed: editing a pending decision's title also updates its scheduled reminder, which shows the title.
 - Changed: the test target signs with the app's team, and store tests delete their temporary folders. `Fixture` has its own file.
+- Fixed: tests load fixtures from the test bundle, not a Mac file path, so they also pass on a device.
 
 ## Merged to `main` — branch `section-3-insights`
 
