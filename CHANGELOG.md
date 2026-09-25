@@ -4,6 +4,9 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ## Unreleased — branch `claude/sleepy-newton-ru1q7c`
 
+### 2026-09-25
+- Device check passed on the iPhone 17 Pro (iOS 27.2 Beta 2). A real reminder arrived the next day and a tap opened the decision. The sections 1–2 testing gate is closed.
+
 ### 2026-09-24
 - Ran the testing gate for audit sections 1 and 2. Simulator checks 1–5 pass on iOS 27.0. Results are in `docs/2026-09-23-audit-bugfixes-and-core-loop.md`.
 - Tracked Markdown files under `docs/` in git (`.gitignore` exception).

@@ -53,7 +53,7 @@ Run on the Mac mini: Xcode 27.0 (27A266a), iPhone 18 Pro simulator, iOS 27.0. Te
 4. **Reminder tap: pass.** The banner shows while the app is open. A tap opens the Decisions tab and the right decision in three cases: app in the foreground, app in the background and app killed. A repeat tap routes again.
 5. **Reminders toggle: pass.** On a fresh install with the toggle off, logging a decision gives no permission prompt, so nothing is scheduled. Turning the toggle on asks for permission at that moment, because it reschedules pending decisions.
 
-**Still open, needs real time on the device:** log a decision on the iPhone 17 Pro with tomorrow as the review date. Confirm the reminder arrives by itself and that a tap opens that decision.
+**Device check (2026-09-25): pass.** On the iPhone 17 Pro (iOS 27.2 Beta 2), a decision logged with tomorrow as the review date sent its reminder by itself. A tap opened that decision (Geoff). The gate is closed.
 
 **Minor findings (not gate failures):**
 - VoiceOver: rating icons read as generic symbol names ("Selected", "Favorite", "Close"). The outcome picker reports "Good" as selected whatever the actual choice.

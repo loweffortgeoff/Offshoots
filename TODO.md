@@ -1,8 +1,6 @@
 # TODO
 
 ## Next
-- [ ] Device check on the iPhone 17 Pro (iOS 27.2 Beta 2). Install the branch build. Log one decision with tomorrow as the review date, with reminders on. Next day, confirm the reminder arrives by itself and that tapping it opens that decision. This is the last open item of the sections 1–2 testing gate.
-- [ ] Merge `claude/sleepy-newton-ru1q7c` to `main` after the device check passes.
 - [ ] Section 3 — decide first: should outcome stats (Good %, distribution chart) use the first rating or the latest revisit? Accuracy stays on the first rating.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
@@ -50,4 +48,6 @@
 - [x] Audit section 2: core loop (Ready to Review, notes, in-context permission, revisits) — 2026-09-23
 - [x] Testing gate for sections 1–2 on the simulator (checks 1–5 pass) — 2026-09-24
 - [x] Track `docs/` in git — 2026-09-24
+- [x] Device check on the iPhone 17 Pro: the reminder arrives by itself and a tap opens the decision. Sections 1–2 testing gate closed — 2026-09-25
+- [x] Merge `claude/sleepy-newton-ru1q7c` to `main` — 2026-09-25
 - [x] Start CHANGELOG, DECISIONS, TODO — 2026-09-24
