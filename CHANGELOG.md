@@ -51,6 +51,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Added: Settings > Appearance > App Theme picks System, Light or Dark. The placeholder App Icon row is gone.
 - Changed: the splash ("Welcome to Offshoots") shows on the first launch only, not for 2 seconds on every launch.
 - Added: a completed decision that is due for a revisit shows a "Revisit" pill, like the "Review" pill on a pending decision.
+- Changed: Settings > We Also Make shows each app's real icon, with a light and a dark variant taken from that app's own icon set. The Task(ed) placeholder icon is gone. Muzzletoff is now listed as EveryPaw (same App Store ID).
 
 ## Merged to `main` — branch `section-4-architecture`
 

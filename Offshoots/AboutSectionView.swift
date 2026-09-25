@@ -17,13 +17,14 @@ struct LowEffortApp: Identifiable {
 
 enum LowEffortApps {
    
-    static let muzzletoff = LowEffortApp(name: "Muzzletoff", iconName: "muzzletoff", appStoreID: "6754781167")
-    static let aisleWise = LowEffortApp(name: "AisleWise", iconName: "aislewisedark", appStoreID: "6755057084")
-    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskedlight", appStoreID: "6755186421")
+    // Icons have light and dark variants in the asset catalog, like each app's own icon
+    static let everyPaw = LowEffortApp(name: "EveryPaw", iconName: "everypaw", appStoreID: "6754781167")
+    static let aisleWise = LowEffortApp(name: "AisleWise", iconName: "aislewise", appStoreID: "6755057084")
+    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "tasked", appStoreID: "6755186421")
    
 
     static let all: [LowEffortApp] = [
- muzzletoff, aisleWise, tasked,  
+ everyPaw, aisleWise, tasked,  
     ]
 }
 
