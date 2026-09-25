@@ -71,12 +71,12 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   `notificationsEnabled = 0` on the iPhone 18 Pro simulator turned reminders
   off after a fresh install. Check with `simctl spawn <UDID> defaults read
   com.geoffrey.silva.Offshoots`, and clear it with `defaults delete`.
-- **The iPhone 18 Pro simulator's notification store is broken** (seen
-  2026-09-25). Every `add` logs `Added notification request: [ hasError: 1 ]`
-  and no permission prompt appears. The iPhone 18 Pro Max (iOS 27.0) works.
-  Erasing the iPhone 18 Pro simulator should fix it. Check the result in the
-  log: `simctl spawn <UDID> log show --last 1m --info --predicate 'process ==
-  "Offshoots" AND subsystem BEGINSWITH "com.apple.UserNotifications"'`.
+- **If every notification `add` fails, erase the simulator.** On 2026-09-25
+  the iPhone 18 Pro simulator logged `Added notification request: [ hasError: 1 ]`
+  on every add and showed no permission prompt. `simctl shutdown`, then
+  `simctl erase`, fixed it. The erase also resets the simulator to light mode.
+  Check with `simctl spawn <UDID> log show --last 1m --info --predicate
+  'process == "Offshoots" AND subsystem BEGINSWITH "com.apple.UserNotifications"'`.
 - **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
   a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
 
