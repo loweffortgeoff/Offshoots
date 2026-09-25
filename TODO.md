@@ -10,9 +10,6 @@
   - The 2-second splash shows on every launch.
   - Delete is only in the long-press menu.
 - [ ] **Section 5, found by the 2026-09-24 simulator run.**
-  - VoiceOver reads rating icons as generic symbol names ("Favorite", "Close").
-  - The outcome picker always reports "Good" as selected.
-  - The outcome picker touch targets are small (about 20–28 pt wide).
   - In the Revisit and Mark Outcome sheets, the keyboard does not close when you tap outside it and covers Save.
   - The Save Outcome button sits at the bottom edge of the screen when a follow-up is on.
   - Some detail cards are narrower than the rest.
@@ -23,6 +20,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Section 5, chunk 3: outcome picker and VoiceOver (labels, selected state, 60 × 68 pt targets, rows at accessibility sizes, decorative icons hidden) — 2026-09-25
 - [x] Section 5, chunk 2b: Dynamic Type layouts — Insights cards, detail metadata and chart text work at accessibility sizes — 2026-09-25
 - [x] Section 5, chunk 2a: Dynamic Type — no fixed font sizes; Quick Stats tiles equal height; dashboard and rows stack at accessibility sizes — 2026-09-25
 - [x] Section 5, chunk 1: adaptive palette (contrast, Soil/Loam dark mode, category chart, Upcoming/Pending contrast, accent value for the date picker) — 2026-09-25

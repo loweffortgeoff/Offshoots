@@ -87,6 +87,11 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   simulator tool's taps can stop reaching the app. Call `attach` again.
 - **Do not start a swipe near the tab bar.** A swipe that starts at y ≥ 800
   on the iPhone 18 Pro taps the tab under it. Start at y = 720 or higher up.
+- **Accessibility tree without VoiceOver:** `DeviceInteractionStartSession`
+  with the simulator UDID, then `DeviceInteractionSynthesize` (optionally
+  with `interactionCommand: "t x y"`) writes a hierarchy file with each
+  element's label and traits (`Selected`). End the session afterwards.
+  Coordinates in that file are device points.
 - **Dynamic Type checks:** `xcrun simctl ui <UDID> content_size
   accessibility-extra-extra-extra-large`, then `large` to reset. At
   accessibility sizes, layouts switch with `dynamicTypeSize.isAccessibilitySize`

@@ -26,6 +26,14 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: chart text stops growing at the largest non-accessibility size, because axis labels cannot wrap. Outcome Trends labels every second week above the default size.
 - Known: the placeholder in the decision title field is cut off at accessibility sizes. SwiftUI draws a placeholder on one line. The Stakes segmented control does not grow with the text (system control).
 
+### 2026-09-25 — Audit section 5, UI: chunk 3, outcome picker and VoiceOver
+- Fixed: VoiceOver read the Good icon's checkmark as "Selected", so the outcome picker always sounded as if Good was chosen. The picker buttons now say the outcome, and only the chosen one is marked selected.
+- Fixed: the picker's tap area is the whole tile (about 60 × 68 pt), not only the icon and text.
+- Changed: at accessibility sizes the picker shows one full-width row per outcome.
+- Fixed: rating icons read the outcome name, not the symbol name ("Favorite", "Close"). Rows read "Expected Bad, turned out Good". Revisit history reads "Bad to Good".
+- Changed: decorative header and empty-state icons are hidden from VoiceOver.
+- Changed: `OutcomePickerView` and `OutcomeButton` have their own file.
+
 ## Merged to `main` — branch `section-4-architecture`
 
 ### 2026-09-25 — Audit section 4, Architecture
