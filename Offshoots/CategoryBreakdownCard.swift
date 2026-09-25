@@ -16,17 +16,6 @@ struct CategoryBreakdownCard: View {
             .map { (category: $0.key, count: $0.value) }
     }
 
-    private func color(for category: DecisionCategory) -> Color {
-        switch category {
-        case .work: return .blue
-        case .money: return .green
-        case .health: return .red
-        case .relationships: return .pink
-        case .home: return .orange
-        case .other: return .purple
-        }
-    }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label("Categories", systemImage: "tag.fill")
@@ -43,7 +32,7 @@ struct CategoryBreakdownCard: View {
                         x: .value("Count", item.count),
                         y: .value("Category", item.category.rawValue.capitalized)
                     )
-                    .foregroundStyle(color(for: item.category))
+                    .foregroundStyle(Color.offshootPrimary)
                     .cornerRadius(4)
                     .annotation(position: .trailing, alignment: .leading, spacing: 8) {
                         Text("\(item.count)")
