@@ -10,6 +10,7 @@ internal import Charts
 
 struct OutcomeDistributionCard: View {
     let decisions: [Decision]
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var outcomeData: [(outcome: DecisionOutcome, count: Int)] {
         let completed = decisions.filter { $0.actual != nil }
@@ -25,16 +26,17 @@ struct OutcomeDistributionCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Outcomes", systemImage: "chart.pie.fill")
-                .font(.headline)
-                .foregroundStyle(Color.offshootPrimary)
+            CardTitle(title: "Outcomes", systemImage: "chart.pie.fill")
 
             if totalCompleted == 0 {
                 Text("No completed decisions yet")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {
-                HStack(spacing: 20) {
+                let layout = dynamicTypeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(spacing: 20))
+                    : AnyLayout(HStackLayout(spacing: 20))
+                layout {
                     Chart(outcomeData, id: \.outcome) { item in
                         SectorMark(
                             angle: .value("Count", item.count),

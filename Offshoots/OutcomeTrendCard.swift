@@ -10,6 +10,7 @@ internal import Charts
 
 struct OutcomeTrendCard: View {
     let decisions: [Decision]
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private struct WeekData: Identifiable {
         let id = UUID()
@@ -53,15 +54,7 @@ struct OutcomeTrendCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Label("Outcome Trends", systemImage: "chart.bar.fill")
-                    .font(.headline)
-                    .foregroundStyle(Color.offshootPrimary)
-                Spacer()
-                Text("Last 8 weeks")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            CardTitle(title: "Outcome Trends", systemImage: "chart.bar.fill", note: "Last 8 weeks")
 
             if !hasData {
                 Text("No completed decisions to show trends")
@@ -82,7 +75,8 @@ struct OutcomeTrendCard: View {
                     "Negative": Color.outcomeBad
                 ])
                 .chartXAxis {
-                    AxisMarks(values: .stride(by: .weekOfYear)) { _ in
+                    // Eight week labels fit only at the default text size; above it, label every second week.
+                    AxisMarks(values: .stride(by: .weekOfYear, count: dynamicTypeSize > .large ? 2 : 1)) { _ in
                         AxisGridLine()
                         AxisValueLabel(format: .dateTime.month(.abbreviated).day())
                     }
@@ -95,6 +89,8 @@ struct OutcomeTrendCard: View {
                 }
                 .chartLegend(position: .bottom, spacing: 16)
                 .frame(height: 200)
+                // Axis labels cannot wrap, so chart text stops growing at the largest non-accessibility size.
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
         }
         .padding(20)

@@ -10,6 +10,7 @@ internal import Charts
 
 struct PredictionAccuracyCard: View {
     let decisions: [Decision]
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var breakdown: AccuracyBreakdown {
         AnalyticsEngine.accuracyBreakdown(from: decisions)
@@ -25,9 +26,7 @@ struct PredictionAccuracyCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Prediction Accuracy", systemImage: "target")
-                .font(.headline)
-                .foregroundStyle(Color.offshootPrimary)
+            CardTitle(title: "Prediction Accuracy", systemImage: "target")
 
             if breakdown.total == 0 {
                 Text("No completed decisions to analyze")
@@ -59,10 +58,15 @@ struct PredictionAccuracyCard: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         }
+                        // The labels sit inside a fixed ring, so they stop growing past xxxLarge.
+                        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                     }
                     .frame(maxWidth: .infinity)
 
-                    HStack {
+                    let countsLayout = dynamicTypeSize.isAccessibilitySize
+                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+                        : AnyLayout(HStackLayout())
+                    countsLayout {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Correct")
                                 .font(.caption)

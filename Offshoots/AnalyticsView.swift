@@ -143,15 +143,7 @@ struct DecisionTimelineCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Label("Decision Activity", systemImage: "chart.line.uptrend.xyaxis")
-                    .font(.headline)
-                    .foregroundStyle(Color.offshootPrimary)
-                Spacer()
-                Text("Last 30 days")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
+            CardTitle(title: "Decision Activity", systemImage: "chart.line.uptrend.xyaxis", note: "Last 30 days")
 
             if totalRecent == 0 {
                 Text("No decisions in the last 30 days")
@@ -193,6 +185,8 @@ struct DecisionTimelineCard: View {
                     }
                 }
                 .frame(height: 180)
+                // Axis labels cannot wrap, so chart text stops growing at the largest non-accessibility size.
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
         }
         .padding(20)

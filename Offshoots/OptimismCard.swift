@@ -9,15 +9,17 @@ internal import SwiftUI
 
 struct OptimismCard: View {
     let bias: OptimismBias?
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Label("Optimism", systemImage: "sun.max.fill")
-                .font(.headline)
-                .foregroundStyle(Color.offshootPrimary)
+            CardTitle(title: "Optimism", systemImage: "sun.max.fill")
 
             if let bias {
-                HStack(spacing: 12) {
+                let layout = dynamicTypeSize.isAccessibilitySize
+                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                    : AnyLayout(HStackLayout(spacing: 12))
+                layout {
                     Image(systemName: icon(for: bias.lean))
                         .font(.title)
                         .foregroundStyle(color(for: bias.lean))
