@@ -5,6 +5,8 @@
 - [ ] Section 6, Housekeeping — start in a new session (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
+- [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
+- [ ] **Design decision for Geoff: flatten the cards?** The April `dev/offshoots-development` TODO proposed moving away from raised rounded cards with shadows: flatten `PrimaryCard` and Quick Stats, make Insights and Decision Detail native sections, turn Log, Edit and Mark Outcome into native form sections, and drop the card framing on pending rows. This is a large visual change. Decide yes or no before any work starts.
 - [ ] **Section 6, Housekeeping.**
   - File header comments are duplicated.
   - Header typos: `NotificationDelegare`, `DasbboardView`.
