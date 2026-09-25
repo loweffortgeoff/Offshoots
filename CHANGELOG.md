@@ -15,6 +15,9 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Changed: `DecisionStore` is `@Observable` instead of `ObservableObject`. Views read it with `@Environment(DecisionStore.self)`. The store no longer imports Combine.
 - Changed: review readiness is measured against the store's stored `today`, which moves forward when the app becomes active. `Decision.isReadyForReview` is now `isReadyForReview(asOf:)`, and rows get the result as a parameter.
 - Docs: the README tech stack lists Observation and Swift Testing, and says Combine is used only by `NotificationDelegate`.
+- Fixed: the store is created once, in `OffshootsApp`. Owned by `ContentView`, it decoded the file a second time when the splash ended.
+- Fixed: editing a pending decision's title also updates its scheduled reminder, which shows the title.
+- Changed: the test target signs with the app's team, and store tests delete their temporary folders. `Fixture` has its own file.
 
 ## Merged to `main` — branch `section-3-insights`
 

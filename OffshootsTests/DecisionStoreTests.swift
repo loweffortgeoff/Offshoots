@@ -10,7 +10,7 @@ import Testing
 @testable import Offshoots
 
 @MainActor
-struct DecisionStoreTests {
+final class DecisionStoreTests {
 
     /// A fresh folder per test, so tests never touch the app's real decisions.json
     let folder: URL
@@ -19,6 +19,10 @@ struct DecisionStoreTests {
     init() throws {
         folder = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    }
+
+    deinit {
+        try? FileManager.default.removeItem(at: folder)
     }
 
     @Test func savedDecisionsLoadBack() throws {

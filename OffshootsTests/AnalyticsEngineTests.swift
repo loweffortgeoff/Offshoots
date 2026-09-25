@@ -76,16 +76,3 @@ struct AnalyticsEngineTests {
         #expect(OptimismBias(averageGap: gap, sample: 3).lean == lean)
     }
 }
-
-enum Fixture {
-    /// Decodes `docs/fixtures/<name>.json` the same way `DecisionStore` does
-    static func load(_ name: String) throws -> [Decision] {
-        let url = URL(filePath: #filePath)
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-            .appending(path: "docs/fixtures/\(name).json")
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode([Decision].self, from: Data(contentsOf: url))
-    }
-}
