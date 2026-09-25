@@ -5,9 +5,6 @@
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Section 5, UI.**
-  - Matcha `#A4C639` text has low contrast (about 2:1).
-  - The dark palette is defined but not used.
-  - The category chart colors are not from the palette.
   - The Appearance rows in Settings are placeholders.
   - There is no export or delete-all.
   - The 2-second splash shows on every launch.
@@ -20,8 +17,6 @@
   - In the Revisit and Mark Outcome sheets, the keyboard does not close when you tap outside it and covers Save.
   - The Save Outcome button sits at the bottom edge of the screen when a follow-up is on.
   - Some detail cards are narrower than the rest.
-  - The Upcoming header and the Pending badge have low contrast.
-  - The date picker selection is black, not the accent color.
   - The Quick Stats "Outcomes" tile wraps "Good 100%" onto two lines, so the three tiles have different heights.
 - [ ] **Section 5, open question.** A revisit-due row shows "Ready to revisit" but no "Review" pill. Keep it that way (the recommendation) or add the pill?
 - [ ] **Section 6, Housekeeping.**
@@ -30,6 +25,7 @@
   - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
 
 ## Done
+- [x] Section 5, chunk 1: adaptive palette (contrast, Soil/Loam dark mode, category chart, Upcoming/Pending contrast, accent value for the date picker) — 2026-09-25
 - [x] Merge `section-4-architecture` to `main` (fast-forward) — 2026-09-25
 - [x] Unit tests pass on the iPhone 17 Pro (15 of 15, after fixtures moved into the test bundle) — 2026-09-25
 - [x] Section 4 code review fixes (store created once, title reschedules reminder, test target hygiene) — 2026-09-25

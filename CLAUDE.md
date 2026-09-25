@@ -87,6 +87,18 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 The iPhone 17 Pro runs iOS 27.2 Beta 2. It builds from Xcode 27.0 on the Mac
 mini (confirmed 2026-09-24).
 
+# Colors
+
+Adaptive colors live in `Assets.xcassets` with light and dark values.
+Xcode generates a `Color` symbol for each one (`OutcomeGood` becomes
+`.outcomeGood`), so do not declare the same name in `Color+Theme.swift`:
+the build fails with "invalid redeclaration". `Color+Theme.swift` keeps the
+fixed raw palette (`offshoots…`) for the splash, plus `offshootPrimary` and
+`outcomePending`.
+
+On iOS 27.0 the graphical `DatePicker` draws the selected day in the label
+color and ignores the tint. iOS 26.5 uses the tint (checked 2026-09-25).
+
 # Docs
 
 - The audit and plan docs live in `docs/`. The 2026-09-23 audit doc lists the
