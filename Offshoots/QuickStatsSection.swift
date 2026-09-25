@@ -15,6 +15,7 @@ struct QuickStatsSection: View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
                 Image(systemName: "sparkles")
+                    .accessibilityHidden(true)
                     .foregroundStyle(Color.offshootPrimary)
                 Text("Quick Stats")
                     .font(.headline)

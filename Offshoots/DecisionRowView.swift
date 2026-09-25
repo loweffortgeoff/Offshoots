@@ -84,6 +84,7 @@ struct DecisionRowView: View {
                     OutcomeIcon(outcome: decision.expected)
                         .font(.body)
                         .opacity(0.4) // Increased visibility slightly
+                        .accessibilityLabel("Expected \(decision.expected.shortLabel)")
 
                     Text(isReadyForReview ? "Review" : "Pending")
                         .font(.caption2)
@@ -106,6 +107,8 @@ struct DecisionRowView: View {
                     OutcomeIcon(outcome: current)
                         .font(.title3)
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Expected \(decision.expected.shortLabel), turned out \(current.shortLabel)")
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -45,6 +45,7 @@ struct LogDecisionView: View {
                         // Hero section
                         VStack(spacing: 8) {
                             Image(systemName: "leaf.circle.fill")
+                                .accessibilityHidden(true)
                                 .font(.system(size: heroIconSize))
                                 .foregroundStyle(Color.offshootPrimary)
 
@@ -263,6 +264,7 @@ struct SavedConfirmationView: View {
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: "checkmark.circle.fill")
+                .accessibilityHidden(true)
                 .font(.system(size: iconSize))
                 .foregroundStyle(Color.offshootOnPrimary)
 

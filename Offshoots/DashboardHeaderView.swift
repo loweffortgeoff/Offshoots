@@ -49,6 +49,7 @@ struct DashboardHeaderView: View {
         VStack(spacing: 16) {
             HStack {
                 Image(systemName: "leaf.circle.fill")
+                    .accessibilityHidden(true)
                     .font(.title2)
                     .foregroundStyle(Color.offshootPrimary)
 

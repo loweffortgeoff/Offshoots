@@ -17,6 +17,7 @@ struct ReadyToReviewSection: View {
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
                     Image(systemName: "bell.badge.fill")
+                        .accessibilityHidden(true)
                         .foregroundStyle(Color.offshootPrimary)
                     Text("Ready to Review")
                         .font(.headline)

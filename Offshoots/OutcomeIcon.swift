@@ -21,6 +21,9 @@ struct OutcomeIcon: View {
         Image(systemName: symbol)
             .foregroundStyle(outcome.themeColor) // Uses our new theme extension
             .font(.title3)
+            .accessibilityLabel(outcome.shortLabel)
+            // The checkmark symbol carries a built-in Selected trait; this icon is never a selection.
+            .accessibilityRemoveTraits(.isSelected)
     }
 
     var symbol: String {

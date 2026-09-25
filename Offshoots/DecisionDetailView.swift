@@ -84,6 +84,7 @@ struct DecisionDetailView: View {
                         )
 
                         Image(systemName: heroIcon)
+                            .accessibilityHidden(true)
                             .font(.system(size: heroIconSize))
                             .foregroundStyle(heroIconColor.opacity(0.4))
                     }
@@ -120,6 +121,7 @@ struct DecisionDetailView: View {
                                     HStack(spacing: 6) {
                                         OutcomeIcon(outcome: actual)
                                             .font(.body)
+                                            .accessibilityHidden(true)
                                         Text(actual.shortLabel)
                                             .font(.subheadline)
                                             .fontWeight(.semibold)
@@ -132,6 +134,7 @@ struct DecisionDetailView: View {
                                 } else {
                                     HStack(spacing: 6) {
                                         Image(systemName: "hourglass")
+                                            .accessibilityHidden(true)
                                             .font(.callout)
                                         Text("Pending")
                                             .font(.subheadline)
@@ -177,6 +180,7 @@ struct DecisionDetailView: View {
                             HStack(spacing: 16) {
                                 OutcomeIcon(outcome: decision.expected)
                                     .font(.system(size: outcomeIconSize))
+                                    .accessibilityHidden(true)
 
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(decision.expected.shortLabel)
@@ -205,6 +209,7 @@ struct DecisionDetailView: View {
                                 HStack(spacing: 16) {
                                     OutcomeIcon(outcome: actual)
                                         .font(.system(size: outcomeIconSize))
+                                        .accessibilityHidden(true)
 
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(actual.shortLabel)
@@ -221,6 +226,7 @@ struct DecisionDetailView: View {
                                 if decision.expected == actual {
                                     HStack(spacing: 8) {
                                         Image(systemName: "trophy.fill")
+                                            .accessibilityHidden(true)
                                             .foregroundStyle(.yellow)
                                         Text("You predicted correctly!")
                                             .font(.subheadline)
@@ -391,6 +397,14 @@ private struct RevisitHistoryCard: View {
         }
     }
 
+    /// "Bad to Good" when the rating changed, otherwise just the rating.
+    private func revisitChangeLabel(_ entry: (revisit: Revisit, previous: DecisionOutcome?)) -> String {
+        if let previous = entry.previous, previous != entry.revisit.outcome {
+            return "\(previous.shortLabel) to \(entry.revisit.outcome.shortLabel)"
+        }
+        return entry.revisit.outcome.shortLabel
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Label("Revisits", systemImage: "arrow.triangle.2.circlepath")
@@ -404,18 +418,22 @@ private struct RevisitHistoryCard: View {
                             OutcomeIcon(outcome: previous)
                                 .font(.callout)
                                 .opacity(0.4)
+                                .accessibilityHidden(true)
                             Image(systemName: "arrow.right")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
+                                .accessibilityHidden(true)
                         }
 
                         OutcomeIcon(outcome: entry.revisit.outcome)
                             .font(.body)
+                            .accessibilityHidden(true)
 
                         Text(entry.revisit.outcome.shortLabel)
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(entry.revisit.outcome.themeColor)
+                            .accessibilityLabel(revisitChangeLabel(entry))
 
                         Spacer()
 

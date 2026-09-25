@@ -22,6 +22,7 @@ struct RecentDecisionsSection: View {
             headerLayout {
                 HStack {
                     Image(systemName: "clock.arrow.circlepath")
+                        .accessibilityHidden(true)
                         .foregroundStyle(Color.offshootPrimary)
                     Text("Recent Decisions")
                         .font(.headline)
@@ -71,6 +72,7 @@ struct EmptyRecentDecisionsView: View {
     var body: some View {
         VStack(spacing: 12) {
             Image(systemName: "tray")
+                .accessibilityHidden(true)
                 .font(.system(size: iconSize))
                 .foregroundStyle(Color.offshootPrimary.opacity(0.3))
 

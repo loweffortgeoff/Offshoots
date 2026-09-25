@@ -69,6 +69,7 @@ struct EmptyAnalyticsView: View {
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "chart.bar.xaxis")
+                .accessibilityHidden(true)
                 .font(.system(size: iconSize))
                 .foregroundStyle(Color.offshootPrimary.opacity(0.3))
 
@@ -98,6 +99,7 @@ struct StatBox: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: icon)
+                    .accessibilityHidden(true)
                     .font(.callout)
                     .foregroundStyle(color)
                 Spacer()

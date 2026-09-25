@@ -105,6 +105,7 @@ struct DecisionsListView: View {
                         .frame(width: emptyIconSize * 2, height: emptyIconSize * 2)
 
                     Image(systemName: "leaf.circle.fill")
+                        .accessibilityHidden(true)
                         .font(.system(size: emptyIconSize))
                         .foregroundStyle(Color.offshootPrimary.opacity(0.6))
                 }
@@ -158,6 +159,7 @@ struct DecisionsListView: View {
     private func customHeader(_ text: String, icon: String, color: Color) -> some View {
         HStack(spacing: 8) {
             Image(systemName: icon)
+                .accessibilityHidden(true)
                 .foregroundStyle(color)
             Text(text)
                 .font(.headline)
