@@ -1,11 +1,10 @@
 # TODO
 
 ## Next
-- [ ] Section 4, Architecture — in progress on `section-4-architecture` (see Backlog).
+- [ ] Review and merge `section-4-architecture` to `main`.
+- [ ] Section 5, UI — start in a new session (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
-- [ ] **Section 4, Architecture.**
-  - Decide between JSON with schema versioning and SwiftData.
 - [ ] **Section 5, UI.**
   - Matcha `#A4C639` text has low contrast (about 2:1).
   - The dark palette is defined but not used.
@@ -33,6 +32,7 @@
 
 ## Done
 - [x] Section 4, chunk 1: Swift 6 language mode; JSON storage decision — 2026-09-25
+- [x] Section 4, chunk 5: README tech stack matches the code — 2026-09-25
 - [x] Section 4, chunk 4: `@Observable` store with a stored `today` for review readiness — 2026-09-25
 - [x] Section 4, chunk 3: all reminder scheduling goes through the store (Edit and Settings) — 2026-09-25
 - [x] Section 4, chunk 2: `OffshootsTests` target and `AnalyticsEngine` tests — 2026-09-25

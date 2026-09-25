@@ -44,7 +44,9 @@ Offshoots helps you become a better decision maker. Log your decisions, predict 
 | **Charts** | Analytics visualizations |
 | **UserNotifications** | Follow-up reminders |
 | **StoreKit** | Tip jar (4 tiers) |
-| **Combine** | Reactive state management |
+| **Observation** | App state (`@Observable` store) |
+| **Combine** | Notification tap routing (`NotificationDelegate` only) |
+| **Swift Testing** | Unit tests for `AnalyticsEngine` and `DecisionStore` |
 
 ## Project Structure
 

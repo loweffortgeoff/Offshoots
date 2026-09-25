@@ -14,6 +14,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Removed: `xcschememanagement.plist` from git (per-user Xcode state; the file stays on disk).
 - Changed: `DecisionStore` is `@Observable` instead of `ObservableObject`. Views read it with `@Environment(DecisionStore.self)`. The store no longer imports Combine.
 - Changed: review readiness is measured against the store's stored `today`, which moves forward when the app becomes active. `Decision.isReadyForReview` is now `isReadyForReview(asOf:)`, and rows get the result as a parameter.
+- Docs: the README tech stack lists Observation and Swift Testing, and says Combine is used only by `NotificationDelegate`.
 
 ## Merged to `main` — branch `section-3-insights`
 

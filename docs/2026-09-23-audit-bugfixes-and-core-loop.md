@@ -80,7 +80,7 @@ Should outcome stats (Good %, distribution chart) use the first rating or the la
 ## Remaining audit sections
 
 - **3 — Insights correctness:** exact-match-only accuracy on a 5-point scale; unused `numericValue` and stakes weights; no optimism-bias metric (README promises one); `decisionQualityScore()` never shown; time windows use `createdAt` instead of `resolvedAt`; trend shows "Stable" with too little data. Section 3 — done 2026-09-25, see DECISIONS.md.  
-- **4 — Architecture:** move store to `@Observable`/`@MainActor`; route all reminder scheduling through the store (Edit still calls `ReminderManager` directly); JSON \+ schema versioning vs SwiftData; add tests (start with `AnalyticsEngine`); `SWIFT_VERSION = 5.0` vs README's Swift 6; test target deployment 26.1 vs app 18.6.  
+- **4 — Architecture:** move store to `@Observable`/`@MainActor`; route all reminder scheduling through the store (Edit still calls `ReminderManager` directly); JSON \+ schema versioning vs SwiftData; add tests (start with `AnalyticsEngine`); `SWIFT_VERSION = 5.0` vs README's Swift 6; test target deployment 26.1 vs app 18.6. Section 4 — done 2026-09-25 on `section-4-architecture`, see DECISIONS.md.  
 - **5 — UI:** Matcha `#A4C639` text/buttons \~2:1 contrast (fails WCAG AA); dark "Soil/Loam" palette defined but unused; off-palette category chart colors; placeholder Appearance rows in Settings; no export / delete-all; 2-second splash every launch; hardcoded font sizes (Dynamic Type); delete only via long-press.  
 - **6 — Housekeeping:** duplicated file header comments; header typos (`NotificationDelegare`, `DasbboardView`); stale README project structure; no CHANGELOG / DECISIONS / TODO.
 
