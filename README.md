@@ -59,7 +59,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **StoreKit** | Tip jar (4 tiers) |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine` and `DecisionStore` |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion` and `PredictionResultBanner` |
 
 ## Project Structure
 
