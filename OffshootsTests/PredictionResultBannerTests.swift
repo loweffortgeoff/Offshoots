@@ -25,4 +25,9 @@ struct PredictionResultBannerTests {
         #expect(PredictionResultBanner.unlockText(markedCount: 5) == "5 of 6 marked · Trend unlocks at 6")
         #expect(PredictionResultBanner.unlockText(markedCount: 6) == nil)
     }
+
+    @Test func spokenUnlockText() {
+        #expect(PredictionResultBanner.spokenUnlockText(markedCount: 3) == "3 of 6 marked, Trend unlocks at 6")
+        #expect(PredictionResultBanner.spokenUnlockText(markedCount: 6) == nil)
+    }
 }

@@ -37,7 +37,15 @@ struct PredictionResultBanner: View {
         .frame(maxWidth: .infinity)
         .background(gap == 0 ? Color.yellow.opacity(0.1) : Color.offshootBackground)
         .cornerRadius(12)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityText)
+    }
+
+    private var accessibilityText: String {
+        guard let unlock = Self.spokenUnlockText(markedCount: markedCount) else {
+            return Self.message(for: gap)
+        }
+        return "\(Self.message(for: gap)) \(unlock)"
     }
 
     private var icon: String {
@@ -63,6 +71,11 @@ struct PredictionResultBanner: View {
             return "\(markedCount) of \(AnalyticsEngine.minimumSoFarSample) marked · Trend unlocks at \(AnalyticsEngine.minimumSoFarSample)"
         }
         return nil
+    }
+
+    /// `unlockText`, spoken for VoiceOver: " · " becomes ", "
+    static func spokenUnlockText(markedCount: Int) -> String? {
+        unlockText(markedCount: markedCount)?.replacingOccurrences(of: " · ", with: ", ")
     }
 }
 

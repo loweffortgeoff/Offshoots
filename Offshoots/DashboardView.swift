@@ -8,7 +8,6 @@
 internal import SwiftUI
 
 struct DashboardView: View {
-    @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
     @Binding var logDraft: StarterSuggestion?
 
@@ -31,13 +30,7 @@ struct DashboardView: View {
 
                         ReadyToReviewSection()
 
-                        let suggestions = StarterSuggestion.available(given: store.decisions)
-                        if !suggestions.isEmpty {
-                            StarterSuggestionsCard(suggestions: suggestions) { suggestion in
-                                logDraft = suggestion
-                                selectedTab = .log
-                            }
-                        }
+                        StarterSuggestionsSection(logDraft: $logDraft, selectedTab: $selectedTab)
 
                         QuickStatsSection()
 

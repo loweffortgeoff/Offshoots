@@ -7,6 +7,8 @@ In-flight changes from coding sessions. The release pass turns these into releas
 ### 2026-09-26 — Early engagement, chunk 4
 - Decision Detail shows how the first rating compared with the prediction for every marked decision, and what unlocks next while fewer than 6 are marked.
 - Progress in place of empty states: the trend tile reads "N of 6 marked", the Optimism card counts toward 3, and empty Insights cards say "Mark your first outcome to see this."
+- Outcome Trends says "No outcomes marked in the last 8 weeks." when there are marked outcomes but none recent.
+- Empty Outcomes and Prediction Accuracy cards fill the width, like the other Insights cards.
 
 ### 2026-09-26 — Early engagement, chunk 3
 - "Try a quick one" on the Dashboard: three small example decisions for new users. A tap fills in the Log form with the title, the category and a review tomorrow. The card goes away at 5 logged decisions.
@@ -16,6 +18,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ### 2026-09-26 — Early engagement, chunk 1
 - Review-date presets (Tomorrow, 3 days, 1 week, 1 month) on Log and Edit Decision. A preset keeps the time of day, so reminder timing does not change.
+- The four review-date presets fit on one row on the iPhone 18 Pro at the default text size; larger text sizes fall back to two rows, then a column.
 
 ## Merged to `main` — branch `section-6-housekeeping`
 

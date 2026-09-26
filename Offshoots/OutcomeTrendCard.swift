@@ -96,6 +96,7 @@ struct OutcomeTrendCard: View {
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(20)
         .background(Color.offshootCardBackground)
         .cornerRadius(16)

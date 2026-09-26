@@ -87,6 +87,9 @@ Offshoots/
 ├── DashboardView.swift            # Dashboard screen
 ├── DashboardHeaderView.swift      # Pending / Completed / Total card
 ├── ReadyToReviewSection.swift     # Decisions due for review
+├── StarterSuggestion.swift        # Starter suggestion model, availability rule
+├── StarterSuggestionsSection.swift # Reads the store, shows the card while suggestions remain
+├── StarterSuggestionsCard.swift   # "Try a quick one" card for new users
 ├── QuickStatsSection.swift        # Quick Stats row
 ├── QuickStatTile.swift            # One Quick Stats tile
 ├── RecentDecisionsSection.swift   # Recent decisions and empty state
@@ -101,6 +104,9 @@ Offshoots/
 ├── RevisitView.swift              # Re-rate a decision later
 ├── OutcomePickerView.swift        # Five-step outcome picker
 ├── OutcomeIcon.swift              # Outcome symbol
+├── ReviewDatePreset.swift         # Tomorrow / 3 days / 1 week / 1 month presets
+├── ReviewDatePresetRow.swift      # Preset buttons on Log and Edit
+├── PredictionResultBanner.swift   # How the first rating compared with the prediction
 │
 │  # Insights
 ├── AnalyticsView.swift            # Insights screen, empty state, Decision Activity card
@@ -118,7 +124,7 @@ Offshoots/
 ├── TipJarView.swift               # Tip Jar screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
 ```
