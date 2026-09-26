@@ -81,11 +81,11 @@ struct OptimismCard: View {
         let steps = abs(bias.averageGap).formatted(.number.precision(.fractionLength(1)))
         switch bias.lean {
         case .optimistic:
-            return "Your predictions run \(steps) steps better than the first result, across \(bias.sample) decisions."
+            return "On average, you expect \(steps) steps better than the outcome you first mark, across \(bias.sample) decisions."
         case .pessimistic:
-            return "Your predictions run \(steps) steps worse than the first result, across \(bias.sample) decisions."
+            return "On average, you expect \(steps) steps worse than the outcome you first mark, across \(bias.sample) decisions."
         case .calibrated:
-            return "Your predictions match the first result on average, across \(bias.sample) decisions."
+            return "On average, your predictions match the outcome you first mark, across \(bias.sample) decisions."
         }
     }
 }

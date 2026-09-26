@@ -6,6 +6,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ### 2026-09-26 — Screenshot pipeline, stop 1
 - The Outcomes legend on Insights always adds up to 100%. It used to cut off the decimals, so it could show 97%.
+- The Optimism card reads "On average, you expect 0.5 steps better than the outcome you first mark, across 6 decisions." It used to say "than the first result".
 
 ## Merged to `main` — branch `early-engagement`
 
