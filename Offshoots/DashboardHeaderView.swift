@@ -5,13 +5,6 @@
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
-//
-//  DashboardHeaderView.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/8/25.
-//
-
 internal import SwiftUI
 
 struct DashboardHeaderView: View {

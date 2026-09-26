@@ -5,13 +5,6 @@
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
-//
-//  DecisionDetailView.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/8/25.
-//
-
 internal import SwiftUI
 
 struct DecisionDetailView: View {

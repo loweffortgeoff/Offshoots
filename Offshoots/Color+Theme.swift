@@ -5,20 +5,6 @@
 //  Created by Geoffrey Silva on 12/16/25.
 //
 
-//
-//  Color+Theme.swift
-//  Offshoots
-//
-//  Created by Coding Partner.
-//
-
-//
-//  Color+Theme.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/16/25.
-//
-
 internal import SwiftUI
 
 extension Color {

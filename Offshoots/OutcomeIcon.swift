@@ -5,13 +5,6 @@
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
-//
-//  OutcomeIcon.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/8/25.
-//
-
 internal import SwiftUI
 
 struct OutcomeIcon: View {

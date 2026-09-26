@@ -5,13 +5,6 @@
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
-//
-//  DecisionStore.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/8/25.
-//
-
 import Foundation
 import Observation
 internal import SwiftUI

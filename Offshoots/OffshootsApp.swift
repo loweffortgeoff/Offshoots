@@ -5,13 +5,6 @@
 //  Created by Geoffrey Silva on 12/7/25.
 //
 
-//
-//  OffshootsApp.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/7/25.
-//
-
 internal import SwiftUI
 
 @main

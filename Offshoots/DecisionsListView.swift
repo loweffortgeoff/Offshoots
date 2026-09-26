@@ -5,20 +5,6 @@
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
-//
-//  DecisionsListView.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/8/25.
-//
-
-//
-//  DecisionsListView.swift
-//  Offshoots
-//
-//  Created by Geoffrey Silva on 12/8/25.
-//
-
 internal import SwiftUI
 
 struct DecisionsListView: View {

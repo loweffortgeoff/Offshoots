@@ -5,13 +5,6 @@
 //  Created by Geoffrey Silva on 12/16/25.
 //
 
-//
-//  SplashScreenView.swift
-//  Offshoots
-//
-//  Created by Coding Partner.
-//
-
 internal import SwiftUI
 
 struct SplashScreenView: View {
