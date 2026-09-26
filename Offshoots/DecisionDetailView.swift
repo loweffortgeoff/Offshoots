@@ -218,20 +218,11 @@ struct DecisionDetailView: View {
                                     }
                                 }
 
-                                if decision.expected == actual {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: "trophy.fill")
-                                            .accessibilityHidden(true)
-                                            .foregroundStyle(.yellow)
-                                        Text("You predicted correctly!")
-                                            .font(.subheadline)
-                                            .fontWeight(.medium)
-                                            .foregroundStyle(Color.offshootPrimary)
-                                    }
-                                    .padding(12)
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color.yellow.opacity(0.1))
-                                    .cornerRadius(12)
+                                if let gap = AnalyticsEngine.predictionGap(for: decision) {
+                                    PredictionResultBanner(
+                                        gap: gap,
+                                        markedCount: AnalyticsEngine.markedCount(from: store.decisions)
+                                    )
                                 }
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)

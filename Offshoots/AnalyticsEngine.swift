@@ -65,6 +65,17 @@ struct AnalyticsEngine {
         accuracyBreakdown(from: decisions).percent
     }
 
+    /// Steps from the prediction to the first rating. Positive means it went
+    /// better than expected. Nil until an outcome is marked
+    static func predictionGap(for decision: Decision) -> Int? {
+        decision.actual.map { $0.numericValue - decision.expected.numericValue }
+    }
+
+    /// Decisions with a first rating
+    static func markedCount(from decisions: [Decision]) -> Int {
+        decisions.filter { $0.actual != nil }.count
+    }
+
     /// Compares prediction accuracy in the last 30 days with the 30 days before,
     /// by the date each outcome was marked. Each window needs 3 decisions.
     /// Until then, with 6 or more marked decisions, it compares the older half

@@ -143,4 +143,36 @@ struct AnalyticsEngineTests {
         let decisions = try Fixture.load("so-far-trend")
         #expect(AnalyticsEngine.qualityTrend(from: decisions, now: Self.now) == TrendResult(trend: .improving, isSoFar: true))
     }
+
+    // MARK: - Prediction gap and marked count
+
+    @Test func predictionGapIsNilUntilMarked() {
+        let pending = Decision(title: "P", category: .work, expected: .good, followUpDate: Self.now)
+        #expect(AnalyticsEngine.predictionGap(for: pending) == nil)
+    }
+
+    @Test(arguments: [
+        (DecisionOutcome.good, DecisionOutcome.good, 0),
+        (.good, .veryGood, 1),
+        (.good, .neutral, -1),
+        (.bad, .veryGood, 3),
+        (.veryGood, .veryBad, -4),
+    ])
+    func predictionGapIsFirstRatingMinusExpected(expected: DecisionOutcome, actual: DecisionOutcome, gap: Int) {
+        let decision = Decision(title: "M", category: .work, expected: expected, actual: actual, followUpDate: Self.now)
+        #expect(AnalyticsEngine.predictionGap(for: decision) == gap)
+    }
+
+    @Test func predictionGapIgnoresRevisits() {
+        let decision = Decision(
+            title: "R", category: .work, expected: .good, actual: .bad, followUpDate: Self.now,
+            revisits: [Revisit(outcome: .veryGood)]
+        )
+        #expect(AnalyticsEngine.predictionGap(for: decision) == -2)
+    }
+
+    @Test func markedCountCountsFirstRatings() throws {
+        #expect(AnalyticsEngine.markedCount(from: try Fixture.load("insights-seed-too-early")) == 3)
+        #expect(AnalyticsEngine.markedCount(from: []) == 0)
+    }
 }
