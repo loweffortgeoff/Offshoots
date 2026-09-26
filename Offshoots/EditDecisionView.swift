@@ -131,6 +131,8 @@ struct EditDecisionView: View {
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
 
+                                ReviewDatePresetRow(date: $followUpDate)
+
                                 DatePicker("Review date", selection: $followUpDate, in: earliestReviewDate..., displayedComponents: .date)
                                     .datePickerStyle(.graphical)
                                     .tint(Color.offshootPrimary)

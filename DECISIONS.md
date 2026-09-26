@@ -71,3 +71,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** The accent is an adaptive asset: a darker olive in light mode for contrast, Matcha `#A4C639` in dark mode. Dark mode uses the Soil and Loam colors for background and cards; light mode uses system colors. Category chart bars all use the accent. Rows get a context menu (Edit, Delete) in place of the hidden long press. Settings gets JSON export through `ShareLink` and Delete All with confirmation. "App Theme" becomes a System/Light/Dark picker; the "App Icon" row goes. The splash shows on first launch only. Revisit-due rows get a "Revisit" pill.
 **Why:** Matcha text is about 2:1 on white (fails WCAG AA). Outcome colors already mean good and bad, so they should not also mean categories. Swipe actions outside `List` need iOS 27, and the app targets iOS 18.6. Every row in the Ready section should have the same shape.
 **Alternative considered:** Delete the unused dark palette; keep a shorter splash on every launch; keep revisit rows without a pill.
+
+## 2026-09-26 (Review-date presets, no same-day option)
+**Decision:** Log and Edit Decision get four presets: Tomorrow, 3 days, 1 week and 1 month. A preset adds whole days to now and keeps the time of day. There is no "Tonight" preset.
+**Why:** Short reviews build a new user's sample fast. Readiness is day-based (`isReadyForReview` uses the start of the review day), so a same-day review would be ready as soon as it is saved. Keeping the time of day keeps reminder timing as it was.
+**Alternative considered:** A "Tonight" preset with a time-of-day readiness rule. It touches readiness, Ready to Review and reminders for a small gain.

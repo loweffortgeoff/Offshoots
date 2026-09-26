@@ -19,7 +19,7 @@ struct LogDecisionView: View {
     @State private var category: DecisionCategory = .work
     @State private var stakes: DecisionStakes = .medium
     @State private var expected: DecisionOutcome = .neutral
-    @State private var followUpDate = Date().addingTimeInterval(86400)
+    @State private var followUpDate = ReviewDatePreset.tomorrow.date()
     @State private var showingSavedConfirmation = false
 
     private var trimmedNotes: String {
@@ -164,6 +164,8 @@ struct LogDecisionView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
+                            ReviewDatePresetRow(date: $followUpDate)
+
                             DatePicker("Review date", selection: $followUpDate, in: earliestReviewDate..., displayedComponents: .date)
                                 .datePickerStyle(.graphical)
                                 .tint(Color.offshootPrimary)
@@ -251,7 +253,7 @@ struct LogDecisionView: View {
         category = .work
         stakes = .medium
         expected = .neutral
-        followUpDate = Date().addingTimeInterval(86400)
+        followUpDate = ReviewDatePreset.tomorrow.date()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             withAnimation {

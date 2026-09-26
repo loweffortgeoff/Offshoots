@@ -2,6 +2,9 @@
 
 ## Next
 - [ ] **Early engagement: build it.** Run the plan `docs/superpowers/plans/2026-09-26-early-engagement.md` in a fresh session, subagent-driven (spec: `docs/superpowers/specs/2026-09-26-early-engagement-design.md`). Four chunks, each a review stop: review-date presets, a "So far" trend, starter suggestions, then a result line with progress copy. Keep the SwiftUI view work (the preset chip row and the Dashboard-to-Log pre-fill) inline; delegate the engine tasks.
+- [ ] Early engagement, chunk 2: "So far" trend (plan `docs/superpowers/plans/2026-09-26-early-engagement.md`)
+- [ ] Early engagement, chunk 3: starter suggestions
+- [ ] Early engagement, chunk 4: result line and progress copy
 - [ ] VoiceOver pass on the iPhone 17 Pro with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
@@ -9,6 +12,7 @@
 - [ ] **Design decision for Geoff: flatten the cards?** The April `dev/offshoots-development` TODO proposed moving away from raised rounded cards with shadows: flatten `PrimaryCard` and Quick Stats, make Insights and Decision Detail native sections, turn Log, Edit and Mark Outcome into native form sections, and drop the card framing on pending rows. This is a large visual change. Decide yes or no before any work starts.
 
 ## Done
+- [x] Early engagement, chunk 1: review-date presets (branch `early-engagement`) — 2026-09-26
 - [x] Merge `section-6-housekeeping` to `main` (fast-forward) — 2026-09-25
 - [x] Audit section 6: Housekeeping — duplicate headers, header typo, stable chart and app-list ids, unused code removed, README structure (branch `section-6-housekeeping`) — 2026-09-25
 - [x] Native Tip Jar carried over from `dev/offshoots-development` and merged; that branch deleted — 2026-09-25
