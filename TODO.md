@@ -7,6 +7,7 @@
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
 - [ ] **Design decision for Geoff: flatten the cards?** The April `dev/offshoots-development` TODO proposed moving away from raised rounded cards with shadows: flatten `PrimaryCard` and Quick Stats, make Insights and Decision Detail native sections, turn Log, Edit and Mark Outcome into native form sections, and drop the card framing on pending rows. This is a large visual change. Decide yes or no before any work starts.
+- [ ] **Log review date goes stale past midnight.** The Log form sets its review date to "tomorrow" once, when the tab is created, and again after each save. If the Log tab stays open past midnight, that date becomes today: no preset chip is selected, and a decision saved then is ready for review at once. This existed before the review-date presets; the chips only make it visible. Fix idea: reset the date to `ReviewDatePreset.tomorrow.date()` when the day changes (`store.today`) or when the Log tab appears, but only if the user has not picked a date. Found in the `early-engagement` branch review (2026-09-26).
 
 ## Done
 - [x] Early engagement, chunk 4: result line and progress copy (branch `early-engagement`) — 2026-09-26
