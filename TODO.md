@@ -2,13 +2,14 @@
 
 ## Next
 - [ ] **Calendar days cannot be tapped on Log and Edit.** Confirmed by hand on the iPhone 18 Pro simulator (iOS 27.0) on 2026-09-26: clicking a day in the graphical review-date calendar does nothing. The month arrows and the preset chips work. Check the iPhone 17 Pro during the dogfooding week. Likely cause: a tap gesture on the form, such as the tap-outside-to-close-the-keyboard gesture from Section 5, catches the tap before the calendar gets it. Until it is fixed, only the presets can set the review date.
-- [ ] VoiceOver pass on the iPhone 17 Pro with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
+
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
 - [ ] **Log review date goes stale past midnight.** The Log form sets its review date to "tomorrow" once, when the tab is created, and again after each save. If the Log tab stays open past midnight, that date becomes today: no preset chip is selected, and a decision saved then is ready for review at once. This existed before the review-date presets; the chips only make it visible. Fix idea: reset the date to `ReviewDatePreset.tomorrow.date()` when the day changes (`store.today`) or when the Log tab appears, but only if the user has not picked a date. Found in the `early-engagement` branch review (2026-09-26).
 
 ## Done
+- [x] VoiceOver pass on the iPhone 17 with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
 - [x] Merge `remove-tip-jar` to `main` (fast-forward) — 2026-09-26
 - [x] Remove the Tip Jar: both Swift files, the Settings Support section and the StoreKit link (branch `remove-tip-jar`) — 2026-09-26
 - [x] Draft `ASC_LISTING.md` for the 2.0.0 relaunch; replace the blanket `*.md` ignore with a Task(ed)-style `.gitignore` — 2026-09-26
