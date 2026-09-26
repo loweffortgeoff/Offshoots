@@ -2,6 +2,7 @@
 *.xcuserstate
 xcuserdata/
 DerivedData/
+build/
 
 # Docs (except README, project docs and docs/)
 *.md

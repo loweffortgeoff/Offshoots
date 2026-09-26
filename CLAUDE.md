@@ -47,6 +47,16 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   `docs/fixtures/<fixture>.json` in as `decisions.json` and relaunches.
   Run it with no argument to list fixtures. `SIM=<UDID>` picks another
   simulator. The app must be installed there first.
+- **App Store screenshots:** `scripts/screenshots.sh` erases the iPhone 18 Pro
+  Max (iOS 27.0), sets dark mode and a 9:41 status bar, builds, installs and
+  loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
+  and the script moves every date to today, so the shots never drift.
+  `ScreenshotFixtureTests` pins the numbers. Capture with
+  `scripts/screenshots.sh shot 01-dashboard`; files go to
+  `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/<date>/`.
+  The shot list and scroll positions are at the top of the script. Do not save
+  on 02 (Log) or 04 (Revisit): a save asks for notification permission.
+  The 6.9" capture size is 1320 × 2868 px.
 - **Insights fixtures:** `docs/fixtures/insights-seed.json` gives Good 50%,
   Top Category Tied, Trend Improving, Accuracy 67% (4 correct, 1 close,
   1 missed) and Optimistic (0.5 steps, 6 decisions) when today is 2026-09-25 to 2026-09-30. The trend windows move

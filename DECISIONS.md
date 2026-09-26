@@ -101,3 +101,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** "On average, you expect {n} steps better (or worse) than the outcome you first mark, across {count} decisions." The calibrated line uses the same "outcome you first mark".
 **Why:** "Than the first result" did not make sense without context, for example in an App Store screenshot. The new line still says that the bias is measured against the first rating.
 **Alternative considered:** "You tend to expect better than you get: 1.2 steps on average." Easier to read, but it drops the first-rating detail.
+
+## 2026-09-26 (Screenshot pipeline: raw captures from a date-shifted JSON fixture)
+**Decision:** `scripts/screenshots.sh` loads `docs/fixtures/screenshots.json`, anchored to 2026-09-27 and moved to the capture day. Dark mode only, 7 shots (Dashboard, Log, Detail, Revisit, Decisions, Insights accuracy, Insights patterns), raw captures only. Captions and frames happen in a separate finishing process.
+**Why:** It extends the `seed.sh` method this repo already has and ships no screenshot code in the app. The date shift keeps trend windows, due revisits and charts the same on any capture day. A test pins the numbers.
+**Alternative considered:** A Swift `ScreenshotSeed` behind a `-screenshots` argument, as in Task(ed) and AisleWise. It works, but it ships fixture code in the app binary.
