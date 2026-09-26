@@ -2,6 +2,12 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
+## On branch `fix/calendar-day-taps`
+
+### 2026-09-26 — Calendar day taps on Log and Edit
+- Fixed: a day in the graphical review-date calendar on Log and Edit could not be tapped. The month arrows and the preset chips still worked. The tap-outside-to-close-the-keyboard gesture on the form (Section 5) took the tap before the calendar got it. The gesture now runs only while a text field has focus, in LogDecisionView, EditDecisionView, MarkOutcomeView and RevisitView.
+> **Branch state:** not yet merged; device verification pending.
+
 ## On branch `remove-tip-jar`
 
 ### 2026-09-26 — Tip Jar removed

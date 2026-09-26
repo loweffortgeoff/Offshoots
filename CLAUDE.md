@@ -128,11 +128,13 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   on 2026-09-25 one opened an App Store link in Safari from Settings.
 - **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
   a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
-- **Calendar days do not take taps (app bug, open in TODO).** A day in the
-  graphical `DatePicker` on Log or Edit does not select, with the simulator
-  tool or by hand (checked 2026-09-26). The month arrows and the preset chips
-  work. Until the fix, test a custom review date by seeding a decision with
-  that `followUpDate`.
+  The `text` action can drop characters: on 2026-09-26 "Test" arrived as
+  "Te". Check the field in a screenshot before you rely on the text.
+- **Calendar day taps need a free path.** Do not put an always-on tap
+  gesture on a container that holds a graphical `DatePicker`. It takes the
+  day taps, and only the month arrows still work (fixed 2026-09-26). The
+  forms turn their tap-to-close-the-keyboard gesture on only while a text
+  field has focus: `.gesture(_:including: focused ? .all : .subviews)`.
 
 ## Test Device
 

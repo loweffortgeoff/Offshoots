@@ -116,3 +116,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** The Tip Jar is removed from the app: both Swift files, the Settings "Support" section and the StoreKit link. The listing and README no longer mention it.
 **Why:** The four tip products are Removed from Sale in App Store Connect, so the screen could only show "Tip Jar Unavailable". Tips were consumables that unlocked nothing, so no entitlement or restore path is lost.
 **Alternative considered:** Keep the screen and re-list the products. It keeps a small income stream, but it adds an in-app purchase to review for the relaunch.
+
+## 2026-09-26 (Gate the tap-to-close-keyboard gesture on focus)
+**Decision:** The tap-outside-to-close-the-keyboard gesture on Log, Edit, Mark Outcome and Revisit runs only while a text field has focus (`including: <any field focused> ? .all : .subviews`). With no field focused, the gesture does not claim taps, so the calendar day underneath receives them.
+**Why:** The gesture, added in Section 5, sat on the whole form and took every tap before the graphical calendar could select a day. Removing the gesture would drop the Section 5 tap-outside behavior.
+**Alternative considered:** Remove the gesture. Rejected because it would bring back the keyboard staying open on an outside tap. Trade-off accepted: with the keyboard up, the first tap on a day closes the keyboard, and a second tap selects the day.
