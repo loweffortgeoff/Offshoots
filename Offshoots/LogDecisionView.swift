@@ -199,10 +199,13 @@ struct LogDecisionView: View {
                     .padding(.bottom, 40)
                     // A tap anywhere outside a control closes the keyboard.
                     // Controls (the text fields, buttons) keep their own taps.
+                    // The gesture is live only while the keyboard is up: an
+                    // active tap gesture here blocks day taps in the calendar.
                     .contentShape(Rectangle())
-                    .onTapGesture {
-                        dismissKeyboard()
-                    }
+                    .gesture(
+                        TapGesture().onEnded { dismissKeyboard() },
+                        including: isTitleFocused || isNotesFocused ? .all : .subviews
+                    )
                 }
                 .scrollDismissesKeyboard(.immediately)
             }

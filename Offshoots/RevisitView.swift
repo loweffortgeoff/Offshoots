@@ -105,10 +105,13 @@ struct RevisitView: View {
                     .padding(.bottom, 40)
                     // A tap anywhere outside a control closes the keyboard.
                     // Controls (the text field, buttons) keep their own taps.
+                    // The gesture is live only while the keyboard is up, so it
+                    // never competes with the date picker for a tap.
                     .contentShape(Rectangle())
-                    .onTapGesture {
-                        isNoteFocused = false
-                    }
+                    .gesture(
+                        TapGesture().onEnded { isNoteFocused = false },
+                        including: isNoteFocused ? .all : .subviews
+                    )
                 }
                 .scrollDismissesKeyboard(.immediately)
                 // Save stays in view: above the keyboard, and never at the screen edge.
