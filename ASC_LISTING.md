@@ -95,9 +95,6 @@ choices,predict,outcome,reflect,review,bias,accuracy,insights,revisit,improve,pr
 - "log" ↔ "mindful"
 - "bias" ↔ "regret" (test whether emotional searches outperform the analytical one)
 
-## Review Notes
-See `ReviewNotes.txt` for the In-App Purchase location and product IDs (four consumable tips). Tips do not unlock features.
-
 ## Screenshots
 The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first capture pass is in `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/2026-09-26/`.
 
