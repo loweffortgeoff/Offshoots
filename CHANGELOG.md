@@ -2,6 +2,11 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
+## In progress — branch `screenshot-pipeline`
+
+### 2026-09-26 — Screenshot pipeline, stop 1
+- The Outcomes legend on Insights always adds up to 100%. It used to cut off the decimals, so it could show 97%.
+
 ## Merged to `main` — branch `early-engagement`
 
 ### 2026-09-26 — Early engagement, chunk 4

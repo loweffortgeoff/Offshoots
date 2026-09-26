@@ -34,6 +34,30 @@ struct AnalyticsEngine {
         return Int(percentage.rounded())
     }
 
+    /// Latest ratings of marked decisions, per outcome, with whole percentages
+    /// that always add up to 100 (largest remainder). Ties in the remainder go
+    /// in outcome order, so the result is stable
+    static func outcomeDistribution(from decisions: [Decision]) -> [OutcomeShare] {
+        let latest = decisions.compactMap { $0.actual == nil ? nil : $0.currentOutcome }
+        guard !latest.isEmpty else { return [] }
+
+        let total = latest.count
+        let counts = DecisionOutcome.allCases.compactMap { outcome -> (DecisionOutcome, Int)? in
+            let count = latest.filter { $0 == outcome }.count
+            return count > 0 ? (outcome, count) : nil
+        }
+
+        var percents = counts.map { $0.1 * 100 / total }
+        let remainders = counts.map { $0.1 * 100 % total }
+        let leftover = 100 - percents.reduce(0, +)
+        let order = remainders.indices.sorted { remainders[$0] > remainders[$1] || (remainders[$0] == remainders[$1] && $0 < $1) }
+        for index in order.prefix(leftover) {
+            percents[index] += 1
+        }
+
+        return counts.indices.map { OutcomeShare(outcome: counts[$0].0, count: counts[$0].1, percent: percents[$0]) }
+    }
+
     /// Sorts first ratings into exact matches, misses by one step, and misses by more
     static func accuracyBreakdown(from decisions: [Decision]) -> AccuracyBreakdown {
         var correct = 0, close = 0, incorrect = 0
@@ -143,6 +167,12 @@ struct AccuracyBreakdown: Equatable {
     var percent: Int {
         Int((fraction * 100).rounded())
     }
+}
+
+struct OutcomeShare: Equatable {
+    let outcome: DecisionOutcome
+    let count: Int
+    let percent: Int
 }
 
 enum QualityTrend: Equatable {

@@ -91,3 +91,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Every marked decision shows a result line on Decision Detail, measured against the first rating (exact, one step better or worse, or more). While fewer than 6 decisions are marked, a second line says what unlocks next. The trend tile shows "N of 6 marked" in place of "Too early", and empty Insights cards say "Mark your first outcome to see this."
 **Why:** The first marked outcome gave nothing back unless the guess was exact, and "Too early" did not say what to do. The first rating is the same basis that accuracy uses.
 **Alternative considered:** A short overlay after Save in Mark Outcome. It disappears, and VoiceOver users can miss it.
+
+## 2026-09-26 (Outcome percentages use the largest remainder)
+**Decision:** The Outcomes legend rounds with the largest remainder method, so the shown percentages always add up to 100. Ties go in outcome order, Very Bad first. The calculation lives in `AnalyticsEngine.outcomeDistribution(from:)`.
+**Why:** The legend truncated, so 6 decisions showed 16 + 16 + 33 + 16 + 16 = 97%. A legend that does not add up to 100 looks broken, in the app and in App Store screenshots.
+**Alternative considered:** Plain `.rounded()`, as the rest of the app does. Simpler, but the same data shows 101%.

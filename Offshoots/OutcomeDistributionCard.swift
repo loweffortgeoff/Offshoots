@@ -12,14 +12,6 @@ struct OutcomeDistributionCard: View {
     let decisions: [Decision]
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
-    private var outcomeData: [(outcome: DecisionOutcome, count: Int)] {
-        let completed = decisions.filter { $0.actual != nil }
-        return DecisionOutcome.allCases.compactMap { outcome in
-            let count = completed.filter { $0.currentOutcome == outcome }.count
-            return count > 0 ? (outcome: outcome, count: count) : nil
-        }
-    }
-
     private var totalCompleted: Int {
         decisions.filter { $0.actual != nil }.count
     }
@@ -33,11 +25,12 @@ struct OutcomeDistributionCard: View {
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {
+                let shares = AnalyticsEngine.outcomeDistribution(from: decisions)
                 let layout = dynamicTypeSize.isAccessibilitySize
                     ? AnyLayout(VStackLayout(spacing: 20))
                     : AnyLayout(HStackLayout(spacing: 20))
                 layout {
-                    Chart(outcomeData, id: \.outcome) { item in
+                    Chart(shares, id: \.outcome) { item in
                         SectorMark(
                             angle: .value("Count", item.count),
                             innerRadius: .ratio(0.6),
@@ -49,7 +42,7 @@ struct OutcomeDistributionCard: View {
                     .frame(width: 120, height: 120)
 
                     VStack(alignment: .leading, spacing: 8) {
-                        ForEach(outcomeData, id: \.outcome) { item in
+                        ForEach(shares, id: \.outcome) { item in
                             HStack(spacing: 8) {
                                 Circle()
                                     .fill(item.outcome.themeColor)
@@ -57,7 +50,7 @@ struct OutcomeDistributionCard: View {
                                 Text(item.outcome.compactLabel)
                                     .font(.caption)
                                 Spacer()
-                                Text("\(Int(Double(item.count) / Double(totalCompleted) * 100))%")
+                                Text("\(item.percent)%")
                                     .font(.caption)
                                     .fontWeight(.semibold)
                                     .foregroundStyle(item.outcome.themeColor)

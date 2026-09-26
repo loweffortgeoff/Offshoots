@@ -76,6 +76,39 @@ struct AnalyticsEngineTests {
         #expect(OptimismBias(averageGap: gap, sample: 3).lean == lean)
     }
 
+    @Test func outcomePercentagesAddUpTo100() {
+        // The 2026-09-26 captures: truncation showed 16 / 16 / 33 / 16 / 16 = 97
+        let decisions = marked([.veryBad, .bad, .neutral, .neutral, .good, .veryGood])
+        let shares = AnalyticsEngine.outcomeDistribution(from: decisions)
+        #expect(shares.map(\.outcome) == [.veryBad, .bad, .neutral, .good, .veryGood])
+        #expect(shares.map(\.count) == [1, 1, 2, 1, 1])
+        // Ties in the remainder go in outcome order, Very Bad first
+        #expect(shares.map(\.percent) == [17, 17, 33, 17, 16])
+    }
+
+    @Test func outcomePercentagesEvenSplit() {
+        let shares = AnalyticsEngine.outcomeDistribution(from: marked(DecisionOutcome.allCases))
+        #expect(shares.map(\.percent) == [20, 20, 20, 20, 20])
+    }
+
+    @Test func outcomePercentagesSkipEmptyOutcomes() {
+        let shares = AnalyticsEngine.outcomeDistribution(from: marked([.good, .good, .veryBad]))
+        #expect(shares.map(\.outcome) == [.veryBad, .good])
+        #expect(shares.map(\.percent) == [33, 67])
+    }
+
+    @Test func outcomePercentagesUseLatestRating() {
+        var decision = Decision(title: "Test", category: .other, expected: .neutral, actual: .bad, followUpDate: Self.now)
+        decision.revisits = [Revisit(date: Self.now, outcome: .good)]
+        let pending = Decision(title: "Pending", category: .other, expected: .good, followUpDate: Self.now)
+        let shares = AnalyticsEngine.outcomeDistribution(from: [decision, pending])
+        #expect(shares == [OutcomeShare(outcome: .good, count: 1, percent: 100)])
+    }
+
+    @Test func outcomePercentagesEmpty() {
+        #expect(AnalyticsEngine.outcomeDistribution(from: []).isEmpty)
+    }
+
     // MARK: - "So far" trend
 
     /// A marked decision resolved `daysAgo` days before `now`. Correct means an exact match
@@ -174,5 +207,12 @@ struct AnalyticsEngineTests {
     @Test func markedCountCountsFirstRatings() throws {
         #expect(AnalyticsEngine.markedCount(from: try Fixture.load("insights-seed-too-early")) == 3)
         #expect(AnalyticsEngine.markedCount(from: []) == 0)
+    }
+
+    /// One marked decision per outcome in `latest`, rated once
+    private func marked(_ latest: [DecisionOutcome]) -> [Decision] {
+        latest.map { outcome in
+            Decision(title: "Test", category: .other, expected: .neutral, actual: outcome, followUpDate: Self.now)
+        }
     }
 }
