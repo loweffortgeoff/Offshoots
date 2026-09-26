@@ -8,7 +8,8 @@
 
 ## Done
 - [x] **Calendar days cannot be tapped on Log and Edit.** Confirmed cause: the tap-outside-to-close-the-keyboard gesture from Section 5 sat on the whole form and took the day taps away from the calendar. Fixed by gating the gesture on focus, so it only intercepts taps while a text field is active. — 2026-09-26
-  > **Branch state:** not yet merged; device verification pending.
+  Checked on the iPhone 17 (iOS 27) by Geoff.
+- [x] Merge `fix/calendar-day-taps` to `main` (fast-forward) — 2026-09-26
 - [x] VoiceOver pass on the iPhone 17 with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
 - [x] Merge `remove-tip-jar` to `main` (fast-forward) — 2026-09-26
 - [x] Remove the Tip Jar: both Swift files, the Settings Support section and the StoreKit link (branch `remove-tip-jar`) — 2026-09-26
