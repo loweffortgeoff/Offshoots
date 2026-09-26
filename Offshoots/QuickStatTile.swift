@@ -12,6 +12,8 @@ struct QuickStatTile: View {
     let title: String
     let value: String
     var valueColor: Color = .primary
+    /// What VoiceOver reads for the title, when the printed title has symbols
+    var spokenTitle: String? = nil
 
     /// Symbols differ in height; a shared row height keeps the text lines aligned.
     @ScaledMetric(relativeTo: .callout) private var iconRowHeight: CGFloat = 22
@@ -26,6 +28,7 @@ struct QuickStatTile: View {
                 Text(title)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .accessibilityLabel(spokenTitle ?? title)
                 Text(value)
                     .font(.subheadline)
                     .fontWeight(.semibold)

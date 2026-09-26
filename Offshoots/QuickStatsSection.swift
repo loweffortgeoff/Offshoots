@@ -24,7 +24,8 @@ struct QuickStatsSection: View {
 
             let goodPercentage = AnalyticsEngine.goodOutcomePercentage(from: store.decisions)
             let topCategory = AnalyticsEngine.topCategory(from: store.decisions)
-            let trend = AnalyticsEngine.qualityTrend(from: store.decisions)
+            let trendResult = AnalyticsEngine.qualityTrend(from: store.decisions)
+            let trend = trendResult.trend
 
             tileLayout {
                 QuickStatTile(
@@ -43,9 +44,10 @@ struct QuickStatsSection: View {
                 QuickStatTile(
                     icon: trendIcon(for: trend),
                     iconColor: trendColor(for: trend),
-                    title: "Trend",
+                    title: trendResult.isSoFar ? "Trend · So far" : "Trend",
                     value: trend.label,
-                    valueColor: trendColor(for: trend)
+                    valueColor: trendColor(for: trend),
+                    spokenTitle: trendResult.isSoFar ? "Trend so far" : nil
                 )
             }
             // Equal tile heights: the row takes its tallest tile's height.

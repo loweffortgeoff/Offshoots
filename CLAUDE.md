@@ -52,6 +52,8 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   1 missed) and Optimistic (0.5 steps, 6 decisions) when today is 2026-09-25 to 2026-09-30. The trend windows move
   with today's date, so update the dates later. `insights-seed-too-early.json`
   gives Trend "Too early".
+  `so-far-trend.json` gives Trend "So far" Improving (6 marked in July 2026,
+  both 30-day windows empty), and it does not depend on today's date.
 - **Test pushes need permission first.** `xcrun simctl push` fails with "Source
   is not authorized" until someone taps Allow in the app. The app asks the
   first time it schedules a reminder. `simctl privacy grant notifications`

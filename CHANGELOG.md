@@ -4,6 +4,9 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ## In flight — branch `early-engagement`
 
+### 2026-09-26 — Early engagement, chunk 2
+- The trend shows earlier. With 6 or more marked decisions and not enough data for the 30-day windows, the Dashboard tile compares the older half with the newer half and reads "Trend · So far".
+
 ### 2026-09-26 — Early engagement, chunk 1
 - Review-date presets (Tomorrow, 3 days, 1 week, 1 month) on Log and Edit Decision. A preset keeps the time of day, so reminder timing does not change.
 

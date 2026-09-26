@@ -66,8 +66,10 @@ struct AnalyticsEngine {
     }
 
     /// Compares prediction accuracy in the last 30 days with the 30 days before,
-    /// by the date each outcome was marked. Each window needs 3 decisions
-    static func qualityTrend(from decisions: [Decision], now: Date = Date()) -> QualityTrend {
+    /// by the date each outcome was marked. Each window needs 3 decisions.
+    /// Until then, with 6 or more marked decisions, it compares the older half
+    /// of them with the newer half and flags the result as "so far"
+    static func qualityTrend(from decisions: [Decision], now: Date = Date()) -> TrendResult {
         let calendar = Calendar.current
         let last30Days = calendar.date(byAdding: .day, value: -30, to: now)!
         let last60Days = calendar.date(byAdding: .day, value: -60, to: now)!
@@ -78,9 +80,27 @@ struct AnalyticsEngine {
             return date >= last60Days && date < last30Days
         }
 
-        guard recent.count >= minimumTrendSample, previous.count >= minimumTrendSample else { return .tooEarly }
+        if recent.count >= minimumTrendSample, previous.count >= minimumTrendSample {
+            return TrendResult(trend: compare(newer: recent, older: previous), isSoFar: false)
+        }
 
-        let difference = accuracyBreakdown(from: recent).fraction - accuracyBreakdown(from: previous).fraction
+        let marked = decisions
+            .compactMap { decision in decision.resolvedDate.map { (decision, $0) } }
+            .sorted { $0.1 < $1.1 }
+            .map(\.0)
+        guard marked.count >= minimumSoFarSample else {
+            return TrendResult(trend: .tooEarly, isSoFar: false)
+        }
+
+        // With an odd count, the newer half gets the extra decision
+        let olderCount = marked.count / 2
+        let older = Array(marked.prefix(olderCount))
+        let newer = Array(marked.dropFirst(olderCount))
+        return TrendResult(trend: compare(newer: newer, older: older), isSoFar: true)
+    }
+
+    private static func compare(newer: [Decision], older: [Decision]) -> QualityTrend {
+        let difference = accuracyBreakdown(from: newer).fraction - accuracyBreakdown(from: older).fraction
 
         if difference > 0.1 {
             return .improving
@@ -92,6 +112,7 @@ struct AnalyticsEngine {
     }
 
     static let minimumTrendSample = 3
+    static let minimumSoFarSample = 6
 }
 
 struct AccuracyBreakdown: Equatable {
@@ -127,6 +148,13 @@ enum QualityTrend: Equatable {
         case .tooEarly: return "Too early"
         }
     }
+}
+
+struct TrendResult: Equatable {
+    let trend: QualityTrend
+    /// True when the trend compares the older and newer halves of all marked
+    /// decisions, because the 30-day windows do not have enough data yet
+    let isSoFar: Bool
 }
 
 struct OptimismBias: Equatable {

@@ -76,3 +76,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Log and Edit Decision get four presets: Tomorrow, 3 days, 1 week and 1 month. A preset adds whole days to now and keeps the time of day. There is no "Tonight" preset.
 **Why:** Short reviews build a new user's sample fast. Readiness is day-based (`isReadyForReview` uses the start of the review day), so a same-day review would be ready as soon as it is saved. Keeping the time of day keeps reminder timing as it was.
 **Alternative considered:** A "Tonight" preset with a time-of-day readiness rule. It touches readiness, Ready to Review and reminders for a small gain.
+
+## 2026-09-26 (Trend "So far" from the user's own history)
+**Decision:** When the 30-day windows do not both have 3 marked decisions, but the user has 6 or more, the trend compares the older half of the marked decisions with the newer half, sorted by resolved date. With an odd count, the newer half gets the extra one. The Dashboard tile reads "Trend · So far". `qualityTrend` returns a `TrendResult` with an `isSoFar` flag, not a new `QualityTrend` case.
+**Why:** The 30-day rule cannot show a trend before about day 31, however active the user is. With the review presets, an active user can reach 6 marked decisions in a week or two.
+**Alternative considered:** An "Early read" at 2 per 30-day window (still about day 31), or a lower minimum with no label (the false signal the 2026-09-25 decision rejected). Accepted limit: at 6 decisions each half's accuracy moves in steps of a third, so Stable needs an exact match. The "So far" label covers this until the 30-day windows fill.
