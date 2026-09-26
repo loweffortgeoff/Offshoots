@@ -1,19 +1,15 @@
 # TODO
 
 ## Next
+- [ ] Merge `section-6-housekeeping` to `main` after Geoff's review.
 - [ ] VoiceOver pass on the iPhone 17 Pro with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
-- [ ] Section 6, Housekeeping — start in a new session (see Backlog).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
 - [ ] **Design decision for Geoff: flatten the cards?** The April `dev/offshoots-development` TODO proposed moving away from raised rounded cards with shadows: flatten `PrimaryCard` and Quick Stats, make Insights and Decision Detail native sections, turn Log, Edit and Mark Outcome into native form sections, and drop the card framing on pending rows. This is a large visual change. Decide yes or no before any work starts.
-- [ ] **Section 6, Housekeeping.**
-  - File header comments are duplicated.
-  - Header typos: `NotificationDelegare`, `DasbboardView`.
-  - The README project structure is out of date. It lists 12 files (one renamed since); the app now has 29.
-  - Unused code: `SectionHeader.swift` is never used, and `DecisionsListView` has two unused helpers, `deletePending(at:)` and `deleteCompleted(at:)`. Delete them after a check that nothing calls them.
 
 ## Done
+- [x] Audit section 6: Housekeeping — duplicate headers, header typo, stable chart and app-list ids, unused code removed, README structure (branch `section-6-housekeeping`) — 2026-09-25
 - [x] Native Tip Jar carried over from `dev/offshoots-development` and merged; that branch deleted — 2026-09-25
 - [x] Section 5 code review fixes (splash icon, dark Settings rows, Delete All wording) — 2026-09-25
 - [x] Merge `section-5-ui` to `main` (fast-forward) — 2026-09-25

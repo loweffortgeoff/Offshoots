@@ -50,20 +50,64 @@ Offshoots helps you become a better decision maker. Log your decisions, predict 
 
 ## Project Structure
 
+All app sources sit flat in `Offshoots/`. The groups below are for reading only.
+
 ```
 Offshoots/
-├── OffshootsApp.swift          # App entry point
-├── ContentView.swift           # Tab navigation
-├── DashboardView.swift         # Stats overview
-├── DecisionDetailView.swift    # Full decision details
-├── EditDecisionView.swift      # Edit existing decisions
-├── MarkOutcomeView.swift       # Record outcomes & reflections
-├── SettingsView.swift          # App settings
-├── AnalyticsEngine.swift       # Insights calculations
-├── DecisionStore.swift         # Data persistence (JSON)
-├── ReminderManager.swift       # Notification scheduling
-├── TipJarManager.swift         # StoreKit purchases
-└── SplashView.swift            # Launch animation
+│  # App
+├── OffshootsApp.swift             # Entry point, theme, first-launch splash
+├── ContentView.swift              # Tab navigation (AppTab)
+├── SplashScreenView.swift         # First-launch splash
+├── AppTheme.swift                 # System / Light / Dark setting
+├── Color+Theme.swift              # Raw palette, outcome colors
+│
+│  # Model and services
+├── Decision.swift                 # Decision, outcome, category, stakes, revisits
+├── DecisionStore.swift            # @Observable store, JSON persistence
+├── DecisionsExport.swift          # JSON export for the share sheet
+├── AnalyticsEngine.swift          # Insights calculations
+├── ReminderManager.swift          # Follow-up notification scheduling
+├── NotificationDelegate.swift     # Notification tap routing
+├── TipJarManager.swift            # StoreKit tip purchases
+│
+│  # Dashboard
+├── DashboardView.swift            # Dashboard screen
+├── DashboardHeaderView.swift      # Pending / Completed / Total card
+├── ReadyToReviewSection.swift     # Decisions due for review
+├── QuickStatsSection.swift        # Quick Stats row
+├── QuickStatTile.swift            # One Quick Stats tile
+├── RecentDecisionsSection.swift   # Recent decisions and empty state
+│
+│  # Decisions
+├── LogDecisionView.swift          # Log a new decision
+├── DecisionsListView.swift        # Pending and completed lists
+├── DecisionRowView.swift          # One decision row
+├── DecisionDetailView.swift       # Full decision details, revisit history
+├── EditDecisionView.swift         # Edit a decision
+├── MarkOutcomeView.swift          # Record the outcome and a reflection
+├── RevisitView.swift              # Re-rate a decision later
+├── OutcomePickerView.swift        # Five-step outcome picker
+├── OutcomeIcon.swift              # Outcome symbol
+│
+│  # Insights
+├── AnalyticsView.swift            # Insights screen and empty state
+├── CardTitle.swift                # Title row for Insights cards
+├── PrimaryCard.swift              # Card container
+├── OverallStatsCard.swift         # Overview numbers
+├── PredictionAccuracyCard.swift   # Accuracy (correct, close, missed)
+├── OptimismCard.swift             # Optimism bias
+├── OutcomeDistributionCard.swift  # Outcome ring
+├── CategoryBreakdownCard.swift    # Decisions by category
+├── OutcomeTrendCard.swift         # Outcomes by week
+│
+│  # Settings
+├── SettingsView.swift             # Settings screen
+├── TipJarView.swift               # Tip Jar screen
+└── AboutSectionView.swift         # Other Low Effort Apps, About links
+
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore
+docs/fixtures/                     # Seed data for tests and the simulator
+scripts/seed.sh                    # Load a fixture into the simulator
 ```
 
 ## Privacy
