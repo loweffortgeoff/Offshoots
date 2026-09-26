@@ -108,6 +108,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   on 2026-09-25 one opened an App Store link in Safari from Settings.
 - **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
   a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
+- **Calendar days do not take tool taps.** The simulator tool cannot select a
+  day in the graphical `DatePicker` on Log or Edit (checked 2026-09-26, on
+  `main` and on a branch). The month arrows and the preset chips work. To test
+  a custom review date, seed a decision with that `followUpDate` instead.
 
 ## Test Device
 
