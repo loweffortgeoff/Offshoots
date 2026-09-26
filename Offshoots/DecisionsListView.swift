@@ -161,22 +161,6 @@ struct DecisionsListView: View {
                 .foregroundStyle(color)
         }
     }
-
-    // MARK: - Delete Helpers
-    
-    private func deletePending(at offsets: IndexSet) {
-        let items = store.pendingDecisions
-        for index in offsets {
-            store.delete(items[index])
-        }
-    }
-
-    private func deleteCompleted(at offsets: IndexSet) {
-        let items = store.completedDecisions
-        for index in offsets {
-            store.delete(items[index])
-        }
-    }
 }
 
 #Preview {
