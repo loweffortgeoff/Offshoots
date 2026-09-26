@@ -79,8 +79,16 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 - **Tapping in the simulator:** Claude's own simulator tool (`tap`, `swipe`)
   works on the Mac mini (checked 2026-09-25). Take screenshots with
   `xcrun simctl io <UDID> screenshot`. Coordinates are device points: the
-  iPhone 18 Pro screen is 402 × 874 pt. Xcode's device-interaction tools
-  (`XcodeOpenWorkspace`, then `DeviceInteractionStartSession`) are the backup.
+  iPhone 18 Pro screen is 402 × 874 pt, and the iPhone 18 Pro Max screen is
+  440 × 956 pt. `sips -Z 956` scales a Pro Max capture to 1 px = 1 pt, so you
+  can read tap coordinates from it (`-Z 874` for the Pro). Xcode's
+  device-interaction tools (`XcodeOpenWorkspace`, then
+  `DeviceInteractionStartSession`) are the backup.
+- **Scrolling to an exact position:** use `touch_path` with slow steps and a
+  pause before the lift. A flick keeps moving after release. The first small
+  drag after the scroll stops is sometimes ignored; send it again (checked
+  2026-09-26). A large navigation title (Decisions, Insights) only stays fully
+  open or fully collapsed, so you cannot hold a small scroll offset there.
 - **Uninstalling resets both permission and data, but not a `defaults write`.**
   A value written with `simctl spawn … defaults write` lives outside the app
   container and survives an uninstall. On 2026-09-25 a leftover
