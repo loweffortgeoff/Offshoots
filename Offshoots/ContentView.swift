@@ -21,16 +21,18 @@ struct ContentView: View {
     @ObservedObject private var notificationDelegate = NotificationDelegate.shared
     @State private var selectedTab: AppTab = .dashboard
     @State private var decisionsPath = NavigationPath()
+    /// A starter suggestion on its way from the Dashboard to the Log form
+    @State private var logDraft: StarterSuggestion?
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            DashboardView(selectedTab: $selectedTab)
+            DashboardView(selectedTab: $selectedTab, logDraft: $logDraft)
                 .tag(AppTab.dashboard)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
 
-            LogDecisionView(selectedTab: $selectedTab)
+            LogDecisionView(selectedTab: $selectedTab, draft: $logDraft)
                 .tag(AppTab.log)
                 .tabItem {
                     Label("Log", systemImage: "plus.circle.fill")

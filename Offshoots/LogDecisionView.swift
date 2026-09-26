@@ -10,6 +10,8 @@ internal import SwiftUI
 struct LogDecisionView: View {
     @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
+    /// A starter suggestion to fill in; cleared once applied
+    @Binding var draft: StarterSuggestion?
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isNotesFocused: Bool
     @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 50
@@ -205,6 +207,14 @@ struct LogDecisionView: View {
                 .scrollDismissesKeyboard(.immediately)
             }
             .navigationBarTitleDisplayMode(.inline)
+            // initial: true covers a Log tab that did not exist yet when the suggestion was tapped
+            .onChange(of: draft, initial: true) { _, suggestion in
+                guard let suggestion else { return }
+                title = suggestion.title
+                category = suggestion.category
+                followUpDate = ReviewDatePreset.tomorrow.date()
+                draft = nil
+            }
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
@@ -287,6 +297,6 @@ struct SavedConfirmationView: View {
 }
 
 #Preview {
-    LogDecisionView(selectedTab: .constant(.log))
+    LogDecisionView(selectedTab: .constant(.log), draft: .constant(nil))
         .environment(DecisionStore())
 }

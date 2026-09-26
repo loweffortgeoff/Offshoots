@@ -81,3 +81,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** When the 30-day windows do not both have 3 marked decisions, but the user has 6 or more, the trend compares the older half of the marked decisions with the newer half, sorted by resolved date. With an odd count, the newer half gets the extra one. The Dashboard tile reads "Trend · So far". `qualityTrend` returns a `TrendResult` with an `isSoFar` flag, not a new `QualityTrend` case.
 **Why:** The 30-day rule cannot show a trend before about day 31, however active the user is. With the review presets, an active user can reach 6 marked decisions in a week or two.
 **Alternative considered:** An "Early read" at 2 per 30-day window (still about day 31), or a lower minimum with no label (the false signal the 2026-09-25 decision rejected). Accepted limit: at 6 decisions each half's accuracy moves in steps of a third, so Stable needs an exact match. The "So far" label covers this until the 30-day windows fill.
+
+## 2026-09-26 (Starter suggestions until 5 decisions)
+**Decision:** While the user has logged fewer than 5 decisions, the Dashboard shows three small example decisions, one per category, from a fixed list of six. A logged example drops out by title. A tap pre-fills the Log form through a value that `ContentView` owns. There is no dismiss control.
+**Why:** A new user's first weeks are mostly waiting. Small decisions with a review tomorrow build the sample that Insights need, and show what a decision can look like.
+**Alternative considered:** Suggestions on the empty Decisions list too, or a dismiss control. Both add surface for a card that goes away by itself.

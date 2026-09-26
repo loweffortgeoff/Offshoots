@@ -4,6 +4,9 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ## In flight — branch `early-engagement`
 
+### 2026-09-26 — Early engagement, chunk 3
+- "Try a quick one" on the Dashboard: three small example decisions for new users. A tap fills in the Log form with the title, the category and a review tomorrow. The card goes away at 5 logged decisions.
+
 ### 2026-09-26 — Early engagement, chunk 2
 - The trend shows earlier. With 6 or more marked decisions and not enough data for the 30-day windows, the Dashboard tile compares the older half with the newer half and reads "Trend · So far".
 
