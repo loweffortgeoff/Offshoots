@@ -80,7 +80,7 @@ Offshoots/
 │
 │  # Decisions
 ├── LogDecisionView.swift          # Log a new decision
-├── DecisionsListView.swift        # Pending and completed lists
+├── DecisionsListView.swift        # Ready to Review, Upcoming, History
 ├── DecisionRowView.swift          # One decision row
 ├── DecisionDetailView.swift       # Full decision details, revisit history
 ├── EditDecisionView.swift         # Edit a decision
@@ -90,7 +90,7 @@ Offshoots/
 ├── OutcomeIcon.swift              # Outcome symbol
 │
 │  # Insights
-├── AnalyticsView.swift            # Insights screen and empty state
+├── AnalyticsView.swift            # Insights screen, empty state, Decision Activity card
 ├── CardTitle.swift                # Title row for Insights cards
 ├── PrimaryCard.swift              # Card container
 ├── OverallStatsCard.swift         # Overview numbers

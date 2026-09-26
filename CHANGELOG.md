@@ -6,7 +6,8 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ### 2026-09-25 — Audit section 6, Housekeeping
 - Changed: nine source files had the Xcode header comment two or three times. Each file keeps one header now. The DashboardView header read "DasbboardView". (`NotificationDelegare` was already fixed in section 1.)
-- Fixed: Outcome Trends chart data got a new random id on every redraw. Its id now comes from the week and the outcome group. The other-apps list in Settings uses the App Store ID as its id.
+- Fixed: Outcome Trends chart data got a new random id on every redraw. Its id now comes from the week and the outcome group.
+- Changed: the other-apps list in Settings uses the App Store ID as its id. Its old random id did not change between redraws, so this only follows the project rule that identity comes from the element.
 - Removed: unused `SectionHeader` view, and the unused `deletePending(at:)` and `deleteCompleted(at:)` helpers in the Decisions list.
 - Changed: the README project structure lists all 39 source files, grouped by screen, plus the tests, fixtures and seed script.
 
