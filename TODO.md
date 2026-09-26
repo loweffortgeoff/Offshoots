@@ -5,6 +5,10 @@
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
 - [ ] **Log review date goes stale past midnight.** The Log form sets its review date to "tomorrow" once, when the tab is created, and again after each save. If the Log tab stays open past midnight, that date becomes today: no preset chip is selected, and a decision saved then is ready for review at once. This existed before the review-date presets; the chips only make it visible. Fix idea: reset the date to `ReviewDatePreset.tomorrow.date()` when the day changes (`store.today`) or when the Log tab appears, but only if the user has not picked a date. Found in the `early-engagement` branch review (2026-09-26).
+- [ ] **Explore the following for future release** *as a full IOS 27 feature parity upgrade cycle*
+    - [ ] App Intents
+    - [ ] Siri/Spotlight Integrations (iOS 18.6+)
+    - [ ] Foundation Model integrations 
 
 ## Done
 - [x] **Calendar days cannot be tapped on Log and Edit.** Confirmed cause: the tap-outside-to-close-the-keyboard gesture from Section 5 sat on the whole form and took the day taps away from the calendar. Fixed by gating the gesture on focus, so it only intercepts taps while a text field is active. — 2026-09-26
