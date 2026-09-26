@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## In flight — branch `early-engagement`
+## Merged to `main` — branch `early-engagement`
 
 ### 2026-09-26 — Early engagement, chunk 4
 - Decision Detail shows how the first rating compared with the prediction for every marked decision, and what unlocks next while fewer than 6 are marked.
