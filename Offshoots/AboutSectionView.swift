@@ -87,7 +87,7 @@ struct AboutSectionView: View {
                 }
 
                 // Company Website
-                Link(destination: URL(string: "https://www.loweffortapps.dev")!) {
+                Link(destination: URL(string: "https://www.loweffortapps.app")!) {
                     HStack {
                         Text("Company Website")
                             .foregroundStyle(.primary)
