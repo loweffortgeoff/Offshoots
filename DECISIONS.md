@@ -128,6 +128,6 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Alternative considered:** Keep `*.md` ignored and add an exception per file. Easy to forget.
 
 ## 2026-09-26 (2.0.0 baseline and release notes)
-**Decision:** Version 2.0.0 is every commit after `8ed7dac` (2026-07-12), the last commit before the audit. The shipped 1.0 (build 3) was never tagged, so no `v1.0` tag is added. Release notes live in `RELEASE_NOTES.md`, which starts with 2.0.0, and each release gets an annotated `v<version>` tag from here on.
-**Why:** `8ed7dac` is the last point that matches the 1.0 feature set, and the audit started right after it. The file name matches Task(ed), List-Happens, Muzzletoff and Weather-in-Words.
-**Alternative considered:** A backdated `v1.0` tag on `8ed7dac`. It is not certain that this commit matches the shipped 1.0 build, and the `v2.0.0` tag gives the next release pass its baseline.
+**Decision:** Version 2.0.0 is every commit after `0e29c15` (2026-01-04). 1.0 (build 3) was uploaded from that commit on 2026-01-04 and released on 2026-01-12 (dates from Geoff). The April Settings cleanup and the July `.gitignore` commit came after the upload, so they belong to 2.0.0. No `v1.0` tag is added. Release notes live in `RELEASE_NOTES.md`, which starts with 2.0.0, and each release gets an annotated `v<version>` tag from here on.
+**Why:** The upload date pins the 1.0 build to `0e29c15`, the last commit on or before it. The file name matches Task(ed), List-Happens, Muzzletoff and Weather-in-Words.
+**Alternative considered:** A backdated `v1.0` tag on `0e29c15`. Geoff declined it: the `v2.0.0` tag already gives the next release pass its baseline. An earlier draft of this entry used `8ed7dac` (2026-07-12) as the baseline; that was a guess made before the upload date was known.

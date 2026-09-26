@@ -12,7 +12,7 @@ _Nothing in progress._
 
 ### 2.0.0 — It Keeps Going After You Decide
 
-_Revisits, Ready to Review, review-date presets, a result line and starter suggestions, plus Insights that count revisits, a full UI and accessibility pass, and the Tip Jar removed. Release pass prepared 2026-09-26. Baseline: every commit after `8ed7dac` (2026-07-12)._
+_Revisits, Ready to Review, review-date presets, a result line and starter suggestions, plus Insights that count revisits, a full UI and accessibility pass, and the Tip Jar removed. Release pass prepared 2026-09-26. Baseline: every commit after `0e29c15`, the 1.0 upload (2026-01-04)._
 
 #### Added
 - Revisits. You can re-rate a marked decision, add a note, and chain another revisit. A timeline shows each change.
@@ -54,6 +54,8 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - `decisions.json` is written with sorted keys, so the same decisions always give the same file. Existing files load unchanged.
 - The splash ("Welcome to Offshoots") shows on the first launch only, not for 2 seconds on every launch.
 - Settings > We Also Make shows each app's real icon, with a light and a dark variant taken from that app's own icon set. The Task(ed) placeholder icon is gone. Muzzletoff is now listed as EveryPaw (same App Store ID).
+- The top rating reads "Great", not "Very Good". Short labels are spelled out ("Very Bad", not "V. Bad").
+- Settings > We Also Make lists AisleWise, Muzzletoff and Task(ed) only (April cleanup); five other apps are gone.
 - Known: the placeholder in the decision title field is cut off at accessibility sizes. SwiftUI draws a placeholder on one line. The Stakes segmented control does not grow with the text (system control).
 
 #### Fixed
@@ -112,7 +114,7 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - `scripts/screenshots.sh` sets up the iPhone 18 Pro Max for App Store captures: dark mode, 9:41, seeded data moved to today, no splash. The status bar shows a plain full battery, not a charging bolt. The shot notes in the script give the scroll position that worked for each shot.
 - `docs/fixtures/screenshots.json` with `ScreenshotFixtureTests`, which pins every number the shots show. First full capture pass: 7 dark-mode shots in `ASC Screenshots/Offshoots/Captures/2026-09-26/`.
 - `MARKETING_VERSION` 2.0.0, build 1 (was 1.0, build 3).
-- Docs: started CHANGELOG, DECISIONS and TODO; tracked `docs/` in git; drafted `ASC_LISTING.md` for the relaunch; replaced the blanket `*.md` ignore with a Task(ed)-style `.gitignore`; the README lists all source files and the current tech stack.
+- Docs: added the README (2026-03-12) and `.gitignore` (2026-07-12); started CHANGELOG, DECISIONS and TODO; tracked `docs/` in git; drafted `ASC_LISTING.md` for the relaunch; replaced the blanket `*.md` ignore with a Task(ed)-style `.gitignore`; the README lists all source files and the current tech stack.
 
 #### Verification
 - Sections 1–2 testing gate: simulator checks 1–5 pass on iOS 27.0 (2026-09-24). Results are in `docs/2026-09-23-audit-bugfixes-and-core-loop.md`.
@@ -120,6 +122,8 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - VoiceOver pass on the iPhone 17 with VoiceOver on (2026-09-26).
 
 ### 1.0 (before this changelog, from git history)
+
+_Build 3 uploaded 2026-01-04 from `0e29c15`. Released 2026-01-12._
+
 - 2025-12: first build. Decision tracking, dashboard, analytics, notifications, botanical color theme.
 - 2026-01: Swift Charts insights, settings, decision editing, 5-point outcome scale, stakes, reflection, secondary follow-up, tip jar with 4 consumable purchases.
-- 2026-03 to 2026-07: README, Settings cleanup, `.gitignore`.

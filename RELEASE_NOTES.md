@@ -26,6 +26,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - VoiceOver reads outcomes by name, and the outcome picker says which one is selected.
 - Edit and Delete are in a context menu on each row.
 - The Save button in Mark Outcome and Revisit stays above the keyboard. A tap outside a field closes the keyboard.
+- Ratings read Very Bad, Bad, Neutral, Good and Great, with no short forms.
 - The welcome splash shows on the first launch only.
 - Settings is simpler: the Tip Jar is gone.
 
