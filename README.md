@@ -47,7 +47,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Log Decision** — Quick entry form
 - **Decisions List** — Browse all decisions
 - **Insights** — Full analytics dashboard
-- **Settings** — Notifications, data overview, JSON export, delete all, app theme (System, Light, Dark), tip jar
+- **Settings** — Notifications, data overview, JSON export, delete all, app theme (System, Light, Dark)
 
 ## Tech Stack
 
@@ -56,7 +56,6 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **SwiftUI** | All UI — views, navigation, charts |
 | **Charts** | Analytics visualizations |
 | **UserNotifications** | Follow-up reminders |
-| **StoreKit** | Tip jar (4 tiers) |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
 | **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, and the screenshot fixture |
@@ -81,7 +80,6 @@ Offshoots/
 ├── AnalyticsEngine.swift          # Insights calculations
 ├── ReminderManager.swift          # Follow-up notification scheduling
 ├── NotificationDelegate.swift     # Notification tap routing
-├── TipJarManager.swift            # StoreKit tip purchases
 │
 │  # Dashboard
 ├── DashboardView.swift            # Dashboard screen
@@ -121,7 +119,6 @@ Offshoots/
 │
 │  # Settings
 ├── SettingsView.swift             # Settings screen
-├── TipJarView.swift               # Tip Jar screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
 OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, screenshot fixture
