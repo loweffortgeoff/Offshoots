@@ -13,7 +13,7 @@ struct ReviewDatePresetRow: View {
     var body: some View {
         let selected = ReviewDatePreset.matching(date)
         ViewThatFits(in: .horizontal) {
-            HStack(spacing: 8) {
+            HStack(spacing: 6) {
                 ForEach(ReviewDatePreset.allCases) { preset in
                     ReviewDatePresetChip(preset: preset, isSelected: preset == selected) {
                         date = preset.date()
@@ -61,7 +61,7 @@ struct ReviewDatePresetChip: View {
                 .fontWeight(.medium)
                 // Ideal width, so ViewThatFits moves to the next layout before a label truncates
                 .fixedSize()
-                .padding(.horizontal, 14)
+                .padding(.horizontal, 10)
                 .frame(minHeight: 44)
                 .foregroundStyle(isSelected ? Color.offshootOnPrimary : Color.offshootPrimary)
                 .background(
