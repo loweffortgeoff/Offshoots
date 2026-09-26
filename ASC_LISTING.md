@@ -58,7 +58,6 @@ Private by design:
 • Export everything as JSON
 • Light, Dark or System appearance
 • Dynamic Type and VoiceOver support
-• Optional tip jar. Tips never unlock features.
 
 ## Keywords (100 characters max)
 choices,predict,outcome,reflect,review,bias,accuracy,insights,revisit,improve,private,free,log,habit — 100 characters
