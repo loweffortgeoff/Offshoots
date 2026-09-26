@@ -1,6 +1,7 @@
 # TODO
 
 ## Next
+- [ ] **Early engagement: build it.** Run the plan `docs/superpowers/plans/2026-09-26-early-engagement.md` in a fresh session, subagent-driven (spec: `docs/superpowers/specs/2026-09-26-early-engagement-design.md`). Four chunks, each a review stop: review-date presets, a "So far" trend, starter suggestions, then a result line with progress copy. Keep the SwiftUI view work (the preset chip row and the Dashboard-to-Log pre-fill) inline; delegate the engine tasks.
 - [ ] VoiceOver pass on the iPhone 17 Pro with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
