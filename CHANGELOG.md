@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## In progress — branch `screenshot-pipeline`
+## Merged to `main` — branch `screenshot-pipeline`
 
 ### 2026-09-26 — Screenshot pipeline, stop 3
 - First full capture pass: 7 dark-mode shots in `ASC Screenshots/Offshoots/Captures/2026-09-26/`.
