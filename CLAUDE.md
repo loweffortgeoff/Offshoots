@@ -137,7 +137,11 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 ## Test Device
 
 The iPhone 17 Pro runs iOS 27.2 Beta 2. It builds from Xcode 27.0 on the Mac
-mini (confirmed 2026-09-24).
+mini (confirmed 2026-09-24). This is a test device, mostly used to confirm projects compile and build on a live device. It is connected to Xcode as `Geoff's iPhone` 
+
+The iPhone 17 runs iOS 27 (non Beta, stable releases). It builds from Xcode 27.0 on the Mac mini (confirmed 2026-09-26). This is the device that is referred to when "testing" or "dogfooding" an app for N number of days or weeks (whichever the situation calls for). It is connected to Xcode as `Geoffrey's iPhone` and should be considered the device of record for any out of session or longer term (>1 day) testing.
+
+Both devices also build from Xcode 27 on the MacBook Pro. 
 
 # Colors
 
