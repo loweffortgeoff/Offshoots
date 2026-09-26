@@ -99,7 +99,7 @@ struct AboutSectionView: View {
                 }
 
                 // Privacy Policy
-                Link(destination: URL(string: "https://www.loweffortapps.dev/privacy-policy")!) {
+                Link(destination: URL(string: "https://www.loweffortapps.app/privacy/")!) {
                     HStack {
                         Text("Privacy Policy")
                             .foregroundStyle(.primary)
