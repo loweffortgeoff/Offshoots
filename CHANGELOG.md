@@ -4,6 +4,11 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ## In progress — branch `screenshot-pipeline`
 
+### 2026-09-26 — Screenshot pipeline, stop 3
+- First full capture pass: 7 dark-mode shots in `ASC Screenshots/Offshoots/Captures/2026-09-26/`.
+- The status bar shows a plain full battery, not a charging bolt.
+- The shot notes in `scripts/screenshots.sh` give the scroll position that worked for each shot.
+
 ### 2026-09-26 — Screenshot pipeline, stop 2
 - `scripts/screenshots.sh` sets up the iPhone 18 Pro Max for App Store captures: dark mode, 9:41, seeded data moved to today, no splash.
 - `docs/fixtures/screenshots.json` with `ScreenshotFixtureTests`, which pins every number the shots show.

@@ -10,6 +10,7 @@
 - [ ] **Log review date goes stale past midnight.** The Log form sets its review date to "tomorrow" once, when the tab is created, and again after each save. If the Log tab stays open past midnight, that date becomes today: no preset chip is selected, and a decision saved then is ready for review at once. This existed before the review-date presets; the chips only make it visible. Fix idea: reset the date to `ReviewDatePreset.tomorrow.date()` when the day changes (`store.today`) or when the Log tab appears, but only if the user has not picked a date. Found in the `early-engagement` branch review (2026-09-26).
 
 ## Done
+- [x] Screenshot pipeline: app fixes, fixture, `scripts/screenshots.sh`, first 7-shot capture (branch `screenshot-pipeline`) — 2026-09-26
 - [x] Merge `early-engagement` to `main` (fast-forward) — 2026-09-26
 - [x] Early engagement, chunk 4: result line and progress copy (branch `early-engagement`) — 2026-09-26
 - [x] **Early engagement: build it.** Run the plan `docs/superpowers/plans/2026-09-26-early-engagement.md` in a fresh session, subagent-driven (spec: `docs/superpowers/specs/2026-09-26-early-engagement-design.md`). Four chunks, each a review stop: review-date presets, a "So far" trend, starter suggestions, then a result line with progress copy. Keep the SwiftUI view work (the preset chip row and the Dashboard-to-Log pre-fill) inline; delegate the engine tasks. — 2026-09-26

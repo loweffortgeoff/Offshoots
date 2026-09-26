@@ -10,15 +10,24 @@
 #   01-dashboard   Dashboard, top of screen. No row text half under the tab bar.
 #   02-log         Log tab. Title "Move to the Denver office", category Work,
 #                  note "Better team, longer winters. Leaning yes.", stakes High,
-#                  prediction Good. Scroll until the outcome labels clear the
-#                  tab bar. DO NOT SAVE: a save asks for notification permission.
-#   03-detail      Decisions > History > "Say yes to leading the offsite".
-#                  Show the result line and the Bad > Neutral > Good timeline.
+#                  prediction Good. Scroll about 33 pt: the leaf icon clears the
+#                  Dynamic Island and the outcome labels clear the tab bar.
+#                  DO NOT SAVE: a save asks for notification permission.
+#   03-detail      Decisions > History > "Say yes to leading the offsite". Scroll
+#                  to the bottom of the page: the result line, Reflection, the
+#                  Neutral > Good timeline and the Revisit Decision button.
 #   04-revisit     From 03, Revisit Decision. Pick Great, note "It led to a
-#                  promotion talk." DO NOT SAVE. Cancel afterwards.
-#   05-decisions   Decisions tab, top of screen: Ready to Review, Upcoming, History.
-#   06-accuracy    Insights. Prediction Accuracy and Optimism fully in view.
-#   07-patterns    Insights. Categories and Outcomes fully in view.
+#                  promotion talk." Tap the keyboard's Done. DO NOT SAVE.
+#                  Cancel afterwards.
+#   05-decisions   Decisions tab. The large title snaps: it stays open or
+#                  collapses. Scroll about 90 pt (title collapsed) so the
+#                  "Repaint the hallway myself" row sits fully above the tab bar.
+#   06-accuracy    Insights, bottom of the page: Prediction Accuracy and Optimism.
+#   07-patterns    Insights. Categories just under the navigation bar, with
+#                  Categories and Outcomes fully in view.
+#
+# Scroll with slow drags that pause before lifting (Claude's simulator tool:
+# touch_path), not flicks. A flick keeps moving after release.
 #
 # Usage:
 #   scripts/screenshots.sh              # setup
