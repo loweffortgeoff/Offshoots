@@ -22,8 +22,6 @@ Offshoots 2.0 is a big update. It keeps going after you decide.
 • Choose Light, Dark or System appearance, and export your data as JSON.
 • Larger text and VoiceOver improvements, plus many bug fixes.
 
-Your existing decisions carry over.
-
 ## Description
 Offshoots — Decide. Predict. Learn.
 
@@ -101,7 +99,6 @@ The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first ca
 
 - 2026-09-26: First draft, written from README, TODO, CHANGELOG and the audit doc. Version 2.0.0 is a relaunch of the app. The old 1.0.0 was on the App Store. What's New is written as an update from 1.0.0.
 - **To do before ship:** the Xcode project still has `MARKETING_VERSION = 1.0`. Set it to 2.0.0. The repo has no release tags.
-- **To check:** "Your existing decisions carry over" is true only if the 1.0.0 data file still decodes. The new code defaults missing `stakes` and `revisits`, but test it against a 1.0.0 install before ship.
 - **To check:** the feature list in What's New is my reading of the git history (Dec 2025 – Sep 2026), not a diff against the shipped 1.0.0 build. Cut any line that 1.0.0 already had (for example the tip jar, stakes, or the 5-step outcome scale, which are not listed).
 - **Not yet done:** no competitor research. Add a Competitor Landscape table (as in `../Task-ed-/ASC_LISTING.md`) before the first keyword refresh, and check the keyword field against real impression data after launch.
 - Claims in the description all match shipped features in `README.md`. Recheck "Dynamic Type and VoiceOver support" after the VoiceOver pass on the iPhone 17 Pro (open in TODO).
