@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A3956E52F0AC3900092E3DF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A3956E42F0AC3900092E3DF /* StoreKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -22,7 +21,6 @@
 
 /* Begin PBXFileReference section */
 		3A33A2272EE6581F00ED220D /* Offshoots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Offshoots.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3A3956E42F0AC3900092E3DF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		3AC851AA306709E700CE6291 /* OffshootsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OffshootsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -63,7 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A3956E52F0AC3900092E3DF /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +97,6 @@
 		3A3956E32F0AC3900092E3DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3A3956E42F0AC3900092E3DF /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

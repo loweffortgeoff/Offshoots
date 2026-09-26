@@ -111,3 +111,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** The status bar uses `--batteryState discharging --batteryLevel 100`. Shot 03 (Decision detail) is framed at the bottom of the page: the result line, Reflection, the revisit timeline and the Revisit Decision button. Shot 05 (Decisions list) is scrolled about 90 pt, with the large title collapsed. The scroll notes are in `scripts/screenshots.sh`.
 **Why:** On iOS 27.0, `charged` draws a green battery with a charging bolt. On Detail, the Actual Outcome header and the page end do not both fit clear of the navigation bar and the tab bar. On the list, a History row sat half under the tab bar at the top, and the large title only stays fully open or fully collapsed.
 **Alternative considered:** `--batteryState charged`, as the spec said. Shot 03 at the Actual Outcome card and shot 05 at the top of the list, as the spec said: both left text half hidden.
+
+## 2026-09-26 (Tip Jar removed for the 2.0.0 relaunch)
+**Decision:** The Tip Jar is removed from the app: both Swift files, the Settings "Support" section and the StoreKit link. The listing and README no longer mention it.
+**Why:** The four tip products are Removed from Sale in App Store Connect, so the screen could only show "Tip Jar Unavailable". Tips were consumables that unlocked nothing, so no entitlement or restore path is lost.
+**Alternative considered:** Keep the screen and re-list the products. It keeps a small income stream, but it adds an in-app purchase to review for the relaunch.

@@ -105,19 +105,6 @@ struct SettingsView: View {
                 }
                 .listRowBackground(Color.offshootCardBackground)
 
-                // MARK: - Support
-                Section {
-                    NavigationLink {
-                        TipJarView()
-                    } label: {
-                        Label("Tip Jar", systemImage: "heart.fill")
-                            .foregroundStyle(.pink)
-                    }
-                } header: {
-                    Text("Support")
-                }
-                .listRowBackground(Color.offshootCardBackground)
-
                 // MARK: - About Section
                 AboutSectionView(currentAppName: "Offshoots")
                     // Row fills are set per section: on the Form itself the modifier has no effect

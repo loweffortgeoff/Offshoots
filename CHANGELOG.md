@@ -2,6 +2,12 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
+## On branch `remove-tip-jar`
+
+### 2026-09-26 — Tip Jar removed
+- Removed: the Tip Jar screen, its StoreKit manager and the Support section in Settings. The four tip products are already Removed from Sale in App Store Connect.
+- Removed: the StoreKit framework link. Nothing else in the app used StoreKit.
+
 ## Merged to `main` — branch `screenshot-pipeline`
 
 ### 2026-09-26 — Screenshot pipeline, stop 3
