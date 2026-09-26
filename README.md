@@ -8,7 +8,11 @@ A personal decision tracking and reflection app for iOS — log decisions, predi
 
 ## Overview
 
-Offshoots helps you become a better decision maker. Log your decisions, predict how they'll turn out, then come back later to record the actual outcome. Over time, analytics reveal your patterns — where you're accurate, where you're optimistic, and which categories trip you up.
+Offshoots helps you become a better decision maker. Log a decision, predict how it'll turn out, then record what actually happened.
+
+Most decision journals stop there. Offshoots keeps going. Revisit a decision weeks or months later and re-rate it, because the outcome you see at 30 days isn't always the one you'd give at a year. Every revisit is kept as a timeline, so you can see how each decision aged.
+
+Over time, Insights shows your patterns: where your predictions land, where you're optimistic, and which categories trip you up.
 
 ## Features
 
@@ -17,16 +21,22 @@ Offshoots helps you become a better decision maker. Log your decisions, predict 
 - **Stakes Levels** — Low, Medium, High
 - **Outcome Tracking** — Record actual outcomes: Very Bad, Bad, Neutral, Good, Very Good
 - **Follow-Up Reminders** — Scheduled notifications to review past decisions (with smart timing between 7 AM–11 PM)
-- **Secondary Follow-Ups** — Option to schedule additional check-ins
 - **Reflection Notes** — Add written reflections to any decision
 
+### Revisits
+- **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.
+- **Chained check-ins.** Each revisit can schedule the next one, and a reminder fires when it's due.
+- **Revisit timeline.** The decision's detail screen shows every change against the rating it replaced ("Bad → Good").
+- **Ready to Revisit.** Due revisits show up on the Dashboard and at the top of the Decisions list, marked with a Revisit pill.
+- **Honest accuracy.** Prediction accuracy and optimism bias are measured against your first rating, so later hindsight can't inflate them. Outcome stats (Good %, distribution, trends) use your latest rating.
+
 ### Analytics & Insights
-- **Prediction Accuracy** — How often your guesses match reality, with near misses (one step off) shown apart
-- **Optimism Bias** — Whether you tend to expect better or worse than what happens
-- **Outcome Distribution** — Positive vs. negative breakdown
+- **Prediction Accuracy** — How often your guesses match reality, with near misses (one step off) shown apart (first rating)
+- **Optimism Bias** — Whether you tend to expect better or worse than what happens (first rating)
+- **Outcome Distribution** — Positive vs. negative breakdown (latest rating)
 - **Category Breakdown** — Which areas you decide on most
-- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (Too early until there is enough data)
-- **Outcome Trends** — Positive, neutral and negative outcomes by week
+- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (first rating; Too early until there is enough data)
+- **Outcome Trends** — Positive, neutral and negative outcomes by week (latest rating)
 - **Visual Charts** — Built with the Charts framework
 
 ### Navigation
