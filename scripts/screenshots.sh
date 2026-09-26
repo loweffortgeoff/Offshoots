@@ -88,7 +88,7 @@ setup() {
   xcrun simctl status_bar "$id" override --time "9:41" \
     --dataNetwork wifi --wifiMode active --wifiBars 3 \
     --cellularMode active --cellularBars 4 \
-    --batteryState charged --batteryLevel 100
+    --batteryState discharging --batteryLevel 100
 
   echo "🔨 Building…"
   xcodebuild -project "$ROOT/Offshoots.xcodeproj" -scheme Offshoots -configuration Debug \
