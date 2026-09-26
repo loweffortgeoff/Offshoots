@@ -615,6 +615,7 @@ Expected: all tests pass, including 5 new so-far tests.
 4. `scripts/seed.sh insights-seed-too-early`: the tile reads "Too early".
 5. Accessibility tree: the so-far tile reads "Trend so far, Improving".
 6. Text size `accessibility-extra-extra-extra-large`: the tiles stack and the title wraps cleanly. Reset to `large`.
+7. Dark mode: the tile title and value are readable.
 
 - [ ] **Step 10: Update the docs**
 
@@ -1206,8 +1207,6 @@ with:
                                 }
 ```
 
-If `actual` is now unused in that `if let actual` block, leave the binding: the block still uses `actual` for the icon and label above.
-
 - [ ] **Step 7: Run all tests**
 
 Run the all-tests command.
@@ -1327,7 +1326,7 @@ and in `### Analytics & Insights`, replace the Trend line with:
 ```markdown
 - **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (first rating). Before that, from 6 marked decisions, a "So far" trend compares your older and newer decisions
 ```
-and in `### Revisits` or near Reflection Notes, add:
+and after the "Reflection Notes" line in `## Features`, add:
 ```markdown
 - **Result Line** — Each marked decision says how the result compared with your prediction, and what unlocks next
 ```

@@ -1,7 +1,7 @@
 # Early Engagement — Design
 
 Date: 2026-09-26
-Status: Approved in chat, awaiting spec review
+Status: Approved 2026-09-26
 
 ## Problem
 
