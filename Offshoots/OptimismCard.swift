@@ -9,6 +9,8 @@ internal import SwiftUI
 
 struct OptimismCard: View {
     let bias: OptimismBias?
+    /// Marked decisions so far, for the progress text before the card unlocks
+    let markedCount: Int
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -38,7 +40,8 @@ struct OptimismCard: View {
                 }
                 .accessibilityElement(children: .combine)
             } else {
-                Text("Mark \(AnalyticsEngine.minimumBiasSample) outcomes to see whether you tend to expect too much or too little.")
+                let remaining = AnalyticsEngine.minimumBiasSample - markedCount
+                Text("\(markedCount) of \(AnalyticsEngine.minimumBiasSample) marked. Mark \(remaining) more to see whether you tend to expect too much or too little.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }

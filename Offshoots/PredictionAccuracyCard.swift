@@ -29,7 +29,7 @@ struct PredictionAccuracyCard: View {
             CardTitle(title: "Prediction Accuracy", systemImage: "target")
 
             if breakdown.total == 0 {
-                Text("No completed decisions to analyze")
+                Text("Mark your first outcome to see this.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {

@@ -86,3 +86,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** While the user has logged fewer than 5 decisions, the Dashboard shows three small example decisions, one per category, from a fixed list of six. A logged example drops out by title. A tap pre-fills the Log form through a value that `ContentView` owns. There is no dismiss control.
 **Why:** A new user's first weeks are mostly waiting. Small decisions with a review tomorrow build the sample that Insights need, and show what a decision can look like.
 **Alternative considered:** Suggestions on the empty Decisions list too, or a dismiss control. Both add surface for a card that goes away by itself.
+
+## 2026-09-26 (Result line and progress copy)
+**Decision:** Every marked decision shows a result line on Decision Detail, measured against the first rating (exact, one step better or worse, or more). While fewer than 6 decisions are marked, a second line says what unlocks next. The trend tile shows "N of 6 marked" in place of "Too early", and empty Insights cards say "Mark your first outcome to see this."
+**Why:** The first marked outcome gave nothing back unless the guess was exact, and "Too early" did not say what to do. The first rating is the same basis that accuracy uses.
+**Alternative considered:** A short overlay after Save in Mark Outcome. It disappears, and VoiceOver users can miss it.

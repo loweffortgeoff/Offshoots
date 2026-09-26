@@ -58,7 +58,9 @@ struct OutcomeTrendCard: View {
             CardTitle(title: "Outcome Trends", systemImage: "chart.bar.fill", note: "Last 8 weeks")
 
             if !hasData {
-                Text("No completed decisions to show trends")
+                Text(decisions.contains { $0.actual != nil }
+                     ? "No outcomes marked in the last 8 weeks."
+                     : "Mark your first outcome to see this.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {

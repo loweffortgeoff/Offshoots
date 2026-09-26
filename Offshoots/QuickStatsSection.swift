@@ -45,7 +45,9 @@ struct QuickStatsSection: View {
                     icon: trendIcon(for: trend),
                     iconColor: trendColor(for: trend),
                     title: trendResult.isSoFar ? "Trend · So far" : "Trend",
-                    value: trend.label,
+                    value: trend == .tooEarly
+                        ? "\(AnalyticsEngine.markedCount(from: store.decisions)) of \(AnalyticsEngine.minimumSoFarSample) marked"
+                        : trend.label,
                     valueColor: trendColor(for: trend),
                     spokenTitle: trendResult.isSoFar ? "Trend so far" : nil
                 )

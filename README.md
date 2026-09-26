@@ -21,7 +21,10 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Stakes Levels** — Low, Medium, High
 - **Outcome Tracking** — Record actual outcomes: Very Bad, Bad, Neutral, Good, Very Good
 - **Follow-Up Reminders** — Scheduled notifications to review past decisions (with smart timing between 7 AM–11 PM)
+- **Review Presets** — Tomorrow, 3 days, 1 week or 1 month, one tap on Log and Edit
+- **Starter Suggestions** — Small example decisions for your first few entries
 - **Reflection Notes** — Add written reflections to any decision
+- **Result Line** — Each marked decision says how the result compared with your prediction, and what unlocks next
 
 ### Revisits
 - **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.
@@ -35,7 +38,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Optimism Bias** — Whether you tend to expect better or worse than what happens (first rating)
 - **Outcome Distribution** — Positive vs. negative breakdown (latest rating)
 - **Category Breakdown** — Which areas you decide on most
-- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (first rating; Too early until there is enough data)
+- **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (first rating). Before that, from 6 marked decisions, a "So far" trend compares your older and newer decisions
 - **Outcome Trends** — Positive, neutral and negative outcomes by week (latest rating)
 - **Visual Charts** — Built with the Charts framework
 

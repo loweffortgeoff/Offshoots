@@ -29,7 +29,7 @@ struct OutcomeDistributionCard: View {
             CardTitle(title: "Outcomes", systemImage: "chart.pie.fill")
 
             if totalCompleted == 0 {
-                Text("No completed decisions yet")
+                Text("Mark your first outcome to see this.")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             } else {
