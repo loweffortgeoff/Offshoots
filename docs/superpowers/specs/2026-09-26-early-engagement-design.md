@@ -58,7 +58,7 @@ A row of chips sits above the date picker on **Log Decision** and **Edit Decisio
 - **Accessibility:** each chip is a button. The selected chip has the Selected trait.
 - **Colors:** chips use the accent (`offshootPrimary`) and follow the theme.
 
-**Files:** new `ReviewDatePresets.swift` (the preset enum and the chip row view),
+**Files:** new `ReviewDatePreset.swift` (the preset enum) and `ReviewDatePresetRow.swift` (the chip row view),
 `LogDecisionView.swift`, `EditDecisionView.swift`.
 
 **Tests:** a unit test that each preset adds the right number of days and keeps the time of day.
@@ -100,7 +100,7 @@ it only lasts until the 30-day windows fill.
 - 7 marked → the newer half has 4.
 - Both 30-day windows full → the 30-day path, `isSoFar = false`.
 - 5 marked → `.tooEarly`.
-- Existing fixtures: `insights-seed-too-early.json` has 1 marked decision and
+- Existing fixtures: `insights-seed-too-early.json` has 3 marked decisions and
   stays `.tooEarly`. `insights-seed.json` fills both windows and stays Improving.
   Update the existing assertions to the new return type only.
 
