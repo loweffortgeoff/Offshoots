@@ -2,7 +2,7 @@
 
 In-flight changes from coding sessions. The release pass turns these into release notes.
 
-## Branch `section-6-housekeeping` (not merged)
+## Merged to `main` — branch `section-6-housekeeping`
 
 ### 2026-09-25 — Audit section 6, Housekeeping
 - Changed: nine source files had the Xcode header comment two or three times. Each file keeps one header now. The DashboardView header read "DasbboardView". (`NotificationDelegare` was already fixed in section 1.)
