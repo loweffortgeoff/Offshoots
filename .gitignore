@@ -12,5 +12,6 @@ build/
 !DECISIONS.md
 !TODO.md
 !CLAUDE.md
+!ASC_LISTING.md
 *.txt
 *.pdf
