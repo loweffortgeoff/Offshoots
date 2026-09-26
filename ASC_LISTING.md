@@ -1,22 +1,22 @@
 # App Store Connect — Current Listing (v2.0.0)
 
-Draft for the 2.0.0 relaunch. Version 1.0.0 was on the App Store before. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US.
+Listing for the 2.0.0 relaunch. Version 1.0.0 was on the App Store before. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US.
 
 ## Subtitle (30 characters max)
-Decision Journal & Tracker — 26 characters
+Decision Journal & Predictions — 30 characters
 
-Rationale: the app name indexes "offshoots". Apple combines words across the name, the subtitle and the keyword field. "Decision" and "journal" are the two terms people type to find this kind of app. "Tracker" catches "decision tracker". The keyword field does not repeat any of these.
+Rationale: the app name indexes "offshoots". Apple combines words across the name, the subtitle and the keyword field. "Decision" and "journal" are the two terms people type to find this kind of app. "Predictions" replaces "Tracker": prediction trackers (Foresee, ClaimCheck, Prediction Tracker & Journal) are their own search niche, and the prediction step is what sets Offshoots apart from a plain decision journal. "Tracker" moves to the keyword field, where it still combines with "decision" and "prediction". It still reads as a subtitle, not a list.
 
 ## Promotional Text (170 characters max)
-Log a decision, predict how it will go, then record what happened. Revisit it later and see where your predictions land. No account. No ads. No tracking. — 153 characters
+Predict how a decision will turn out, record what happened, then revisit it months later. Insights show where your predictions land and where optimism gets ahead of you. — 169 characters
 
 ## What's New
 Offshoots 2.0 is a big update. It keeps going after you decide.
 
 • Revisit any decision later and re-rate it. Every revisit stays on a timeline ("Bad → Good"), and each one can schedule the next check-in.
-• Ready to Revisit: due reviews show on the Dashboard and at the top of your Decisions list.
+• Ready to Review: due reviews show on the Dashboard and at the top of your Decisions list.
 • Pick a review date with one tap: tomorrow, 3 days, 1 week or 1 month.
-• New Insights: prediction accuracy with near misses, optimism bias, outcomes by week, and an accuracy trend.
+• Insights: near misses in Prediction Accuracy, a new Optimism card, and stats that count your revisits.
 • Each marked decision tells you how the result compared with your prediction.
 • Starter suggestions help you log your first decisions.
 • Choose Light, Dark or System appearance, and export your data as JSON.
@@ -36,7 +36,7 @@ Follow-Up Reminders
 Pick a review date with one tap: tomorrow, 3 days, 1 week or 1 month. A reminder arrives when the decision is ready to review.
 
 Record What Happened
-Rate the result from Very Bad to Very Good and add a reflection. Each marked decision tells you how the result compared with your prediction.
+Rate the result from Very Bad to Great and add a reflection. Each marked decision tells you how the result compared with your prediction.
 
 Revisit Any Time
 Give a decision a new rating and a note on what changed. Schedule the next check-in if you want one. The timeline shows each change ("Bad → Good").
@@ -58,39 +58,53 @@ Private by design:
 • Dynamic Type and VoiceOver support
 
 ## Keywords (100 characters max)
-choices,predict,outcome,reflect,review,bias,accuracy,insights,revisit,improve,private,free,log,habit — 100 characters
+tracker,choice,outcome,forecast,regret,bias,review,reflect,accuracy,revisit,log,diary,improve,learn — 99 characters
+
+## Competitor Landscape
+| App | Keyword Themes |
+| --- | --- |
+| Decision Journal (decisionjournalapp.com) | decision journal, make better decisions, document, review, analyze |
+| Decision Journal - Pros & Cons | pros and cons, compare options, weighted criteria, verdict, decision journal |
+| Decision Receipt | review choices, reduce regret, outcome tracking, reflection, review dates |
+| Foresee: Predictions Tracker | predictions tracker, confidence, accuracy, reveal date, calibration |
+| ClaimCheck: Prediction Tracker | prediction tracker, bets, challenges, outcomes, proven or false |
+
+Two clusters: decision journals (log and review) and prediction trackers (forecast and score). Offshoots sits between them. None of them re-rate a decision over time, so "revisit" is uncontested.
 
 ## Keyword Analysis
 
 | Keyword | Purpose |
 |---------|---------|
-| choices | Synonym for "decisions" (indexed from the subtitle); catches "choice tracker" searches |
-| predict | The prediction step is the core mechanic; catches "prediction tracker" searches |
-| outcome | Outcome tracking is the second half of the loop |
-| reflect | Reflection notes; journaling and self-reflection audience |
-| review | Follow-up reminders and Ready to Review |
-| bias | Optimism bias card; catches "cognitive bias" browsers |
-| accuracy | Prediction accuracy card |
-| insights | Insights tab; analytics-minded users |
+| tracker | Moved from the subtitle; builds "decision tracker" and "prediction tracker" |
+| choice | Synonym for "decision"; Decision Receipt uses "choices" in its subtitle |
+| outcome | Outcome tracking is the second half of the loop; "outcome tracker" |
+| forecast | Prediction-tracker synonym; "forecast journal", "forecast tracker" |
+| regret | Emotional search angle ("reduce regret", "regret"); Decision Receipt targets it |
+| bias | Optimism bias card; "cognitive bias" searches |
+| review | Follow-up reminders and Ready to Review; "decision review" |
+| reflect | Reflection notes; self-reflection searches |
+| accuracy | Prediction accuracy card; "prediction accuracy" |
 | revisit | The differentiator: re-rate a decision later |
-| improve | Self-improvement searches ("improve decision making") |
-| private | Privacy-first pitch; no data collection |
-| free | No paywall; all features included |
-| log | Short term for logging and tracking |
-| habit | Adjacent volume from habit and self-tracking searchers |
+| log | Short term; "decision log", "prediction log" |
+| diary | Journal synonym with its own search volume; "decision diary" |
+| improve | "improve decision making" searches |
+| learn | "learn from mistakes", "learn from decisions" |
 
-**Already indexed by the name and subtitle — deliberately not repeated:** offshoots, decision, journal, tracker.
+**Already indexed by the name and subtitle, so not repeated:** offshoots, decision, journal, prediction(s).
 
 **Dropped and why:**
-- "decisions" (plural): Apple matches plural and singular forms, so "decision" in the subtitle covers it.
-- "predictions": "predict" covers it.
-- "reminder": low value at 8 characters; the reminder feature is a page-read feature, not a search term.
-- "mindful", "stoic": not honest fits. The app is a tracker, not a mindfulness or philosophy app.
+- "predict": the subtitle now carries "predictions".
+- "private": privacy is not the pitch. The app's substance is the predict, record, revisit loop.
+- "free": low intent, and it says nothing about what the app does.
+- "insights": generic. Every analytics app uses it.
+- "habit": weak fit. Offshoots is not a habit tracker, so those searchers bounce.
+- "pros", "cons", "decide": the pros-and-cons crowd wants a decision helper before the choice. Offshoots works after the choice.
+- "calibration": fits the prediction niche, but few people type it.
 
 **A/B rotation candidates:**
-- "habit" ↔ "reminder"
-- "log" ↔ "mindful"
-- "bias" ↔ "regret" (test whether emotional searches outperform the analytical one)
+- "learn" ↔ "mistake"
+- "diary" ↔ "calibrate"
+- "regret" ↔ "hindsight"
 
 ## Screenshots
 The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first capture pass is in `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/2026-09-26/`.
@@ -98,7 +112,7 @@ The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first ca
 ## Notes
 
 - 2026-09-26: First draft, written from README, TODO, CHANGELOG and the audit doc. Version 2.0.0 is a relaunch of the app. The old 1.0.0 was on the App Store. What's New is written as an update from 1.0.0.
-- **To do before ship:** the Xcode project still has `MARKETING_VERSION = 1.0`. Set it to 2.0.0. The repo has no release tags.
-- **To check:** the feature list in What's New is my reading of the git history (Dec 2025 – Sep 2026), not a diff against the shipped 1.0.0 build. Cut any line that 1.0.0 already had (for example the tip jar, stakes, or the 5-step outcome scale, which are not listed).
-- **Not yet done:** no competitor research. Add a Competitor Landscape table (as in `../Task-ed-/ASC_LISTING.md`) before the first keyword refresh, and check the keyword field against real impression data after launch.
-- Claims in the description all match shipped features in `README.md`. Recheck "Dynamic Type and VoiceOver support" after the VoiceOver pass on the iPhone 17 Pro (open in TODO).
+- 2026-09-26 (release pass): `MARKETING_VERSION` is 2.0.0, build 1. The 2.0.0 baseline is every commit after `8ed7dac` (2026-07-12). What's New was checked against the source at `8ed7dac`: 1.0 already had Prediction Accuracy, Outcome Distribution, Outcome Trends, Category Breakdown and the Trend tile, so the Insights line names only what is new (near misses, the Optimism card, revisit-aware stats).
+- Claims in the description all match shipped features in `README.md`. The VoiceOver pass on the iPhone 17 is done (TODO), so "Dynamic Type and VoiceOver support" stands.
+- 2026-09-26 (ASO pass): Competitor scan done. Subtitle is now "Decision Journal & Predictions" to reach the prediction-tracker niche. Keywords rebuilt, and "private" and "free" are out. The promo text no longer leans on privacy. Check impressions for "prediction tracker" and "decision tracker" after launch. Recheck "revisit" against competitors at the next refresh, since it is uncontested for now.
+- `RELEASE_NOTES.md` starts with 2.0.0. The next ASO refresh diffs against the `v2.0.0` tag.

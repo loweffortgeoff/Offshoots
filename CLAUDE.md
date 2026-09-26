@@ -166,7 +166,11 @@ while the app is running, not only before launch.
 
 - The audit and plan docs live in `docs/`. The 2026-09-23 audit doc lists the
   remaining sections (5–6).
-- `.gitignore` ignores `*.md` except `README.md`, `CHANGELOG.md`,
-  `DECISIONS.md`, `TODO.md`, `CLAUDE.md` and `docs/**/*.md`. When you add a
-  new root Markdown file that belongs in git, add an exception for it.
+- `.gitignore` does not ignore Markdown, so a new doc is tracked with no
+  exception. It ignores Xcode user state, build output, AI tooling folders,
+  PDFs and OS files.
 - Keep CHANGELOG, DECISIONS and TODO up to date as described in `../CLAUDE.md`.
+- Release docs: `RELEASE_NOTES.md` (NEW / IMPROVED / FIXED / What to Test per
+  version) and `ASC_LISTING.md`. The CHANGELOG keeps `## In Progress` on top;
+  the release pass moves those entries under `## Shipped` → `### <version>`.
+  Releases are tagged `v<version>`; the first tag is `v2.0.0`.

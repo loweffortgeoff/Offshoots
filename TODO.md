@@ -11,10 +11,11 @@
     - [ ] Foundation Model integrations 
 
 ## Done
+- [x] Release pass for 2.0.0: `RELEASE_NOTES.md` started, CHANGELOG entries moved under Shipped, ASC_LISTING What's New checked against the 1.0 source — 2026-09-26
 - [x] **Calendar days cannot be tapped on Log and Edit.** Confirmed cause: the tap-outside-to-close-the-keyboard gesture from Section 5 sat on the whole form and took the day taps away from the calendar. Fixed by gating the gesture on focus, so it only intercepts taps while a text field is active. — 2026-09-26
   Checked on the iPhone 17 (iOS 27) by Geoff.
 - [x] Merge `fix/calendar-day-taps` to `main` (fast-forward) — 2026-09-26
-- [x] VoiceOver pass on the iPhone 17 with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only.
+- [x] VoiceOver pass on the iPhone 17 with VoiceOver on: rows, the outcome picker and the Insights cards. Chunk 3 checked labels and traits in the accessibility tree only. — 2026-09-26
 - [x] Merge `remove-tip-jar` to `main` (fast-forward) — 2026-09-26
 - [x] Remove the Tip Jar: both Swift files, the Settings Support section and the StoreKit link (branch `remove-tip-jar`) — 2026-09-26
 - [x] Draft `ASC_LISTING.md` for the 2.0.0 relaunch; replace the blanket `*.md` ignore with a Task(ed)-style `.gitignore` — 2026-09-26

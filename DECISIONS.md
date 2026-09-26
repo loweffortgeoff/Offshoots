@@ -121,3 +121,13 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** The tap-outside-to-close-the-keyboard gesture on Log, Edit, Mark Outcome and Revisit runs only while a text field has focus (`including: <any field focused> ? .all : .subviews`). With no field focused, the gesture does not claim taps, so the calendar day underneath receives them.
 **Why:** The gesture, added in Section 5, sat on the whole form and took every tap before the graphical calendar could select a day. Removing the gesture would drop the Section 5 tap-outside behavior.
 **Alternative considered:** Remove the gesture. Rejected because it would bring back the keyboard staying open on an outside tap. Trade-off accepted: with the keyboard up, the first tap on a day closes the keyboard, and a second tap selects the day.
+
+## 2026-09-26 (Task(ed)-style .gitignore replaces the docs exception)
+**Decision:** `.gitignore` no longer ignores `*.md`. It ignores only Xcode user state, build output, AI tooling folders, PDFs and OS files. This replaces the 2026-09-24 "Track docs/ in git" rule.
+**Why:** The blanket ignore needed an exception for each new root doc (ASC_LISTING, RELEASE_NOTES), and a missed exception hides a file from git without warning. The sibling apps already use this shorter file.
+**Alternative considered:** Keep `*.md` ignored and add an exception per file. Easy to forget.
+
+## 2026-09-26 (2.0.0 baseline and release notes)
+**Decision:** Version 2.0.0 is every commit after `8ed7dac` (2026-07-12), the last commit before the audit. The shipped 1.0 (build 3) was never tagged, so no `v1.0` tag is added. Release notes live in `RELEASE_NOTES.md`, which starts with 2.0.0, and each release gets an annotated `v<version>` tag from here on.
+**Why:** `8ed7dac` is the last point that matches the 1.0 feature set, and the audit started right after it. The file name matches Task(ed), List-Happens, Muzzletoff and Weather-in-Words.
+**Alternative considered:** A backdated `v1.0` tag on `8ed7dac`. It is not certain that this commit matches the shipped 1.0 build, and the `v2.0.0` tag gives the next release pass its baseline.
