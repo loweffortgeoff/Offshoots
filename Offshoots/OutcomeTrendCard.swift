@@ -13,10 +13,11 @@ struct OutcomeTrendCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private struct WeekData: Identifiable {
-        let id = UUID()
         let weekStart: Date
         let category: String
         let count: Int
+
+        var id: String { "\(weekStart.timeIntervalSinceReferenceDate)-\(category)" }
     }
 
     private var weeklyData: [WeekData] {

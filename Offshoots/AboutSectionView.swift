@@ -3,10 +3,11 @@ internal import SwiftUI
 // MARK: - App Info Model
 
 struct LowEffortApp: Identifiable {
-    let id = UUID()
     let name: String
     let iconName: String
     let appStoreID: String
+
+    var id: String { appStoreID }
 
     var appStoreURL: URL? {
         URL(string: "https://apps.apple.com/us/app/\(name.lowercased().replacingOccurrences(of: " ", with: "-"))/id\(appStoreID)")
