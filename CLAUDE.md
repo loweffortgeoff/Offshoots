@@ -50,8 +50,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 - **App Store screenshots:** `scripts/screenshots.sh` erases the iPhone 18 Pro
   Max (iOS 27.0), sets dark mode and a 9:41 status bar, builds, installs and
   loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
-  and the script moves every date to today, so the shots never drift.
-  `ScreenshotFixtureTests` pins the numbers. Capture with
+  and the script moves every date by the number of days between the anchor
+  and today, so the shots never drift. `scripts/seed.sh screenshots` loads
+  the same fixture without the date shift, so its dates drift after
+  2026-09-27. `ScreenshotFixtureTests` pins the numbers. Capture with
   `scripts/screenshots.sh shot 01-dashboard`; files go to
   `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/<date>/`.
   The shot list and scroll positions are at the top of the script. Do not save

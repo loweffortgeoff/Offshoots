@@ -59,7 +59,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **StoreKit** | Tip jar (4 tiers) |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion` and `PredictionResultBanner` |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, and the screenshot fixture |
 
 ## Project Structure
 
@@ -124,9 +124,10 @@ Offshoots/
 ├── TipJarView.swift               # Tip Jar screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, screenshot fixture
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
+scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pro Max
 ```
 
 ## Privacy
