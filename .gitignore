@@ -1,6 +1,7 @@
 # Xcode user state
 *.xcuserstate
 xcuserdata/
+xcshareddata/xcodecloud/
 
 # Build artifacts
 DerivedData/
