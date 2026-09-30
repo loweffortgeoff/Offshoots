@@ -1,6 +1,7 @@
 # TODO
 
 ## Next
+- [ ] **Reflection (paid unlock, on-device text).** Spec: `docs/superpowers/specs/2026-09-30-reflection-design.md`. Patterns on Insights, decision reflection on Decision Detail, and a user-triggered Clean Up Note on the note fields. Uses Foundation Models, which needs iOS 26 and an Apple Intelligence device; the app still deploys to iOS 18.6, so the code sits behind `#available`. Price and one-time versus low-cost subscription are not decided. Next step: review the spec, then build chunk 1 (policy layer and tests). Adapted from the Contrition notes (2026-09-30).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
