@@ -60,4 +60,5 @@ struct DashboardView: View {
 #Preview {
     DashboardView(selectedTab: .constant(.dashboard), logDraft: .constant(nil))
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }
