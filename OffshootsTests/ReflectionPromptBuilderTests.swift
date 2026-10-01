@@ -12,6 +12,7 @@ struct ReflectionPromptBuilderTests {
 
         #expect(prompt.contains("Resolved decisions: 6"))
         #expect(prompt.contains("4 exact, 1 one step off, 1 further off"))
+        #expect(prompt.contains("all categories combined"))
         #expect(prompt.contains("- Money: 3 marked, 1 of 3 matched the prediction exactly"))
         #expect(prompt.contains("- Work: 3 marked, all 3 matched the prediction exactly"))
         #expect(prompt.contains("Trend: Improving"))
