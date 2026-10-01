@@ -52,6 +52,11 @@ struct AnalyticsView: View {
                                 bias: AnalyticsEngine.optimismBias(from: store.decisions),
                                 markedCount: AnalyticsEngine.markedCount(from: store.decisions)
                             )
+
+                            // Patterns (Reflection unlock, on-device text)
+                            if ReflectionEligibility.canShowPatterns(for: store.decisions) {
+                                PatternsCard(decisions: store.decisions)
+                            }
                         }
 
                         Spacer(minLength: 20)
