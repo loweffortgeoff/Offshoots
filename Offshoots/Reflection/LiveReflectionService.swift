@@ -39,7 +39,7 @@ struct LiveReflectionService: ReflectionGenerating {
 
     @Generable
     struct GeneratedCleanNote {
-        @Guide(description: "The note, rewritten more clearly, with the same meaning and language")
+        @Guide(description: "The note with spelling, capitals, punctuation and grammar fixed. Same meaning and language")
         var text: String
     }
 

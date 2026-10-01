@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct LogDecisionView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(ReflectionCenter.self) private var reflectionCenter
     @Binding var selectedTab: AppTab
     /// A starter suggestion to fill in; cleared once applied
     @Binding var draft: StarterSuggestion?
@@ -114,6 +115,9 @@ struct LogDecisionView: View {
                                         .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
                                 )
                                 .lineLimit(3...6)
+                            if reflectionCenter.gate != .hidden {
+                                CleanUpNoteRow(text: $notes)
+                            }
                         }
                         .padding(16)
                         .background(Color.offshootCardBackground)
@@ -302,4 +306,5 @@ struct SavedConfirmationView: View {
 #Preview {
     LogDecisionView(selectedTab: .constant(.log), draft: .constant(nil))
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }
