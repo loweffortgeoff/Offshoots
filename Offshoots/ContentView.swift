@@ -85,4 +85,5 @@ struct ContentView: View {
 #Preview {
     ContentView()
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }
