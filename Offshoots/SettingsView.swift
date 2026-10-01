@@ -105,6 +105,8 @@ struct SettingsView: View {
                 }
                 .listRowBackground(Color.offshootCardBackground)
 
+                ReflectionSettingsSection()
+
                 // MARK: - About Section
                 AboutSectionView(currentAppName: "Offshoots")
                     // Row fills are set per section: on the Form itself the modifier has no effect
@@ -121,4 +123,5 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }

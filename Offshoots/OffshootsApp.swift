@@ -40,6 +40,7 @@ struct OffshootsApp: App {
                 }
             }
             .preferredColorScheme(theme.colorScheme)
+            .task { await reflection.start() }
             .onAppear {
                 guard showSplash else { return }
                 // Wait 2 seconds, then dismiss splash
