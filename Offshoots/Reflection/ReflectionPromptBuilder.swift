@@ -30,6 +30,13 @@ enum ReflectionPromptBuilder {
     Then one question the user can carry into the next revisit. The question is not advice.
     """
 
+    /// For a decision with no written notes. The model fills any list it is given, so with
+    /// nothing to read it made up repeats; this version does not ask for them.
+    static let decisionInstructionsWithoutNotes = sharedRules + """
+     Write a summary of how this decision aged in one or two sentences. \
+    Then one question the user can carry into the next revisit. The question is not advice.
+    """
+
     static let cleanUpInstructions = """
     You rewrite a short personal note so it reads more clearly. \
     Keep the meaning, the first-person voice and the same language. \

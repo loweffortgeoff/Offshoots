@@ -102,4 +102,17 @@ struct ReflectionDigestBuilderTests {
         let digest = try #require(ReflectionDigestBuilder.decision(decision))
         #expect(digest.daysToFirstOutcome == 0)
     }
+
+    @Test func revisitsWithNoNotesHaveNoWrittenText() throws {
+        let revisits = [Revisit(date: Make.day(9), outcome: .good, note: nil), Revisit(date: Make.day(12), outcome: .good, note: "  ")]
+        let decision = Make.decision(actual: .neutral, notes: " ", reflection: nil, resolvedAt: Make.day(3), revisits: revisits)
+        #expect(try #require(ReflectionDigestBuilder.decision(decision)).hasWrittenText == false)
+    }
+
+    @Test func anyOneNoteCountsAsWrittenText() throws {
+        let logNote = Make.decision(actual: .good, notes: "Cheaper and closer.", resolvedAt: Make.day(3))
+        let revisitNote = Make.decision(actual: .good, notes: nil, resolvedAt: Make.day(3), revisits: [Revisit(date: Make.day(9), outcome: .good, note: "Still glad.")])
+        #expect(try #require(ReflectionDigestBuilder.decision(logNote)).hasWrittenText)
+        #expect(try #require(ReflectionDigestBuilder.decision(revisitNote)).hasWrittenText)
+    }
 }

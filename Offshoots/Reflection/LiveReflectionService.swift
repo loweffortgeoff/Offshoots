@@ -28,6 +28,15 @@ struct LiveReflectionService: ReflectionGenerating {
         var nextPrompt: String
     }
 
+    /// No `repeating` field: a decision with no written notes has nothing to repeat
+    @Generable
+    struct GeneratedDecisionSummary {
+        @Guide(description: "One or two sentences on how the decision aged")
+        var summary: String
+        @Guide(description: "One question to carry into the next revisit. Not advice")
+        var nextPrompt: String
+    }
+
     @Generable
     struct GeneratedCleanNote {
         @Guide(description: "The note, rewritten more clearly, with the same meaning and language")
@@ -63,6 +72,19 @@ struct LiveReflectionService: ReflectionGenerating {
     }
 
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput {
+        guard digest.hasWrittenText else {
+            let generated = try await generate(
+                GeneratedDecisionSummary.self,
+                instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes,
+                prompt: ReflectionPromptBuilder.decisionPrompt(digest),
+                maximumTokens: 300
+            )
+            return try DecisionReflectionOutput(
+                summary: generated.summary,
+                repeating: [],
+                nextPrompt: generated.nextPrompt
+            ).validated()
+        }
         let generated = try await generate(
             GeneratedDecisionReflection.self,
             instructions: ReflectionPromptBuilder.decisionInstructions,

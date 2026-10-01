@@ -25,7 +25,7 @@ struct FakeReflectionGenerator: ReflectionGenerating {
         try await respond {
             DecisionReflectionOutput(
                 summary: "\(digest.title) started as \(digest.firstOutcome) and has held steady since.",
-                repeating: ["The same worry shows up in each note.", "Your rating moved once, then settled."],
+                repeating: digest.hasWrittenText ? ["The same worry shows up in each note.", "Your rating moved once, then settled."] : [],
                 nextPrompt: "What would make you rate this differently at the next revisit?"
             )
         }

@@ -61,6 +61,12 @@ struct ReflectionPromptBuilderTests {
         }
     }
 
+    @Test func withoutNotesTheDecisionInstructionsDoNotAskForRepeats() {
+        #expect(ReflectionPromptBuilder.decisionInstructions.contains("what repeats"))
+        #expect(!ReflectionPromptBuilder.decisionInstructionsWithoutNotes.contains("repeats"))
+        #expect(ReflectionPromptBuilder.decisionInstructionsWithoutNotes.contains("Never tell the user what to choose"))
+    }
+
     @Test func cleanUpInstructionsKeepTheUsersLanguageAndAddNothing() {
         let instructions = ReflectionPromptBuilder.cleanUpInstructions
         #expect(instructions.contains("same language"))
