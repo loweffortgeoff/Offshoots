@@ -8,7 +8,7 @@
 
 **Tech Stack:** SwiftUI, Swift Testing, FoundationModels (iOS 26+, behind `#available`), StoreKit 2. No new dependencies.
 
-**Spec:** `docs/superpowers/specs/2026-09-30-reflection-design.md`. All open questions in the spec are closed (2026-10-01): $5.99 one-time, regenerate on demand (nothing saved), no free preview, Family Sharing off, Patterns needs 5 resolved decisions, no localization work.
+**Spec:** `docs/superpowers/specs/2026-09-30-reflection-design.md`. All open questions in the spec are closed (2026-10-01): $5.99 one-time, regenerate on demand (nothing saved), no free preview, Family Sharing off, Patterns needs 5 resolved decisions, no localization work. Spec review (2026-10-01) added: no `Refresh` control, Edit Decision is out of scope, a threshold line below 5 resolved decisions, and no empty card when the surface is `hidden`.
 
 ## Global Constraints
 
@@ -16,7 +16,9 @@
 - Nothing is saved. Output is ephemeral view state. No new data model, no CloudKit, no `decisions.json` change.
 - User-triggered only. Nothing generated appears on a primary screen without a tap.
 - No advice on what to choose. No score, diagnosis or personality label. Clean Up Note adds nothing the user did not imply. One mode, no tone picker.
-- Paywall copy shows `Product.displayPrice` from StoreKit. It hard-codes no price and does not say "one-time".
+- Paywall copy shows `Product.displayPrice` from StoreKit. It hard-codes no price. It may say "one-time purchase".
+- No `Refresh` control. Greedy sampling gives the same output for the same input. A changed input clears the result; the error state keeps `Try Again`.
+- A `hidden` surface draws nothing: no title, no background, no empty card. The call site checks `gate != .hidden` before it adds a card.
 - Never show the paywall on a device that cannot use the feature.
 - Paywall wording: "Unlock Reflection". Do not use "AI coach", "ask anything", "personal advisor" or "predict regret".
 - No onboarding, no analytics, no network calls, no third-party packages.
@@ -31,7 +33,7 @@ Inputs and conditions the spec implies but does not spell out. Each line has a t
 1. **Blank or whitespace-only notes** (a revisit with `note: nil`, a note of `"   \n"`). Expected: they count as no note, and never produce an empty bullet in a prompt. Owner: Task 1.
 2. **A very long pasted note** (10,000 characters). Expected: the digest cuts it, and Clean Up Note shows "Too long" instead of sending it to the model. Owner: Task 1.
 3. **The model returns nothing useful** (empty strings, empty list, duplicates). Expected: an error state with a retry, never a blank card. Owner: Task 1 (`validated()`), used in Task 2.
-4. **Stale or doubled output** (user taps Refresh twice, or edits a note, or marks a revisit while a result shows). Expected: the older result never overwrites the newer one, and a changed input clears the result. Owner: Task 1 (`ReflectionRun`), wired in Tasks 2 to 4.
+4. **Stale or doubled output** (user taps Try Again twice fast, or edits a note, or marks a revisit while a result shows). Expected: the older result never overwrites the newer one, and a changed input clears the result. Owner: Task 1 (`ReflectionRun`), wired in Tasks 2 to 4.
 5. **Purchase revoked or refunded during a session.** Expected: the gate flips back to `paywalled` with no relaunch. Owner: Task 5.
 
 Also covered inside the tasks: note text that tries to give the model instructions (it only ever goes in the prompt data block, Task 1), and legacy decisions with no `resolvedAt` (Task 1).
@@ -57,7 +59,7 @@ New, in `Offshoots/Reflection/`:
 | `LiveReflectionService.swift` | The only `FoundationModels` file |
 | `ReflectionCenter.swift` | `@Observable` environment object: availability, unlock, generator, `gate` |
 | `ReflectionGateView.swift` | Renders hidden, not-ready, locked or enabled around a control |
-| `ReflectionStateView.swift` | Shared idle, loading, result, error body with Refresh and Copy |
+| `ReflectionStateView.swift` | Shared idle, loading, result, error body with Copy (Try Again on error) |
 | `PatternsCard.swift` | Insights card |
 | `DecisionReflectionCard.swift` | Decision Detail card |
 | `CleanUpNoteRow.swift` | Suggestion row under a note field |
@@ -79,7 +81,7 @@ Both `Offshoots/` and `OffshootsTests/` are Xcode synced folders, so new files n
 1. The gate has four states, not three: `hidden`, `notReady(reason)`, `paywalled`, `enabled`. The spec lists three, but its Platform section also asks for a disabled control with a reason when the model is not ready.
 2. Clean Up Note shows for a note of 3 words or more, up to 1,500 characters. The spec gives no numbers.
 3. The Settings "Reflection" section (with Restore) shows only where `gate` is not `hidden`.
-4. Edit Decision also has a notes field. The spec names three fields (Log, Mark Outcome, Revisit), so Edit is out of scope.
+4. Edit Decision also has a notes field. The spec names three fields (Log, Mark Outcome, Revisit), so Edit is out of scope. Confirmed by Geoff, 2026-10-01.
 5. Copy uses `UIPasteboard`. SwiftUI has no pasteboard API on iOS, so this is the "no alternative" exception to the no-UIKit rule.
 
 ## Machines
@@ -99,7 +101,7 @@ Write and test on the Mac mini (Xcode 27.0, iOS 27.0 SDK). Use the iPhone 18 Pro
   - `enum ModelAvailability { case available, notReady(reason: String), unsupported }`
   - `enum ReflectionSurfaceState { case hidden, notReady(reason: String), paywalled, enabled }`
   - `ReflectionGate.state(availability:isUnlocked:) -> ReflectionSurfaceState`
-  - `ReflectionEligibility.canShowPatterns(for:) -> Bool`, `.canReflect(on:) -> Bool`, `.cleanUpStatus(_:) -> CleanUpStatus` (`.tooShort`, `.ok`, `.tooLong`)
+  - `ReflectionEligibility.canShowPatterns(for:) -> Bool`, `.patternsRemaining(for:) -> Int`, `.canReflect(on:) -> Bool`, `.cleanUpStatus(_:) -> CleanUpStatus` (`.tooShort`, `.ok`, `.tooLong`)
   - `ReflectionDigestBuilder.patterns(from:now:) -> PatternsDigest`, `.decision(_:) -> DecisionDigest?`
   - `ReflectionPromptBuilder.patternsInstructions`, `.decisionInstructions`, `.cleanUpInstructions` (static strings), `.patternsPrompt(_:)`, `.decisionPrompt(_:)`, `.cleanUpPrompt(note:)`
   - `PatternsOutput`, `DecisionReflectionOutput`, `CleanedNote`, each with `validated() throws -> Self`
@@ -271,6 +273,12 @@ struct ReflectionEligibilityTests {
         #expect(ReflectionEligibility.canShowPatterns(for: decisions) == false)
     }
 
+    @Test func patternsRemainingCountsDownToZero() {
+        #expect(ReflectionEligibility.patternsRemaining(for: []) == 5)
+        #expect(ReflectionEligibility.patternsRemaining(for: Array(repeating: Make.marked(), count: 3) + [Make.decision()]) == 2)
+        #expect(ReflectionEligibility.patternsRemaining(for: Array(repeating: Make.marked(), count: 7)) == 0)
+    }
+
     // MARK: - Decision reflection
 
     @Test func pendingDecisionCannotBeReflectedOn() {
@@ -341,6 +349,11 @@ enum ReflectionEligibility {
 
     static func canShowPatterns(for decisions: [Decision]) -> Bool {
         AnalyticsEngine.markedCount(from: decisions) >= minimumResolvedForPatterns
+    }
+
+    /// For the threshold line: how many more marked decisions Patterns needs
+    static func patternsRemaining(for decisions: [Decision]) -> Int {
+        max(0, minimumResolvedForPatterns - AnalyticsEngine.markedCount(from: decisions))
     }
 
     /// A marked outcome, and something written or revisited to read.
@@ -1510,7 +1523,7 @@ struct ReflectionGateView<Content: View>: View {
 internal import SwiftUI
 
 /// Idle, loading, result and error for one Reflection card. The result stays on screen with
-/// Refresh and Copy. Nothing is saved.
+/// Copy. No Refresh: greedy sampling repeats the same text for the same input. Nothing is saved.
 struct ReflectionStateView<Value: Equatable, ResultContent: View>: View {
     let state: ReflectionViewState<Value>
     let startTitle: String
@@ -1541,7 +1554,11 @@ struct ReflectionStateView<Value: Equatable, ResultContent: View>: View {
         case .result(let value):
             VStack(alignment: .leading, spacing: 16) {
                 result(value)
-                ResultActions(start: start, copy: { copy(copyText(value)) })
+                Button { copy(copyText(value)) } label: {
+                    Label("Copy", systemImage: "doc.on.doc")
+                }
+                .buttonStyle(.bordered)
+                .tint(Color.offshootPrimary)
             }
 
         case .error(let message):
@@ -1563,31 +1580,9 @@ struct ReflectionStateView<Value: Equatable, ResultContent: View>: View {
         UIPasteboard.general.string = text
     }
 }
-
-/// Refresh and Copy. At accessibility sizes the two stack instead of wrapping mid-word.
-private struct ResultActions: View {
-    let start: () -> Void
-    let copy: () -> Void
-
-    var body: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack { buttons }
-            VStack(alignment: .leading) { buttons }
-        }
-    }
-
-    @ViewBuilder private var buttons: some View {
-        Button(action: start) {
-            Label("Refresh", systemImage: "arrow.clockwise")
-        }
-        Button(action: copy) {
-            Label("Copy", systemImage: "doc.on.doc")
-        }
-    }
-}
 ```
 
-Both buttons use `.buttonStyle(.bordered)` and `.tint(Color.offshootPrimary)` in `ResultActions`: add them on the `HStack` and `VStack` containers. If `UIPasteboard` is not found, add `internal import UIKit` at the top.
+If `UIPasteboard` is not found, add `internal import UIKit` at the top.
 
 - [ ] **Step 8: Write the Patterns card** `Offshoots/Reflection/PatternsCard.swift`
 
@@ -1600,6 +1595,8 @@ Both buttons use `.buttonStyle(.bordered)` and `.tint(Color.offshootPrimary)` in
 internal import SwiftUI
 
 /// Short observations across all marked decisions. Built on tap, not saved.
+/// Below the minimum, it shows a threshold line instead of the control.
+/// The call site adds this card only when the gate is not `hidden`.
 struct PatternsCard: View {
     let decisions: [Decision]
 
@@ -1610,23 +1607,31 @@ struct PatternsCard: View {
         VStack(alignment: .leading, spacing: 16) {
             CardTitle(title: "Patterns", systemImage: "sparkles", note: "On your device")
 
-            ReflectionGateView(controlTitle: "Show Patterns", systemImage: "sparkles") {
-                ReflectionStateView(
-                    state: run.state,
-                    startTitle: "Show Patterns",
-                    systemImage: "sparkles",
-                    start: generate,
-                    copyText: { $0.observations.joined(separator: "\n") }
-                ) { output in
-                    VStack(alignment: .leading, spacing: 12) {
-                        // Observations are unique after `validated()`, so the text is a stable id
-                        ForEach(output.observations, id: \.self) { observation in
-                            Text(observation)
-                                .font(.body)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+            if ReflectionEligibility.canShowPatterns(for: decisions) {
+                ReflectionGateView(controlTitle: "Show Patterns", systemImage: "sparkles") {
+                    ReflectionStateView(
+                        state: run.state,
+                        startTitle: "Show Patterns",
+                        systemImage: "sparkles",
+                        start: generate,
+                        copyText: { $0.observations.joined(separator: "\n") }
+                    ) { output in
+                        VStack(alignment: .leading, spacing: 12) {
+                            // Observations are unique after `validated()`, so the text is a stable id
+                            ForEach(output.observations, id: \.self) { observation in
+                                Text(observation)
+                                    .font(.body)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     }
                 }
+            } else {
+                // The useful empty state: buyers and non-buyers both see it, so it is not a promotion
+                Text("Patterns appear after \(ReflectionEligibility.minimumResolvedForPatterns) resolved decisions. \(ReflectionEligibility.patternsRemaining(for: decisions)) to go.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
         .padding(20)
@@ -1653,14 +1658,16 @@ struct PatternsCard: View {
 }
 ```
 
-- [ ] **Step 9: Add the card to Insights.** In `AnalyticsView.swift`, after the `OptimismCard(...)` call:
+- [ ] **Step 9: Add the card to Insights.** In `AnalyticsView.swift`, add `@Environment(ReflectionCenter.self) private var reflection` under the `store` property. After the `OptimismCard(...)` call:
 
 ```swift
-// Patterns (Reflection unlock, on-device text)
-if ReflectionEligibility.canShowPatterns(for: store.decisions) {
+// Patterns (Reflection unlock, on-device text). Hidden draws no card at all.
+if reflection.gate != .hidden {
     PatternsCard(decisions: store.decisions)
 }
 ```
+
+Until Task 5, the `paywalled` arm of `ReflectionGateView` is empty. On a device with no unlock flag, the card shows its title and nothing else. Task 5 fills that arm.
 
 - [ ] **Step 10: Build, test, run with the fake.** Take the iPhone 18 Pro (iOS 27.0) and say so first.
 
@@ -1677,10 +1684,10 @@ xcrun simctl launch <UDID> com.geoffrey.silva.Offshoots -ReflectionFake
 
 Check on the Insights tab, with a screenshot (`xcrun simctl io <UDID> screenshot`) for each:
 1. The Patterns card shows below Optimism, with "Show Patterns".
-2. Tap: loading row, then two observations, Refresh and Copy.
-3. Refresh twice fast: one result, no flicker.
+2. Tap: loading row, then two observations and Copy. No Refresh.
+3. Add a decision while a result shows: the result clears and "Show Patterns" returns.
 4. Launch without the flag: no card at all (simulator has no model, so `hidden`).
-5. With `insights-seed-too-early.json` (fewer than 5 marked): no card.
+5. With `insights-seed-too-early.json` (fewer than 5 marked): the card shows the threshold line with the correct count, and no control.
 6. Dynamic Type `accessibility-extra-extra-extra-large`: buttons stack, no mid-word breaks. Reset to `large` after.
 7. Dark mode, and a mid-run switch of appearance.
 8. VoiceOver labels: read the hierarchy (`DeviceInteractionStartSession`) and confirm the card title is a header and "Show Patterns" is a button.
@@ -1813,11 +1820,11 @@ private struct ResultBody: View {
 
 The three sub-headings use `.accessibilityAddTraits(.isHeader)`: add it to each `Text` that is a sub-heading. `output.repeating` is unique after `validated()`.
 
-- [ ] **Step 2: Place it.** In `DecisionDetailView.swift`, directly after the `if !decision.revisits.isEmpty { RevisitHistoryCard(...) }` block:
+- [ ] **Step 2: Place it.** In `DecisionDetailView.swift`, add `@Environment(ReflectionCenter.self) private var reflection`. Directly after the `if !decision.revisits.isEmpty { RevisitHistoryCard(...) }` block:
 
 ```swift
-// Reflection (paid unlock, on-device text)
-if ReflectionEligibility.canReflect(on: decision) {
+// Reflection (paid unlock, on-device text). Hidden draws no card at all.
+if reflection.gate != .hidden, ReflectionEligibility.canReflect(on: decision) {
     DecisionReflectionCard(decision: decision)
 }
 ```
@@ -1832,9 +1839,10 @@ xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform
 1. A pending decision: no card.
 2. A marked decision with no note and no revisit: no card.
 3. A marked decision with a note, or with a revisit: card shows below the revisit history.
-4. Tap: three sections, Refresh and Copy.
-5. Revisit the decision while a result shows: the result clears.
-6. Dynamic Type at the accessibility size, dark mode, VoiceOver headers.
+4. Tap: three sections and Copy. No Refresh.
+5. Launch without the flag: no card at all (`hidden`).
+6. Revisit the decision while a result shows: the result clears.
+7. Dynamic Type at the accessibility size, dark mode, VoiceOver headers.
 
 - [ ] **Step 5: Real model check on `Geoffrey's iPhone`** with `-ReflectionUnlockOnly`. Try three decisions: one with only a log note, one with only revisits (no notes), one with a very long pasted note. Confirm no advice, no empty sections, and the long note does not error.
 
@@ -2538,7 +2546,10 @@ Screenshots of the locked controls, the sheet and the Settings section; the refu
 This is documentation only, but it sits on the `reflection` branch with the code, so it ships with it. Run the `doc-keeper` agent for the TODO, DECISIONS, CHANGELOG and README ritual. Do the release docs (`RELEASE_NOTES.md`, `ASC_LISTING.md`) by hand, or leave them to the `release-pass` skill if Geoff prefers.
 
 - [ ] **Step 1: DECISIONS.md.** One entry, dated, with the closed questions:
-  - Reflection is a paid, one-time unlock at $5.99. A low-cost subscription stays possible later; the entitlement checks a product-ID list so no rework is needed. This overrides the Contrition "No subscriptions" guardrail.
+  - Reflection is a paid, one-time unlock at $5.99. No subscription is planned. The entitlement checks a product-ID list, so one could ship later with no rework.
+  - No `Refresh` control: greedy sampling repeats the same text for the same input. A changed input clears the result.
+  - Clean Up Note is on Log, Mark Outcome and Revisit. Edit Decision is out of scope for v1.
+  - Below 5 marked decisions, Patterns shows a threshold line, not nothing. A `hidden` surface draws no card.
   - Output is regenerated on demand and never saved. No free preview. Family Sharing off.
   - Patterns needs 5 marked decisions. Clean Up Note needs 3 words, up to 1,500 characters.
   - No localization work: surfaces hide when the model does not support the language.
@@ -2551,7 +2562,7 @@ This is documentation only, but it sits on the `reflection` branch with the code
 
 - [ ] **Step 4: README.md.** Add a "Reflection" feature group (Patterns, decision reflection, Clean Up Note, on-device, needs iOS 26 and Apple Intelligence, one-time unlock). Add `FoundationModels` and `StoreKit` rows to the Tech Stack table. Note that the app still supports iOS 18.6.
 
-- [ ] **Step 5: CLAUDE.md.** Add to Simulator Testing: the `-ReflectionFake` flag (fake generator, forced available, unlocked), `-ReflectionUnlockOnly` (real model, unlocked, device only), and `-ReflectionPaywall` if Task 5 kept it. Add the line: the simulator has no model, so real output needs `Geoffrey's iPhone`. Mention `Reflection.storekit` and where it attaches.
+- [ ] **Step 5: CLAUDE.md.** Add to Simulator Testing: the `-ReflectionFake` flag (fake generator, forced available, unlocked), `-ReflectionUnlockOnly` (real model, unlocked, device only), and `-ReflectionPaywall` if Task 5 kept it. Add the line: the simulator is assumed to have no model, so real output needs `Geoffrey's iPhone`. If the Task 2 simulator check showed a model, write that instead. Mention `Reflection.storekit` and where it attaches.
 
 - [ ] **Step 6: RELEASE_NOTES.md and ASC_LISTING.md.**
   - NEW: Reflection, a one-time unlock. Patterns on Insights. A reflection on each decision. Clean Up Note.
@@ -2585,7 +2596,7 @@ List the branch commits (`git log --oneline main..reflection`). Surface anything
 | Patterns on Insights, from `AnalyticsEngine` plus category, stakes, expected versus actual, revisit notes | 1 (digest), 2 (card) |
 | Decision reflection below revisit history, marked outcome and at least one note or revisit, three-part output | 1 (eligibility, output), 3 |
 | Clean Up Note on Log, Mark Outcome and Revisit; suggests only; `Use`, `Dismiss`; one mode | 4 |
-| Rules: user-triggered, read-only, no advice, ephemeral, `Refresh` and `Copy` | 1 (instructions), 2 to 4 |
+| Rules: user-triggered, read-only, no advice, ephemeral, `Copy` only (no `Refresh`), no card when hidden, threshold line | 1 (instructions), 2 to 4 |
 | Policy types: gate, eligibility, digest builder, prompt builder | 1 |
 | `ReflectionGenerating`, `LiveReflectionService` only SDK file, new session per call, `@Generable`, greedy, token cap, fake for tests | 1, 2 |
 | Generic view state with idle, loading, result, error | 1 |
