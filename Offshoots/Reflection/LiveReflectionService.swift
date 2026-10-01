@@ -22,7 +22,7 @@ struct LiveReflectionService: ReflectionGenerating {
     struct GeneratedDecisionReflection {
         @Guide(description: "One or two sentences on how the decision aged")
         var summary: String
-        @Guide(description: "Two or three plain observations about what repeats")
+        @Guide(description: "Up to three plain observations about what repeats. Empty if nothing repeats")
         var repeating: [String]
         @Guide(description: "One question to carry into the next revisit. Not advice")
         var nextPrompt: String
