@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct DecisionDetailView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(ReflectionCenter.self) private var reflection
     @Environment(\.dismiss) private var dismiss
     @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 56
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -253,6 +254,12 @@ struct DecisionDetailView: View {
                         // Revisit history
                         if !decision.revisits.isEmpty {
                             RevisitHistoryCard(decision: decision)
+                        }
+
+                        // Reflection (paid unlock, on-device text). Unsupported devices never see it.
+                        // Removing the card also drops its result, so a stale one cannot come back.
+                        if ReflectionEligibility.canReflect(on: decision), reflection.gate != .hidden {
+                            DecisionReflectionCard(decision: decision)
                         }
 
                         // Follow-up Date
