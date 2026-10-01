@@ -125,13 +125,12 @@ type of substance per file.
 
 ## Open questions
 
-- **Price and model.** One-time price, and the subscription entry point, if any. Decide
-  before chunk 5.
+- **Price and model.** One-time price, and the subscription entry point, if any. **Decided: $5.99, One time** 📅 2026-10-01
 - **Save or regenerate?** This spec says regenerate on demand. Saving adds a data model and
-  a sync question.
+  a sync question. **Decided: Regenerate** 📅 2026-10-01
 - **Free preview.** Give one free reflection to show the value? It adds a `freePreview` gate
-  state and a stored flag. Default: no, for v1.
-- **Family Sharing** for the unlock: on or off.
-- **Minimum data for Patterns.** Suggested: 5 resolved decisions. Tune with the fixtures.
+  state and a stored flag. Default: no, for v1. **Decided: No** 📅 2026-10-01
+- **Family Sharing** for the unlock: on or off. **Decided: Off** 📅 2026-10-01
+- **Minimum data for Patterns.** Suggested: 5 resolved decisions. Tune with the fixtures. **Agreed** 📅 2026-10-01
 - **Language and locale.** The model supports a limited set. Surfaces hide when the locale
-  is unsupported.
+  is unsupported. **Agree, no localization exists as far as I am aware** 📅 2026-10-01
