@@ -95,6 +95,16 @@ final class DecisionStore {
         save()
     }
 
+    /// Replaces every decision with an import. Old reminders go, and the imported decisions'
+    /// future reminders are scheduled (if reminders are on). The view confirms first when
+    /// there is data to replace.
+    func replaceAll(with imported: [Decision]) {
+        ReminderManager.shared.cancelAllReminders()
+        decisions = imported
+        ReminderManager.shared.rescheduleAll(for: imported)
+        save()
+    }
+
     func resolveDecision(
         id: UUID,
         actual: DecisionOutcome,
