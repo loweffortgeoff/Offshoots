@@ -46,13 +46,16 @@ enum ReflectionPromptBuilder {
             dataLine,
             "Resolved decisions: \(digest.resolvedCount)",
             "Marked good or great (latest rating): \(digest.goodPercent)%",
-            "Prediction accuracy (first rating): \(digest.accuracy.correct) exact, \(digest.accuracy.close) one step off, \(digest.accuracy.incorrect) further off",
+            "Prediction accuracy (first rating, all categories combined): \(digest.accuracy.correct) exact, \(digest.accuracy.close) one step off, \(digest.accuracy.incorrect) further off",
             optimismLine(digest.optimism),
             "Trend: \(digest.trend.trend.label)\(digest.trend.isSoFar ? " (so far)" : "")",
-            "By category: " + digest.categories.map(groupText).joined(separator: "; "),
-            "By stakes: " + digest.stakes.map(groupText).joined(separator: "; "),
-            "Revisited: \(digest.revisitedCount) decisions, \(digest.revisitsChangingOutcome) changed outcome",
         ]
+        // One bullet per group, so the model cannot tie a combined number to one group
+        lines.append("By category:")
+        lines += digest.categories.map(groupText)
+        lines.append("By stakes:")
+        lines += digest.stakes.map(groupText)
+        lines.append("Revisited: \(digest.revisitedCount) decisions, \(digest.revisitsChangingOutcome) changed outcome")
         if !digest.notes.isEmpty {
             lines.append("Recent notes:")
             lines += digest.notes.map { "- \($0)" }
@@ -86,7 +89,15 @@ enum ReflectionPromptBuilder {
     // MARK: - Helpers
 
     private static func groupText(_ line: GroupLine) -> String {
-        "\(line.label) \(line.exact) of \(line.resolved) exact"
+        let matched: String
+        if line.exact == line.resolved {
+            matched = "all \(line.resolved) matched the prediction exactly"
+        } else if line.exact == 0 {
+            matched = "none matched the prediction exactly"
+        } else {
+            matched = "\(line.exact) of \(line.resolved) matched the prediction exactly"
+        }
+        return "- \(line.label): \(line.resolved) marked, \(matched)"
     }
 
     private static func optimismLine(_ bias: OptimismBias?) -> String {

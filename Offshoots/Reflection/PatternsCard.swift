@@ -13,41 +13,44 @@ struct PatternsCard: View {
     @State private var run = ReflectionRun<PatternsOutput>()
 
     var body: some View {
-        // Unsupported devices never see Reflection, so not even the title or card shows
-        if center.gate != .hidden {
-            VStack(alignment: .leading, spacing: 16) {
-                CardTitle(title: "Patterns", systemImage: "sparkles", note: "On your device")
+        Group {
+            // Unsupported devices never see Reflection, so not even the title or card shows
+            if center.gate != .hidden {
+                VStack(alignment: .leading, spacing: 16) {
+                    CardTitle(title: "Patterns", systemImage: "sparkles", note: "On your device")
 
-                ReflectionGateView(controlTitle: "Show Patterns", systemImage: "sparkles") {
-                    ReflectionStateView(
-                        state: run.state,
-                        startTitle: "Show Patterns",
-                        systemImage: "sparkles",
-                        start: generate,
-                        copyText: { $0.observations.joined(separator: "\n") }
-                    ) { output in
-                        VStack(alignment: .leading, spacing: 12) {
-                            // Observations are unique after `validated()`, so the text is a stable id
-                            ForEach(output.observations, id: \.self) { observation in
-                                Text(observation)
-                                    .font(.body)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                    ReflectionGateView(controlTitle: "Show Patterns", systemImage: "sparkles") {
+                        ReflectionStateView(
+                            state: run.state,
+                            startTitle: "Show Patterns",
+                            systemImage: "sparkles",
+                            start: generate,
+                            copyText: { $0.observations.joined(separator: "\n") }
+                        ) { output in
+                            VStack(alignment: .leading, spacing: 12) {
+                                // Observations are unique after `validated()`, so the text is a stable id
+                                ForEach(output.observations, id: \.self) { observation in
+                                    Text(observation)
+                                        .font(.body)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
                             }
                         }
                     }
                 }
-            }
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.offshootCardBackground)
-            .cornerRadius(16)
-            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
-            // New or edited decisions make the result stale
-            .onChange(of: decisions) { run.reset() }
-            .onChange(of: run.state) { _, state in
-                if case .result = state { AccessibilityNotification.Announcement("Patterns ready").post() }
+                .padding(20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.offshootCardBackground)
+                .cornerRadius(16)
+                .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
+                .onChange(of: run.state) { _, state in
+                    if case .result = state { AccessibilityNotification.Announcement("Patterns ready").post() }
+                }
             }
         }
+        // New or edited decisions make the result stale. Attached outside the `if`, so an
+        // edit made while the card is hidden still clears an old result.
+        .onChange(of: decisions) { run.reset() }
     }
 
     private func generate() {

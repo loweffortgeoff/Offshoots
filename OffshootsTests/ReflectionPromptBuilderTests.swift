@@ -12,9 +12,14 @@ struct ReflectionPromptBuilderTests {
 
         #expect(prompt.contains("Resolved decisions: 6"))
         #expect(prompt.contains("4 exact, 1 one step off, 1 further off"))
-        #expect(prompt.contains("Money 1 of 3 exact"))
-        #expect(prompt.contains("Work 3 of 3 exact"))
+        #expect(prompt.contains("- Money: 3 marked, 1 of 3 matched the prediction exactly"))
+        #expect(prompt.contains("- Work: 3 marked, all 3 matched the prediction exactly"))
         #expect(prompt.contains("Trend: Improving"))
+    }
+
+    @Test func groupWithNoExactMatchSaysNone() {
+        let digest = ReflectionDigestBuilder.patterns(from: [Make.marked(.good, .bad), Make.marked(.good, .bad)], now: Make.day(30))
+        #expect(ReflectionPromptBuilder.patternsPrompt(digest).contains("none matched the prediction exactly"))
     }
 
     @Test func thinOptimismDataIsSaidPlainly() {
