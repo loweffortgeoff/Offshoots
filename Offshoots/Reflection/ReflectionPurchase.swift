@@ -69,6 +69,7 @@ final class ReflectionPurchase {
                 state = .ready(displayPrice: product.displayPrice)
             }
         } catch {
+            print("[ReflectionPurchase] ❌ Purchase failed:", error)
             state = .failed("The purchase did not go through. Try again.")
         }
         return false
