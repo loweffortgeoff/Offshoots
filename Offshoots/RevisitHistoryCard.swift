@@ -9,6 +9,8 @@ internal import SwiftUI
 struct RevisitHistoryCard: View {
     let decision: Decision
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     /// Pairs each revisit with the outcome it replaced
     private var entries: [(revisit: Revisit, previous: DecisionOutcome?)] {
         decision.revisits.enumerated().map { index, revisit in
@@ -31,23 +33,32 @@ struct RevisitHistoryCard: View {
                 .font(.headline)
                 .foregroundStyle(Color.offshootPrimary)
 
+            // At accessibility sizes the icons, rating and date stack, so the rating
+            // and date never break into one-letter columns
+            let isLarge = dynamicTypeSize.isAccessibilitySize
+            let rowLayout = isLarge
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+                : AnyLayout(HStackLayout(spacing: 8))
+
             ForEach(entries, id: \.revisit.id) { entry in
                 VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 8) {
-                        if let previous = entry.previous, previous != entry.revisit.outcome {
-                            OutcomeIcon(outcome: previous)
-                                .font(.callout)
-                                .opacity(0.4)
-                                .accessibilityHidden(true)
-                            Image(systemName: "arrow.right")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                    rowLayout {
+                        HStack(spacing: 8) {
+                            if let previous = entry.previous, previous != entry.revisit.outcome {
+                                OutcomeIcon(outcome: previous)
+                                    .font(.callout)
+                                    .opacity(0.4)
+                                    .accessibilityHidden(true)
+                                Image(systemName: "arrow.right")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .accessibilityHidden(true)
+                            }
+
+                            OutcomeIcon(outcome: entry.revisit.outcome)
+                                .font(.body)
                                 .accessibilityHidden(true)
                         }
-
-                        OutcomeIcon(outcome: entry.revisit.outcome)
-                            .font(.body)
-                            .accessibilityHidden(true)
 
                         Text(entry.revisit.outcome.shortLabel)
                             .font(.subheadline)
@@ -55,7 +66,9 @@ struct RevisitHistoryCard: View {
                             .foregroundStyle(entry.revisit.outcome.themeColor)
                             .accessibilityLabel(revisitChangeLabel(entry))
 
-                        Spacer()
+                        if !isLarge {
+                            Spacer()
+                        }
 
                         Text(entry.revisit.date.formatted(date: .abbreviated, time: .omitted))
                             .font(.caption)
