@@ -4,7 +4,8 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ## In Progress
 
-_Nothing in progress._
+#### Fixed
+- At accessibility text sizes, the revisit rows on Decision Detail broke the rating ("Good") and the date into one-letter columns. Each row now stacks the icons, the rating and the date at accessibility sizes, and keeps the side-by-side layout at other sizes. `RevisitHistoryCard` has its own file.
 
 ---
 

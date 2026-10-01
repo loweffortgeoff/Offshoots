@@ -97,6 +97,7 @@ Offshoots/
 ├── DecisionsListView.swift        # Ready to Review, Upcoming, History
 ├── DecisionRowView.swift          # One decision row
 ├── DecisionDetailView.swift       # Full decision details, revisit history
+├── RevisitHistoryCard.swift       # Revisit timeline on the detail screen
 ├── EditDecisionView.swift         # Edit a decision
 ├── MarkOutcomeView.swift          # Record the outcome and a reflection
 ├── RevisitView.swift              # Re-rate a decision later

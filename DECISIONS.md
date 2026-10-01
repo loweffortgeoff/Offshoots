@@ -131,3 +131,23 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Version 2.0.0 is every commit after `0e29c15` (2026-01-04). 1.0 (build 3) was uploaded from that commit on 2026-01-04 and released on 2026-01-12 (dates from Geoff). The April Settings cleanup and the July `.gitignore` commit came after the upload, so they belong to 2.0.0. No `v1.0` tag is added. Release notes live in `RELEASE_NOTES.md`, which starts with 2.0.0, and each release gets an annotated `v<version>` tag from here on.
 **Why:** The upload date pins the 1.0 build to `0e29c15`, the last commit on or before it. The file name matches Task(ed), List-Happens, Muzzletoff and Weather-in-Words.
 **Alternative considered:** A backdated `v1.0` tag on `0e29c15`. Geoff declined it: the `v2.0.0` tag already gives the next release pass its baseline. An earlier draft of this entry used `8ed7dac` (2026-07-12) as the baseline; that was a guess made before the upload date was known.
+
+## 2026-10-01 (Reflection cards are hidden at the call site)
+**Decision:** `AnalyticsView` and `DecisionDetailView` decide whether to show a Reflection card. When the device cannot run the model, the card is not in the view tree at all.
+**Why:** An unsupported device must never see Reflection. Removing the view also drops its in-memory result, so a stale result cannot come back after a hidden period.
+**Alternative considered:** An `if` inside the card. The first version of the plan did this and showed a title with no body. A `Group`-wrapped `onChange` does not work, because `Group` hands its modifiers to its children.
+
+## 2026-10-01 (Patterns prompt: one line per group, accuracy labeled)
+**Decision:** The Patterns prompt lists one line per category and per stakes group, for example "Work: 3 marked, all 3 matched the prediction exactly". It labels the accuracy figures "all categories combined".
+**Why:** With the old format, the real on-device model attached the global "one step off" count to Work and wrote a false observation.
+**Alternative considered:** Change the instructions only. The model can still misread a shared total, so the data format carries the fix.
+
+## 2026-10-01 (Empty "What is repeating" when nothing repeats)
+**Decision:** The model leaves the "What is repeating" section empty when nothing repeats. Geoff approved this on 2026-10-01. It lands in chunk 4 of the Reflection plan.
+**Why:** On a decision with only revisits and no notes, the model filled the section with lines that say nothing.
+**Alternative considered:** Keep the section always filled. It looks complete, but it shows text with no content.
+
+## 2026-10-01 (Testing Reflection on the simulator)
+**Decision:** On the Mac mini, the iOS 27.0 simulator reports the on-device model as available and runs it. The `-ReflectionUnlockOnly` launch argument gives real output on the simulator. A launch with no flag shows the paywalled state: the title with an empty body until chunk 5, not a hidden card.
+**Why:** The plan assumed that the simulator has no model. Checked on the Mac mini that it does, so the plan's test steps need this note.
+**Alternative considered:** Test on a device only. This is slower. A device run stays the final check, because nobody has compared simulator and device output.

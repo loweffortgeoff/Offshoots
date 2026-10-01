@@ -1,7 +1,7 @@
 # TODO
 
 ## Next
-- [ ] **Reflection (paid unlock, on-device text).** Spec: `docs/superpowers/specs/2026-09-30-reflection-design.md`. Plan: `docs/superpowers/plans/2026-10-01-reflection.md` (six chunks, each a stop for review). Patterns on Insights, decision reflection on Decision Detail, and a user-triggered Clean Up Note on the note fields. Uses Foundation Models, which needs iOS 26 and an Apple Intelligence device; the app still deploys to iOS 18.6, so the code sits behind `#available`. Spec questions closed 2026-10-01: $5.99 one-time, regenerate (nothing saved), no free preview, Family Sharing off. Next step: review the plan, then build chunk 1 (policy layer and tests) on branch `reflection`. Before chunk 5: create the non-consumable in App Store Connect. Adapted from the Contrition notes (2026-09-30).
+- [ ] **Reflection (paid unlock, on-device text).** Spec: `docs/superpowers/specs/2026-09-30-reflection-design.md`. Plan: `docs/superpowers/plans/2026-10-01-reflection.md` (six chunks, each a stop for review). Patterns on Insights, decision reflection on Decision Detail, and a user-triggered Clean Up Note on the note fields. Uses Foundation Models, which needs iOS 26 and an Apple Intelligence device; the app still deploys to iOS 18.6, so the code sits behind `#available`. Spec questions closed 2026-10-01: $5.99 one-time, regenerate (nothing saved), no free preview, Family Sharing off. Progress: 3 of 6 chunks done on branch `reflection` (policy layer, live service with the Patterns card, decision reflection card). Next: chunk 4 (Clean Up Note on the Log, Mark Outcome and Revisit note fields). Its first step: tell the model to leave "What is repeating" empty when nothing repeats, then test a decision that has revisits only. Before chunk 5: create the non-consumable in App Store Connect. Handoff: `docs/superpowers/plans/2026-10-01-reflection-handoff.md`. Adapted from the Contrition notes (2026-09-30).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **VoiceOver summaries for the Insights charts.** Swift Charts read poorly with VoiceOver. Give each chart card a short spoken summary: totals, top category, outcome split, trend and prediction accuracy. From the unmerged `dev/offshoots-development` TODO (2026-04-29).
@@ -12,6 +12,8 @@
     - [ ] Foundation Model integrations 
 
 ## Done
+- [x] Reflection chunks 1–3 on branch `reflection`: policy layer and tests, live Foundation Models service with the Patterns card on Insights, decision reflection card on Decision Detail. 98 of 98 tests pass. The Reflection item under Next stays open. — 2026-10-01
+- [x] **Revisit rows break at accessibility text sizes.** The rating and the date broke into one-letter columns on Decision Detail. Each row now stacks at accessibility sizes. `RevisitHistoryCard` moved to its own file. Checked on the iPhone 18 Pro simulator (iOS 27.0) at accessibility-extra-extra-extra-large and at large. Merged to `main` (fast-forward). — 2026-10-01
 - [x] Release pass for 2.0.0: `RELEASE_NOTES.md` started, CHANGELOG entries moved under Shipped, ASC_LISTING What's New checked against the 1.0 source — 2026-09-26
 - [x] **Calendar days cannot be tapped on Log and Edit.** Confirmed cause: the tap-outside-to-close-the-keyboard gesture from Section 5 sat on the whole form and took the day taps away from the calendar. Fixed by gating the gesture on focus, so it only intercepts taps while a text field is active. — 2026-09-26
   Checked on the iPhone 17 (iOS 27) by Geoff.

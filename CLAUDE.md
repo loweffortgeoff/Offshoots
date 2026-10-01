@@ -135,6 +135,22 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   day taps, and only the month arrows still work (fixed 2026-09-26). The
   forms turn their tap-to-close-the-keyboard gesture on only while a text
   field has focus: `.gesture(_:including: focused ? .all : .subviews)`.
+- **The first tap after a launch is often lost.** After `simctl launch`
+  the first tap (often a tab-bar tap) did nothing several times on
+  2026-10-01. Take a screenshot, and send the tap again if the screen did
+  not change.
+- **Reflection launch arguments (DEBUG builds, branch `reflection` until it
+  merges).** `-ReflectionFake` gives canned output, unlocked.
+  `-ReflectionUnlockOnly` uses the real on-device model, unlocked. Type the
+  leading dash, also in Xcode's scheme Arguments field: without it the
+  argument does nothing. With no argument the cards show the locked state.
+- **The simulator runs the real on-device model.** On the Mac mini, the
+  iOS 27.0 simulator reports `SystemLanguageModel` as available and gives
+  real output (checked 2026-10-01). Greedy sampling gives the same output
+  for the same input, so a prompt change can be re-tested on the simulator.
+- **App theme on the simulator.** The Settings theme is the `appTheme` key
+  in the app's own plist. On 2026-10-01 a `plutil` edit of that key, made
+  with the app closed, did not take effect. The iPhone 18 Pro was on Dark.
 
 ## Test Device
 
