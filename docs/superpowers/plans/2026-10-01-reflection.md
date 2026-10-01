@@ -2556,6 +2556,7 @@ This is documentation only, but it sits on the `reflection` branch with the code
 - [ ] **Step 6: RELEASE_NOTES.md and ASC_LISTING.md.**
   - NEW: Reflection, a one-time unlock. Patterns on Insights. A reflection on each decision. Clean Up Note.
   - What to Test: each surface on an Apple Intelligence device; a device without it shows nothing; Restore Purchase; the paywall shows the price from the App Store.
+  - What to Test, test purchase: "Try the purchase. TestFlight purchases are free. The purchase screen must say you will not be charged for testing. If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly." Before you write this, make one sandbox purchase on Geoff's own TestFlight build and copy the exact wording Apple shows (it usually includes "[Environment: Sandbox]"). Then use that wording in the note, so testers know what to look for.
   - Listing: say Reflection needs an Apple Intelligence-capable device on iOS 26 or later and runs on the device. Add the in-app purchase to the listing. The App Privacy answers do not change (no data collected). Do not use "AI coach", "advisor" or "predict".
 
 - [ ] **Step 7: Final run.**
