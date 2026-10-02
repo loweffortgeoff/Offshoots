@@ -169,7 +169,17 @@ struct SettingsView: View {
 
     /// An empty store has nothing to lose, so the import applies at once. Otherwise it asks.
     private func handleImport(_ result: Result<URL, Error>) {
-        guard case .success(let url) = result else { return }
+        let url: URL
+        switch result {
+        case .success(let picked):
+            url = picked
+        case .failure(let error):
+            // Closing the picker is not an error
+            if (error as? CocoaError)?.code != .userCancelled {
+                importError = DecisionsImport.ImportError.unreadable.message
+            }
+            return
+        }
         do {
             let imported = try DecisionsImport.read(from: url)
             if store.decisions.isEmpty {

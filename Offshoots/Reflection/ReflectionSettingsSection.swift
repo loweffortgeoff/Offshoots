@@ -27,7 +27,7 @@ struct ReflectionSettingsSection: View {
             } header: {
                 Text("Reflection")
             } footer: {
-                Text("Reflection runs on your device. Nothing is sent anywhere.")
+                Text("Reflection text is made on your device and is never sent anywhere.")
             }
             .listRowBackground(Color.offshootCardBackground)
         }

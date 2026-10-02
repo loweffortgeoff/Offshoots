@@ -212,6 +212,6 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Alternative considered:** Hide a control that is not ready. The user cannot learn what unlocks it.
 
 ## 2026-10-02 (The -ReflectionUnlockOnly merge trap is already closed)
-**Decision:** On `reflection`, the shared scheme keeps `-ReflectionUnlockOnly` but disabled (`isEnabled = "NO"`), and it holds the `Reflection.storekit` reference. When `reflection` merges, take the `reflection` side of the scheme. The `b792f1c` commit on `main` enables the argument.
+**Decision:** On `reflection`, the shared scheme keeps `-ReflectionUnlockOnly` but disabled (`isEnabled = "NO"`), and it holds the `Reflection.storekit` reference. `main` is already merged into `reflection`, so the merge back is a fast-forward and the scheme lands as is. The `b792f1c` commit on `main` enabled the argument; after the merge, confirm it is disabled on `main`.
 **Why:** The argument works only in DEBUG builds. If it stays enabled, every Xcode run starts unlocked and nobody can test the paywall.
 **Alternative considered:** Delete the argument. It stays as a device-only shortcut for real-model checks.

@@ -68,7 +68,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **StoreKit** | Reflection one-time unlock, Restore (StoreKit 2) |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, and the screenshot fixture |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot fixture |
 
 ## Project Structure
 

@@ -31,17 +31,19 @@ final class ReflectionPurchase {
     }
 
     func loadProduct() async {
-        state = .loading
+        // A reopened sheet keeps a pending Ask to Buy, so it cannot start a second purchase.
+        if state != .pending { state = .loading }
+        restoreMessage = nil
         do {
             let products = try await Product.products(for: ReflectionEntitlement.acceptedProductIDs)
             if let first = products.first {
                 product = first
-                state = .ready(displayPrice: first.displayPrice)
+                if state != .pending { state = .ready(displayPrice: first.displayPrice) }
             } else {
                 state = .unavailable
             }
         } catch {
-            state = .unavailable
+            if state != .pending { state = .unavailable }
         }
     }
 
@@ -60,7 +62,7 @@ final class ReflectionPurchase {
                 state = .ready(displayPrice: product.displayPrice)
                 return entitlement.isUnlocked
             case .success(.unverified):
-                state = .failed("The purchase could not be verified. You were not charged.")
+                state = .failed("The purchase could not be verified. If you were charged, tap Restore Purchase later or contact Apple Support.")
             case .pending:
                 state = .pending
             case .userCancelled:

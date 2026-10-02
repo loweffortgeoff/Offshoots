@@ -146,8 +146,9 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   argument the surfaces show the locked state. There is no `-ReflectionPaywall`
   argument. In the shared scheme `-ReflectionUnlockOnly` is present but
   disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
-  would start unlocked and the paywall could not be tested. On `main`, commit
-  `b792f1c` enables it; take the `reflection` side when the branch merges.
+  would start unlocked and the paywall could not be tested. Commit
+  `b792f1c` on `main` enabled it; the `reflection` merge is a fast-forward, so
+  confirm it is disabled on `main` afterwards.
 - **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
   Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
   `RunProject` tool. The test purchase sheet says you are not charged.

@@ -3,7 +3,7 @@
 ## Next
 - [ ] **Reflection: finish and merge `reflection` to `main`.** All six chunks are built and the docs are written (2026-10-02). Spec: `docs/superpowers/specs/2026-09-30-reflection-design.md`. Plan: `docs/superpowers/plans/2026-10-01-reflection.md`. Handoff: `docs/superpowers/plans/2026-10-01-reflection-handoff.md`. What is left, in order:
     - [ ] Run the checks in the next item.
-    - [ ] Merge to `main`. The shared scheme conflicts with `b792f1c` on `main`. Take the `reflection` side: `-ReflectionUnlockOnly` stays disabled (`isEnabled = "NO"`) and the `Reflection.storekit` reference stays. If the argument is enabled, every Xcode run starts unlocked and nobody can test the paywall.
+    - [ ] Merge to `main`. The merge is a fast-forward (`main` is already inside `reflection`), so there is no scheme conflict. After the merge, confirm the shared scheme on `main` has `-ReflectionUnlockOnly` disabled (`isEnabled = "NO"`) and the `Reflection.storekit` reference. If the argument is enabled, every Xcode run starts unlocked and nobody can test the paywall.
     - [ ] In App Store Connect, bring the in-app purchase `com.geoffrey.silva.Offshoots.reflection` (Apple ID 6818254209) to "Ready to Submit" and attach it to the app version. Apple reviews a first in-app purchase together with a version.
     - [ ] Buy once from a TestFlight build of the final version, and copy the exact purchase sheet wording into the "What to Test" note in `RELEASE_NOTES.md`. The current wording there is a placeholder: the Xcode test sheet says "For testing purposes only. You will not be charged for confirming this purchase." and the TestFlight sheet is not checked yet.
     - [ ] Release pass (`release-pass` skill).

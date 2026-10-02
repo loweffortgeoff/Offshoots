@@ -53,7 +53,7 @@ struct LiveReflectionService: ReflectionGenerating {
         case .available:
             return .available
         case .unavailable(.modelNotReady):
-            return .notReady(reason: "The on-device model is still getting ready. Try again soon.")
+            return .notReady(reason: "The on-device model is still getting ready. Reopen the app in a little while.")
         case .unavailable:
             return .unsupported
         }
