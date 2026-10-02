@@ -215,3 +215,13 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** On `reflection`, the shared scheme keeps `-ReflectionUnlockOnly` but disabled (`isEnabled = "NO"`), and it holds the `Reflection.storekit` reference. `main` is already merged into `reflection`, so the merge back is a fast-forward and the scheme lands as is. The `b792f1c` commit on `main` enabled the argument; after the merge, confirm it is disabled on `main`.
 **Why:** The argument works only in DEBUG builds. If it stays enabled, every Xcode run starts unlocked and nobody can test the paywall.
 **Alternative considered:** Delete the argument. It stays as a device-only shortcut for real-model checks.
+
+## 2026-10-02 (No Clean Up Note in Edit Decision, v1)
+**Decision:** The Notes field in Edit Decision has no Clean Up Note row in v1. Clean Up Note stays on the Log, Mark Outcome and Revisit note fields.
+**Why:** Geoff confirmed this on 2026-10-02. It keeps v1 small, and the three fields where a note is first written already have the row.
+**Alternative considered:** Add the row to Edit Decision for parity. It can come later if testers ask.
+
+## 2026-10-02 (Patterns prompt stays as is until real data)
+**Decision:** Do not change the Patterns prompt yet. On the uniform test data, the output was four near-identical "matched the prediction exactly" lines, and the groups overlapped (work was counted twice). The Clean Up Note meaning-change question also stays open.
+**Why:** The test decisions were all alike and had no notes, so the output shows the data, not a prompt fault. A prompt change now would fit the test data and not real use.
+**Alternative considered:** Rewrite the prompt to merge overlapping groups now. Re-check with varied real decisions and notes first.
