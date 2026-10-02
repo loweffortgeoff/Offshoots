@@ -195,3 +195,23 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Test Reflection purchases on a physical phone in the real App Store sandbox, not in Xcode's StoreKit test mode. Take `Reflection.storekit` off the Run action by hand for that run, sign in under Settings > Developer > Sandbox Apple Account, and run from Xcode. `Reflection.storekit` stays on the committed scheme for the simulator.
 **Why:** On both phones (iOS 27.0 and 27.2 beta 2), the Xcode test mode returned `ASDServerErrorDomain Code=2010` on every purchase, with no transaction. The same build buys on the simulator. In the sandbox the same build bought on both phones, and the unlock stayed after a relaunch. Console logs showed the unlock code was correct: the earlier "unlock comes back" was the failed-purchase state, not a lost unlock. Apple does not document code 2010, so the cause is not known.
 **Alternative considered:** Remove `Reflection.storekit` from the scheme for good. Then the simulator would need a sandbox account too, and simulator purchase, restore and refund checks would be lost.
+
+## 2026-10-02 (Reflection is a paid one-time unlock)
+**Decision:** Reflection is a one-time purchase at $5.99 (`com.geoffrey.silva.Offshoots.reflection`, non-consumable, Family Sharing off). The entitlement checks a list of product IDs, so a low-cost subscription can be added later with no rework. This overrides the Contrition "No subscriptions" guardrail. The paywall price comes from the App Store, never from a constant.
+**Why:** The on-device model costs nothing to run, so there is no running cost to cover. A one-time price fits a utility app with no account. The ID list keeps the subscription option open.
+**Alternative considered:** A subscription from the start. It adds renewal and cancellation states for a feature that has no server cost.
+
+## 2026-10-02 (Reflection output is never saved; no free preview)
+**Decision:** Reflection output is regenerated on demand and never stored. There is no free preview. Surfaces hide when the model does not support the language, so there is no localization work.
+**Why:** Saving output adds a data model and a sync question. A free preview adds a gate state and a stored flag. Neither earns its cost in v1.
+**Alternative considered:** Save the last output per decision; offer one free try.
+
+## 2026-10-02 (Reflection thresholds and gate states)
+**Decision:** Patterns needs 5 marked decisions. Clean Up Note needs at least 3 words and at most 1,500 characters. The gate has four states, and `notReady(reason:)` shows a disabled control with its reason.
+**Why:** Fewer than 5 marked decisions gives the model too little to say. A disabled control with a reason tells the user what to do next, and a hidden control does not.
+**Alternative considered:** Hide a control that is not ready. The user cannot learn what unlocks it.
+
+## 2026-10-02 (The -ReflectionUnlockOnly merge trap is already closed)
+**Decision:** On `reflection`, the shared scheme keeps `-ReflectionUnlockOnly` but disabled (`isEnabled = "NO"`), and it holds the `Reflection.storekit` reference. When `reflection` merges, take the `reflection` side of the scheme. The `b792f1c` commit on `main` enables the argument.
+**Why:** The argument works only in DEBUG builds. If it stays enabled, every Xcode run starts unlocked and nobody can test the paywall.
+**Alternative considered:** Delete the argument. It stays as a device-only shortcut for real-model checks.

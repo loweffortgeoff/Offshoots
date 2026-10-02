@@ -26,6 +26,14 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Reflection Notes** — Add written reflections to any decision
 - **Result Line** — Each marked decision says how the result compared with your prediction, and what unlocks next
 
+### Reflection (optional one-time unlock)
+- **Patterns** — A short read on Insights of what repeats across your decisions. Needs 5 marked decisions.
+- **Decision reflection** — A reflection on each marked decision, from its notes and revisits.
+- **Clean Up Note** — Tap to fix spelling, capitals and punctuation in a note. It suggests; you choose `Use` or `Dismiss`.
+- **On device** — The text comes from Apple's on-device model, so nothing leaves the phone. Output is made when you ask and is never saved.
+- **Needs** iOS 26 or later and Apple Intelligence. Other devices do not see Reflection. The app still supports iOS 18.6.
+- **Unlock** — One-time purchase with Restore in Settings.
+
 ### Revisits
 - **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.
 - **Chained check-ins.** Each revisit can schedule the next one, and a reminder fires when it's due.
@@ -47,7 +55,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Log Decision** — Quick entry form
 - **Decisions List** — Browse all decisions
 - **Insights** — Full analytics dashboard
-- **Settings** — Notifications, data overview, JSON export, delete all, app theme (System, Light, Dark)
+- **Settings** — Notifications, data overview, JSON export and import, delete all, app theme (System, Light, Dark), Reflection unlock and Restore
 
 ## Tech Stack
 
@@ -56,6 +64,8 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **SwiftUI** | All UI — views, navigation, charts |
 | **Charts** | Analytics visualizations |
 | **UserNotifications** | Follow-up reminders |
+| **FoundationModels** | Reflection text from the on-device model (iOS 26+, behind `#available`) |
+| **StoreKit** | Reflection one-time unlock, Restore (StoreKit 2) |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
 | **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, and the screenshot fixture |
@@ -77,6 +87,7 @@ Offshoots/
 ├── Decision.swift                 # Decision, outcome, category, stakes, revisits
 ├── DecisionStore.swift            # @Observable store, JSON persistence
 ├── DecisionsExport.swift          # JSON export for the share sheet
+├── DecisionsImport.swift          # Restore an Export file
 ├── AnalyticsEngine.swift          # Insights calculations
 ├── ReminderManager.swift          # Follow-up notification scheduling
 ├── NotificationDelegate.swift     # Notification tap routing
@@ -118,11 +129,15 @@ Offshoots/
 ├── CategoryBreakdownCard.swift    # Decisions by category
 ├── OutcomeTrendCard.swift         # Outcomes by week
 │
+│  # Reflection (Reflection/ folder)
+├── Reflection/                    # Policy layer, live and fake generators, cards, Clean Up Note, StoreKit unlock, paywall
+│
 │  # Settings
 ├── SettingsView.swift             # Settings screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, screenshot fixture
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, Reflection policy, screenshot fixture
+Reflection.storekit                # Local StoreKit test product, on the scheme's Run action
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
 scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pro Max

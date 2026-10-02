@@ -139,18 +139,25 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   the first tap (often a tab-bar tap) did nothing several times on
   2026-10-01. Take a screenshot, and send the tap again if the screen did
   not change.
-- **Reflection launch arguments (DEBUG builds, branch `reflection` until it
-  merges).** `-ReflectionFake` gives canned output, unlocked.
-  `-ReflectionUnlockOnly` uses the real on-device model, unlocked. Type the
-  leading dash, also in Xcode's scheme Arguments field: without it the
-  argument does nothing. With no argument the surfaces show the locked
-  state (a locked control, since chunk 5). There is no `-ReflectionPaywall`
-  argument. `b792f1c` on `main` enables `-ReflectionUnlockOnly` in the
-  shared scheme; it must be disabled when Reflection merges, or every Xcode
-  run starts unlocked.
+- **Reflection launch arguments (DEBUG builds only).** `-ReflectionFake` gives
+  canned output, unlocked. `-ReflectionUnlockOnly` uses the real on-device
+  model, unlocked, with no purchase. Type the leading dash, also in Xcode's
+  scheme Arguments field: without it the argument does nothing. With no
+  argument the surfaces show the locked state. There is no `-ReflectionPaywall`
+  argument. In the shared scheme `-ReflectionUnlockOnly` is present but
+  disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
+  would start unlocked and the paywall could not be tested. On `main`, commit
+  `b792f1c` enables it; take the `reflection` side when the branch merges.
 - **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
   Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
   `RunProject` tool. The test purchase sheet says you are not charged.
+- **On a phone, buy in the sandbox, not in Xcode test mode.** Xcode's test mode
+  fails on both phones with `ASDServerErrorDomain Code=2010`. Take
+  `Reflection.storekit` off the Run action by hand (do not commit that), sign in
+  under Settings > Developer > Sandbox Apple Account, and run from Xcode. See
+  DECISIONS 2026-10-01. The Xcode sheet reads "For testing purposes only. You will
+  not be charged for confirming this purchase." The TestFlight sheet is not
+  checked yet.
 - **Uninstalling clears the Xcode test purchase.** Buy again in the running
   app. Manage Transactions is empty until then.
 - **Import test files on the simulator.** Copy a JSON file into each
