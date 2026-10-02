@@ -75,6 +75,11 @@ The in-app purchase exists in App Store Connect: non-consumable
 - **Purchases need an Xcode run.** `Reflection.storekit` applies only when Xcode
   runs the app (⌘R, or the Xcode `RunProject` tool). A `simctl launch` does not
   use it. The Xcode test purchase sheet says you are not charged.
+- **On a phone, buy in the sandbox, not in Xcode test mode.** Take the
+  `Reflection.storekit` reference off the Run action by hand (do not commit
+  that), sign in under Settings > Developer > Sandbox Apple Account, then run
+  from Xcode. Editing the scheme makes Xcode reset the run destination to the
+  simulator: check the destination before you run.
 - **Uninstalling clears the Xcode test purchase.** Manage Transactions is empty
   until you buy again in the running app.
 - **Import test files on the simulator:** copy a JSON file into each
@@ -87,12 +92,7 @@ The in-app purchase exists in App Store Connect: non-consumable
 
 ## Open items
 
-- **Purchase fails on `Geoffrey's iPhone` (iOS 27.0) from Xcode.** The product
-  loads ($5.99), but the purchase returns `ASDServerErrorDomain Code=2010` with
-  `client-environment-type=XcodeTest`. StoreKit reports it as `unknown`. The
-  same build buys on the simulator. Not resolved. Checks to try: Screen Time
-  in-app purchase restriction, an Ask to Buy or child account, delete and
-  reinstall, the other phone. Otherwise check again in TestFlight (sandbox).
+- **Purchase on the phones: resolved 2026-10-01.** Xcode's StoreKit test mode fails on both phones with `ASDServerErrorDomain Code=2010`. In the real sandbox the purchase works on both phones and the unlock stays after a relaunch. No app code changed. See DECISIONS 2026-10-01 and the note under "How we test".
 - **Refund check: passed** (Geoff, 2026-10-01). The surfaces lock again with
   no relaunch.
 - **Not checked:** the paywall at accessibility text sizes; VoiceOver with

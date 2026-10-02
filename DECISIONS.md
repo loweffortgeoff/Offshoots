@@ -188,3 +188,10 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Test Reflection purchases only from an Xcode run with `Reflection.storekit` on the scheme. Do not test with `simctl launch`.
 **Why:** The StoreKit file applies only when Xcode runs the app. A `simctl launch` ignores it, so the product does not load.
 **Alternative considered:** A debug purchase flag in the app. It would skip the code path that real purchases use.
+
+**Update 2026-10-01:** This holds for the simulator only. On a physical phone, Xcode's StoreKit test mode fails with `ASDServerErrorDomain Code=2010`. See the next entry.
+
+## 2026-10-01 (Test purchases on a phone in the sandbox)
+**Decision:** Test Reflection purchases on a physical phone in the real App Store sandbox, not in Xcode's StoreKit test mode. Take `Reflection.storekit` off the Run action by hand for that run, sign in under Settings > Developer > Sandbox Apple Account, and run from Xcode. `Reflection.storekit` stays on the committed scheme for the simulator.
+**Why:** On both phones (iOS 27.0 and 27.2 beta 2), the Xcode test mode returned `ASDServerErrorDomain Code=2010` on every purchase, with no transaction. The same build buys on the simulator. In the sandbox the same build bought on both phones, and the unlock stayed after a relaunch. Console logs showed the unlock code was correct: the earlier "unlock comes back" was the failed-purchase state, not a lost unlock. Apple does not document code 2010, so the cause is not known.
+**Alternative considered:** Remove `Reflection.storekit` from the scheme for good. Then the simulator would need a sandbox account too, and simulator purchase, restore and refund checks would be lost.
