@@ -10,26 +10,53 @@ struct UnlockReflectionSheet: View {
     let purchase: ReflectionPurchase
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(spacing: 24) {
+                    Image("offshootsleaf")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 88)
+                        .accessibilityHidden(true)
+
                     Text("Read what your decisions say over time. Everything runs on your device, and only when you ask.")
                         .font(.body)
-                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
 
-                    VStack(alignment: .leading, spacing: 16) {
-                        Label("Pattern highlights across your decisions", systemImage: "chart.bar.doc.horizontal")
-                        Label("A reflection on each decision", systemImage: "text.book.closed")
-                        Label("Clearer notes, only when you tap", systemImage: "square.and.pencil")
+                    VStack(alignment: .leading, spacing: 0) {
+                        FeatureRow(title: "Pattern highlights across your decisions", systemImage: "chart.line.uptrend.xyaxis")
+                        Divider().padding(.leading, 52)
+                        FeatureRow(title: "A reflection on each decision", systemImage: "arrow.triangle.2.circlepath")
+                        Divider().padding(.leading, 52)
+                        FeatureRow(title: "Clearer notes, only when you tap", systemImage: "doc.text")
                     }
-                    .font(.body)
+                    .background(Color.offshootCardBackground)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                    PurchaseControls(purchase: purchase, dismiss: { dismiss() })
+                    Text("Nothing appears until you tap for it.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+
+                    // At accessibility sizes the buttons scroll with the content, so they cannot cover it
+                    if dynamicTypeSize.isAccessibilitySize {
+                        PurchaseControls(purchase: purchase, dismiss: { dismiss() })
+                    }
                 }
                 .padding(20)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity)
+            }
+            .safeAreaInset(edge: .bottom) {
+                if !dynamicTypeSize.isAccessibilitySize {
+                    PurchaseControls(purchase: purchase, dismiss: { dismiss() })
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.offshootBackground)
+                }
             }
             .background(Color.offshootBackground)
             .navigationTitle("Unlock Reflection")
@@ -44,6 +71,28 @@ struct UnlockReflectionSheet: View {
     }
 }
 
+private struct FeatureRow: View {
+    let title: String
+    let systemImage: String
+
+    @ScaledMetric private var iconWidth = 28.0
+
+    var body: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Image(systemName: systemImage)
+                .font(.title3)
+                .foregroundStyle(Color.offshootPrimary)
+                .frame(width: iconWidth)
+                .accessibilityHidden(true)
+            Text(title)
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(16)
+        .accessibilityElement(children: .combine)
+    }
+}
+
 private struct PurchaseControls: View {
     let purchase: ReflectionPurchase
     let dismiss: () -> Void
@@ -51,7 +100,7 @@ private struct PurchaseControls: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: 12) {
             switch purchase.state {
             case .loading, .purchasing:
                 ProgressView().frame(maxWidth: .infinity)
