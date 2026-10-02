@@ -48,6 +48,8 @@ private struct PurchaseControls: View {
     let purchase: ReflectionPurchase
     let dismiss: () -> Void
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             switch purchase.state {
@@ -68,8 +70,13 @@ private struct PurchaseControls: View {
                 buyButton("Try Again")
             }
 
-            Button("Restore Purchase") {
+            Button {
                 Task { await purchase.restore() }
+            } label: {
+                // Full width at accessibility sizes, so the wrapped text does not touch the pill's edges
+                Text("Restore Purchase")
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: dynamicTypeSize.isAccessibilitySize ? .infinity : nil)
             }
             .buttonStyle(.bordered)
             .tint(Color.offshootPrimary)
