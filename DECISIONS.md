@@ -225,3 +225,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Do not change the Patterns prompt yet. On the uniform test data, the output was four near-identical "matched the prediction exactly" lines, and the groups overlapped (work was counted twice). The Clean Up Note meaning-change question also stays open.
 **Why:** The test decisions were all alike and had no notes, so the output shows the data, not a prompt fault. A prompt change now would fit the test data and not real use.
 **Alternative considered:** Rewrite the prompt to merge overlapping groups now. Re-check with varied real decisions and notes first.
+
+## 2026-10-02 (Unlock Reflection sheet: pinned buttons, price in the button, feature copy kept)
+**Decision:** The buy and Restore Purchase buttons are pinned to the bottom of the sheet with `safeAreaInset`. At accessibility text sizes they scroll with the content instead. The price stays inside the buy button text and comes from `displayPrice`. The three feature titles keep their current copy, even though the Claude Design concept had longer descriptions.
+**Why:** Pinned buttons keep the purchase action in reach at normal sizes. At AX3 the pinned buttons covered the feature card, so they scroll there. Geoff chose to keep the price in the button, so the price and the action stay in one place. Geoff chose to keep the titles (option a): the card stays short, and no new copy needs a check.
+**Alternative considered:** Pin the buttons at every size (covers the card at AX3). Show the price as a separate line (more layout, less clear). Use the longer descriptions from the Claude Design concept (a taller card, and new copy to check).
