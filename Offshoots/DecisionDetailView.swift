@@ -94,8 +94,10 @@ struct DecisionDetailView: View {
                                 .fontWeight(.bold)
                                 .foregroundStyle(Color.offshootPrimary)
 
-                            // At accessibility sizes the category, stakes and status stack.
-                            let metaLayout = dynamicTypeSize.isAccessibilitySize
+                            // From xxLarge up, the category, stakes and status stack. Side by side, the
+                            // status badge squeezed and broke "Neutral" into "Neu-tral" just below accessibility sizes.
+                            let stacksMeta = dynamicTypeSize >= .xxLarge
+                            let metaLayout = stacksMeta
                                 ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
                                 : AnyLayout(HStackLayout())
                             metaLayout {
@@ -107,7 +109,7 @@ struct DecisionDetailView: View {
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
 
-                                if !dynamicTypeSize.isAccessibilitySize {
+                                if !stacksMeta {
                                     Spacer()
                                 }
 
