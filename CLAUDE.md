@@ -135,6 +135,39 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   day taps, and only the month arrows still work (fixed 2026-09-26). The
   forms turn their tap-to-close-the-keyboard gesture on only while a text
   field has focus: `.gesture(_:including: focused ? .all : .subviews)`.
+- **The first tap after a launch is often lost.** After `simctl launch`
+  the first tap (often a tab-bar tap) did nothing several times on
+  2026-10-01. Take a screenshot, and send the tap again if the screen did
+  not change.
+- **Reflection launch arguments (DEBUG builds, branch `reflection` until it
+  merges).** `-ReflectionFake` gives canned output, unlocked.
+  `-ReflectionUnlockOnly` uses the real on-device model, unlocked. Type the
+  leading dash, also in Xcode's scheme Arguments field: without it the
+  argument does nothing. With no argument the surfaces show the locked
+  state (a locked control, since chunk 5). There is no `-ReflectionPaywall`
+  argument. `b792f1c` on `main` enables `-ReflectionUnlockOnly` in the
+  shared scheme; it must be disabled when Reflection merges, or every Xcode
+  run starts unlocked.
+- **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
+  Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
+  `RunProject` tool. The test purchase sheet says you are not charged.
+- **Uninstalling clears the Xcode test purchase.** Buy again in the running
+  app. Manage Transactions is empty until then.
+- **Import test files on the simulator.** Copy a JSON file into each
+  `…/Containers/Shared/AppGroup/<id>/File Provider Storage/` folder of the
+  simulator. It shows in Files > On My iPhone.
+- **Long text input:** `simctl pbcopy` puts text on the simulator
+  pasteboard. Long-press the field and tap Paste.
+- **Xcode rewrites the shared scheme.** When Xcode opens the project, it
+  changes the `version` in `Offshoots.xcscheme` from 1.7 to 1.3. Do not
+  treat that diff as Geoff's edit.
+- **The simulator runs the real on-device model.** On the Mac mini, the
+  iOS 27.0 simulator reports `SystemLanguageModel` as available and gives
+  real output (checked 2026-10-01). Greedy sampling gives the same output
+  for the same input, so a prompt change can be re-tested on the simulator.
+- **App theme on the simulator.** The Settings theme is the `appTheme` key
+  in the app's own plist. On 2026-10-01 a `plutil` edit of that key, made
+  with the app closed, did not take effect. The iPhone 18 Pro was on Dark.
 
 ## Test Device
 
