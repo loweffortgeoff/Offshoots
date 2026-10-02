@@ -157,8 +157,8 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   `Reflection.storekit` off the Run action by hand (do not commit that), sign in
   under Settings > Developer > Sandbox Apple Account, and run from Xcode. See
   DECISIONS 2026-10-01. The Xcode sheet reads "For testing purposes only. You will
-  not be charged for confirming this purchase." The TestFlight sheet is not
-  checked yet.
+  not be charged for confirming this purchase." The TestFlight sheet (build 2, iPhone 17, 2026-10-02) has the same
+  testing line, headed "In-App Purchase", with no "[Environment: Sandbox]" text.
 - **Uninstalling clears the Xcode test purchase.** Buy again in the running
   app. Manage Transactions is empty until then.
 - **Import test files on the simulator.** Copy a JSON file into each

@@ -57,7 +57,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Import: export from Settings, then import the file. Confirm an empty app imports at once, and an app with decisions asks "Replace N decisions with M from the file?". A file that is not an Offshoots export shows an error.
 - Reflection, on a device with Apple Intelligence (iOS 26 or later). Confirm each surface: Patterns on Insights (needs 5 marked decisions), the reflection on a marked decision, and Clean Up Note on the Log, Mark Outcome and Revisit notes (3 words or more). Confirm the output matches the notes and gives no advice.
 - Reflection on a device without Apple Intelligence, or on iOS 18.6 to 25. Confirm Reflection does not show.
-- Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say you will not be charged for testing. If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
+- Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say "For testing purposes only. You will not be charged for confirming this purchase." If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
 - Restore Purchase in Settings, after a reinstall. Confirm Reflection unlocks again.
 
 ## Review note
