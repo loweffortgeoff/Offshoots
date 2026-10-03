@@ -9,6 +9,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Reflection, an optional $5.99 one-time unlock with Restore in Settings. Patterns on Insights, a reflection on Decision Detail, and Clean Up Note on the Log, Mark Outcome and Revisit note fields. The text comes from the on-device model, so nothing leaves the phone. It needs Apple Intelligence on iOS 26 or later; other devices do not see Reflection.
 
 #### Changed
+- iPad: the app window now resizes freely, up to the phone width that iPadOS allows (about 512 pt). Before, it snapped between two fixed sizes. The app stays iPhone-only. The deprecated `UIRequiresFullScreen` flag is removed.
 - Reflection: the purchase sheet no longer says "not charged" when the purchase is unverified. The paywall keeps its pending state and clears the old Restore message. A control that is not ready says "Reopen the app in a little while." The Settings footer now covers text generation only. The Import picker shows "unreadable" for a file it cannot read.
 - Reflection: Restore Purchase is full width at accessibility text sizes.
 - Reflection: the "Unlock Reflection" sheet has a new look. A leaf logo sits above a centered intro. The three features share one card with dividers and green symbols, with the footnote "Nothing appears until you tap for it." The buy and Restore Purchase buttons stay at the bottom. At accessibility text sizes they scroll with the content, so they do not cover the card. The price still comes from the App Store and stays inside the button. Purchase logic is unchanged.
