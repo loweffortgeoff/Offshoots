@@ -10,6 +10,7 @@ internal import Charts
 
 struct AnalyticsView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(ReflectionCenter.self) private var reflection
 
     var body: some View {
         NavigationStack {
@@ -52,6 +53,12 @@ struct AnalyticsView: View {
                                 bias: AnalyticsEngine.optimismBias(from: store.decisions),
                                 markedCount: AnalyticsEngine.markedCount(from: store.decisions)
                             )
+
+                            // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
+                            // Removing the card also drops its result, so a stale one cannot come back.
+                            if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
+                                PatternsCard(decisions: store.decisions)
+                            }
                         }
 
                         Spacer(minLength: 20)
@@ -204,4 +211,5 @@ struct DecisionTimelineCard: View {
 #Preview {
     AnalyticsView()
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }   

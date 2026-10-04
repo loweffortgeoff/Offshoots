@@ -166,5 +166,6 @@ struct DecisionsListView: View {
 #Preview {
     DecisionsListView(path: .constant(NavigationPath()))
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }
 

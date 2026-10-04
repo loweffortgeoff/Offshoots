@@ -131,3 +131,114 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Version 2.0.0 is every commit after `0e29c15` (2026-01-04). 1.0 (build 3) was uploaded from that commit on 2026-01-04 and released on 2026-01-12 (dates from Geoff). The April Settings cleanup and the July `.gitignore` commit came after the upload, so they belong to 2.0.0. No `v1.0` tag is added. Release notes live in `RELEASE_NOTES.md`, which starts with 2.0.0, and each release gets an annotated `v<version>` tag from here on.
 **Why:** The upload date pins the 1.0 build to `0e29c15`, the last commit on or before it. The file name matches Task(ed), List-Happens, Muzzletoff and Weather-in-Words.
 **Alternative considered:** A backdated `v1.0` tag on `0e29c15`. Geoff declined it: the `v2.0.0` tag already gives the next release pass its baseline. An earlier draft of this entry used `8ed7dac` (2026-07-12) as the baseline; that was a guess made before the upload date was known.
+
+## 2026-10-01 (Reflection cards are hidden at the call site)
+**Decision:** `AnalyticsView` and `DecisionDetailView` decide whether to show a Reflection card. When the device cannot run the model, the card is not in the view tree at all.
+**Why:** An unsupported device must never see Reflection. Removing the view also drops its in-memory result, so a stale result cannot come back after a hidden period.
+**Alternative considered:** An `if` inside the card. The first version of the plan did this and showed a title with no body. A `Group`-wrapped `onChange` does not work, because `Group` hands its modifiers to its children.
+
+## 2026-10-01 (Patterns prompt: one line per group, accuracy labeled)
+**Decision:** The Patterns prompt lists one line per category and per stakes group, for example "Work: 3 marked, all 3 matched the prediction exactly". It labels the accuracy figures "all categories combined".
+**Why:** With the old format, the real on-device model attached the global "one step off" count to Work and wrote a false observation.
+**Alternative considered:** Change the instructions only. The model can still misread a shared total, so the data format carries the fix.
+
+## 2026-10-01 (Empty "What is repeating" when nothing repeats)
+**Decision:** The model leaves the "What is repeating" section empty when nothing repeats. Geoff approved this on 2026-10-01. It lands in chunk 4 of the Reflection plan.
+**Why:** On a decision with only revisits and no notes, the model filled the section with lines that say nothing.
+**Alternative considered:** Keep the section always filled. It looks complete, but it shows text with no content.
+**Superseded 2026-10-01:** Code skips the section when a decision has no written text. See "What is repeating is skipped in code".
+
+## 2026-10-01 (Testing Reflection on the simulator)
+**Decision:** On the Mac mini, the iOS 27.0 simulator reports the on-device model as available and runs it. The `-ReflectionUnlockOnly` launch argument gives real output on the simulator. A launch with no flag shows the paywalled state: the title with an empty body until chunk 5, not a hidden card.
+**Why:** The plan assumed that the simulator has no model. Checked on the Mac mini that it does, so the plan's test steps need this note.
+**Alternative considered:** Test on a device only. This is slower. A device run stays the final check, because nobody has compared simulator and device output.
+**Update 2026-10-01:** Chunk 5 shipped the paywall. A launch with no flag now shows a locked control, not an empty body. No `-ReflectionPaywall` flag exists.
+
+## 2026-10-01 (What is repeating is skipped in code)
+**Decision:** A decision with no log note, no outcome note and no revisit note uses `decisionInstructionsWithoutNotes` and a generated shape with no `repeating` field. Decisions with notes keep the full instructions. This replaces "Empty 'What is repeating' when nothing repeats".
+**Why:** Prompt wording alone failed twice on the real model. First it wrote filler, then it invented themes.
+**Alternative considered:** Tell the model in the prompt to leave the section empty. That was the earlier decision.
+
+## 2026-10-01 (Guide text for "What is repeating")
+**Decision:** The `@Guide` text for `repeating` is "Up to three plain observations about what repeats. Empty if nothing repeats".
+**Why:** The earlier text gave advice-like lines ("Talk about the car's use and cost") for a decision with one log note. Only one input was tested, and greedy output moves with small wording changes, so re-test after any edit.
+**Alternative considered:** Keep the STOP 3 wording from the plan.
+
+## 2026-10-01 (Clean Up instructions name the edits)
+**Decision:** The Clean Up instructions list the edits: spelling, capitals, punctuation, grammar and run-on sentences.
+**Why:** With the plan's general wording, the real model returned a rough note unchanged.
+**Alternative considered:** The plan's wording ("tidy this note"). It did nothing on the test note.
+
+## 2026-10-01 (Clean Up row hidden at the call site)
+**Decision:** The Clean Up row is hidden at the call site, like the Reflection cards. Its reset sits on an always-present `VStack`, and `Use` also resets it.
+**Why:** A hidden view drops its state, so a stale suggestion cannot return. Modifiers on a view that is not always present do not fire.
+**Alternative considered:** An `if` inside the row, with the reset on the row. It leaves the reset in a view that may not exist.
+
+## 2026-10-01 (No -ReflectionPaywall launch flag)
+**Decision:** No `-ReflectionPaywall` flag. A plain launch shows the locked state.
+**Why:** The simulator runs the model, so a launch with no flag is already locked. A flag adds code for no new case.
+**Alternative considered:** A flag that forces the locked state. It matters only on a device with no model.
+
+## 2026-10-01 (Import Decisions asks only when data exists)
+**Decision:** Settings > Data > Import Decisions imports at once into an empty store. When decisions exist, it asks "Replace N decisions with M from the file?" first. A wrong file shows "This file is not an Offshoots export." The import cancels old reminders and schedules the future reminders of the imported decisions.
+**Why:** An import replaces data, so it needs a confirmation when something could be lost. An empty store loses nothing, and a confirmation would only slow a restore. This follows the rule that destructive actions are confirmed and others are not.
+**Alternative considered:** Merge the file into the existing decisions. It needs duplicate rules, and an Export file is a full copy.
+
+## 2026-10-01 (Test purchases only from an Xcode run)
+**Decision:** Test Reflection purchases only from an Xcode run with `Reflection.storekit` on the scheme. Do not test with `simctl launch`.
+**Why:** The StoreKit file applies only when Xcode runs the app. A `simctl launch` ignores it, so the product does not load.
+**Alternative considered:** A debug purchase flag in the app. It would skip the code path that real purchases use.
+
+**Update 2026-10-01:** This holds for the simulator only. On a physical phone, Xcode's StoreKit test mode fails with `ASDServerErrorDomain Code=2010`. See the next entry.
+
+## 2026-10-01 (Test purchases on a phone in the sandbox)
+**Decision:** Test Reflection purchases on a physical phone in the real App Store sandbox, not in Xcode's StoreKit test mode. Take `Reflection.storekit` off the Run action by hand for that run, sign in under Settings > Developer > Sandbox Apple Account, and run from Xcode. `Reflection.storekit` stays on the committed scheme for the simulator.
+**Why:** On both phones (iOS 27.0 and 27.2 beta 2), the Xcode test mode returned `ASDServerErrorDomain Code=2010` on every purchase, with no transaction. The same build buys on the simulator. In the sandbox the same build bought on both phones, and the unlock stayed after a relaunch. Console logs showed the unlock code was correct: the earlier "unlock comes back" was the failed-purchase state, not a lost unlock. Apple does not document code 2010, so the cause is not known.
+**Alternative considered:** Remove `Reflection.storekit` from the scheme for good. Then the simulator would need a sandbox account too, and simulator purchase, restore and refund checks would be lost.
+
+## 2026-10-02 (Reflection is a paid one-time unlock)
+**Decision:** Reflection is a one-time purchase at $5.99 (`com.geoffrey.silva.Offshoots.reflection`, non-consumable, Family Sharing off). The entitlement checks a list of product IDs, so a low-cost subscription can be added later with no rework. This overrides the Contrition "No subscriptions" guardrail. The paywall price comes from the App Store, never from a constant.
+**Why:** The on-device model costs nothing to run, so there is no running cost to cover. A one-time price fits a utility app with no account. The ID list keeps the subscription option open.
+**Alternative considered:** A subscription from the start. It adds renewal and cancellation states for a feature that has no server cost.
+
+## 2026-10-02 (Reflection output is never saved; no free preview)
+**Decision:** Reflection output is regenerated on demand and never stored. There is no free preview. Surfaces hide when the model does not support the language, so there is no localization work.
+**Why:** Saving output adds a data model and a sync question. A free preview adds a gate state and a stored flag. Neither earns its cost in v1.
+**Alternative considered:** Save the last output per decision; offer one free try.
+
+## 2026-10-02 (Reflection thresholds and gate states)
+**Decision:** Patterns needs 5 marked decisions. Clean Up Note needs at least 3 words and at most 1,500 characters. The gate has four states, and `notReady(reason:)` shows a disabled control with its reason.
+**Why:** Fewer than 5 marked decisions gives the model too little to say. A disabled control with a reason tells the user what to do next, and a hidden control does not.
+**Alternative considered:** Hide a control that is not ready. The user cannot learn what unlocks it.
+
+## 2026-10-02 (The -ReflectionUnlockOnly merge trap is already closed)
+**Decision:** On `reflection`, the shared scheme keeps `-ReflectionUnlockOnly` but disabled (`isEnabled = "NO"`), and it holds the `Reflection.storekit` reference. `main` is already merged into `reflection`, so the merge back is a fast-forward and the scheme lands as is. The `b792f1c` commit on `main` enabled the argument; after the merge, confirm it is disabled on `main`.
+**Why:** The argument works only in DEBUG builds. If it stays enabled, every Xcode run starts unlocked and nobody can test the paywall.
+**Alternative considered:** Delete the argument. It stays as a device-only shortcut for real-model checks.
+
+## 2026-10-02 (No Clean Up Note in Edit Decision, v1)
+**Decision:** The Notes field in Edit Decision has no Clean Up Note row in v1. Clean Up Note stays on the Log, Mark Outcome and Revisit note fields.
+**Why:** Geoff confirmed this on 2026-10-02. It keeps v1 small, and the three fields where a note is first written already have the row.
+**Alternative considered:** Add the row to Edit Decision for parity. It can come later if testers ask.
+
+## 2026-10-02 (Patterns prompt stays as is until real data)
+**Decision:** Do not change the Patterns prompt yet. On the uniform test data, the output was four near-identical "matched the prediction exactly" lines, and the groups overlapped (work was counted twice). The Clean Up Note meaning-change question also stays open.
+**Why:** The test decisions were all alike and had no notes, so the output shows the data, not a prompt fault. A prompt change now would fit the test data and not real use.
+**Alternative considered:** Rewrite the prompt to merge overlapping groups now. Re-check with varied real decisions and notes first.
+
+## 2026-10-02 (Unlock Reflection sheet: pinned buttons, price in the button, feature copy kept)
+**Decision:** The buy and Restore Purchase buttons are pinned to the bottom of the sheet with `safeAreaInset`. At accessibility text sizes they scroll with the content instead. The price stays inside the buy button text and comes from `displayPrice`. The three feature titles keep their current copy, even though the Claude Design concept had longer descriptions.
+**Why:** Pinned buttons keep the purchase action in reach at normal sizes. At AX3 the pinned buttons covered the feature card, so they scroll there. Geoff chose to keep the price in the button, so the price and the action stay in one place. Geoff chose to keep the titles (option a): the card stays short, and no new copy needs a check.
+**Alternative considered:** Pin the buttons at every size (covers the card at AX3). Show the price as a separate line (more layout, less clear). Use the longer descriptions from the Claude Design concept (a taller card, and new copy to check).
+
+## 2026-10-03 (Stay iPhone-only on iPad)
+**Decision:** Offshoots stays iPhone-only (`TARGETED_DEVICE_FAMILY = 1`). On the iPad it runs as an iPhone app in a window. `UIRequiresFullScreen` is removed, so that window resizes freely up to the iPadOS limit for iPhone apps (about 512 pt wide).
+**Why:** Full iPad support adds a second device family: iPad screenshots every release, an iPad layout pass, and more risk at App Review. Removing the flag costs nothing. The flag is deprecated since iPadOS 26, and with it iPadOS 27 snaps the window between fixed sizes (about 375 and 512 pt). Checked on the iPad Pro 13-inch (M5) simulator, iOS 27.0, on the Mac mini.
+**Alternative considered:** Add iPad to the device family, with a content width cap. This was rejected: it doubles the overhead and the review risk.
+
+## 2026-10-04 (Decision form controls at accessibility sizes)
+**Decision:** Give the native title field at least three lines at accessibility sizes. Use shared full-width Stakes buttons there, with scaled body text and a selected trait. Keep the system segmented control at standard sizes.
+**Why:** Simulator testing confirmed the title prompt truncates and the segment labels stay small. This repairs Log and Edit without changing the stored values.
+**Alternative considered:** A custom title placeholder. The native field already supports a multiline prompt when it has enough lines.
+
+**Verification (2026-10-04):** Geoff confirmed the fix is verified and approved merge, commit and push.

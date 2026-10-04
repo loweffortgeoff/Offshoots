@@ -14,6 +14,8 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - A Notes field on the Log screen.
 - App Theme in Settings: System, Light or Dark.
 - Export your decisions as JSON, or delete them all (with a confirmation).
+- Import Decisions in Settings > Data restores an Export file. If the app already holds decisions, it asks before it replaces them.
+- Reflection, a one-time unlock, for devices with Apple Intelligence on iOS 26 or later. Patterns on Insights reads what repeats across your decisions. Each marked decision gets a reflection. Clean Up Note fixes spelling and punctuation in a note when you tap it. Everything runs on the device, runs only when you ask, and is never saved. Restore Purchase is in Settings.
 
 ## IMPROVED
 
@@ -52,3 +54,12 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Tap a starter suggestion on a fresh install. Confirm the Log form fills in.
 - Export decisions from Settings. Confirm the JSON file opens and holds every decision.
 - Switch App Theme between System, Light and Dark while the app runs.
+- Import: export from Settings, then import the file. Confirm an empty app imports at once, and an app with decisions asks "Replace N decisions with M from the file?". A file that is not an Offshoots export shows an error.
+- Reflection, on a device with Apple Intelligence (iOS 26 or later). Confirm each surface: Patterns on Insights (needs 5 marked decisions), the reflection on a marked decision, and Clean Up Note on the Log, Mark Outcome and Revisit notes (3 words or more). Confirm the output matches the notes and gives no advice.
+- Reflection on a device without Apple Intelligence, or on iOS 18.6 to 25. Confirm Reflection does not show.
+- Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say "For testing purposes only. You will not be charged for confirming this purchase." If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
+- Restore Purchase in Settings, after a reinstall. Confirm Reflection unlocks again.
+
+## Review note
+
+Apple reviews a first in-app purchase together with an app version. Before submission, the product `com.geoffrey.silva.Offshoots.reflection` must be "Ready to Submit" and attached to the version.

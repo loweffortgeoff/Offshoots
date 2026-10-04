@@ -135,6 +135,47 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   day taps, and only the month arrows still work (fixed 2026-09-26). The
   forms turn their tap-to-close-the-keyboard gesture on only while a text
   field has focus: `.gesture(_:including: focused ? .all : .subviews)`.
+- **The first tap after a launch is often lost.** After `simctl launch`
+  the first tap (often a tab-bar tap) did nothing several times on
+  2026-10-01. Take a screenshot, and send the tap again if the screen did
+  not change.
+- **Reflection launch arguments (DEBUG builds only).** `-ReflectionFake` gives
+  canned output, unlocked. `-ReflectionUnlockOnly` uses the real on-device
+  model, unlocked, with no purchase. Type the leading dash, also in Xcode's
+  scheme Arguments field: without it the argument does nothing. With no
+  argument the surfaces show the locked state. There is no `-ReflectionPaywall`
+  argument. In the shared scheme `-ReflectionUnlockOnly` is present but
+  disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
+  would start unlocked and the paywall could not be tested. Commit
+  `b792f1c` on `main` enabled it; the `reflection` merge is a fast-forward, so
+  confirm it is disabled on `main` afterwards.
+- **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
+  Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
+  `RunProject` tool. The test purchase sheet says you are not charged.
+- **On a phone, buy in the sandbox, not in Xcode test mode.** Xcode's test mode
+  fails on both phones with `ASDServerErrorDomain Code=2010`. Take
+  `Reflection.storekit` off the Run action by hand (do not commit that), sign in
+  under Settings > Developer > Sandbox Apple Account, and run from Xcode. See
+  DECISIONS 2026-10-01. The Xcode sheet reads "For testing purposes only. You will
+  not be charged for confirming this purchase." The TestFlight sheet (build 2, iPhone 17, 2026-10-02) has the same
+  testing line, headed "In-App Purchase", with no "[Environment: Sandbox]" text.
+- **Uninstalling clears the Xcode test purchase.** Buy again in the running
+  app. Manage Transactions is empty until then.
+- **Import test files on the simulator.** Copy a JSON file into each
+  `…/Containers/Shared/AppGroup/<id>/File Provider Storage/` folder of the
+  simulator. It shows in Files > On My iPhone.
+- **Long text input:** `simctl pbcopy` puts text on the simulator
+  pasteboard. Long-press the field and tap Paste.
+- **Xcode rewrites the shared scheme.** When Xcode opens the project, it
+  changes the `version` in `Offshoots.xcscheme` from 1.7 to 1.3. Do not
+  treat that diff as Geoff's edit.
+- **The simulator runs the real on-device model.** On the Mac mini, the
+  iOS 27.0 simulator reports `SystemLanguageModel` as available and gives
+  real output (checked 2026-10-01). Greedy sampling gives the same output
+  for the same input, so a prompt change can be re-tested on the simulator.
+- **App theme on the simulator.** The Settings theme is the `appTheme` key
+  in the app's own plist. On 2026-10-01 a `plutil` edit of that key, made
+  with the app closed, did not take effect. The iPhone 18 Pro was on Dark.
 
 ## Test Device
 

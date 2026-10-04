@@ -10,6 +10,7 @@ internal import SwiftUI
 struct RevisitView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(ReflectionCenter.self) private var reflectionCenter
 
     let decision: Decision
 
@@ -87,6 +88,9 @@ struct RevisitView: View {
                                         .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
                                 )
                                 .lineLimit(3...6)
+                            if reflectionCenter.gate != .hidden {
+                                CleanUpNoteRow(text: $note)
+                            }
                         }
                         .padding(16)
                         .background(Color.offshootCardBackground)
@@ -235,4 +239,5 @@ struct NextRevisitPicker: View {
         followUpDate: Date()
     ))
     .environment(DecisionStore())
+    .environment(ReflectionCenter.make())
 }

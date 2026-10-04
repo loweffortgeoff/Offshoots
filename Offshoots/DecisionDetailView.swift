@@ -9,6 +9,7 @@ internal import SwiftUI
 
 struct DecisionDetailView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(ReflectionCenter.self) private var reflection
     @Environment(\.dismiss) private var dismiss
     @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 56
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -93,8 +94,10 @@ struct DecisionDetailView: View {
                                 .fontWeight(.bold)
                                 .foregroundStyle(Color.offshootPrimary)
 
-                            // At accessibility sizes the category, stakes and status stack.
-                            let metaLayout = dynamicTypeSize.isAccessibilitySize
+                            // From xxLarge up, the category, stakes and status stack. Side by side, the
+                            // status badge squeezed and broke "Neutral" into "Neu-tral" just below accessibility sizes.
+                            let stacksMeta = dynamicTypeSize >= .xxLarge
+                            let metaLayout = stacksMeta
                                 ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
                                 : AnyLayout(HStackLayout())
                             metaLayout {
@@ -106,7 +109,7 @@ struct DecisionDetailView: View {
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
 
-                                if !dynamicTypeSize.isAccessibilitySize {
+                                if !stacksMeta {
                                     Spacer()
                                 }
 
@@ -255,6 +258,12 @@ struct DecisionDetailView: View {
                             RevisitHistoryCard(decision: decision)
                         }
 
+                        // Reflection (paid unlock, on-device text). Unsupported devices never see it.
+                        // Removing the card also drops its result, so a stale one cannot come back.
+                        if ReflectionEligibility.canReflect(on: decision), reflection.gate != .hidden {
+                            DecisionReflectionCard(decision: decision)
+                        }
+
                         // Follow-up Date
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Follow-Up Date", systemImage: "calendar")
@@ -370,84 +379,5 @@ struct DecisionDetailView: View {
         } message: {
             Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone.")
         }
-    }
-}
-
-// MARK: - Revisit History
-
-/// Timeline of re-ratings, each shown against the assessment before it
-private struct RevisitHistoryCard: View {
-    let decision: Decision
-
-    /// Pairs each revisit with the outcome it replaced
-    private var entries: [(revisit: Revisit, previous: DecisionOutcome?)] {
-        decision.revisits.enumerated().map { index, revisit in
-            let previous = index == 0 ? decision.actual : decision.revisits[index - 1].outcome
-            return (revisit: revisit, previous: previous)
-        }
-    }
-
-    /// "Bad to Good" when the rating changed, otherwise just the rating.
-    private func revisitChangeLabel(_ entry: (revisit: Revisit, previous: DecisionOutcome?)) -> String {
-        if let previous = entry.previous, previous != entry.revisit.outcome {
-            return "\(previous.shortLabel) to \(entry.revisit.outcome.shortLabel)"
-        }
-        return entry.revisit.outcome.shortLabel
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Label("Revisits", systemImage: "arrow.triangle.2.circlepath")
-                .font(.headline)
-                .foregroundStyle(Color.offshootPrimary)
-
-            ForEach(entries, id: \.revisit.id) { entry in
-                VStack(alignment: .leading, spacing: 6) {
-                    HStack(spacing: 8) {
-                        if let previous = entry.previous, previous != entry.revisit.outcome {
-                            OutcomeIcon(outcome: previous)
-                                .font(.callout)
-                                .opacity(0.4)
-                                .accessibilityHidden(true)
-                            Image(systemName: "arrow.right")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .accessibilityHidden(true)
-                        }
-
-                        OutcomeIcon(outcome: entry.revisit.outcome)
-                            .font(.body)
-                            .accessibilityHidden(true)
-
-                        Text(entry.revisit.outcome.shortLabel)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(entry.revisit.outcome.themeColor)
-                            .accessibilityLabel(revisitChangeLabel(entry))
-
-                        Spacer()
-
-                        Text(entry.revisit.date.formatted(date: .abbreviated, time: .omitted))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    if let note = entry.revisit.note {
-                        Text(note)
-                            .font(.subheadline)
-                            .foregroundStyle(.primary)
-                    }
-                }
-
-                if entry.revisit.id != decision.revisits.last?.id {
-                    Divider()
-                }
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(20)
-        .background(Color.offshootCardBackground)
-        .cornerRadius(16)
-        .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
     }
 }

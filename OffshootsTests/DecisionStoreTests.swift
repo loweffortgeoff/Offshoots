@@ -94,6 +94,35 @@ final class DecisionStoreTests {
         #expect(DecisionStore(saveURL: saveURL).decisions.isEmpty)
     }
 
+    @Test func replaceAllSwapsTheDecisionsAndSavesThem() throws {
+        let store = DecisionStore(saveURL: saveURL)
+        store.add(Make.decision(title: "Old one"))
+        let imported = try Fixture.load("insights-seed")
+
+        store.replaceAll(with: imported)
+        store.waitForPendingSaves()
+
+        #expect(store.decisions == imported)
+        #expect(DecisionStore(saveURL: saveURL).decisions == imported)
+    }
+
+    @Test func anExportFileImportsBack() throws {
+        let decisions = try Fixture.load("insights-seed")
+        let file = folder.appending(path: "Offshoots Decisions.json")
+        try DecisionStore.encode(decisions).write(to: file)
+
+        #expect(try DecisionsImport.read(from: file) == decisions)
+    }
+
+    @Test func otherJSONIsRejected() throws {
+        let file = folder.appending(path: "other.json")
+        try Data(#"{"title": "not an export"}"#.utf8).write(to: file)
+
+        #expect(throws: DecisionsImport.ImportError.notAnExport) {
+            try DecisionsImport.read(from: file)
+        }
+    }
+
     @Test func unreadableFileIsBackedUpNotLost() throws {
         try Data("not json".utf8).write(to: saveURL)
 

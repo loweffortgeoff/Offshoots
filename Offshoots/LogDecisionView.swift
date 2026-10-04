@@ -9,6 +9,8 @@ internal import SwiftUI
 
 struct LogDecisionView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(ReflectionCenter.self) private var reflectionCenter
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Binding var selectedTab: AppTab
     /// A starter suggestion to fill in; cleared once applied
     @Binding var draft: StarterSuggestion?
@@ -67,6 +69,7 @@ struct LogDecisionView: View {
                                 .foregroundStyle(Color.offshootPrimary)
 
                             TextField("What decision are you making?", text: $title, axis: .vertical)
+                                .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3... : 1...)
                                 .focused($isTitleFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
@@ -114,6 +117,9 @@ struct LogDecisionView: View {
                                         .stroke(Color.offshootPrimary.opacity(0.2), lineWidth: 1)
                                 )
                                 .lineLimit(3...6)
+                            if reflectionCenter.gate != .hidden {
+                                CleanUpNoteRow(text: $notes)
+                            }
                         }
                         .padding(16)
                         .background(Color.offshootCardBackground)
@@ -129,12 +135,7 @@ struct LogDecisionView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
-                            Picker("Stakes", selection: $stakes) {
-                                ForEach(DecisionStakes.allCases) { stake in
-                                    Text(stake.label).tag(stake)
-                                }
-                            }
-                            .pickerStyle(.segmented)
+                            StakesPickerView(selection: $stakes)
                         }
                         .padding(16)
                         .background(Color.offshootCardBackground)
@@ -302,4 +303,5 @@ struct SavedConfirmationView: View {
 #Preview {
     LogDecisionView(selectedTab: .constant(.log), draft: .constant(nil))
         .environment(DecisionStore())
+        .environment(ReflectionCenter.make())
 }
