@@ -240,3 +240,5 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Give the native title field at least three lines at accessibility sizes. Use shared full-width Stakes buttons there, with scaled body text and a selected trait. Keep the system segmented control at standard sizes.
 **Why:** Simulator testing confirmed the title prompt truncates and the segment labels stay small. This repairs Log and Edit without changing the stored values.
 **Alternative considered:** A custom title placeholder. The native field already supports a multiline prompt when it has enough lines.
+
+**Verification (2026-10-04):** Geoff confirmed the fix is verified and approved merge, commit and push.

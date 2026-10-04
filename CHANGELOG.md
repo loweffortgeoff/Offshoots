@@ -15,7 +15,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Reflection: the "Unlock Reflection" sheet has a new look. A leaf logo sits above a centered intro. The three features share one card with dividers and green symbols, with the footnote "Nothing appears until you tap for it." The buy and Restore Purchase buttons stay at the bottom. At accessibility text sizes they scroll with the content, so they do not cover the card. The price still comes from the App Store and stays inside the button. Purchase logic is unchanged.
 
 #### Fixed
-- Log and Edit Decision: the title prompt has room to wrap at accessibility text sizes. Stakes uses full-width choices with scaled text and a selected state at those sizes; standard sizes keep the segmented control. Physical-device testing pending.
+- Log and Edit Decision: the title prompt has room to wrap at accessibility text sizes. Stakes uses full-width choices with scaled text and a selected state at those sizes; standard sizes keep the segmented control. Geoff verified the fix on 2026-10-04.
 - The header meta row on Decision Detail stacks from the xxLarge text size up. At larger sizes the "Neutral" rating wrapped as "Neu-tral".
 - At accessibility text sizes, the revisit rows on Decision Detail broke the rating ("Good") and the date into one-letter columns. Each row now stacks the icons, the rating and the date at accessibility sizes, and keeps the side-by-side layout at other sizes. `RevisitHistoryCard` has its own file.
 
