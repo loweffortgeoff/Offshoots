@@ -15,6 +15,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Reflection: the "Unlock Reflection" sheet has a new look. A leaf logo sits above a centered intro. The three features share one card with dividers and green symbols, with the footnote "Nothing appears until you tap for it." The buy and Restore Purchase buttons stay at the bottom. At accessibility text sizes they scroll with the content, so they do not cover the card. The price still comes from the App Store and stays inside the button. Purchase logic is unchanged.
 
 #### Fixed
+- Log and Edit Decision: the title prompt has room to wrap at accessibility text sizes. Stakes uses full-width choices with scaled text and a selected state at those sizes; standard sizes keep the segmented control. Physical-device testing pending.
 - The header meta row on Decision Detail stacks from the xxLarge text size up. At larger sizes the "Neutral" rating wrapped as "Neu-tral".
 - At accessibility text sizes, the revisit rows on Decision Detail broke the rating ("Good") and the date into one-letter columns. Each row now stacks the icons, the rating and the date at accessibility sizes, and keeps the side-by-side layout at other sizes. `RevisitHistoryCard` has its own file.
 
@@ -68,7 +69,7 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - Settings > We Also Make shows each app's real icon, with a light and a dark variant taken from that app's own icon set. The Task(ed) placeholder icon is gone. Muzzletoff is now listed as EveryPaw (same App Store ID).
 - The top rating reads "Great", not "Very Good". Short labels are spelled out ("Very Bad", not "V. Bad").
 - Settings > We Also Make lists AisleWise, Muzzletoff and Task(ed) only (April cleanup); five other apps are gone.
-- Known: the placeholder in the decision title field is cut off at accessibility sizes. SwiftUI draws a placeholder on one line. The Stakes segmented control does not grow with the text (system control).
+- Known: the placeholder in the decision title field is cut off at accessibility sizes. SwiftUI draws a placeholder on one line. The Stakes segmented control does not grow with the text (system control). Confirmed and repaired on `fix/decision-form-accessibility` on 2026-10-04; see In Progress.
 
 #### Fixed
 - The detail screen now shows edits and outcomes at once. It no longer shows a stale copy.

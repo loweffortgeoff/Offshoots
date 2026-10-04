@@ -1,6 +1,7 @@
 # TODO
 
 ## Next
+- [ ] **Decision form accessibility: device check.** On `fix/decision-form-accessibility`, check Log and Edit at the largest accessibility text size. Confirm the full title prompt, all Stakes labels, VoiceOver selection, keyboard typing/dismissal and save. Plan: `docs/superpowers/plans/2026-10-04-decision-form-accessibility.md`. Simulator checks pass; physical-device testing remains pending.
 - [ ] **Reflection: finish the release.** The `reflection` branch is merged to `main` (fast-forward, not pushed) and the shared scheme on `main` has `-ReflectionUnlockOnly` disabled with the `Reflection.storekit` reference. Spec: `docs/superpowers/specs/2026-09-30-reflection-design.md`. Plan: `docs/superpowers/plans/2026-10-01-reflection.md`. Handoff: `docs/superpowers/plans/2026-10-01-reflection-handoff.md`. What is left, in order:
     - [ ] In App Store Connect, bring the in-app purchase `com.geoffrey.silva.Offshoots.reflection` (Apple ID 6818254209) to "Ready to Submit" and attach it to the app version. Apple reviews a first in-app purchase together with a version.
     - [ ] Archive again for the tester TestFlight build. It will include two layout fixes that build 2 does not have: Restore Purchase full width at accessibility sizes (`19e382f`) and the Decision Detail header meta row stacking from xxLarge up (`67fb184`). It will also include the redesigned "Unlock Reflection" sheet (2026-10-02, see Done).

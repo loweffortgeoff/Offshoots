@@ -235,3 +235,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Offshoots stays iPhone-only (`TARGETED_DEVICE_FAMILY = 1`). On the iPad it runs as an iPhone app in a window. `UIRequiresFullScreen` is removed, so that window resizes freely up to the iPadOS limit for iPhone apps (about 512 pt wide).
 **Why:** Full iPad support adds a second device family: iPad screenshots every release, an iPad layout pass, and more risk at App Review. Removing the flag costs nothing. The flag is deprecated since iPadOS 26, and with it iPadOS 27 snaps the window between fixed sizes (about 375 and 512 pt). Checked on the iPad Pro 13-inch (M5) simulator, iOS 27.0, on the Mac mini.
 **Alternative considered:** Add iPad to the device family, with a content width cap. This was rejected: it doubles the overhead and the review risk.
+
+## 2026-10-04 (Decision form controls at accessibility sizes)
+**Decision:** Give the native title field at least three lines at accessibility sizes. Use shared full-width Stakes buttons there, with scaled body text and a selected trait. Keep the system segmented control at standard sizes.
+**Why:** Simulator testing confirmed the title prompt truncates and the segment labels stay small. This repairs Log and Edit without changing the stored values.
+**Alternative considered:** A custom title placeholder. The native field already supports a multiline prompt when it has enough lines.

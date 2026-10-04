@@ -10,6 +10,7 @@ internal import SwiftUI
 struct LogDecisionView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(ReflectionCenter.self) private var reflectionCenter
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Binding var selectedTab: AppTab
     /// A starter suggestion to fill in; cleared once applied
     @Binding var draft: StarterSuggestion?
@@ -68,6 +69,7 @@ struct LogDecisionView: View {
                                 .foregroundStyle(Color.offshootPrimary)
 
                             TextField("What decision are you making?", text: $title, axis: .vertical)
+                                .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3... : 1...)
                                 .focused($isTitleFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
@@ -133,12 +135,7 @@ struct LogDecisionView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
-                            Picker("Stakes", selection: $stakes) {
-                                ForEach(DecisionStakes.allCases) { stake in
-                                    Text(stake.label).tag(stake)
-                                }
-                            }
-                            .pickerStyle(.segmented)
+                            StakesPickerView(selection: $stakes)
                         }
                         .padding(16)
                         .background(Color.offshootCardBackground)

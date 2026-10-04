@@ -10,6 +10,7 @@ internal import SwiftUI
 struct EditDecisionView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isNotesFocused: Bool
 
@@ -53,6 +54,7 @@ struct EditDecisionView: View {
                                 .foregroundStyle(Color.offshootPrimary)
 
                             TextField("What decision are you making?", text: $title, axis: .vertical)
+                                .lineLimit(dynamicTypeSize.isAccessibilitySize ? 3... : 1...)
                                 .focused($isTitleFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
@@ -90,12 +92,7 @@ struct EditDecisionView: View {
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
 
-                                Picker("Stakes", selection: $stakes) {
-                                    ForEach(DecisionStakes.allCases) { stake in
-                                        Text(stake.label).tag(stake)
-                                    }
-                                }
-                                .pickerStyle(.segmented)
+                                StakesPickerView(selection: $stakes)
                             }
                             .padding(16)
                             .background(Color.offshootCardBackground)
