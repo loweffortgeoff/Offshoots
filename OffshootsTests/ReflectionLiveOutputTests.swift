@@ -57,6 +57,21 @@ struct ReflectionLiveOutputTests {
         """)
     }
 
+    @Test(arguments: [DecisionCategory.money, .work])
+    func lookBack(category: DecisionCategory) async throws {
+        guard #available(iOS 26.4, *) else { return }
+        try requireModel()
+        let digest = try #require(ReflectionDigestBuilder.lookBack(category: category, in: try Fixture.load("reflection-notes")))
+        try await report(
+            "Look Back: \(digest.category)",
+            instructions: ReflectionPromptBuilder.lookBackInstructions,
+            prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
+            schema: LiveReflectionService.GeneratedPatterns.generationSchema
+        )
+        let output = try await LiveReflectionService().lookBack(digest: digest)
+        log("Look Back output (\(digest.category)):\n\(output.summary)\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
+    }
+
     // MARK: - Helpers
 
     @available(iOS 26.4, *)

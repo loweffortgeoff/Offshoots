@@ -54,12 +54,12 @@ below.
 
 ## Chunk 4 — Look Back (spec B)
 
-- [ ] `ReflectionDigestBuilder.lookBack(category:stakes:in:)`, sharing the history helper.
-- [ ] `ReflectionGenerating.lookBack(digest:)`, the live and fake versions.
-- [ ] `LookBackCard` on the Log screen, below category and stakes, hidden at the call site.
-- [ ] Not-ready line below 2 marked decisions in the category. A category or stakes
-  change clears the result.
-- [ ] Tests. Harness run. Simulator check: light, dark, AX3, VoiceOver labels.
+- [x] `ReflectionDigestBuilder.lookBack(category:in:)`, sharing the history helper.
+- [x] `ReflectionGenerating.lookBack(digest:)`, the live and fake versions.
+- [x] `LookBackCard` on the Log screen, below Stakes, above Expected Outcome, hidden at
+  the call site.
+- [x] "To go" line below 2 marked decisions in the category. A category change clears the result.
+- [x] Tests. Harness run. Simulator check (see below).
 
 ## Chunk 5 — Copy and docs (spec C)
 
@@ -188,4 +188,39 @@ accessibility text sizes, a decision with no history.
 
 **Same lesson as chunk 2:** let code do the matching, and give the model one narrow
 field per job.
+
+### Chunk 4 — 2026-10-05, same Mac and simulator
+
+**Token counts:** Money 571, Work 509 before the response.
+
+**First try:** unlabeled sentences. Money gave "All of these decisions were made quickly…"
+and "All of these decisions involved waiting or patience…". Both were accurate, but the
+reader could not tell which group each one described. Fix: a fixed label per line from code.
+
+**Chosen output:**
+
+Money:
+- Of your last 5 Money decisions, 3 went worse than you predicted, 1 went as predicted and 1 went better.
+- Went worse: All of these decisions were made quickly, often under pressure, with little time to think through the full picture.
+- Went better: All of these decisions involved waiting or patience before acting, leading to a more favorable result.
+
+(The model left "as predicted" empty: one decision, the car loan refinance.)
+
+Work:
+- Of your last 4 Work decisions, 2 went worse than you predicted and 2 went better.
+- Went worse: The notes on decisions that went worse than predicted all mention a quick response to a request that led to unexpected strain.
+- Went better: The notes on decisions that went better than predicted all mention preparation before the action.
+
+**Simulator checks (iPhone 18 Pro, iOS 27.0):**
+- Dark, default text, `-ReflectionUnlockOnly`: Work result shows with labels, the same text as the harness.
+- Category Other (0 marked): "Look Back needs 2 marked Other decisions. 2 to go." The
+  category change cleared the Work result.
+- Light, AX3: the card lays out in one column. The button wraps "Look / Back" on a word
+  boundary.
+- **Not checked: the locked state.** This simulator already owns the Reflection unlock
+  (the button showed the enabled style with no launch flag), likely from an earlier
+  StoreKit test purchase. The locked control comes from the shared `ReflectionGateView`,
+  which the other surfaces already use.
+- Not checked: VoiceOver reading order. The labels "Look Back" and each group label carry
+  the header trait in code.
 

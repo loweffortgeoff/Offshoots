@@ -36,6 +36,7 @@ struct TimelineLine: Equatable {
 /// Another marked decision in the same category, for comparison.
 struct HistoryLine: Equatable {
     let title: String
+    let stakes: String
     /// -1 worse than predicted, 0 as predicted, 1 better (the sign of the first-result gap)
     let direction: Int
     let notes: String?
@@ -71,3 +72,27 @@ struct DecisionDigest: Equatable {
         notes != nil || outcomeNote != nil || timeline.contains { $0.note != nil }
     }
 }
+
+/// Past marked decisions in the category the user is logging now. Look Back reads this.
+struct LookBackDigest: Equatable {
+    let category: String
+    /// Newest first, capped. Never fewer than `ReflectionDigestBuilder.minimumHistory`.
+    let history: [HistoryLine]
+
+    var worse: [HistoryLine] { history.filter { $0.direction < 0 } }
+    var asPredicted: [HistoryLine] { history.filter { $0.direction == 0 } }
+    var better: [HistoryLine] { history.filter { $0.direction > 0 } }
+    var hasNotes: Bool { history.contains { $0.notes != nil || $0.outcomeNote != nil } }
+
+    /// Built in code, not by the model, so the numbers are always right
+    var summary: String {
+        let parts = [
+            worse.isEmpty ? nil : "\(worse.count) went worse than you predicted",
+            asPredicted.isEmpty ? nil : "\(asPredicted.count) went as predicted",
+            better.isEmpty ? nil : "\(better.count) went better",
+        ].compactMap { $0 }
+        let list = parts.count > 1 ? parts.dropLast().joined(separator: ", ") + " and " + parts.last! : parts.joined()
+        return "Of your last \(history.count) \(category) decisions, \(list)."
+    }
+}
+

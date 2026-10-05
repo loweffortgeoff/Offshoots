@@ -19,6 +19,19 @@ struct DecisionReflectionOutput: Equatable {
     var echo: String = ""
 }
 
+/// One model sentence about one result group, with a fixed label from code.
+struct LookBackLine: Equatable {
+    var label: String
+    var text: String
+}
+
+/// The count line comes from the digest; the lines come from the model and may be empty.
+struct LookBackOutput: Equatable {
+    var summary: String
+    /// At most one per result group, so the label is unique
+    var lines: [LookBackLine]
+}
+
 struct CleanedNote: Equatable {
     var text: String
 }
@@ -48,6 +61,18 @@ extension PatternsOutput {
             .filter { $0.split(whereSeparator: \.isWhitespace).count >= Self.minimumWords }
         guard !lines.isEmpty else { throw ReflectionError.emptyOutput }
         return PatternsOutput(observations: lines)
+    }
+}
+
+extension LookBackOutput {
+    /// The summary always shows, so empty observations are not an error
+    func validated() -> LookBackOutput {
+        LookBackOutput(summary: summary, lines: lines.compactMap { line in
+            guard let text = ReflectionText.clean(line.text, limit: 400),
+                  text.split(whereSeparator: \.isWhitespace).count >= PatternsOutput.minimumWords
+            else { return nil }
+            return LookBackLine(label: line.label, text: text)
+        })
     }
 }
 

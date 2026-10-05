@@ -66,6 +66,7 @@ enum ReflectionDigestBuilder {
             .map { decision in
                 HistoryLine(
                     title: ReflectionText.clean(decision.title, limit: historyTitleLimit) ?? "Untitled",
+                    stakes: decision.stakes.label,
                     direction: direction(of: decision),
                     notes: ReflectionText.clean(decision.notes, limit: noteLimit),
                     outcomeNote: ReflectionText.clean(decision.reflection, limit: noteLimit)
@@ -93,6 +94,13 @@ enum ReflectionDigestBuilder {
             }
         }
         return dated.sorted { $0.date > $1.date }.prefix(notesPerGroup).map(\.line)
+    }
+
+    /// Nil below `minimumHistory` marked decisions in the category.
+    static func lookBack(category: DecisionCategory, in decisions: [Decision]) -> LookBackDigest? {
+        let history = history(in: category, from: decisions)
+        guard !history.isEmpty else { return nil }
+        return LookBackDigest(category: category.rawValue.capitalized, history: history)
     }
 
     private static func direction(of decision: Decision) -> Int {

@@ -81,5 +81,6 @@ final class ReflectionCenter {
 private struct UnavailableReflectionGenerator: ReflectionGenerating {
     func patterns(digest: PatternsDigest) async throws -> PatternsOutput { throw ReflectionError.failed }
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput { throw ReflectionError.failed }
+    func lookBack(digest: LookBackDigest) async throws -> LookBackOutput { throw ReflectionError.failed }
     func cleanUp(note: String) async throws -> CleanedNote { throw ReflectionError.failed }
 }

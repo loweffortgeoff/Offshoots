@@ -32,6 +32,15 @@ struct FakeReflectionGenerator: ReflectionGenerating {
         }
     }
 
+    func lookBack(digest: LookBackDigest) async throws -> LookBackOutput {
+        try await respond {
+            LookBackOutput(summary: digest.summary, lines: [
+                LookBackLine(label: "Went worse", text: "These were decided on the spot."),
+                LookBackLine(label: "Went better", text: "These were planned over weeks."),
+            ])
+        }
+    }
+
     func cleanUp(note: String) async throws -> CleanedNote {
         try await respond { CleanedNote(text: "Cleaned up: " + note.trimmingCharacters(in: .whitespacesAndNewlines)) }
     }

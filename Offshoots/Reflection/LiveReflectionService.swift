@@ -118,6 +118,24 @@ struct LiveReflectionService: ReflectionGenerating {
         ).validated()
     }
 
+    /// Reuses the Patterns shape: one sentence per result group
+    func lookBack(digest: LookBackDigest) async throws -> LookBackOutput {
+        // Nothing written means nothing to read: the count line alone, with no model call
+        guard digest.hasNotes else { return LookBackOutput(summary: digest.summary, lines: []) }
+        let generated = try await generate(
+            GeneratedPatterns.self,
+            instructions: ReflectionPromptBuilder.lookBackInstructions,
+            prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
+            maximumTokens: 300
+        )
+        let lines = [
+            digest.worse.isEmpty ? nil : LookBackLine(label: "Went worse", text: generated.worse),
+            digest.asPredicted.isEmpty ? nil : LookBackLine(label: "Went as predicted", text: generated.asPredicted),
+            digest.better.isEmpty ? nil : LookBackLine(label: "Went better", text: generated.better),
+        ]
+        return LookBackOutput(summary: digest.summary, lines: lines.compactMap { $0 }).validated()
+    }
+
     func cleanUp(note: String) async throws -> CleanedNote {
         let generated = try await generate(
             GeneratedCleanNote.self,

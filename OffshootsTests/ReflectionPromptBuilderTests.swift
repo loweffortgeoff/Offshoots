@@ -66,6 +66,16 @@ struct ReflectionPromptBuilderTests {
         #expect(!prompt.contains("Other Work decisions"))
     }
 
+    @Test func lookBackPromptGroupsPastDecisionsWithStakes() throws {
+        let digest = try #require(ReflectionDigestBuilder.lookBack(category: .money, in: try Fixture.load("reflection-notes")))
+        let prompt = ReflectionPromptBuilder.lookBackPrompt(digest)
+
+        #expect(prompt.contains("Past Money decisions, newest first in each group."))
+        #expect(prompt.contains("Went worse than predicted:\n- [Low] Buy concert tickets for the whole group. Notes: \"Decided in the group chat in five minutes.\""))
+        #expect(prompt.contains("Went as predicted:\n- [High] Refinance the car loan."))
+        #expect(prompt.contains("Went better than predicted:\n- [Low] Sell the old bike."))
+    }
+
     @Test func blankNotesNeverAppearAsEmptyLines() throws {
         let decision = Make.decision(actual: .good, notes: "  ", reflection: nil, resolvedAt: Make.day(3), revisits: [Revisit(date: Make.day(9), outcome: .good, note: nil)])
         let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(decision)))
@@ -83,6 +93,7 @@ struct ReflectionPromptBuilderTests {
             ReflectionPromptBuilder.decisionInstructions,
             ReflectionPromptBuilder.cleanUpInstructions,
             ReflectionPromptBuilder.decisionInstructions + ReflectionPromptBuilder.historyRule,
+            ReflectionPromptBuilder.lookBackInstructions,
         ] {
             #expect(!instructions.contains(attack))
             #expect(instructions.contains("Never tell the user what to choose"))

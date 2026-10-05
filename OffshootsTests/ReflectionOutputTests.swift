@@ -21,6 +21,15 @@ struct ReflectionOutputTests {
         #expect(try DecisionReflectionOutput(summary: "It aged badly.", repeating: [], nextPrompt: "", echo: " ").validated().echo == "")
     }
 
+    @Test func lookBackKeepsTheSummaryWhenNoObservationsSurvive() {
+        let output = LookBackOutput(summary: "Of your last 2 Work decisions, 2 went better.", lines: [
+            LookBackLine(label: "Went worse", text: "and"),
+            LookBackLine(label: "Went better", text: "  These were planned over weeks. "),
+        ]).validated()
+        #expect(output.summary == "Of your last 2 Work decisions, 2 went better.")
+        #expect(output.lines == [LookBackLine(label: "Went better", text: "These were planned over weeks.")])
+    }
+
     @Test func patternsWithNothingUsefulAreAnError() {
         #expect(throws: ReflectionError.emptyOutput) {
             try PatternsOutput(observations: []).validated()

@@ -98,18 +98,24 @@ user sees it before they choose a prediction.
 ### What it shows
 
 - A control: `Look Back`. Tap only; nothing runs by itself.
-- The result: one or two sentences. They describe how earlier decisions in this category
-  went against their predictions, and echo one note from them. Example shape: "Your last
-  four Money decisions went worse than you predicted. Two notes mention deciding in a
-  hurry."
+- The result (changed during chunk 4):
+  - **A count line built by code**, for example "Of your last 5 Money decisions, 3 went
+    worse than you predicted, 1 went as predicted and 1 went better." The numbers never
+    come from the model.
+  - **One model sentence per result group**, under a fixed label from code ("Went worse",
+    "Went as predicted", "Went better"). Without the labels, the sentences said "All of
+    these decisions…" and did not name their group. It reuses the Patterns output shape.
+  - If the past decisions have no notes, the app makes no model call and shows the count
+    line only.
 - No advice. No predicted result. The text never says what to choose or what to expect.
 
 ### When it shows
 
 - Same gate as the other surfaces (`hidden`, `notReady`, `paywalled`, `enabled`).
-- Needs at least 2 earlier marked decisions in the chosen category. Below that, a
-  not-ready line: "Look Back needs 2 marked Money decisions. 1 to go."
-- A change of category or stakes clears the result.
+- Needs at least 2 marked decisions in the chosen category (the 5 newest are used). Below
+  that, a line: "Look Back needs 2 marked Money decisions. 1 to go."
+- A change of category, or a change to the marked decisions in it, clears the result.
+  Stakes does not filter and does not clear it.
 
 ### Matching rule
 
@@ -118,7 +124,7 @@ but it does not filter. Category plus stakes would rarely reach the threshold.
 
 ### Code
 
-- `ReflectionDigestBuilder.lookBack(category:stakes:in:)` builds the digest. It shares
+- `ReflectionDigestBuilder.lookBack(category:in:)` builds the digest. It shares
   the history helper with A3.
 - `ReflectionGenerating` gets `lookBack(digest:)`. The fake generator gets canned output.
 - New view `LookBackCard` in `Reflection/`. Hidden at the call site, like the other cards.

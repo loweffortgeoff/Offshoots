@@ -71,6 +71,7 @@ struct ReflectionDigestBuilderTests {
         ])
         #expect(digest.history.last == HistoryLine(
             title: "Sign up for the annual gym plan",
+            stakes: "Medium",
             direction: -1,
             notes: "The salesperson said the price goes up tomorrow, so I signed on the spot.",
             outcomeNote: "Went four times. Paid for a whole year."
@@ -107,6 +108,30 @@ struct ReflectionDigestBuilderTests {
         let digest = try #require(ReflectionDigestBuilder.decision(decision, among: others))
         #expect(!digest.history.map(\.title).contains("Itself"))
         #expect(digest.history.count == 2)
+    }
+
+    // MARK: - Look Back
+
+    @Test func lookBackSummaryCountsEachResult() throws {
+        let digest = try #require(ReflectionDigestBuilder.lookBack(category: .money, in: try Fixture.load("reflection-notes")))
+        #expect(digest.history.count == 5)
+        #expect(digest.summary == "Of your last 5 Money decisions, 3 went worse than you predicted, 1 went as predicted and 1 went better.")
+    }
+
+    @Test func lookBackSummaryWithOneResultHasNoList() throws {
+        let decisions = (0..<2).map { _ in Make.decision(expected: .bad, actual: .good, resolvedAt: Make.day(7)) }
+        let digest = try #require(ReflectionDigestBuilder.lookBack(category: .work, in: decisions))
+        #expect(digest.summary == "Of your last 2 Work decisions, 2 went better.")
+        #expect(digest.hasNotes == false)
+    }
+
+    @Test func lookBackNeedsTwoMarkedDecisionsInTheCategory() {
+        let decisions = [
+            Make.decision(actual: .good, resolvedAt: Make.day(7)),
+            Make.decision(),
+            Make.decision(category: .money, actual: .good, resolvedAt: Make.day(7)),
+        ]
+        #expect(ReflectionDigestBuilder.lookBack(category: .work, in: decisions) == nil)
     }
 
     @Test func pendingDecisionHasNoDigest() {

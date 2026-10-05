@@ -141,6 +141,14 @@ struct LogDecisionView: View {
                         .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
+                        // Look Back (Reflection unlock), before the prediction. Unsupported devices never see it.
+                        if reflectionCenter.gate != .hidden {
+                            LookBackCard(
+                                category: category,
+                                marked: store.decisions.filter { $0.category == category && $0.actual != nil }
+                            )
+                        }
+
                         // Expected Outcome
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Expected Outcome", systemImage: "sparkles")
