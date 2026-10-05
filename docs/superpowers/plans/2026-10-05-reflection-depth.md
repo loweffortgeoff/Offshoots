@@ -217,10 +217,10 @@ Work:
   category change cleared the Work result.
 - Light, AX3: the card lays out in one column. The button wraps "Look / Back" on a word
   boundary.
-- **Not checked: the locked state.** This simulator already owns the Reflection unlock
-  (the button showed the enabled style with no launch flag), likely from an earlier
-  StoreKit test purchase. The locked control comes from the shared `ReflectionGateView`,
-  which the other surfaces already use.
+- Locked state: after an uninstall and reinstall (which clears the earlier StoreKit test
+  purchase), a plain launch shows a bordered "Look Back" button with a lock. A tap opens
+  "Unlock Reflection". Its third row still reads "Clearer notes, only when you tap"
+  (chunk 5 replaces it).
 - Not checked: VoiceOver reading order. The labels "Look Back" and each group label carry
   the header trait in code.
 
