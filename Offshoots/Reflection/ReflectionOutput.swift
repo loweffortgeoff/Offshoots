@@ -37,8 +37,12 @@ enum ReflectionError: Error, Equatable {
 // Live output passes through `validated()` so a blank card can never reach the screen.
 
 extension PatternsOutput {
+    /// Fewer words than this is a fragment, not an observation
+    static let minimumWords = 3
+
     func validated() throws -> PatternsOutput {
         let lines = ReflectionText.uniqueLines(observations, limit: 400)
+            .filter { $0.split(whereSeparator: \.isWhitespace).count >= Self.minimumWords }
         guard !lines.isEmpty else { throw ReflectionError.emptyOutput }
         return PatternsOutput(observations: lines)
     }

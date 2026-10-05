@@ -20,8 +20,11 @@ enum ReflectionPromptBuilder {
     """
 
     static let patternsInstructions = sharedRules + """
-     Write two to four short observations about patterns across the decisions. \
-    Each observation is one sentence.
+     The notes come in three groups: decisions that went worse than predicted, \
+    as predicted, and better than predicted. Compare the groups. \
+    For each group, write one sentence on what its notes have in common that the other \
+    groups do not. Echo the user's own words. Do not repeat counts or percentages. \
+    Leave a group's sentence empty when that group has no notes.
     """
 
     static let decisionInstructions = sharedRules + """
@@ -52,22 +55,11 @@ enum ReflectionPromptBuilder {
     static func patternsPrompt(_ digest: PatternsDigest) -> String {
         var lines = [
             dataLine,
-            "Resolved decisions: \(digest.resolvedCount)",
-            "Marked good or great (latest rating): \(digest.goodPercent)%",
-            "Prediction accuracy (first rating, all categories combined): \(digest.accuracy.correct) exact, \(digest.accuracy.close) one step off, \(digest.accuracy.incorrect) further off",
-            optimismLine(digest.optimism),
-            "Trend: \(digest.trend.trend.label)\(digest.trend.isSoFar ? " (so far)" : "")",
+            "Marked decisions: \(digest.resolvedCount). Against the first prediction: \(digest.worseCount) went worse, \(digest.asPredictedCount) went as predicted, \(digest.betterCount) went better.",
         ]
-        // One bullet per group, so the model cannot tie a combined number to one group
-        lines.append("By category:")
-        lines += digest.categories.map(groupText)
-        lines.append("By stakes:")
-        lines += digest.stakes.map(groupText)
-        lines.append("Revisited: \(digest.revisitedCount) decisions, \(digest.revisitsChangingOutcome) changed outcome")
-        if !digest.notes.isEmpty {
-            lines.append("Recent notes:")
-            lines += digest.notes.map { "- \($0)" }
-        }
+        lines += noteGroup("Notes from decisions that went worse than predicted:", digest.worse)
+        lines += noteGroup("Notes from decisions that went as predicted:", digest.asPredicted)
+        lines += noteGroup("Notes from decisions that went better than predicted:", digest.better)
         return lines.joined(separator: "\n")
     }
 
@@ -96,25 +88,9 @@ enum ReflectionPromptBuilder {
 
     // MARK: - Helpers
 
-    private static func groupText(_ line: GroupLine) -> String {
-        let matched: String
-        if line.exact == line.resolved {
-            matched = "all \(line.resolved) matched the prediction exactly"
-        } else if line.exact == 0 {
-            matched = "none matched the prediction exactly"
-        } else {
-            matched = "\(line.exact) of \(line.resolved) matched the prediction exactly"
-        }
-        return "- \(line.label): \(line.resolved) marked, \(matched)"
-    }
-
-    private static func optimismLine(_ bias: OptimismBias?) -> String {
-        guard let bias else { return "Optimism: not enough data" }
-        let steps = String(format: "%.1f", abs(bias.averageGap))
-        switch bias.lean {
-        case .optimistic: return "Optimism: leans optimistic by \(steps) steps over \(bias.sample) decisions"
-        case .pessimistic: return "Optimism: leans pessimistic by \(steps) steps over \(bias.sample) decisions"
-        case .calibrated: return "Optimism: well calibrated over \(bias.sample) decisions"
-        }
+    /// An empty group says so, so the model never reads the next heading as part of this one
+    private static func noteGroup(_ heading: String, _ notes: [NoteLine]) -> [String] {
+        guard !notes.isEmpty else { return [heading, "- none"] }
+        return [heading] + notes.map { "- [\($0.category), \($0.stakes)] \($0.text)" }
     }
 }

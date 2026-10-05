@@ -57,7 +57,7 @@ struct AnalyticsView: View {
                             // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
                             // Removing the card also drops its result, so a stale one cannot come back.
                             if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
-                                PatternsCard(decisions: store.decisions)
+                                PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
                             }
                         }
 

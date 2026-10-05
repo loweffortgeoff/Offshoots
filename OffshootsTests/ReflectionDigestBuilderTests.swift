@@ -7,54 +7,52 @@ struct ReflectionDigestBuilderTests {
 
     // MARK: - Patterns
 
-    @Test func patternsDigestReusesTheAnalyticsNumbers() throws {
-        let decisions = try Fixture.load("insights-seed")
-        let digest = ReflectionDigestBuilder.patterns(from: decisions, now: AnalyticsEngineTests.now)
+    @Test func patternsDigestSplitsByTheFirstResult() throws {
+        let digest = ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes"))
 
-        #expect(digest.resolvedCount == 6)
-        #expect(digest.goodPercent == 50)
-        #expect(digest.accuracy == AccuracyBreakdown(correct: 4, close: 1, incorrect: 1))
-        #expect(digest.optimism?.lean == .optimistic)
-        #expect(digest.trend == TrendResult(trend: .improving, isSoFar: false))
-        #expect(digest.revisitedCount == 1)
-        #expect(digest.revisitsChangingOutcome == 1)
+        #expect(digest.resolvedCount == 17)
+        #expect(digest.worseCount == 6)
+        #expect(digest.asPredictedCount == 4)
+        #expect(digest.betterCount == 7)
+        // Six decisions with a log note and an outcome note, plus one revisit note
+        #expect(digest.worse.count == 13)
+        #expect(digest.worse.first == NoteLine(category: "Relationships", stakes: "Medium", text: "Made it worse. I had to apologize the next day."))
     }
 
-    @Test func patternsDigestGroupsByCategoryAndStakes() throws {
-        let decisions = try Fixture.load("insights-seed")
-        let digest = ReflectionDigestBuilder.patterns(from: decisions, now: AnalyticsEngineTests.now)
+    @Test func aRevisitNoteStaysInItsDecisionsFirstResultGroup() {
+        let revisit = Revisit(date: Make.day(20), outcome: .veryGood, note: "Much better now")
+        let decision = Make.decision(expected: .good, actual: .bad, resolvedAt: Make.day(7), revisits: [revisit])
+        let digest = ReflectionDigestBuilder.patterns(from: [decision])
 
-        // Equal counts sort by label; the pending Home decision is left out
-        #expect(digest.categories == [
-            GroupLine(label: "Money", resolved: 3, exact: 1),
-            GroupLine(label: "Work", resolved: 3, exact: 3),
-        ])
-        #expect(digest.stakes == [GroupLine(label: "Medium", resolved: 6, exact: 4)])
+        #expect(digest.worse.map(\.text) == ["Much better now"])
+        #expect(digest.better.isEmpty)
     }
 
-    @Test func patternsNotesAreCappedNewestFirstAndCleaned() {
-        var decisions: [Decision] = []
-        for index in 0..<10 {
-            decisions.append(Make.decision(
-                actual: .good,
-                notes: "Note \(index)",
-                createdAt: Make.day(index),
-                resolvedAt: Make.day(index + 1)
-            ))
+    @Test func eachGroupIsCappedNewestFirst() {
+        var decisions = (0..<20).map { index in
+            Make.decision(expected: .good, actual: .bad, notes: "Worse \(index)", createdAt: Make.day(index), resolvedAt: Make.day(index + 1))
         }
-        decisions.append(Make.decision(actual: .good, notes: "   \n", createdAt: Make.day(20), resolvedAt: Make.day(21)))
+        decisions.append(Make.decision(expected: .bad, actual: .good, notes: "Better", resolvedAt: Make.day(2)))
+        decisions.append(Make.decision(actual: .good, notes: "   \n", resolvedAt: Make.day(3)))
 
-        let digest = ReflectionDigestBuilder.patterns(from: decisions, now: Make.day(30))
-        #expect(digest.notes.count == ReflectionDigestBuilder.maximumNotes)
-        #expect(digest.notes.first == "Note 9")
-        #expect(digest.notes.allSatisfy { !$0.isEmpty })
+        let digest = ReflectionDigestBuilder.patterns(from: decisions)
+        #expect(digest.worse.count == ReflectionDigestBuilder.notesPerGroup)
+        #expect(digest.worse.first?.text == "Worse 19")
+        // The full group does not push out the small one, and a blank note is dropped
+        #expect(digest.better.map(\.text) == ["Better"])
+        #expect(digest.asPredicted.isEmpty)
+    }
+
+    @Test func pendingDecisionsAreLeftOut() {
+        let digest = ReflectionDigestBuilder.patterns(from: [Make.decision(notes: "Not marked yet")])
+        #expect(digest.resolvedCount == 0)
+        #expect(digest.noteCount == 0)
     }
 
     @Test func aHugeNoteIsCutInTheDigest() throws {
         let decisions = [Make.decision(actual: .good, notes: String(repeating: "word ", count: 5_000), resolvedAt: Make.day(2))]
-        let digest = ReflectionDigestBuilder.patterns(from: decisions, now: Make.day(30))
-        let note = try #require(digest.notes.first)
-        #expect(note.count == ReflectionDigestBuilder.noteLimit)
+        let note = try #require(ReflectionDigestBuilder.patterns(from: decisions).asPredicted.first)
+        #expect(note.text.count == ReflectionDigestBuilder.noteLimit)
     }
 
     // MARK: - Decision

@@ -5,27 +5,37 @@ import Testing
 @MainActor
 struct ReflectionPromptBuilderTests {
 
-    @Test func patternsPromptStatesTheDigestFacts() throws {
-        let decisions = try Fixture.load("insights-seed")
-        let digest = ReflectionDigestBuilder.patterns(from: decisions, now: AnalyticsEngineTests.now)
-        let prompt = ReflectionPromptBuilder.patternsPrompt(digest)
+    @Test func patternsPromptGroupsTheNotesByResult() throws {
+        let prompt = ReflectionPromptBuilder.patternsPrompt(ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes")))
 
-        #expect(prompt.contains("Resolved decisions: 6"))
-        #expect(prompt.contains("4 exact, 1 one step off, 1 further off"))
-        #expect(prompt.contains("all categories combined"))
-        #expect(prompt.contains("- Money: 3 marked, 1 of 3 matched the prediction exactly"))
-        #expect(prompt.contains("- Work: 3 marked, all 3 matched the prediction exactly"))
-        #expect(prompt.contains("Trend: Improving"))
+        #expect(prompt.contains("Marked decisions: 17. Against the first prediction: 6 went worse, 4 went as predicted, 7 went better."))
+        #expect(prompt.contains("Notes from decisions that went worse than predicted:\n- [Relationships, Medium] Made it worse."))
+        #expect(prompt.contains("- [Money, High] Saw the sale ends tonight and bought it in a hurry."))
+        #expect(prompt.contains("Notes from decisions that went better than predicted:"))
     }
 
-    @Test func groupWithNoExactMatchSaysNone() {
-        let digest = ReflectionDigestBuilder.patterns(from: [Make.marked(.good, .bad), Make.marked(.good, .bad)], now: Make.day(30))
-        #expect(ReflectionPromptBuilder.patternsPrompt(digest).contains("none matched the prediction exactly"))
+    @Test func patternsPromptLeavesOutTheInsightsNumbers() throws {
+        let prompt = ReflectionPromptBuilder.patternsPrompt(ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes")))
+        for repeated in ["%", "Optimism", "Trend", "matched the prediction", "accuracy"] {
+            #expect(!prompt.contains(repeated))
+        }
     }
 
-    @Test func thinOptimismDataIsSaidPlainly() {
-        let digest = ReflectionDigestBuilder.patterns(from: [Make.marked()], now: Make.day(30))
-        #expect(ReflectionPromptBuilder.patternsPrompt(digest).contains("Optimism: not enough data"))
+    @Test func anEmptyGroupSaysNone() {
+        let digest = ReflectionDigestBuilder.patterns(from: [Make.decision(expected: .good, actual: .bad, notes: "Rushed it", resolvedAt: Make.day(7))])
+        #expect(ReflectionPromptBuilder.patternsPrompt(digest).contains("Notes from decisions that went as predicted:\n- none"))
+    }
+
+    /// Every group full, every note at the limit, must stay well inside the 4,096-token
+    /// context on iOS 26. About 4 characters make a token, so 8,000 characters is about 2,000.
+    @Test func theWorstCasePatternsPromptStaysSmall() {
+        let long = String(repeating: "a", count: 500)
+        let decisions: [Decision] = [DecisionOutcome.bad, .good, .veryGood].flatMap { actual in
+            (0..<20).map { _ in Make.decision(stakes: .medium, expected: .good, actual: actual, notes: long, reflection: long, resolvedAt: Make.day(7)) }
+        }
+        let digest = ReflectionDigestBuilder.patterns(from: decisions)
+        #expect(digest.noteCount == 3 * ReflectionDigestBuilder.notesPerGroup)
+        #expect(ReflectionPromptBuilder.patternsPrompt(digest).count < 8_000)
     }
 
     @Test func decisionPromptListsTheTimeline() throws {

@@ -16,16 +16,13 @@ import Testing
 @Suite(.enabled(if: ProcessInfo.processInfo.environment["REFLECTION_LIVE"] == "1"), .serialized)
 struct ReflectionLiveOutputTests {
 
-    /// The fixture's last date is 2026-10-03
-    static let now = ISO8601DateFormatter().date(from: "2026-10-05T12:00:00Z")!
-
     /// One decision that went worse, with a revisit, and one plain miss
     nonisolated static let decisionTitles = ["Say yes to leading the launch project", "Upgrade to the new laptop"]
 
     @Test func patterns() async throws {
         guard #available(iOS 26.4, *) else { return }
         try requireModel()
-        let digest = ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes"), now: Self.now)
+        let digest = ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes"))
         let prompt = ReflectionPromptBuilder.patternsPrompt(digest)
         try await report(
             "Patterns",

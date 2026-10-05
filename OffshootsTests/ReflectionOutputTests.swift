@@ -9,6 +9,12 @@ struct ReflectionOutputTests {
         #expect(output.observations == ["You lean optimistic.", "Money is harder."])
     }
 
+    /// A broken run once split one sentence into "and" and "."
+    @Test func patternsDropFragments() throws {
+        let output = try PatternsOutput(observations: ["You acted in a hurry when it went worse.", "and", ".", "Too short"]).validated()
+        #expect(output.observations == ["You acted in a hurry when it went worse."])
+    }
+
     @Test func patternsWithNothingUsefulAreAnError() {
         #expect(throws: ReflectionError.emptyOutput) {
             try PatternsOutput(observations: []).validated()

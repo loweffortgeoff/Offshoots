@@ -62,9 +62,11 @@ has the same four states, and user text never goes into the instructions.
   predicted, 4 as predicted, 7 better". Do not send the average optimism lean. The
   baseline showed "well calibrated" for 6 worse and 7 better: the average hid two
   opposite misses.
-- New instructions: compare the groups. Name what the notes in one group share that the
-  other groups do not. Quote or closely echo the user's words. Do not restate counts or
-  percentages.
+- New instructions: compare the groups. The model writes **one sentence per group** on
+  what that group's notes share that the other groups do not. A group with no notes
+  gets no sentence; code drops it, whatever the model wrote. (Changed during chunk 2: a
+  free list of two to four observations repeated itself or skipped a group. See the plan.)
+- Output lines with fewer than 3 words are dropped as fragments.
 - With fewer than 2 notes in total, Patterns shows a not-ready line: "Patterns read your
   notes. Add a note when you log or mark a decision." The 5-marked threshold stays.
 

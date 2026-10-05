@@ -14,12 +14,25 @@ enum CleanUpStatus: Equatable {
 /// Decides which decisions and notes may produce Reflection output.
 enum ReflectionEligibility {
     static let minimumResolvedForPatterns = 5
+    /// Patterns read the notes, so with fewer than this there is nothing to compare
+    static let minimumNotesForPatterns = 2
     static let minimumNoteWords = 3
     /// Keeps the prompt well inside the on-device model's context window
     static let maximumNoteCharacters = 1_500
 
     static func canShowPatterns(for decisions: [Decision]) -> Bool {
         AnalyticsEngine.markedCount(from: decisions) >= minimumResolvedForPatterns
+    }
+
+    /// Counts the notes on marked decisions, and stops as soon as there are enough.
+    static func hasNotesForPatterns(_ decisions: [Decision]) -> Bool {
+        var count = 0
+        for decision in decisions where decision.actual != nil {
+            let texts = [decision.notes, decision.reflection] + decision.revisits.map(\.note)
+            count += texts.filter(hasText).count
+            if count >= minimumNotesForPatterns { return true }
+        }
+        return false
     }
 
     /// A marked outcome, and something written or revisited to read.

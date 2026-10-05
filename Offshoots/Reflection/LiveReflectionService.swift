@@ -12,10 +12,15 @@ struct LiveReflectionService: ReflectionGenerating {
 
     // MARK: - Generated shapes
 
+    /// One sentence per group, so the model covers each group once and cannot repeat itself
     @Generable
     struct GeneratedPatterns {
-        @Guide(description: "Two to four plain observations about patterns, one sentence each")
-        var observations: [String]
+        @Guide(description: "One sentence on what the notes on decisions that went worse than predicted share. Empty if that group has no notes")
+        var worse: String
+        @Guide(description: "One sentence on what the notes on decisions that went as predicted share. Empty if that group has no notes")
+        var asPredicted: String
+        @Guide(description: "One sentence on what the notes on decisions that went better than predicted share. Empty if that group has no notes")
+        var better: String
     }
 
     @Generable
@@ -68,7 +73,13 @@ struct LiveReflectionService: ReflectionGenerating {
             prompt: ReflectionPromptBuilder.patternsPrompt(digest),
             maximumTokens: 300
         )
-        return try PatternsOutput(observations: generated.observations).validated()
+        // A group with no notes keeps no sentence, whatever the model wrote for it
+        let sentences = [
+            digest.worse.isEmpty ? nil : generated.worse,
+            digest.asPredicted.isEmpty ? nil : generated.asPredicted,
+            digest.better.isEmpty ? nil : generated.better,
+        ]
+        return try PatternsOutput(observations: sentences.compactMap { $0 }).validated()
     }
 
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput {

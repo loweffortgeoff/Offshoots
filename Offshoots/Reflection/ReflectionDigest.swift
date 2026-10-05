@@ -5,29 +5,26 @@
 
 import Foundation
 
-/// How many marked decisions in a group, and how many matched the prediction exactly.
-struct GroupLine: Equatable {
-    let label: String
-    let resolved: Int
-    let exact: Int
+/// One note, tagged with its decision's category and stakes.
+struct NoteLine: Equatable {
+    let category: String
+    let stakes: String
+    let text: String
 }
 
-/// A small, stable summary of all marked decisions. The prompt reads this, never raw models.
+/// Marked decisions, split by how the first result compared with the prediction. The prompt
+/// reads this, never raw models. It leaves out the numbers the Insights cards already show.
 struct PatternsDigest: Equatable {
     let resolvedCount: Int
-    /// Share of marked decisions whose latest rating is good or great
-    let goodPercent: Int
-    /// Measured against the first rating
-    let accuracy: AccuracyBreakdown
-    let optimism: OptimismBias?
-    let trend: TrendResult
-    let categories: [GroupLine]
-    let stakes: [GroupLine]
-    let revisitedCount: Int
-    /// Decisions whose latest rating differs from the first
-    let revisitsChangingOutcome: Int
-    /// Newest first, each cleaned and cut
-    let notes: [String]
+    let worseCount: Int
+    let asPredictedCount: Int
+    let betterCount: Int
+    /// Each list is newest first, cleaned, cut and capped. A decision's notes all go in its group.
+    let worse: [NoteLine]
+    let asPredicted: [NoteLine]
+    let better: [NoteLine]
+
+    var noteCount: Int { worse.count + asPredicted.count + better.count }
 }
 
 struct TimelineLine: Equatable {

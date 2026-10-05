@@ -38,12 +38,12 @@ below.
 
 ## Chunk 2 — Patterns reads the notes (spec A2)
 
-- [ ] New `PatternsDigest` shape: notes grouped worse / as predicted / better, each with a
+- [x] New `PatternsDigest` shape: notes grouped worse / as predicted / better, each with a
   category and stakes tag; one context line; the Insights counts removed.
-- [ ] Budget: a fair share per group, newest first, cut to the measured budget.
-- [ ] New instructions and prompt. Not-ready line when fewer than 2 notes.
-- [ ] Tests for the digest, the budget and the prompt.
-- [ ] Harness run: record the new output next to the baseline.
+- [x] Budget: a fair share per group, newest first, cut to the measured budget.
+- [x] New instructions and prompt. Not-ready line when fewer than 2 notes.
+- [x] Tests for the digest, the budget and the prompt.
+- [x] Harness run: record the new output next to the baseline.
 
 ## Chunk 3 — Decision history (spec A3)
 
@@ -119,3 +119,37 @@ misses. Chunk 2's grouping shows the model both sides.
 What this shows: the reflection reads the notes well, but "Repeating" only repeats facts
 from this one decision. It cannot say that the gym plan (also Money, also signed "on the
 spot") went the same way. Chunk 3 gives it that history.
+
+### Chunk 2 — 2026-10-05, same Mac and simulator
+
+**Token counts after the change:** instructions 143, prompt 670, schema 156, total 969
+before the response (17 decisions, 34 notes). The worst case (45 notes of 140
+characters) is pinned under 8,000 characters by `theWorstCasePatternsPromptStaysSmall`.
+
+**Prompt iterations** (greedy, same input each time):
+
+| Version | Result |
+|---|---|
+| A. Free list, "compare the groups, echo the user's words" | All three themes found. Line 4 repeated line 1. Every line starts "Notes from decisions that…". |
+| B. A + "speak as you" + "quote the user's words in quotation marks" | Broken: one sentence split into "and" and ".". Quotation marks inside the output break the structured list. |
+| C. A + "speak as you", no quotation marks | Lines 2–4 good. Line 1 invented a theme ("settled or dropped out"). |
+| D. A + "each about a different idea" | Three of four lines about the worse group. The planning theme was lost. |
+| **E. One sentence per group (`worse`, `asPredicted`, `better` fields)** | **Chosen.** Each group covered once, no repeats, all accurate. |
+
+Lesson: small wording changes move this model a lot. A fixed output shape is more
+reliable than a wording rule.
+
+**Chunk 2 Patterns output (version E):**
+- The notes on decisions that went worse than predicted all mention actions taken quickly or under pressure.
+- The notes on decisions that went as predicted all describe clear steps taken before the outcome was known.
+- The notes on decisions that went better than predicted all involve unexpected positive results from effort or patience.
+
+Compared with the baseline: every line now says something the Insights cards cannot.
+Weak point: the "better" line misses the dread theme ("Dreading it", "I expect to hate
+this"). Each line also starts with the same long phrase. Both are acceptable for now.
+
+**App check:** the iPhone 18 Pro simulator (iOS 27.0), seeded with `reflection-notes`,
+launched with `-ReflectionUnlockOnly`, shows the same three lines on Insights.
+Not checked on screen: the "Patterns read your notes" line for fewer than 2 notes (unit
+tests cover the threshold), light mode, and accessibility text sizes.
+

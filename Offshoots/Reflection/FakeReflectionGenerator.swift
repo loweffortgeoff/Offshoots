@@ -15,8 +15,8 @@ struct FakeReflectionGenerator: ReflectionGenerating {
     func patterns(digest: PatternsDigest) async throws -> PatternsOutput {
         try await respond {
             PatternsOutput(observations: [
-                "You marked \(digest.resolvedCount) decisions, and \(digest.accuracy.correct) landed where you expected.",
-                "Notes on money decisions mention cost more than anything else.",
+                "Decisions that went worse than predicted were often made in a hurry.",
+                "Decisions you dreaded went better than you expected.",
             ])
         }
     }

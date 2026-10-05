@@ -14,6 +14,21 @@ struct ReflectionEligibilityTests {
         #expect(ReflectionEligibility.canShowPatterns(for: five) == true)
     }
 
+    @Test func patternsNeedTwoNotesOnMarkedDecisions() {
+        let one = [Make.decision(actual: .good, notes: "Only one", resolvedAt: Make.day(7))]
+        let two = [Make.decision(actual: .good, notes: "First", reflection: "Second", resolvedAt: Make.day(7))]
+        #expect(ReflectionEligibility.hasNotesForPatterns(one) == false)
+        #expect(ReflectionEligibility.hasNotesForPatterns(two) == true)
+    }
+
+    @Test func revisitNotesCountAndBlankOrPendingNotesDoNot() {
+        let revisit = Revisit(date: Make.day(9), outcome: .good, note: "From a revisit")
+        let marked = Make.decision(actual: .good, notes: "  ", resolvedAt: Make.day(7), revisits: [revisit])
+        let pending = Make.decision(notes: "Pending note", reflection: "Another")
+        #expect(ReflectionEligibility.hasNotesForPatterns([marked, pending]) == false)
+        #expect(ReflectionEligibility.hasNotesForPatterns([marked, marked]) == true)
+    }
+
     @Test func pendingDecisionsDoNotCountTowardPatterns() {
         let decisions = Array(repeating: Make.marked(), count: 4) + [Make.decision()]
         #expect(ReflectionEligibility.canShowPatterns(for: decisions) == false)
