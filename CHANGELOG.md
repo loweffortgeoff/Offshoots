@@ -8,7 +8,12 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Settings > Data > Import Decisions restores an Export Decisions file. An empty app imports at once. Otherwise it asks "Replace N decisions with M from the file?" first. A wrong file shows "This file is not an Offshoots export." Old reminders are cancelled and the imported decisions' future reminders are scheduled.
 - Reflection, an optional $5.99 one-time unlock with Restore in Settings. Patterns on Insights, a reflection on Decision Detail, and Clean Up Note on the Log, Mark Outcome and Revisit note fields. The text comes from the on-device model, so nothing leaves the phone. It needs Apple Intelligence on iOS 26 or later; other devices do not see Reflection.
 
+- Reflection: Look Back on the Log screen, between Stakes and Expected Outcome. It counts how your last 5 decisions in the chosen category went against their predictions, and gives one sentence per result group from their notes. It needs 2 marked decisions in the category; below that it says how many to go.
+
 #### Changed
+- Reflection: Patterns now compares your notes, grouped by result (worse than predicted, as predicted, better). It writes one sentence per group and no longer repeats the Insights numbers. Below 2 notes it says to add a note.
+- Reflection: the decision reflection now looks at up to 5 other decisions in the same category. A new "In other <Category> decisions" section says what this decision shares with the ones that went the same way.
+- Reflection: the "Unlock Reflection" sheet lists Patterns, the decision reflection and Look Back. Clean Up Note stays in the app but leaves the list.
 - iPad: the app window now resizes freely, up to the phone width that iPadOS allows (about 512 pt). Before, it snapped between two fixed sizes. The app stays iPhone-only. The deprecated `UIRequiresFullScreen` flag is removed.
 - Reflection: the purchase sheet no longer says "not charged" when the purchase is unverified. The paywall keeps its pending state and clears the old Restore message. A control that is not ready says "Reopen the app in a little while." The Settings footer now covers text generation only. The Import picker shows "unreadable" for a file it cannot read.
 - Reflection: Restore Purchase is full width at accessibility text sizes.

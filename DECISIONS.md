@@ -242,3 +242,29 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Alternative considered:** A custom title placeholder. The native field already supports a multiline prompt when it has enough lines.
 
 **Verification (2026-10-04):** Geoff confirmed the fix is verified and approved merge, commit and push.
+
+## 2026-10-05 (Reflection output: code does the work, the model fills narrow fields)
+**Decision:** Each Reflection call gives the model one narrow field per job. Code does the grouping, matching, counting and labels. Patterns writes one sentence per result group (worse than predicted, as predicted, better). The decision reflection gets the other decisions in its category already split into "went the same way" and "went differently", and fills one `echo` sentence. Look Back shows a count line built in code and one model sentence per group under a fixed label. Code drops any group sentence when that group is empty.
+**Why:** Each time the model did that work itself, it failed on the test data (`docs/fixtures/reflection-notes.json`). A free list of observations repeated a line or skipped a group. With one plain list of other decisions, it said "breaks the pattern" for decisions that matched it. Unlabeled group sentences began "All of these decisions…" and did not name the group. Small wording changes moved the output a lot; a fixed shape did not. Details: `docs/superpowers/plans/2026-10-05-reflection-depth.md`.
+**Alternative considered:** Tune the instruction wording. Four wording versions for Patterns each fixed one fault and caused another.
+
+## 2026-10-05 (Patterns reads the notes, not the Insights numbers)
+**Decision:** The Patterns prompt sends the notes, grouped by the first result against the prediction, up to 15 per group, each cut to 140 characters. It sends one context line with the count per group. It no longer sends Good %, accuracy, trend, category and stakes tables, or the average optimism lean. A decision's revisit and outcome notes go in the group of its first result. Below 2 notes on marked decisions, the card shows "Patterns read your notes. Add a note when you log or mark a decision." in place of the control, for buyers and non-buyers alike.
+**Why:** The old output restated the Insights cards, so the paid feature said nothing new. The average optimism lean said "well calibrated" for 6 decisions that went worse and 7 that went better. The budget fits the 4,096-token context on iOS 26 (the iOS 27 simulator reports 8,192). Geoff approved the no-lock line: a non-buyer who adds notes meets the locked Clean Up Note button.
+**Alternative considered:** Keep the numbers and add notes (more tokens, and the model kept restating the numbers). Send only the 8 newest notes (missed the themes).
+
+## 2026-10-05 (Decision reflection history: other decisions, not only earlier ones)
+**Decision:** The decision reflection reads up to 5 other marked decisions in the same category, newest first, whether they came before or after this one. It needs 2 or more; with fewer, the prompt is as before.
+**Why:** The first decision in a category would get no history if only earlier ones counted. A reflection on an old decision also gains from what came after it.
+**Alternative considered:** Earlier decisions only (the spec's first version).
+
+## 2026-10-05 (Look Back on the Log screen; Clean Up Note leaves the purchase screen)
+**Decision:** Look Back sits on the Log screen between Stakes and Expected Outcome, so the user sees it before the prediction. It matches on category only and uses the 5 newest marked decisions; stakes is a tag, not a filter. It needs 2 marked decisions in the category and shows "N to go" below that. The "Unlock Reflection" sheet lists Patterns, the decision reflection and Look Back. Clean Up Note stays in the unlock but is not listed.
+**Why:** The paid features must say something the free app cannot. Clean Up Note overlaps Apple's Writing Tools, so it should not carry the price; Geoff chose to keep it as something buyers discover. Category plus stakes would rarely reach the threshold. Geoff accepted that non-buyers now meet the Look Back lock on the Log screen when a category has 2 or more marked decisions.
+**Alternative considered:** A saved monthly review, or a free first try, as the extra feature. Listing Clean Up Note as a fourth item.
+
+## 2026-10-05 (Quotation marks break the model's structured lines)
+**Decision:** Reflection instructions do not ask the model to quote the user in quotation marks.
+**Why:** Asked to quote the user's words in quotation marks, the model split one Patterns sentence into the fragments "and" and ".". Validation now also drops any Patterns or Look Back line of fewer than 3 words.
+**Alternative considered:** Keep the quotes and repair the fragments (not reliable).
+

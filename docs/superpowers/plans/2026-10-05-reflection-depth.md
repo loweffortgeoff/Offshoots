@@ -63,9 +63,9 @@ below.
 
 ## Chunk 5 — Copy and docs (spec C)
 
-- [ ] Unlock Reflection sheet: Patterns, Decision reflection, Look Back. Clean Up Note
+- [x] Unlock Reflection sheet: Patterns, Decision reflection, Look Back. Clean Up Note
   leaves the list.
-- [ ] README, ASC_LISTING, RELEASE_NOTES, DECISIONS, CHANGELOG, TODO.
+- [x] README, ASC_LISTING, RELEASE_NOTES, DECISIONS, CHANGELOG, TODO.
 
 ## Measurements and output
 
@@ -223,4 +223,11 @@ Work:
   (chunk 5 replaces it).
 - Not checked: VoiceOver reading order. The labels "Look Back" and each group label carry
   the header trait in code.
+
+### Chunk 5 — 2026-10-05
+
+The "Unlock Reflection" sheet lists "Pattern highlights across your decisions", "A
+reflection on each decision" and "A look back before you decide" (symbol
+`clock.arrow.circlepath`). Checked on the simulator from the locked Look Back button.
+README, CHANGELOG, RELEASE_NOTES, ASC_LISTING, DECISIONS and TODO updated.
 
