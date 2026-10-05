@@ -150,3 +150,6 @@ Clean Up Note's behavior, price changes.
 1. Name: **Look Back** (Geoff, 2026-10-05).
 2. Clean Up Note leaves the purchase screen. It stays in the app as something buyers
    discover. The purchase screen does not list low-value items (Geoff, 2026-10-05).
+3. Below 2 notes, Patterns shows the "add a note" line instead of the control, so a
+   non-buyer sees no lock there. This is fine: when they add a note of 3 or more words,
+   the locked Clean Up Note button appears under the note field (Geoff, 2026-10-05).
