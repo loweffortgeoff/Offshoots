@@ -53,10 +53,15 @@ has the same four states, and user text never goes into the instructions.
 - New digest shape. Notes are grouped by how the first result compared with the
   prediction: **worse than predicted**, **as predicted**, **better than predicted**. Each
   note keeps its category and stakes as a short tag.
+- A decision's group comes from its **first** result against the prediction. All of its
+  notes go in that group: the log note, the outcome note and every revisit note.
 - Send as many notes as the budget allows, newest first within each group. Each group
   gets a fair share of the budget, so one large group cannot push out the others.
 - Remove the lines that repeat the Insights cards: Good %, accuracy counts, trend. Keep
-  one short context line (marked count, optimism lean) so the model knows the scale.
+  one short context line: the marked count and the split, for example "6 went worse than
+  predicted, 4 as predicted, 7 better". Do not send the average optimism lean. The
+  baseline showed "well calibrated" for 6 worse and 7 better: the average hid two
+  opposite misses.
 - New instructions: compare the groups. Name what the notes in one group share that the
   other groups do not. Quote or closely echo the user's words. Do not restate counts or
   percentages.
