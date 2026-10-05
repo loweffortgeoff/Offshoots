@@ -60,6 +60,19 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say "For testing purposes only. You will not be charged for confirming this purchase." If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
 - Restore Purchase in Settings, after a reinstall. Confirm Reflection unlocks again.
 
+## What to Test — TestFlight build 5
+
+Paste into the TestFlight "What to Test" field. Build 5 is archived from the `reflection-depth` branch (2026-10-05).
+
+Reflection has more to say in this build. Use a device with Apple Intelligence, and decisions that have notes.
+
+- Look Back (new): on the Log screen, pick a category with 2 or more marked decisions, then tap Look Back. Check that the count line and the Expected and Turned out bars match your decisions. With 5 or more decisions and a clear lean, a headline appears above them. A mixed record shows no headline.
+- Patterns on Insights: each sentence now has a label (Went worse, Went as predicted, Went better). Does each sentence match your notes in that group?
+- Decision reflection: on a marked decision, look for the new "In other <Category> decisions" section. Does it name the right decisions?
+- Tell us if any sentence names a theme your notes do not support, starts with "The notes…" or "All of these…", or gives advice.
+- Without the purchase: the Look Back button shows a lock and opens the purchase screen. The purchase screen lists Patterns, the decision reflection and Look Back.
+- Log and Edit at large text sizes: the title field has room to wrap, and Stakes shows full-width buttons.
+
 ## Review note
 
 Apple reviews a first in-app purchase together with an app version. Before submission, the product `com.geoffrey.silva.Offshoots.reflection` must be "Ready to Submit" and attached to the version.
