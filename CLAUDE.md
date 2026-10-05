@@ -34,7 +34,7 @@ Back for Money and Work) and writes token counts, prompts and output to a file. 
 is off by default. Delete the output file first: the harness adds to the end of it.
 
 ```
-rm -f /tmp/reflection-live.txt; TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,id=<UDID>' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
+rm -f /tmp/reflection-live.txt; TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
 ```
 
 Tests run in a cloned simulator, so `print` output from a test does not reach
@@ -67,11 +67,11 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   simulator. The app must be installed there first. The default UDID is the
   Mac mini's iPhone 18 Pro. On the MacBook Pro, set
   `SIM=22F3F961-2FD9-47A0-9158-24A94F6871B4`.
-- **Two "iPhone 18 Pro" simulators on the MacBook Pro.** `22F3F961-2FD9-47A0-9158-24A94F6871B4`
-  is the one in use. `5BD73D53-1FD2-40EA-8D93-839D1DAC461D` is the same model and
-  runtime, with no apps (checked 2026-10-05). With both present,
-  `-destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0'` fails with
-  "Unable to find a device matching". Use `id=` instead.
+- **One "iPhone 18 Pro" simulator per Mac.** A second simulator with the same
+  name makes `-destination '…,name=iPhone 18 Pro,OS=27.0'` fail with "Unable to
+  find a device matching". On 2026-10-05 the MacBook Pro had an unused duplicate
+  (`5BD73D53…`); Geoff approved deleting it. If the error comes back, run
+  `xcrun simctl list devices available | grep "iPhone 18 Pro"`, or use `id=`.
 - **App Store screenshots:** `scripts/screenshots.sh` erases the iPhone 18 Pro
   Max (iOS 27.0), sets dark mode and a 9:41 status bar, builds, installs and
   loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
