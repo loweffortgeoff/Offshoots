@@ -49,6 +49,23 @@ struct ReflectionPromptBuilderTests {
         #expect(prompt.contains("Notes: \"Cheaper rent\""))
     }
 
+    @Test func decisionPromptListsTheCategoryHistory() throws {
+        let decisions = try Fixture.load("reflection-notes")
+        let laptop = try #require(decisions.first { $0.title == "Upgrade to the new laptop" })
+        let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(laptop, among: decisions)))
+
+        // The laptop went worse, so the gym plan and the concert tickets are the same result
+        #expect(prompt.contains("Other Money decisions that also went worse than predicted:\n- Buy concert tickets for the whole group: went worse than predicted."))
+        #expect(prompt.contains("- Sign up for the annual gym plan: went worse than predicted. Notes: \"The salesperson said the price goes up tomorrow, so I signed on the spot.\" Outcome note: \"Went four times. Paid for a whole year.\""))
+        #expect(prompt.contains("Other Money decisions that went differently:\n- Sell the old bike: went better than predicted."))
+    }
+
+    @Test func noHistoryMeansNoHistorySection() throws {
+        let decision = Make.decision(actual: .bad, notes: "Rushed", resolvedAt: Make.day(7))
+        let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(decision)))
+        #expect(!prompt.contains("Other Work decisions"))
+    }
+
     @Test func blankNotesNeverAppearAsEmptyLines() throws {
         let decision = Make.decision(actual: .good, notes: "  ", reflection: nil, resolvedAt: Make.day(3), revisits: [Revisit(date: Make.day(9), outcome: .good, note: nil)])
         let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(decision)))
@@ -65,6 +82,7 @@ struct ReflectionPromptBuilderTests {
             ReflectionPromptBuilder.patternsInstructions,
             ReflectionPromptBuilder.decisionInstructions,
             ReflectionPromptBuilder.cleanUpInstructions,
+            ReflectionPromptBuilder.decisionInstructions + ReflectionPromptBuilder.historyRule,
         ] {
             #expect(!instructions.contains(attack))
             #expect(instructions.contains("Never tell the user what to choose"))

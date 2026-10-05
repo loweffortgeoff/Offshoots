@@ -57,6 +57,58 @@ struct ReflectionDigestBuilderTests {
 
     // MARK: - Decision
 
+    @Test func historyHoldsOtherMarkedDecisionsInTheSameCategory() throws {
+        let decisions = try Fixture.load("reflection-notes")
+        let laptop = try #require(decisions.first { $0.title == "Upgrade to the new laptop" })
+        let digest = try #require(ReflectionDigestBuilder.decision(laptop, among: decisions))
+
+        // Four other marked Money decisions, newest first. The open couch decision is left out.
+        #expect(digest.history.map(\.title) == [
+            "Sell the old bike",
+            "Buy concert tickets for the whole group",
+            "Refinance the car loan",
+            "Sign up for the annual gym plan",
+        ])
+        #expect(digest.history.last == HistoryLine(
+            title: "Sign up for the annual gym plan",
+            direction: -1,
+            notes: "The salesperson said the price goes up tomorrow, so I signed on the spot.",
+            outcomeNote: "Went four times. Paid for a whole year."
+        ))
+    }
+
+    @Test func historySplitsIntoSameAndDifferentResults() throws {
+        let decisions = try Fixture.load("reflection-notes")
+        let laptop = try #require(decisions.first { $0.title == "Upgrade to the new laptop" })
+        let digest = try #require(ReflectionDigestBuilder.decision(laptop, among: decisions))
+
+        #expect(digest.direction == -1)
+        #expect(digest.sameResult.map(\.title) == ["Buy concert tickets for the whole group", "Sign up for the annual gym plan"])
+        #expect(digest.differentResult.map(\.title) == ["Sell the old bike", "Refinance the car loan"])
+    }
+
+    @Test func historyIsCappedNewestFirst() {
+        let others = (0..<8).map { Make.decision(title: "Other \($0)", actual: .good, createdAt: Make.day($0), resolvedAt: Make.day($0 + 1)) }
+        let history = ReflectionDigestBuilder.history(in: .work, from: others)
+        #expect(history.count == ReflectionDigestBuilder.historyLimit)
+        #expect(history.first?.title == "Other 7")
+    }
+
+    @Test func oneOtherDecisionIsNotAHistory() throws {
+        let decision = Make.decision(actual: .bad, resolvedAt: Make.day(7))
+        let one = [Make.decision(title: "Only one", actual: .good, resolvedAt: Make.day(7))]
+        let otherCategory = (0..<3).map { _ in Make.decision(category: .money, actual: .good, resolvedAt: Make.day(7)) }
+        #expect(try #require(ReflectionDigestBuilder.decision(decision, among: one + otherCategory)).history.isEmpty)
+    }
+
+    @Test func theDecisionItselfIsNotInItsHistory() throws {
+        let decision = Make.decision(title: "Itself", actual: .bad, resolvedAt: Make.day(7))
+        let others = [decision, Make.decision(title: "A", actual: .good, resolvedAt: Make.day(7)), Make.decision(title: "B", actual: .good, resolvedAt: Make.day(7))]
+        let digest = try #require(ReflectionDigestBuilder.decision(decision, among: others))
+        #expect(!digest.history.map(\.title).contains("Itself"))
+        #expect(digest.history.count == 2)
+    }
+
     @Test func pendingDecisionHasNoDigest() {
         #expect(ReflectionDigestBuilder.decision(Make.decision()) == nil)
     }

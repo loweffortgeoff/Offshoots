@@ -33,6 +33,15 @@ struct TimelineLine: Equatable {
     let note: String?
 }
 
+/// Another marked decision in the same category, for comparison.
+struct HistoryLine: Equatable {
+    let title: String
+    /// -1 worse than predicted, 0 as predicted, 1 better (the sign of the first-result gap)
+    let direction: Int
+    let notes: String?
+    let outcomeNote: String?
+}
+
 /// One marked decision, ready for a prompt. Equatable so a card can clear a stale result
 /// when the decision changes.
 struct DecisionDigest: Equatable {
@@ -47,6 +56,14 @@ struct DecisionDigest: Equatable {
     let notes: String?
     /// The note written in Mark Outcome (`Decision.reflection`)
     let outcomeNote: String?
+    /// Other marked decisions in the same category, newest first. Empty below
+    /// `ReflectionDigestBuilder.minimumHistory`, so a single other decision is never a "pattern".
+    var history: [HistoryLine] = []
+    /// This decision's own direction, to split the history into same and different
+    var direction: Int = 0
+
+    var sameResult: [HistoryLine] { history.filter { $0.direction == direction } }
+    var differentResult: [HistoryLine] { history.filter { $0.direction != direction } }
 
     /// False when the user wrote nothing: no log note, no outcome note, no revisit note.
     /// Then nothing can repeat, so the reflection skips that section.

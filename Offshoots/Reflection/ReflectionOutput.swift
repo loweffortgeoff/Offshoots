@@ -14,6 +14,9 @@ struct DecisionReflectionOutput: Equatable {
     var summary: String
     var repeating: [String]
     var nextPrompt: String
+    /// What this decision shares with others in its category that went the same way.
+    /// Empty when none did.
+    var echo: String = ""
 }
 
 struct CleanedNote: Equatable {
@@ -55,7 +58,8 @@ extension DecisionReflectionOutput {
         return DecisionReflectionOutput(
             summary: summary,
             repeating: ReflectionText.uniqueLines(repeating, limit: 400),
-            nextPrompt: ReflectionText.clean(nextPrompt, limit: 300) ?? ""
+            nextPrompt: ReflectionText.clean(nextPrompt, limit: 300) ?? "",
+            echo: ReflectionText.clean(echo, limit: 400) ?? ""
         )
     }
 }

@@ -10,6 +10,8 @@ internal import SwiftUI
 /// own Mark Outcome note.
 struct DecisionReflectionCard: View {
     let decision: Decision
+    /// Other decisions in the same category, for the history lines in the prompt
+    let sameCategory: [Decision]
 
     @Environment(ReflectionCenter.self) private var center
     @State private var run = ReflectionRun<DecisionReflectionOutput>()
@@ -26,7 +28,7 @@ struct DecisionReflectionCard: View {
                     start: generate,
                     copyText: copyText
                 ) { output in
-                    ResultBody(output: output)
+                    ResultBody(output: output, category: decision.category.rawValue.capitalized)
                 }
             }
         }
@@ -37,6 +39,7 @@ struct DecisionReflectionCard: View {
         .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
         // A new revisit, an edit or a changed note makes the result stale
         .onChange(of: decision) { run.reset() }
+        .onChange(of: sameCategory) { run.reset() }
         .onChange(of: run.state) { _, state in
             if case .result = state { AccessibilityNotification.Announcement("Reflection ready").post() }
         }
@@ -45,14 +48,15 @@ struct DecisionReflectionCard: View {
     private func generate() {
         let generator = center.generator
         let decision = decision
+        let sameCategory = sameCategory
         run.start {
-            guard let digest = ReflectionDigestBuilder.decision(decision) else { throw ReflectionError.failed }
+            guard let digest = ReflectionDigestBuilder.decision(decision, among: sameCategory) else { throw ReflectionError.failed }
             return try await generator.reflect(on: digest)
         }
     }
 
     private func copyText(_ output: DecisionReflectionOutput) -> String {
-        ([output.summary] + output.repeating + [output.nextPrompt])
+        ([output.summary, output.echo] + output.repeating + [output.nextPrompt])
             .filter { !$0.isEmpty }
             .joined(separator: "\n")
     }
@@ -60,6 +64,7 @@ struct DecisionReflectionCard: View {
 
 private struct ResultBody: View {
     let output: DecisionReflectionOutput
+    let category: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -67,6 +72,13 @@ private struct ResultBody: View {
                 Text("How it aged").font(.subheadline).fontWeight(.semibold)
                     .accessibilityAddTraits(.isHeader)
                 Text(output.summary).font(.body)
+            }
+            if !output.echo.isEmpty {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("In other \(category) decisions").font(.subheadline).fontWeight(.semibold)
+                        .accessibilityAddTraits(.isHeader)
+                    Text(output.echo).font(.body)
+                }
             }
             if !output.repeating.isEmpty {
                 VStack(alignment: .leading, spacing: 4) {

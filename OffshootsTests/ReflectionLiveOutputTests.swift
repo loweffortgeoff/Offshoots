@@ -39,10 +39,10 @@ struct ReflectionLiveOutputTests {
         guard #available(iOS 26.4, *) else { return }
         try requireModel()
         let decision = try #require(try Fixture.load("reflection-notes").first { $0.title == title })
-        let digest = try #require(ReflectionDigestBuilder.decision(decision))
+        let digest = try #require(ReflectionDigestBuilder.decision(decision, among: try Fixture.load("reflection-notes")))
         try await report(
             "Decision: \(title)",
-            instructions: ReflectionPromptBuilder.decisionInstructions,
+            instructions: ReflectionPromptBuilder.decisionInstructions + ReflectionPromptBuilder.historyRule,
             prompt: ReflectionPromptBuilder.decisionPrompt(digest),
             schema: LiveReflectionService.GeneratedDecisionReflection.generationSchema
         )
@@ -50,6 +50,7 @@ struct ReflectionLiveOutputTests {
         log("""
         Decision output (\(title)):
         Summary: \(output.summary)
+        Echo: \(output.echo)
         Repeating:
         \(output.repeating.map { "- \($0)" }.joined(separator: "\n"))
         Next: \(output.nextPrompt)

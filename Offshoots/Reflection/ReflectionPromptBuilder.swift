@@ -40,6 +40,13 @@ enum ReflectionPromptBuilder {
     Then one question the user can carry into the next revisit. The question is not advice.
     """
 
+    /// Added to either decision instruction when the prompt lists other decisions in the category
+    static let historyRule = """
+     Other decisions in the same category are listed in two groups: the ones that went the \
+    same way as this decision, and the ones that went differently. Use them only for the \
+    echo sentence.
+    """
+
     static let cleanUpInstructions = """
     You rewrite a short personal note so it reads more clearly. \
     Fix spelling, capital letters, punctuation and grammar, and split run-on sentences. \
@@ -79,6 +86,12 @@ enum ReflectionPromptBuilder {
         }
         if let notes = digest.notes { lines.append("Notes: \"\(notes)\"") }
         if let outcomeNote = digest.outcomeNote { lines.append("Outcome note: \"\(outcomeNote)\"") }
+        if !digest.history.isEmpty {
+            lines.append("Other \(digest.category) decisions that also \(resultPhrase(digest.direction)):")
+            lines += digest.sameResult.isEmpty ? ["- none"] : digest.sameResult.map(historyText)
+            lines.append("Other \(digest.category) decisions that went differently:")
+            lines += digest.differentResult.isEmpty ? ["- none"] : digest.differentResult.map(historyText)
+        }
         return lines.joined(separator: "\n")
     }
 
@@ -87,6 +100,21 @@ enum ReflectionPromptBuilder {
     }
 
     // MARK: - Helpers
+
+    static func resultPhrase(_ direction: Int) -> String {
+        switch direction {
+        case ..<0: "went worse than predicted"
+        case 1...: "went better than predicted"
+        default: "went as predicted"
+        }
+    }
+
+    private static func historyText(_ line: HistoryLine) -> String {
+        var text = "- \(line.title): \(resultPhrase(line.direction))."
+        if let notes = line.notes { text += " Notes: \"\(notes)\"" }
+        if let outcomeNote = line.outcomeNote { text += " Outcome note: \"\(outcomeNote)\"" }
+        return text
+    }
 
     /// An empty group says so, so the model never reads the next heading as part of this one
     private static func noteGroup(_ heading: String, _ notes: [NoteLine]) -> [String] {

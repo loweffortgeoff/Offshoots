@@ -15,6 +15,12 @@ struct ReflectionOutputTests {
         #expect(output.observations == ["You acted in a hurry when it went worse."])
     }
 
+    @Test func decisionEchoIsCleanedAndMayBeEmpty() throws {
+        let output = try DecisionReflectionOutput(summary: "It aged badly.", repeating: [], nextPrompt: "", echo: "  Like the gym plan.  ").validated()
+        #expect(output.echo == "Like the gym plan.")
+        #expect(try DecisionReflectionOutput(summary: "It aged badly.", repeating: [], nextPrompt: "", echo: " ").validated().echo == "")
+    }
+
     @Test func patternsWithNothingUsefulAreAnError() {
         #expect(throws: ReflectionError.emptyOutput) {
             try PatternsOutput(observations: []).validated()

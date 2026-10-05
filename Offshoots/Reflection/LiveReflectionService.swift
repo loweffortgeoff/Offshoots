@@ -31,6 +31,8 @@ struct LiveReflectionService: ReflectionGenerating {
         var repeating: [String]
         @Guide(description: "One question to carry into the next revisit. Not advice")
         var nextPrompt: String
+        @Guide(description: "One sentence on what this decision has in common with the other decisions that went the same way, from their notes. Empty if none went the same way")
+        var echo: String
     }
 
     /// No `repeating` field: a decision with no written notes has nothing to repeat
@@ -40,6 +42,8 @@ struct LiveReflectionService: ReflectionGenerating {
         var summary: String
         @Guide(description: "One question to carry into the next revisit. Not advice")
         var nextPrompt: String
+        @Guide(description: "One sentence on what this decision has in common with the other decisions that went the same way, from their notes. Empty if none went the same way")
+        var echo: String
     }
 
     @Generable
@@ -83,29 +87,34 @@ struct LiveReflectionService: ReflectionGenerating {
     }
 
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput {
+        let history = digest.history.isEmpty ? "" : ReflectionPromptBuilder.historyRule
+        // With nothing that went the same way, the echo is dropped, whatever the model wrote
+        let echo = { (text: String) in digest.sameResult.isEmpty ? "" : text }
         guard digest.hasWrittenText else {
             let generated = try await generate(
                 GeneratedDecisionSummary.self,
-                instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes,
+                instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes + history,
                 prompt: ReflectionPromptBuilder.decisionPrompt(digest),
                 maximumTokens: 300
             )
             return try DecisionReflectionOutput(
                 summary: generated.summary,
                 repeating: [],
-                nextPrompt: generated.nextPrompt
+                nextPrompt: generated.nextPrompt,
+                echo: echo(generated.echo)
             ).validated()
         }
         let generated = try await generate(
             GeneratedDecisionReflection.self,
-            instructions: ReflectionPromptBuilder.decisionInstructions,
+            instructions: ReflectionPromptBuilder.decisionInstructions + history,
             prompt: ReflectionPromptBuilder.decisionPrompt(digest),
             maximumTokens: 400
         )
         return try DecisionReflectionOutput(
             summary: generated.summary,
             repeating: generated.repeating,
-            nextPrompt: generated.nextPrompt
+            nextPrompt: generated.nextPrompt,
+            echo: echo(generated.echo)
         ).validated()
     }
 

@@ -72,12 +72,21 @@ has the same four states, and user text never goes into the instructions.
 
 ### A3. Decision reflection compares with similar decisions
 
-- New digest field `history`: earlier marked decisions in the **same category**, before
-  this one. For each: first result against the prediction (worse, as predicted, better),
-  and its outcome note cut short. Cap at the 5 newest.
-- If the same category has fewer than 2, the field is empty and the prompt is as today.
-- New instructions: say whether this decision follows or breaks the earlier pattern in
-  this category. Keep the rest of the shape (summary, what repeats, next question).
+- New digest field `history`: the **other** marked decisions in the same category, newest
+  first, capped at 5. Each line has the title, the result against the prediction, the log
+  note and the outcome note (each cut to 140 characters). Other decisions, not only
+  earlier ones: in the fixture the laptop is the first Money decision, so "earlier only"
+  would give it no history. (Changed during chunk 3.)
+- If the category has fewer than 2 other marked decisions, the field is empty and the
+  prompt is as before.
+- **Code does the matching.** The prompt splits the history into "also went worse than
+  predicted" (the same direction as this decision) and "went differently". (Changed during
+  chunk 3: with one plain list, the model said "breaks the pattern" when the decision
+  matched it.)
+- New output field `echo`: one sentence on what this decision shares with the others that
+  went the same way. The card shows it under "In other <Category> decisions", below "How
+  it aged". Code drops it when nothing went the same way. The summary, "What is
+  repeating" and the next question stay about this decision only.
 
 ## Part B — Look Back
 

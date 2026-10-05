@@ -47,9 +47,10 @@ below.
 
 ## Chunk 3 — Decision history (spec A3)
 
-- [ ] `history` on `DecisionDigest`: up to 5 earlier marked decisions in the same category.
-- [ ] Prompt and instructions use it when it has 2 or more entries.
-- [ ] Tests. Harness run: record the new output.
+- [x] `history` on `DecisionDigest`: up to 5 other marked decisions in the same category.
+- [x] The prompt splits the history into same result and different result.
+- [x] New `echo` output field and its "In other <Category> decisions" section on the card.
+- [x] Tests. Harness run: record the new output.
 
 ## Chunk 4 — Look Back (spec B)
 
@@ -152,4 +153,39 @@ this"). Each line also starts with the same long phrase. Both are acceptable for
 launched with `-ReflectionUnlockOnly`, shows the same three lines on Insights.
 Not checked on screen: the "Patterns read your notes" line for fewer than 2 notes (unit
 tests cover the threshold), light mode, and accessibility text sizes.
+
+### Chunk 3 — 2026-10-05, same Mac and simulator
+
+**Token counts:** launch project 578, laptop 617 before the response (was 354 and 333).
+
+**First try: one plain history list, "say whether it follows or breaks the pattern".**
+Both answers were wrong. Laptop: "This decision breaks the pattern of those decisions,
+which mostly followed or matched expected outcomes." The gym plan and the concert
+tickets were also rushed and also went worse. The launch project also got "broke the
+pattern", next to the committee decision that was also an instant yes.
+
+**Chosen: code splits the history, and a separate `echo` field.**
+
+Launch project:
+- Summary: The launch project decision started poorly and settled into neutral after handing off reporting. The outcome shifted as the initial pressure eased.
+- Echo: The extra committee was agreed to right away because they asked nicely, just like the launch project.
+- Repeating: Said yes quickly in a meeting / Took on more than could be managed / Lost time to the task
+- Next: What did the quick agreement in the meeting reveal about how you respond to requests?
+
+Laptop:
+- Summary: The upgrade to the new laptop started well but ended with a different outcome than expected. The decision unfolded quickly, with a rush to act before a deadline, but the need did not emerge.
+- Echo: Both the concert tickets and gym plan were signed on the spot because of immediate pressure.
+- Repeating: Saw a deadline close / Decided quickly / Bought without full thought
+- Next: What does the timing of quick choices reveal about patterns in your recent decisions?
+
+Both echoes are correct. Small faults: "signed on the spot" fits the gym plan, not the
+concert tickets ("decided in the group chat in five minutes"). The laptop summary says
+it "started well"; it was predicted Good and marked Bad.
+
+**App check:** the laptop's Decision Detail on the simulator shows the same text, with
+"In other Money decisions" under "How it aged". Not checked on screen: light mode,
+accessibility text sizes, a decision with no history.
+
+**Same lesson as chunk 2:** let code do the matching, and give the model one narrow
+field per job.
 

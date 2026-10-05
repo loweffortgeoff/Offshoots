@@ -12,6 +12,9 @@ enum ReflectionDigestBuilder {
     static let noteLimit = 140
     static let longNoteLimit = 400
     static let titleLimit = 120
+    static let historyLimit = 5
+    static let minimumHistory = 2
+    static let historyTitleLimit = 60
 
     static func patterns(from decisions: [Decision]) -> PatternsDigest {
         let marked = decisions.filter { $0.actual != nil }
@@ -29,8 +32,9 @@ enum ReflectionDigestBuilder {
         )
     }
 
-    /// Nil until an outcome is marked.
-    static func decision(_ decision: Decision) -> DecisionDigest? {
+    /// Nil until an outcome is marked. `others` may hold any decisions; only other marked
+    /// decisions in the same category become history.
+    static func decision(_ decision: Decision, among others: [Decision] = []) -> DecisionDigest? {
         guard let actual = decision.actual, let resolved = decision.resolvedDate else { return nil }
         return DecisionDigest(
             title: ReflectionText.clean(decision.title, limit: titleLimit) ?? "Untitled",
@@ -47,8 +51,27 @@ enum ReflectionDigestBuilder {
                 )
             },
             notes: ReflectionText.clean(decision.notes, limit: longNoteLimit),
-            outcomeNote: ReflectionText.clean(decision.reflection, limit: longNoteLimit)
+            outcomeNote: ReflectionText.clean(decision.reflection, limit: longNoteLimit),
+            history: history(in: decision.category, from: others.filter { $0.id != decision.id }),
+            direction: direction(of: decision)
         )
+    }
+
+    /// Marked decisions in one category, newest first and capped. Empty below `minimumHistory`.
+    static func history(in category: DecisionCategory, from decisions: [Decision]) -> [HistoryLine] {
+        let lines = decisions
+            .filter { $0.category == category && $0.actual != nil }
+            .sorted { $0.createdAt > $1.createdAt }
+            .prefix(historyLimit)
+            .map { decision in
+                HistoryLine(
+                    title: ReflectionText.clean(decision.title, limit: historyTitleLimit) ?? "Untitled",
+                    direction: direction(of: decision),
+                    notes: ReflectionText.clean(decision.notes, limit: noteLimit),
+                    outcomeNote: ReflectionText.clean(decision.reflection, limit: noteLimit)
+                )
+            }
+        return lines.count >= minimumHistory ? Array(lines) : []
     }
 
     // MARK: - Helpers
@@ -70,6 +93,10 @@ enum ReflectionDigestBuilder {
             }
         }
         return dated.sorted { $0.date > $1.date }.prefix(notesPerGroup).map(\.line)
+    }
+
+    private static func direction(of decision: Decision) -> Int {
+        (AnalyticsEngine.predictionGap(for: decision) ?? 0).signum()
     }
 
     /// Whole calendar days, never negative.

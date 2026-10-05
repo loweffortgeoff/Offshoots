@@ -26,7 +26,8 @@ struct FakeReflectionGenerator: ReflectionGenerating {
             DecisionReflectionOutput(
                 summary: "\(digest.title) started as \(digest.firstOutcome) and has held steady since.",
                 repeating: digest.hasWrittenText ? ["The same worry shows up in each note.", "Your rating moved once, then settled."] : [],
-                nextPrompt: "What would make you rate this differently at the next revisit?"
+                nextPrompt: "What would make you rate this differently at the next revisit?",
+                echo: digest.sameResult.isEmpty ? "" : "Like the gym plan, this one was decided on the spot."
             )
         }
     }
