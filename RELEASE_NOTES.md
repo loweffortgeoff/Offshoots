@@ -15,7 +15,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - App Theme in Settings: System, Light or Dark.
 - Export your decisions as JSON, or delete them all (with a confirmation).
 - Import Decisions in Settings > Data restores an Export file. If the app already holds decisions, it asks before it replaces them.
-- Reflection, a one-time unlock, for devices with Apple Intelligence on iOS 26 or later. Patterns on Insights compares the notes on decisions that went worse than predicted, as predicted and better. Each marked decision gets a reflection that also looks at other decisions in its category. Look Back on the Log screen shows how your past decisions in a category went, before you predict. Clean Up Note fixes spelling and punctuation in a note when you tap it. Everything runs on the device, runs only when you ask, and is never saved. Restore Purchase is in Settings.
+- Reflection, a one-time unlock, for devices with Apple Intelligence on iOS 26 or later. Patterns on Insights compares the notes on decisions that went worse than predicted, as predicted and better. Each marked decision gets a reflection that also looks at other decisions in its category. Look Back on the Log screen shows how your past decisions in a category went against your predictions, with two bars, before you predict. Clean Up Note fixes spelling and punctuation in a note when you tap it. Everything runs on the device, runs only when you ask, and is never saved. Restore Purchase is in Settings.
 
 ## IMPROVED
 
@@ -55,7 +55,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Export decisions from Settings. Confirm the JSON file opens and holds every decision.
 - Switch App Theme between System, Light and Dark while the app runs.
 - Import: export from Settings, then import the file. Confirm an empty app imports at once, and an app with decisions asks "Replace N decisions with M from the file?". A file that is not an Offshoots export shows an error.
-- Reflection, on a device with Apple Intelligence (iOS 26 or later). Confirm each surface: Patterns on Insights (needs 5 marked decisions and 2 notes), the reflection on a marked decision (with "In other <Category> decisions" when 2 or more others exist), Look Back on the Log screen (needs 2 marked decisions in the category), and Clean Up Note on the Log, Mark Outcome and Revisit notes (3 words or more). Confirm the output matches the notes and gives no advice.
+- Reflection, on a device with Apple Intelligence (iOS 26 or later). Confirm each surface: Patterns on Insights (needs 5 marked decisions and 2 notes), the reflection on a marked decision (with "In other <Category> decisions" when 2 or more others exist), Look Back on the Log screen (needs 2 marked decisions in the category; the headline needs 5 and a clear lean; check the bars against the decisions), and Clean Up Note on the Log, Mark Outcome and Revisit notes (3 words or more). Confirm the output matches the notes and gives no advice.
 - Reflection on a device without Apple Intelligence, or on iOS 18.6 to 25. Confirm Reflection does not show.
 - Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say "For testing purposes only. You will not be charged for confirming this purchase." If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
 - Restore Purchase in Settings, after a reinstall. Confirm Reflection unlocks again.

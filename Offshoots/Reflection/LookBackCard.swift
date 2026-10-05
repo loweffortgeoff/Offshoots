@@ -43,22 +43,21 @@ struct LookBackCard: View {
                         startTitle: "Look Back",
                         systemImage: "clock.arrow.circlepath",
                         start: generate,
-                        copyText: { ([$0.summary] + $0.lines.map { "\($0.label): \($0.text)" }).joined(separator: "\n") }
+                        copyText: copyText
                     ) { output in
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(output.summary)
-                                .font(.body)
-                                .fontWeight(.semibold)
-                            // One line per result group, so the label is a stable id
-                            ForEach(output.lines, id: \.label) { line in
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(line.label)
-                                        .font(.subheadline)
+                        VStack(alignment: .leading, spacing: 16) {
+                            VStack(alignment: .leading, spacing: 6) {
+                                if let headline = output.stats.headline {
+                                    Text(headline)
+                                        .font(.title3)
                                         .fontWeight(.semibold)
-                                        .accessibilityAddTraits(.isHeader)
-                                    Text(line.text).font(.body)
+                                        .foregroundStyle(Color.offshootPrimary)
                                 }
+                                Text(output.stats.summary)
+                                    .font(.body)
                             }
+                            LookBackBars(stats: output.stats)
+                            ReflectionGroupLinesView(lines: output.lines)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
@@ -75,6 +74,12 @@ struct LookBackCard: View {
         .onChange(of: run.state) { _, state in
             if case .result = state { AccessibilityNotification.Announcement("Look Back ready").post() }
         }
+    }
+
+    private func copyText(_ output: LookBackOutput) -> String {
+        let lines = [output.stats.headline, output.stats.summary].compactMap { $0 }
+            + output.lines.map { "\($0.label): \($0.text)" }
+        return lines.joined(separator: "\n")
     }
 
     private func generate() {

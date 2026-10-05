@@ -12,7 +12,9 @@ struct LiveReflectionService: ReflectionGenerating {
 
     // MARK: - Generated shapes
 
-    /// One sentence per group, so the model covers each group once and cannot repeat itself
+    /// One sentence per group, so the model covers each group once and cannot repeat itself.
+    /// Asking the model to start with the trait made it copy one note (plan, chunk 6), so
+    /// code removes the group opening instead (`ReflectionText.dropGroupOpening`).
     @Generable
     struct GeneratedPatterns {
         @Guide(description: "One sentence on what the notes on decisions that went worse than predicted share. Empty if that group has no notes")
@@ -21,6 +23,15 @@ struct LiveReflectionService: ReflectionGenerating {
         var asPredicted: String
         @Guide(description: "One sentence on what the notes on decisions that went better than predicted share. Empty if that group has no notes")
         var better: String
+    }
+
+    /// A group with no notes keeps no line, whatever the model wrote for it
+    private static func groupLines(_ generated: GeneratedPatterns, worse: Bool, asPredicted: Bool, better: Bool) -> [ReflectionGroupLine] {
+        [
+            worse ? ReflectionGroupLine(label: ReflectionGroupLine.worseLabel, text: generated.worse) : nil,
+            asPredicted ? ReflectionGroupLine(label: ReflectionGroupLine.asPredictedLabel, text: generated.asPredicted) : nil,
+            better ? ReflectionGroupLine(label: ReflectionGroupLine.betterLabel, text: generated.better) : nil,
+        ].compactMap { $0 }
     }
 
     @Generable
@@ -77,13 +88,8 @@ struct LiveReflectionService: ReflectionGenerating {
             prompt: ReflectionPromptBuilder.patternsPrompt(digest),
             maximumTokens: 300
         )
-        // A group with no notes keeps no sentence, whatever the model wrote for it
-        let sentences = [
-            digest.worse.isEmpty ? nil : generated.worse,
-            digest.asPredicted.isEmpty ? nil : generated.asPredicted,
-            digest.better.isEmpty ? nil : generated.better,
-        ]
-        return try PatternsOutput(observations: sentences.compactMap { $0 }).validated()
+        let lines = Self.groupLines(generated, worse: !digest.worse.isEmpty, asPredicted: !digest.asPredicted.isEmpty, better: !digest.better.isEmpty)
+        return try PatternsOutput(lines: lines).validated()
     }
 
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput {
@@ -120,20 +126,16 @@ struct LiveReflectionService: ReflectionGenerating {
 
     /// Reuses the Patterns shape: one sentence per result group
     func lookBack(digest: LookBackDigest) async throws -> LookBackOutput {
-        // Nothing written means nothing to read: the count line alone, with no model call
-        guard digest.hasNotes else { return LookBackOutput(summary: digest.summary, lines: []) }
+        // Nothing written means nothing to read: the counts alone, with no model call
+        guard digest.hasNotes else { return LookBackOutput(stats: digest.stats, lines: []) }
         let generated = try await generate(
             GeneratedPatterns.self,
             instructions: ReflectionPromptBuilder.lookBackInstructions,
             prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
             maximumTokens: 300
         )
-        let lines = [
-            digest.worse.isEmpty ? nil : LookBackLine(label: "Went worse", text: generated.worse),
-            digest.asPredicted.isEmpty ? nil : LookBackLine(label: "Went as predicted", text: generated.asPredicted),
-            digest.better.isEmpty ? nil : LookBackLine(label: "Went better", text: generated.better),
-        ]
-        return LookBackOutput(summary: digest.summary, lines: lines.compactMap { $0 }).validated()
+        let lines = Self.groupLines(generated, worse: !digest.worse.isEmpty, asPredicted: !digest.asPredicted.isEmpty, better: !digest.better.isEmpty)
+        return LookBackOutput(stats: digest.stats, lines: lines).validated()
     }
 
     func cleanUp(note: String) async throws -> CleanedNote {

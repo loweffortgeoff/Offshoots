@@ -7,7 +7,8 @@ import Foundation
 
 /// What a surface shows. Plain values with no SDK types, so the UI and tests never touch the model.
 struct PatternsOutput: Equatable {
-    var observations: [String]
+    /// At most one per result group, so the label is unique
+    var lines: [ReflectionGroupLine]
 }
 
 struct DecisionReflectionOutput: Equatable {
@@ -19,17 +20,23 @@ struct DecisionReflectionOutput: Equatable {
     var echo: String = ""
 }
 
-/// One model sentence about one result group, with a fixed label from code.
-struct LookBackLine: Equatable {
+/// One model sentence about one result group, with a fixed label from code. The label names
+/// the group, so the sentence does not have to.
+struct ReflectionGroupLine: Equatable {
     var label: String
     var text: String
+
+    static let worseLabel = "Went worse"
+    static let asPredictedLabel = "Went as predicted"
+    static let betterLabel = "Went better"
 }
 
-/// The count line comes from the digest; the lines come from the model and may be empty.
+/// The headline, count line and bars come from `stats`; the lines come from the model and
+/// may be empty.
 struct LookBackOutput: Equatable {
-    var summary: String
+    var stats: LookBackStats
     /// At most one per result group, so the label is unique
-    var lines: [LookBackLine]
+    var lines: [ReflectionGroupLine]
 }
 
 struct CleanedNote: Equatable {
@@ -57,22 +64,30 @@ extension PatternsOutput {
     static let minimumWords = 3
 
     func validated() throws -> PatternsOutput {
-        let lines = ReflectionText.uniqueLines(observations, limit: 400)
-            .filter { $0.split(whereSeparator: \.isWhitespace).count >= Self.minimumWords }
-        guard !lines.isEmpty else { throw ReflectionError.emptyOutput }
-        return PatternsOutput(observations: lines)
+        let kept = ReflectionGroupLine.validated(lines)
+        guard !kept.isEmpty else { throw ReflectionError.emptyOutput }
+        return PatternsOutput(lines: kept)
     }
 }
 
 extension LookBackOutput {
-    /// The summary always shows, so empty observations are not an error
+    /// The count line always shows, so empty observations are not an error
     func validated() -> LookBackOutput {
-        LookBackOutput(summary: summary, lines: lines.compactMap { line in
-            guard let text = ReflectionText.clean(line.text, limit: 400),
-                  text.split(whereSeparator: \.isWhitespace).count >= PatternsOutput.minimumWords
+        LookBackOutput(stats: stats, lines: ReflectionGroupLine.validated(lines))
+    }
+}
+
+extension ReflectionGroupLine {
+    /// Cleans each sentence. Drops blanks, fragments and a sentence that repeats an earlier one.
+    static func validated(_ lines: [ReflectionGroupLine]) -> [ReflectionGroupLine] {
+        var seen = Set<String>()
+        return lines.compactMap { line in
+            guard let text = ReflectionText.clean(line.text, limit: 400).map(ReflectionText.dropGroupOpening),
+                  text.split(whereSeparator: \.isWhitespace).count >= PatternsOutput.minimumWords,
+                  seen.insert(text).inserted
             else { return nil }
-            return LookBackLine(label: line.label, text: text)
-        })
+            return ReflectionGroupLine(label: line.label, text: text)
+        }
     }
 }
 

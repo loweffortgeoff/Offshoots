@@ -14,9 +14,9 @@ struct FakeReflectionGenerator: ReflectionGenerating {
 
     func patterns(digest: PatternsDigest) async throws -> PatternsOutput {
         try await respond {
-            PatternsOutput(observations: [
-                "Decisions that went worse than predicted were often made in a hurry.",
-                "Decisions you dreaded went better than you expected.",
+            PatternsOutput(lines: [
+                ReflectionGroupLine(label: ReflectionGroupLine.worseLabel, text: "Made in a hurry, often before a deadline."),
+                ReflectionGroupLine(label: ReflectionGroupLine.betterLabel, text: "Choices you dreaded, then prepared for."),
             ])
         }
     }
@@ -34,9 +34,9 @@ struct FakeReflectionGenerator: ReflectionGenerating {
 
     func lookBack(digest: LookBackDigest) async throws -> LookBackOutput {
         try await respond {
-            LookBackOutput(summary: digest.summary, lines: [
-                LookBackLine(label: "Went worse", text: "These were decided on the spot."),
-                LookBackLine(label: "Went better", text: "These were planned over weeks."),
+            LookBackOutput(stats: digest.stats, lines: [
+                ReflectionGroupLine(label: ReflectionGroupLine.worseLabel, text: "Decided on the spot."),
+                ReflectionGroupLine(label: ReflectionGroupLine.betterLabel, text: "Planned over several weeks."),
             ])
         }
     }

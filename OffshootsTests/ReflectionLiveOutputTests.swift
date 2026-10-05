@@ -31,7 +31,7 @@ struct ReflectionLiveOutputTests {
             schema: LiveReflectionService.GeneratedPatterns.generationSchema
         )
         let output = try await LiveReflectionService().patterns(digest: digest)
-        log("Patterns output:\n" + output.observations.map { "- \($0)" }.joined(separator: "\n"))
+        log("Patterns output:\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
     }
 
     @Test(arguments: decisionTitles)
@@ -69,7 +69,7 @@ struct ReflectionLiveOutputTests {
             schema: LiveReflectionService.GeneratedPatterns.generationSchema
         )
         let output = try await LiveReflectionService().lookBack(digest: digest)
-        log("Look Back output (\(digest.category)):\n\(output.summary)\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
+        log("Look Back output (\(digest.category)):\n\(output.stats.headline ?? "(no headline)")\n\(output.stats.summary)\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
     }
 
     // MARK: - Helpers

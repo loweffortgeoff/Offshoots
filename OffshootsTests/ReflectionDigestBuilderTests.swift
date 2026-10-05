@@ -115,14 +115,24 @@ struct ReflectionDigestBuilderTests {
     @Test func lookBackSummaryCountsEachResult() throws {
         let digest = try #require(ReflectionDigestBuilder.lookBack(category: .money, in: try Fixture.load("reflection-notes")))
         #expect(digest.history.count == 5)
-        #expect(digest.summary == "Of your last 5 Money decisions, 3 went worse than you predicted, 1 went as predicted and 1 went better.")
+        #expect(digest.stats.summary == "Of the 5 Money decisions you marked, 3 went worse than you predicted, 1 went as predicted and 1 went better.")
+        #expect(digest.stats.headline == "Your Money decisions tend to fall short of your predictions")
     }
 
     @Test func lookBackSummaryWithOneResultHasNoList() throws {
         let decisions = (0..<2).map { _ in Make.decision(expected: .bad, actual: .good, resolvedAt: Make.day(7)) }
         let digest = try #require(ReflectionDigestBuilder.lookBack(category: .work, in: decisions))
-        #expect(digest.summary == "Of your last 2 Work decisions, 2 went better.")
+        #expect(digest.stats.summary == "Of the 2 Work decisions you marked, 2 went better.")
         #expect(digest.hasNotes == false)
+    }
+
+    /// The prompt keeps the 5 newest; the counts and bars cover every marked decision
+    @Test func lookBackStatsCoverEveryMarkedDecisionInTheCategory() throws {
+        let decisions = (0..<8).map { _ in Make.decision(expected: .bad, actual: .good, resolvedAt: Make.day(7)) }
+            + [Make.decision(), Make.decision(category: .money, actual: .good, resolvedAt: Make.day(7))]
+        let digest = try #require(ReflectionDigestBuilder.lookBack(category: .work, in: decisions))
+        #expect(digest.history.count == ReflectionDigestBuilder.historyLimit)
+        #expect(digest.stats.total == 8)
     }
 
     @Test func lookBackNeedsTwoMarkedDecisionsInTheCategory() {

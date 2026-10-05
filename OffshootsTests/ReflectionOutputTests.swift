@@ -4,15 +4,53 @@ import Testing
 @MainActor
 struct ReflectionOutputTests {
 
+    private func line(_ label: String, _ text: String) -> ReflectionGroupLine {
+        ReflectionGroupLine(label: label, text: text)
+    }
+
     @Test func patternsDropBlanksAndRepeats() throws {
-        let output = try PatternsOutput(observations: ["You lean optimistic.", " ", "You lean optimistic. ", "Money is harder."]).validated()
-        #expect(output.observations == ["You lean optimistic.", "Money is harder."])
+        let output = try PatternsOutput(lines: [
+            line("Went worse", "Decided in a hurry."), line("Went as predicted", " "), line("Went better", "Decided in a hurry. "),
+        ]).validated()
+        #expect(output.lines == [line("Went worse", "Decided in a hurry.")])
     }
 
     /// A broken run once split one sentence into "and" and "."
     @Test func patternsDropFragments() throws {
-        let output = try PatternsOutput(observations: ["You acted in a hurry when it went worse.", "and", ".", "Too short"]).validated()
-        #expect(output.observations == ["You acted in a hurry when it went worse."])
+        let output = try PatternsOutput(lines: [
+            line("Went worse", "You acted in a hurry."), line("Went as predicted", "and"), line("Went better", "Too short"),
+        ]).validated()
+        #expect(output.lines == [line("Went worse", "You acted in a hurry.")])
+    }
+
+    /// Openings seen in the live harness on 2026-10-05. The label above already names the group.
+    @Test(arguments: [
+        ("The notes on decisions that went worse than predicted all mention actions taken quickly or under pressure.",
+         "Actions taken quickly or under pressure."),
+        ("The notes on decisions that went better than predicted all involve unexpected positive results from effort or patience.",
+         "Unexpected positive results from effort or patience."),
+        ("The notes in the worse-than-predicted group all mention a quick decision made under pressure.",
+         "A quick decision made under pressure."),
+        ("The notes on decisions that went as predicted all describe clear steps taken before the outcome was known.",
+         "Clear steps taken before the outcome was known."),
+        ("All of these decisions were made quickly, often under pressure.",
+         "Made quickly, often under pressure."),
+        ("All of these decisions involved waiting or patience before acting.",
+         "Waiting or patience before acting."),
+    ])
+    func groupOpeningIsRemoved(text: String, expected: String) {
+        #expect(ReflectionText.dropGroupOpening(text) == expected)
+    }
+
+    @Test func otherSentencesAreLeftAlone() {
+        #expect(ReflectionText.dropGroupOpening("Agreed right away because they asked nicely.") == "Agreed right away because they asked nicely.")
+        // Too little left after the cut
+        #expect(ReflectionText.dropGroupOpening("The notes all mention deadlines.") == "The notes all mention deadlines.")
+    }
+
+    @Test func validationRemovesTheOpening() throws {
+        let output = try PatternsOutput(lines: [line("Went worse", "The notes on decisions that went worse than predicted all mention a rush to buy.")]).validated()
+        #expect(output.lines == [line("Went worse", "A rush to buy.")])
     }
 
     @Test func decisionEchoIsCleanedAndMayBeEmpty() throws {
@@ -21,21 +59,22 @@ struct ReflectionOutputTests {
         #expect(try DecisionReflectionOutput(summary: "It aged badly.", repeating: [], nextPrompt: "", echo: " ").validated().echo == "")
     }
 
-    @Test func lookBackKeepsTheSummaryWhenNoObservationsSurvive() {
-        let output = LookBackOutput(summary: "Of your last 2 Work decisions, 2 went better.", lines: [
-            LookBackLine(label: "Went worse", text: "and"),
-            LookBackLine(label: "Went better", text: "  These were planned over weeks. "),
+    @Test func lookBackKeepsTheStatsWhenNoObservationsSurvive() {
+        let stats = LookBackStats(category: "Work", pairs: [OutcomePair(expected: .bad, actual: .good)])
+        let output = LookBackOutput(stats: stats, lines: [
+            line("Went worse", "and"),
+            line("Went better", "  Planned over several weeks. "),
         ]).validated()
-        #expect(output.summary == "Of your last 2 Work decisions, 2 went better.")
-        #expect(output.lines == [LookBackLine(label: "Went better", text: "These were planned over weeks.")])
+        #expect(output.stats == stats)
+        #expect(output.lines == [line("Went better", "Planned over several weeks.")])
     }
 
     @Test func patternsWithNothingUsefulAreAnError() {
         #expect(throws: ReflectionError.emptyOutput) {
-            try PatternsOutput(observations: []).validated()
+            try PatternsOutput(lines: []).validated()
         }
         #expect(throws: ReflectionError.emptyOutput) {
-            try PatternsOutput(observations: ["  ", "\n"]).validated()
+            try PatternsOutput(lines: [line("Went worse", "  "), line("Went better", "\n")]).validated()
         }
     }
 

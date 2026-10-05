@@ -32,16 +32,9 @@ struct PatternsCard: View {
                         startTitle: "Show Patterns",
                         systemImage: "sparkles",
                         start: generate,
-                        copyText: { $0.observations.joined(separator: "\n") }
+                        copyText: { $0.lines.map { "\($0.label): \($0.text)" }.joined(separator: "\n") }
                     ) { output in
-                        VStack(alignment: .leading, spacing: 12) {
-                            // Observations are unique after `validated()`, so the text is a stable id
-                            ForEach(output.observations, id: \.self) { observation in
-                                Text(observation)
-                                    .font(.body)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                        }
+                        ReflectionGroupLinesView(lines: output.lines)
                     }
                 }
             }

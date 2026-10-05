@@ -67,6 +67,20 @@ below.
   leaves the list.
 - [x] README, ASC_LISTING, RELEASE_NOTES, DECISIONS, CHANGELOG, TODO.
 
+## Chunk 6 — Look Back headline and bars; group labels (after Geoff's paywall concept)
+
+- [x] `LookBackStats`: every marked decision in the category, not capped. The prompt still
+  reads the 5 newest. Count line, headline and bars all read the stats, so they agree.
+- [x] Headline only from 5 decisions, when one group holds more than half and leads every
+  other group by 2. Directions are counted, never averaged.
+- [x] `LookBackBars`: Expected and Turned out as stacked bars, worst outcome on the left,
+  axes hidden, labels and legend in SwiftUI, chart text capped at xxxLarge, one VoiceOver label.
+- [x] Patterns gets the same fixed group labels as Look Back (`ReflectionGroupLine`,
+  `ReflectionGroupLinesView`).
+- [x] Code removes the group opening ("The notes on decisions that went worse than
+  predicted all mention …") from each sentence, because the label names the group.
+- [x] Tests. Harness run. Simulator check (see below).
+
 ## Measurements and output
 
 ### Chunk 1 — 2026-10-05, MacBook Pro, Xcode 27.0, iPhone 18 Pro simulator (iOS 27.0)
@@ -231,3 +245,46 @@ reflection on each decision" and "A look back before you decide" (symbol
 `clock.arrow.circlepath`). Checked on the simulator from the locked Look Back button.
 README, CHANGELOG, RELEASE_NOTES, ASC_LISTING, DECISIONS and TODO updated.
 
+### Chunk 6 — 2026-10-05, MacBook Pro, iPhone 18 Pro simulator (iOS 27.0)
+
+**First try: ask the model to start with the trait.** Both instructions said "The app
+shows the group's name above each sentence, so start with the shared trait. Do not start
+with 'The notes', 'These decisions' or 'All of'", and the `@Guide` text asked for "the
+trait … as one short sentence that starts with that trait". Result: worse.
+- Patterns copied one note per group: "Made it worse.", "Done in an hour.", "Got more
+  than I asked for." The three themes were gone.
+- Look Back Money still began "The notes in the worse-than-predicted group all mention…".
+
+**Chosen: prompt reverted to chunk 4; code removes the opening.**
+`ReflectionText.dropGroupOpening` cuts a known opening ("The notes …", "These decisions …",
+"All of these decisions …" up to a verb such as "mention", "involved" or "were"). Any other
+sentence, or one with fewer than 3 words left, is shown unchanged. The model output is the
+same as before the change, word for word.
+
+Patterns:
+- Went worse: Actions taken quickly or under pressure.
+- Went as predicted: Clear steps taken before the outcome was known.
+- Went better: Unexpected positive results from effort or patience.
+
+Look Back Money:
+- Headline: Your Money decisions tend to fall short of your predictions
+- Of the 5 Money decisions you marked, 3 went worse than you predicted, 1 went as predicted and 1 went better.
+- Went worse: Made quickly, often under pressure, with little time to think through the full picture.
+- Went better: Waiting or patience before acting, leading to a more favorable result.
+
+Look Back Work (4 decisions, so no headline):
+- Of the 4 Work decisions you marked, 2 went worse than you predicted and 2 went better.
+- Went worse: A quick response to a request that led to unexpected strain.
+- Went better: Preparation before the action.
+
+**Headline rule, found by a test:** "more than half" alone gave "tend to beat" for 7 better
+against 6 worse. The rule now also needs a lead of 2 over every other group.
+
+**Simulator checks (`-ReflectionUnlockOnly`):**
+- Dark, default text: Look Back Money shows the headline, count line, bars, legend (Bad,
+  Neutral, Good, Great) and two labeled lines. Work shows no headline. Patterns shows
+  three labeled lines.
+- Light, AX3: each bar row stacks its label above the bar. Legend and bar labels stay at
+  the xxxLarge cap.
+- Not checked: VoiceOver reading of the bars (one label in code), a device, the locked state
+  (unchanged code path).
