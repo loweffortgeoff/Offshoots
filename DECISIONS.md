@@ -242,3 +242,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Alternative considered:** A custom title placeholder. The native field already supports a multiline prompt when it has enough lines.
 
 **Verification (2026-10-04):** Geoff confirmed the fix is verified and approved merge, commit and push.
+
+## 2026-10-07 (Offshoots does the iPhone Duo properly before the GM)
+**Decision:** Offshoots gets a full fold-aware layout (`ReservedRegion` `.division`, `ArrangementView` `.split`) before its GM, which comes after the Duo ships. Other apps (Task(ed), Aislewise and the rest) may start with a "not broken" pass. "Buttons down" on the closed Duo is an Apple bug, not ours, so we do not work around it. Findings: `docs/2026-10-07-iphone-duo-findings.md`.
+**Why:** Offshoots is not released yet, so the right layout costs no more now than later. Apple's own apps also draw wrong when the closed Duo is held buttons down, and no Duo API controls that.
+**Alternative considered:** A minimum fix that only pads content away from the fold. Rejected for Offshoots; it is still an option for the other apps.
