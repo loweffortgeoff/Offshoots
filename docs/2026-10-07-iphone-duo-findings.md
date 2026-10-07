@@ -26,7 +26,7 @@ Test session only. No code changed.
 | 3 | Open, landscape | The phone layout stretches to full width: one column, cards about 700 pt wide. | Our code (design). |
 | 4 | Open, landscape | Tab bar is a vertical rail on the right; the status strip sits beside it. | Apple/platform. Correct. |
 | 5 | Open, portrait | Content scrolls under the floating tab bar. | Apple/platform. Normal. |
-| 6 | Opening the device | The splash screen looks slightly off (Geoff, not yet captured). Likely in every app with the same splash. | Probably our code. Not checked. |
+| 6 | Closed, first launch | Splash content sits left of centre: it centres in the safe area, and the camera strip makes the side insets unequal. Before it, a white launch screen shows (about 3 s on the simulator), then the screen jumps to green. | Our code. The white launch screen affects every device. |
 
 The closed outer display in its normal orientation lays out correctly.
 
