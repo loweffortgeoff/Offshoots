@@ -120,9 +120,12 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   (AnyLayout: side by side, or stacked). Chart text is capped at `.xxxLarge`.
 - **Splash on first launch only.** After a fresh install the splash shows
   once for 2 seconds; taps in that time miss. Later launches skip it
-  (`hasSeenSplash` in the app's plist). To see it again, uninstall, or
-  `simctl spawn <UDID> defaults delete com.geoffrey.silva.Offshoots hasSeenSplash`
-  with the app closed.
+  (`hasSeenSplash` in the app's plist). To see it again, uninstall and
+  install again (also on a phone: delete the app, then run from Xcode).
+  `simctl spawn … defaults delete hasSeenSplash` reports that the key does
+  not exist, and a `plutil -remove` on the app's plist is ignored because
+  the preferences are cached (checked 2026-10-07). The launch screen is
+  green (`UILaunchScreen` in `Offshoots/Info.plist`) until the first frame.
 - **Menus close on their own.** Take a screenshot after opening a Picker
   menu and tap the item at once. A late tap can land on the row behind it;
   on 2026-09-25 one opened an App Store link in Safari from Settings.
