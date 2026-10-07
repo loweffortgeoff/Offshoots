@@ -1,6 +1,7 @@
 # Reflection — Design Spec
 
-Status: draft for review, 2026-09-30. No code yet.
+Status: reviewed, 2026-10-01. All open questions closed. No code yet.
+Plan: `docs/superpowers/plans/2026-10-01-reflection.md`.
 
 Source: the Contrition "Paid Reflection Unlock" sketch and its Apple Intelligence UI
 plan (Dev Workstation, `App-Dev-Notes/Archived Projects/Contrition/`). This spec
@@ -19,6 +20,10 @@ Three surfaces. Each one is triggered by the user, shows inline, and is not save
 1. **Patterns** (Insights tab). Short observations across resolved decisions.
    Build first. The digest comes from existing `AnalyticsEngine` output plus
    category, stakes, expected-versus-actual and revisit notes.
+   Below 5 resolved decisions, the card shows a threshold line instead of the control,
+   for example "Patterns appear after 5 resolved decisions. 2 to go." The line shows
+   wherever the surface is not `hidden`, for buyers and non-buyers alike. It is the
+   useful empty state, and it is not a promotion.
 2. **Decision reflection** (Decision Detail, below the revisit history). Shown for a
    decision that has a marked outcome and at least one note or revisit. Output:
    - Summary: how the decision aged.
@@ -27,7 +32,8 @@ Three surfaces. Each one is triggered by the user, shows inline, and is not save
 3. **Clean Up Note** (Revisit, Mark Outcome and Log note fields). The user writes a
    rough note, then taps `Clean Up Note`. The app suggests a clearer version that keeps the
    meaning. The user accepts, edits or ignores it. It never rewrites by itself.
-   Available on every note field (Log, Mark Outcome, Revisit).
+   Available on three note fields: Log, Mark Outcome and Revisit. The Edit Decision
+   notes field is out of scope for v1.
 
 Out of scope: chat, tags or categories from the model, generated scores, AI
 notifications, onboarding for AI, Dashboard promotion, saved output, CloudKit,
@@ -39,8 +45,13 @@ widgets, new tabs.
 - Read-only, except Clean Up Note, which only suggests.
 - No advice on what to choose. No score, diagnosis or personality label.
 - Clean Up Note adds nothing the user did not imply. One mode, no tone picker.
-- Output is ephemeral view state. Controls: `Refresh` and `Copy` (Clean Up Note:
-  `Use`, `Dismiss`).
+- Output is ephemeral view state. Controls: `Copy` (Clean Up Note: `Use`, `Dismiss`).
+- No `Refresh`. Greedy sampling gives the same output for the same input, so a Refresh
+  tap would repeat the text. A change to the input (a new revisit, an edited note, a newly
+  marked decision) clears the result, and the user taps again. An error state keeps
+  `Try Again`.
+- When nothing is shown, no card is shown. A `hidden` surface draws no title, no
+  background and no empty card.
 
 ## Architecture
 
@@ -48,11 +59,16 @@ New feature folder `Offshoots/Reflection/`. Follow the file granularity rules: o
 type of substance per file.
 
 - **Policy (pure, tested without a model):**
-  - `ReflectionGate`: maps model availability plus entitlement to a surface state:
-    `hidden`, `enabled`, `paywalled`. (`freePreview` is added only if the free preview
-    question below resolves to yes.)
+  - `ReflectionGate`: maps model availability plus entitlement to one of four surface
+    states: `hidden`, `notReady(reason)`, `paywalled`, `enabled`. Availability covers
+    the OS version, device eligibility, Apple Intelligence, model readiness and locale
+    support (`supportsLocale`). An unsupported locale gives `hidden`. No `freePreview`
+    state (decided: no free preview).
   - `ReflectionEligibility`: decides which decisions and notes may produce output.
   - `ReflectionDigestBuilder`: condenses decisions into a small, stable struct for the prompt.
+    The on-device model has a small context window, so the digest has a fixed size cap.
+    Each note is cut to a maximum length (the plan uses 1,500 characters), and the
+    digest is tested against that cap.
   - `ReflectionPromptBuilder`: pure prompt and instruction strings.
 - **Generation:** `ReflectionGenerating` protocol, with a `LiveReflectionService` as the
   only file that imports `FoundationModels`. Each call makes a new `LanguageModelSession`
@@ -71,29 +87,31 @@ type of substance per file.
   Intelligence to be on and the device to be eligible.
 - Gate all Foundation Models code with `#available(iOS 26, *)`. The Live service and any
   view that touches it sit behind that check. On iOS 18.6 to 25.x, the surfaces are `hidden`.
-- Ineligible device or Apple Intelligence off: `hidden`. Model not ready: disabled
-  control with the reason. Simulator: no model, so `hidden`. Real output needs a device
-  (iPhone 17, the device of record).
+- Ineligible device, Apple Intelligence off or unsupported locale: `hidden`. Model not
+  ready: `notReady`, a disabled control with the reason. Simulator: assumed to have no
+  model, so `hidden`. Real output needs a device (iPhone 17, the device of record).
+- Unverified: the Xcode 26+ simulator may use the host Mac's model when Apple
+  Intelligence is on for that Mac. To check, print `SystemLanguageModel.default.availability`
+  in a simulator run on the Mac mini. If the model is available, the simulator can show
+  real output, and the fake generator stays for tests and screenshots.
 - Re-check the framework signatures against the installed SDK before writing the live
   service. The Contrition plan was written against an earlier Xcode 27 seed. Check
   `xcodebuild -version` on the machine in use.
 
 ## Monetization
 
-**Model: paid unlock, priced later.**
+**Model: one-time purchase (non-consumable), $5.99.** Decided 2026-10-01.
 
-- Launch plan: a **one-time purchase** (non-consumable), with a price near the Contrition
-  sketch of $4.99. The price is **not settled**.
-- **A low-cost subscription is not ruled out.** If it comes, it sits at a much lower entry
-  point than typical. This overrides the Contrition guardrail "No subscriptions".
-- **The design does not depend on the price or on the purchase type:**
-  - The gate reads one value: `isUnlocked`.
-  - `ReflectionEntitlement` sets it from `Transaction.currentEntitlements`, checking any
-    product ID in a list. A non-consumable and a subscription in that list both unlock.
-  - Paywall copy shows `Product.displayPrice` and subscription terms from StoreKit. It
-    hard-codes no price and does not say "one-time".
-  - A buyer of the one-time unlock keeps access if a subscription is added later, because
-    that purchase stays in the list.
+- Family Sharing: off. App Store Connect lets you turn it on later, but not off after
+  that. Off is the safe v1 choice.
+- No subscription is planned. The entitlement still checks a product-ID list, which costs
+  nothing and needs no rework if a subscription ever ships.
+- The gate reads one value: `isUnlocked`.
+- `ReflectionEntitlement` sets it from `Transaction.currentEntitlements` at launch and
+  keeps it current with `Transaction.updates`. A revoked (refunded) transaction does not
+  count, and a refund locks the surfaces again with no relaunch.
+- Paywall copy shows `Product.displayPrice` from StoreKit and hard-codes no price. It may
+  say "one-time purchase", because that is now true.
 - Paywall framing: "Unlock Reflection". Sell better reflection, not an AI bundle. Bullets:
   pattern highlights, decision reflections, clearer notes. Avoid "AI coach", "ask anything",
   "personal advisor", "predict regret".
@@ -102,6 +120,10 @@ type of substance per file.
 - Gate the paywall on model availability. Never sell the unlock on a device that cannot use it.
 - Context: the Tip Jar was removed on 2026-09-26 (see `DECISIONS.md`), so this is the
   first in-app purchase since the 2.0.0 relaunch. It adds an IAP to App Review.
+- App Review risk: the paywall is hidden on a device that cannot run the model. If the
+  reviewer's device cannot run it, the reviewer cannot find the IAP. Submit a review
+  screenshot of the paywall and a review note: "Needs an Apple Intelligence-capable
+  device on iOS 26 or later."
 - Privacy: no network calls, no analytics. All generation runs on the device.
 
 ## Testing
