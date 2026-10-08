@@ -44,19 +44,19 @@ struct FoldPane<Content: View>: View {
                 .frame(maxWidth: maxWidth)
                 .frame(maxWidth: .infinity)
         case .top(let height):
-            // The tab bar's bottom inset still reaches the content when the pane stops at the
-            // fold. Give the content that much extra height and cut it at the fold, so the inset
-            // eats the extra. The cut reaches up to the screen edge, so the navigation bar
-            // (a full-screen layer beside the status strip) stays visible.
+            // No extra height here: content that scrolls under the fold mask can never be reached.
+            // The cut reaches up to the screen edge, so the navigation bar (a full-screen layer
+            // beside the status strip) stays visible.
             content
-                .frame(height: height + screenInsets.bottom)
-                .frame(height: height, alignment: .top)
+                .frame(height: height)
                 .mask(alignment: .bottom) {
                     Rectangle().frame(height: height + origin.y)
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
         case .leading(let width):
-            // The same for the trailing inset of the tab rail
+            // The tab rail's trailing inset still reaches the content when the pane stops at the
+            // fold. Give the content that much extra width and cut it at the fold, so the inset
+            // eats the extra. (Checked on the Duo: the cards reach the fold with the normal margin.)
             content
                 .frame(width: width + screenInsets.trailing)
                 .frame(width: width, alignment: .leading)
