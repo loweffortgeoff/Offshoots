@@ -9,54 +9,16 @@ internal import SwiftUI
 
 struct DecisionsListView: View {
     @Environment(DecisionStore.self) private var store
-    @Binding var path: NavigationPath
+    @Binding var path: [Decision]
     @State private var decisionToDelete: Decision?
     @State private var showDeleteAlert = false
     @State private var decisionToEdit: Decision?
     @ScaledMetric(relativeTo: .largeTitle) private var emptyIconSize: CGFloat = 60
 
     var body: some View {
-        NavigationStack(path: $path) {
-            ZStack {
-                Color.offshootBackground
-                    .ignoresSafeArea()
-
-                if store.decisions.isEmpty {
-                    emptyState
-                } else {
-                    ScrollView {
-                        VStack(spacing: 24) {
-                            decisionSection(
-                                "Ready to Review",
-                                icon: "bell.badge.fill",
-                                color: .offshootPrimary,
-                                decisions: store.readyForReviewDecisions
-                            )
-
-                            decisionSection(
-                                "Upcoming",
-                                icon: "hourglass.circle.fill",
-                                color: .outcomePending,
-                                decisions: store.upcomingDecisions
-                            )
-
-                            decisionSection(
-                                "History",
-                                icon: "checkmark.circle.fill",
-                                color: .offshootPrimary,
-                                decisions: store.historyDecisions
-                            )
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 24)
-                    }
-                }
-            }
-            .navigationDestination(for: Decision.self) { decision in
-                DecisionDetailView(decision: decision)
-            }
-            .navigationTitle("Decisions")
-            .navigationBarTitleDisplayMode(.large)
+        GeometryReader { proxy in
+            let screenWidth = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
+            layout(twoPanes: FoldLayout.usesTwoPanes(width: screenWidth))
         }
         .sheet(item: $decisionToEdit) { decision in
             EditDecisionView(decision: decision)
@@ -76,6 +38,67 @@ struct DecisionsListView: View {
                 Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone.")
             }
         }
+    }
+
+    @ViewBuilder
+    private func layout(twoPanes: Bool) -> some View {
+        if twoPanes, #available(iOS 27.1, *) {
+            DecisionsSplitView(selection: DecisionsSelection.current(path: path, in: store.decisions)) {
+                NavigationStack {
+                    listContent(twoPanes: true)
+                }
+            }
+        } else {
+            NavigationStack(path: $path) {
+                listContent(twoPanes: false)
+                    .navigationDestination(for: Decision.self) { decision in
+                        DecisionDetailView(decision: decision)
+                    }
+            }
+        }
+    }
+
+    private func listContent(twoPanes: Bool) -> some View {
+        ZStack {
+            Color.offshootBackground
+                .ignoresSafeArea()
+
+            if store.decisions.isEmpty {
+                emptyState
+            } else {
+                ScrollView {
+                    VStack(spacing: 24) {
+                        decisionSection(
+                            "Ready to Review",
+                            icon: "bell.badge.fill",
+                            color: .offshootPrimary,
+                            decisions: store.readyForReviewDecisions,
+                            twoPanes: twoPanes
+                        )
+
+                        decisionSection(
+                            "Upcoming",
+                            icon: "hourglass.circle.fill",
+                            color: .outcomePending,
+                            decisions: store.upcomingDecisions,
+                            twoPanes: twoPanes
+                        )
+
+                        decisionSection(
+                            "History",
+                            icon: "checkmark.circle.fill",
+                            color: .offshootPrimary,
+                            decisions: store.historyDecisions,
+                            twoPanes: twoPanes
+                        )
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 24)
+                }
+            }
+        }
+        .navigationTitle("Decisions")
+        .navigationBarTitleDisplayMode(.large)
     }
 
     private var emptyState: some View {
@@ -124,7 +147,8 @@ struct DecisionsListView: View {
         _ title: String,
         icon: String,
         color: Color,
-        decisions: [Decision]
+        decisions: [Decision],
+        twoPanes: Bool
     ) -> some View {
         if !decisions.isEmpty {
             VStack(alignment: .leading, spacing: 12) {
@@ -132,22 +156,45 @@ struct DecisionsListView: View {
 
                 VStack(spacing: 12) {
                     ForEach(decisions) { decision in
-                        NavigationLink(value: decision) {
-                            DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
-                        }
-                        .buttonStyle(.plain)
-                        .contextMenu {
-                            Button("Edit", systemImage: "pencil") {
-                                decisionToEdit = decision
+                        row(decision, twoPanes: twoPanes)
+                            .contextMenu {
+                                Button("Edit", systemImage: "pencil") {
+                                    decisionToEdit = decision
+                                }
+                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                    decisionToDelete = decision
+                                    showDeleteAlert = true
+                                }
                             }
-                            Button("Delete", systemImage: "trash", role: .destructive) {
-                                decisionToDelete = decision
-                                showDeleteAlert = true
-                            }
-                        }
                     }
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private func row(_ decision: Decision, twoPanes: Bool) -> some View {
+        let rowView = DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
+        if twoPanes {
+            let isSelected = path.last?.id == decision.id
+            Button {
+                path = [decision]
+            } label: {
+                rowView
+            }
+            .buttonStyle(.plain)
+            .overlay {
+                if isSelected {
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.offshootPrimary, lineWidth: 2)
+                }
+            }
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+        } else {
+            NavigationLink(value: decision) {
+                rowView
+            }
+            .buttonStyle(.plain)
         }
     }
 
@@ -164,7 +211,7 @@ struct DecisionsListView: View {
 }
 
 #Preview {
-    DecisionsListView(path: .constant(NavigationPath()))
+    DecisionsListView(path: .constant([]))
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
 }

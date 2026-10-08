@@ -20,7 +20,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var notificationDelegate = NotificationDelegate.shared
     @State private var selectedTab: AppTab = .dashboard
-    @State private var decisionsPath = NavigationPath()
+    @State private var decisionsPath: [Decision] = []
     /// A starter suggestion on its way from the Dashboard to the Log form
     @State private var logDraft: StarterSuggestion?
 
@@ -38,7 +38,7 @@ struct ContentView: View {
                     Label("Log", systemImage: "plus.circle.fill")
                 }
 
-            DecisionsListView(path: $decisionsPath)
+            FoldPane(ownsWideLayout: true) { DecisionsListView(path: $decisionsPath) }
                 .tag(AppTab.decisions)
                 .tabItem {
                     Label("Decisions", systemImage: "checklist")
@@ -77,9 +77,7 @@ struct ContentView: View {
         guard let target = store.decisions.first(where: { $0.id == id }) else { return }
 
         selectedTab = .decisions
-        var path = NavigationPath()
-        path.append(target)
-        decisionsPath = path
+        decisionsPath = [target]
     }
 }
 
