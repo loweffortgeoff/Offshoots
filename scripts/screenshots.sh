@@ -41,6 +41,7 @@
 # Usage:
 #   scripts/screenshots.sh              # setup
 #   scripts/screenshots.sh shot 01-dashboard
+#   scripts/screenshots.sh reload       # reset the data, no erase
 #   DEVICE="iPhone Duo" scripts/screenshots.sh shot 08-decisions-open open
 #
 # DEVICE, OS and SCREENSHOT_OUT_DIR override the defaults.
@@ -135,6 +136,16 @@ setup() {
   echo "   Output: $OUT_DIR"
 }
 
+# Reload the fixture without erasing the simulator, then relaunch the app
+reload() {
+  local id; id=$(require_udid)
+  xcrun simctl terminate "$id" "$BUNDLE" 2>/dev/null || true
+  local container; container=$(xcrun simctl get_app_container "$id" "$BUNDLE" data)
+  shifted_fixture > "$container/Documents/decisions.json"
+  xcrun simctl launch "$id" "$BUNDLE" >/dev/null
+  echo "🌱 Screenshot data reloaded, shifted to today."
+}
+
 shot() {
   local name=${1:?usage: scripts/screenshots.sh shot <name> [closed|open]}
   local id; id=$(require_udid)
@@ -155,6 +166,7 @@ shot() {
 
 case ${1:-setup} in
   setup) setup ;;
+  reload) reload ;;
   shot) shift; shot "$@" ;;
-  *) echo "Usage: scripts/screenshots.sh [setup | shot <name> [closed|open]]" >&2; exit 1 ;;
+  *) echo "Usage: scripts/screenshots.sh [setup | reload | shot <name> [closed|open]]" >&2; exit 1 ;;
 esac
