@@ -938,4 +938,4 @@ Use the `doc-keeper` agent: tick the TODO item "iPhone Duo: proper fold-aware la
 
 - [ ] **Step 4: Stop and show Geoff**
 
-Report the branch state, what he checks, the results of Step 1, and what is left. Offer: merge to `main` (Claude merges locally; Geoff pushes), and delete `scratch/duo-probe` and `scratch/…` branches (only with his OK). Wait for his go.
+Report the branch state, what he checks, the results of Step 1, and what is left. Offer: merge to `main` (Claude merges locally; Geoff pushes), and delete the `scratch/duo-probe` branch (only with his OK). Wait for his go.
