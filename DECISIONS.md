@@ -247,3 +247,23 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Offshoots gets a full fold-aware layout (`ReservedRegion` `.division`, `ArrangementView` `.split`) before its GM, which comes after the Duo ships. Other apps (Task(ed), Aislewise and the rest) may start with a "not broken" pass. "Buttons down" on the closed Duo is an Apple bug, not ours, so we do not work around it. Findings: `docs/2026-10-07-iphone-duo-findings.md`.
 **Why:** Offshoots is not released yet, so the right layout costs no more now than later. Apple's own apps also draw wrong when the closed Duo is held buttons down, and no Duo API controls that.
 **Alternative considered:** A minimum fix that only pads content away from the fold. Rejected for Offshoots; it is still an option for the other apps.
+
+## 2026-10-07 (Offshoots builds only with Xcode 27.1 or later)
+**Decision:** Offshoots builds only with Xcode 27.1 or later, and only on the Mac mini. The fold APIs (`.division` reserved region, `GeometryProxy.reservedRegions`) are in the iOS 27.1 SDK. The app still supports iOS 18.6 at runtime: the fold code sits behind `#available`. Other projects stay on regular Xcode. Offshoots does not release before the Duo does.
+**Why:** The fold layout needs these APIs. The Mac mini is the only machine that moves to Xcode 27.1 for now, and no other project needs the new SDK. The release waits for the Duo anyway.
+**Alternative considered:** Move every project and both Macs to Xcode 27.1. Rejected: it risks other apps for no gain.
+
+## 2026-10-07 (Fold layout: refinements to the spec)
+**Decision:** Four refinements to `docs/superpowers/specs/2026-10-07-duo-fold-layout-design.md`, found while testing on the Duo. (1) `FoldPane` wraps whole tabs in `ContentView`, not each screen. (2) The pane edge is the region frame plus its margins (435.5 pt). (3) The Decisions path is `[Decision]` instead of `NavigationPath`, and the `DecisionsSelection` helper picks the detail. (4) Decisions skips `FoldPane` in wide landscape, because it splits there.
+**Why:** Whole-tab wrapping keeps one fold rule in one place. The margins are part of the fold, so the pane must stop at the frame plus margins. A typed path lets the split view choose the detail. A split view cannot also sit in a half pane. Four bugs on the Duo shaped the rest. The pane overshot the fold because it measured from the screen edge, not from its own origin. The tab rail's trailing inset shrank the left pane by 84 pt, so the left pane gets extra width and is cut at the fold. A plain clip hid the full-screen navigation bar (back button, Edit, trash, logo), so the cut now reaches the screen edge on the side away from the fold. Extra height on the top pane hid the last 83 pt of scrolling content, so the top pane gets no extra height.
+**Alternative considered:** Wrap each screen in `FoldPane`. Keep `NavigationPath` and map it to a decision. Both add code for no gain.
+
+## 2026-10-07 (Fold layout uses system APIs only, for now)
+**Decision:** The fold layout uses system APIs only (`ReservedRegion`, `ArrangementView`, `GeometryProxy`). It has no hard-coded Duo sizes and no device checks.
+**Why:** Duo behaviour is not well understood yet, and good examples do not exist. System values follow the device if Apple changes it.
+**Alternative considered:** Hard-code the Duo fold size. Rejected: it breaks when the hardware or the OS changes.
+
+## 2026-10-07 (Fold layout choices Geoff may amend)
+**Decision:** Three layout choices stand for now, and Geoff keeps the right to change them. (1) Only Decisions splits into two panes. (2) Partly open screens that do not split use one half: the top half in portrait, the left half in landscape. (3) Fully open screens that do not split use a centred column up to 600 pt. Each choice is one constant or one view, so a change is small.
+**Why:** The choices are a judgment call made before anyone has used the Duo daily. A simple rule per case is easy to move later.
+**Alternative considered:** Split more screens (for example Insights), or fill both halves when partly open. Left for a later look, after use on the Duo.

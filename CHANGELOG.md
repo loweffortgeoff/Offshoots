@@ -5,10 +5,15 @@ In-flight changes from coding sessions. The release pass turns these into releas
 ## In Progress
 
 #### Added
+- iPhone Duo: the app keeps content off the fold. When the Duo is partly open, Dashboard, Log, Insights and Settings sit in one half (the top half in portrait, the left half in landscape). Navigation bars, back buttons and toolbar buttons stay visible. The fold comes from the system's `.division` reserved region, so other iPhones are unchanged.
+- iPhone Duo: Decisions shows the list and the detail side by side in wide landscape (screen width 900 pt or more), partly open or fully open.
+- iPhone Duo: when fully open, the other screens sit in a centred column up to 600 pt wide. The phone layout no longer stretches across the screen.
 - Settings > Data > Import Decisions restores an Export Decisions file. An empty app imports at once. Otherwise it asks "Replace N decisions with M from the file?" first. A wrong file shows "This file is not an Offshoots export." Old reminders are cancelled and the imported decisions' future reminders are scheduled.
 - Reflection, an optional $5.99 one-time unlock with Restore in Settings. Patterns on Insights, a reflection on Decision Detail, and Clean Up Note on the Log, Mark Outcome and Revisit note fields. The text comes from the on-device model, so nothing leaves the phone. It needs Apple Intelligence on iOS 26 or later; other devices do not see Reflection.
 
 #### Changed
+- Offshoots builds only with Xcode 27.1 or later, because the fold APIs are in the iOS 27.1 SDK. The app still supports iOS 18.6 at runtime.
+- The Decisions navigation path is now a list of decisions (`[Decision]`) instead of `NavigationPath`.
 - iPad: the app window now resizes freely, up to the phone width that iPadOS allows (about 512 pt). Before, it snapped between two fixed sizes. The app stays iPhone-only. The deprecated `UIRequiresFullScreen` flag is removed.
 - Reflection: the purchase sheet no longer says "not charged" when the purchase is unverified. The paywall keeps its pending state and clears the old Restore message. A control that is not ready says "Reopen the app in a little while." The Settings footer now covers text generation only. The Import picker shows "unreadable" for a file it cannot read.
 - Reflection: Restore Purchase is full width at accessibility text sizes.

@@ -189,6 +189,37 @@ The iPhone 17 runs iOS 27 (non Beta, stable releases). It builds from Xcode 27.0
 
 Both devices also build from Xcode 27 on the MacBook Pro. 
 
+# iPhone Duo (fold layout)
+
+Spec: `docs/superpowers/specs/2026-10-07-duo-fold-layout-design.md`. Code: `Offshoots/Fold/`.
+
+- **Offshoots builds only with Xcode 27.1 or later, on the Mac mini.** The fold
+  APIs are in the iOS 27.1 SDK. Prefix commands with
+  `DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer"`. The app
+  still runs on iOS 18.6: every 27.1 call sits behind `#available(iOS 27.1, *)`.
+- **Posture table** (iPhone Duo simulator, from the probe): the `.division`
+  region is active only when the device is partly open. Closed 466 x 678, no
+  region. Partly open portrait 669 x 951, band at y 455, 40 pt tall, 20 pt
+  margins. Partly open landscape 951 x 669, band at x 455. Fully open: same
+  sizes, region inactive.
+- **Debug log lines** (DEBUG builds): `FOLDPOSTURE` and `FOLDPANE` show the
+  posture and the pane fit. Read them with `simctl spawn <UDID> log show --last
+  30s --info --predicate 'eventMessage CONTAINS "FOLDPANE"'`. Use them, not
+  pixel positions, to check pane edges.
+- **Only Geoff can fold and rotate the Duo**, in DeviceHub. The DeviceHub image
+  of a bent device is scaled differently on each axis, so do not measure points
+  from it. `simctl io screenshot` captures the display that is off in some
+  postures (black image); the simulator tool's `screenshot` follows the active
+  screen.
+- **Gotchas found on the Duo.** A `NavigationStack` is a full-screen UIKit
+  layer: a smaller `.frame` does not move its navigation bar, and the tab rail's
+  trailing inset (84 pt) still reaches its content. `FoldPane` handles both: it
+  gives a left pane extra width and cuts at the fold with a mask that reaches
+  the screen edge. Extra height on a top pane hides the last scrolling content.
+- **Not checked on the Duo** (2026-10-07): a reminder tap in two-pane
+  landscape (the app needs notification permission first), and the splash with
+  a reset `hasSeenSplash`.
+
 # Colors
 
 Adaptive colors live in `Assets.xcassets` with light and dark values.

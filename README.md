@@ -68,7 +68,8 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **StoreKit** | Reflection one-time unlock, Restore (StoreKit 2) |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot fixture |
+| **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot fixture |
 
 ## Project Structure
 
@@ -106,6 +107,8 @@ Offshoots/
 │  # Decisions
 ├── LogDecisionView.swift          # Log a new decision
 ├── DecisionsListView.swift        # Ready to Review, Upcoming, History
+├── DecisionsSplitView.swift       # List and detail side by side in wide landscape (iPhone Duo)
+├── DecisionsSelection.swift       # Which decision the detail pane shows
 ├── DecisionRowView.swift          # One decision row
 ├── DecisionDetailView.swift       # Full decision details, revisit history
 ├── RevisitHistoryCard.swift       # Revisit timeline on the detail screen
@@ -117,6 +120,9 @@ Offshoots/
 ├── ReviewDatePreset.swift         # Tomorrow / 3 days / 1 week / 1 month presets
 ├── ReviewDatePresetRow.swift      # Preset buttons on Log and Edit
 ├── PredictionResultBanner.swift   # How the first rating compared with the prediction
+│
+│  # iPhone Duo fold layout (Fold/ folder)
+├── Fold/                          # FoldRegion, FoldLayout, FoldPosture, FoldPostureReader, FoldPane
 │
 │  # Insights
 ├── AnalyticsView.swift            # Insights screen, empty state, Decision Activity card
@@ -136,12 +142,14 @@ Offshoots/
 ├── SettingsView.swift             # Settings screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, Reflection policy, screenshot fixture
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, Reflection policy, screenshot fixture
 Reflection.storekit                # Local StoreKit test product, on the scheme's Run action
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
 scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pro Max
 ```
+
+The app needs **Xcode 27.1 or later** (iOS 27.1 SDK) to build, on the Mac mini. It still supports iOS 18.6 at runtime. See `CLAUDE.md`, "iPhone Duo (fold layout)".
 
 ## Privacy
 
