@@ -10,4 +10,6 @@ internal import SwiftUI
 struct FoldRegion: Equatable {
     var frame: CGRect
     var margins: EdgeInsets
+    /// False when the Duo is fully open: the region exists but nothing is in the way
+    var isActive: Bool = true
 }

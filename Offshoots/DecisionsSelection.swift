@@ -12,4 +12,11 @@ enum DecisionsSelection {
         }
         return last
     }
+
+    /// The path without decisions that no longer exist. Without this, a decision deleted
+    /// while the detail pane shows it stays in the path, and the next rotation to one
+    /// column pushes a detail page for it.
+    static func pruned(path: [Decision], in decisions: [Decision]) -> [Decision] {
+        path.filter { entry in decisions.contains { $0.id == entry.id } }
+    }
 }

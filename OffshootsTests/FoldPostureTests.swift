@@ -24,8 +24,24 @@ struct FoldPostureTests {
         margins: EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
     )
 
+    /// Fully open: the region exists but is inactive
+    static let inactiveVerticalBand = FoldRegion(
+        frame: CGRect(x: 455, y: 0, width: 40, height: 669),
+        margins: EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20),
+        isActive: false
+    )
+
     @Test func noRegionsIsFlat() {
         #expect(FoldPosture(regions: []) == .flat)
+    }
+
+    @Test func onlyInactiveRegionsMeansFullyOpen() {
+        #expect(FoldPosture(regions: [Self.inactiveVerticalBand]) == .unfolded)
+    }
+
+    @Test func anActiveRegionWinsOverAnInactiveOne() {
+        let posture = FoldPosture(regions: [Self.inactiveVerticalBand, Self.horizontalBand])
+        #expect(posture == FoldPosture(regions: [Self.horizontalBand]))
     }
 
     @Test func horizontalBandKeepsOutTheBandAndItsMargins() {
@@ -48,21 +64,39 @@ struct FoldPostureTests {
         #expect(posture.paneFit(containerWidth: 951, ownsWideLayout: false) == .leading(width: 435))
     }
 
-    @Test func flatFitsACentredReadableColumn() {
-        #expect(FoldPosture.flat.paneFit(containerWidth: 951, ownsWideLayout: false) == .centered(maxWidth: 600))
-        #expect(FoldPosture.flat.paneFit(containerWidth: 440, ownsWideLayout: false) == .centered(maxWidth: 600))
+    // Other iPhones, in any orientation, and the closed Duo: nothing changes
+    @Test func flatUsesTheWholeScreen() {
+        #expect(FoldPosture.flat.paneFit(containerWidth: 951, ownsWideLayout: false) == .fill)
+        #expect(FoldPosture.flat.paneFit(containerWidth: 956, ownsWideLayout: false) == .fill)
+        #expect(FoldPosture.flat.paneFit(containerWidth: 440, ownsWideLayout: false) == .fill)
+    }
+
+    @Test func fullyOpenFitsACentredReadableColumn() {
+        #expect(FoldPosture.unfolded.paneFit(containerWidth: 951, ownsWideLayout: false) == .centered(maxWidth: 600))
+        #expect(FoldPosture.unfolded.paneFit(containerWidth: 669, ownsWideLayout: false) == .centered(maxWidth: 600))
     }
 
     @Test func wideLayoutOwnerFillsTheScreenInWideLandscape() {
         let folded = FoldPosture(regions: [Self.verticalBand])
         #expect(folded.paneFit(containerWidth: 951, ownsWideLayout: true) == .fill)
-        #expect(FoldPosture.flat.paneFit(containerWidth: 951, ownsWideLayout: true) == .fill)
+        #expect(FoldPosture.unfolded.paneFit(containerWidth: 951, ownsWideLayout: true) == .fill)
     }
 
-    @Test func wideLayoutOwnerStillFitsThePaneInPortraitAndOnPhones() {
+    @Test func wideLayoutOwnerStillFitsThePaneInPortrait() {
         let folded = FoldPosture(regions: [Self.horizontalBand])
         #expect(folded.paneFit(containerWidth: 669, ownsWideLayout: true) == .top(height: 435))
-        #expect(FoldPosture.flat.paneFit(containerWidth: 440, ownsWideLayout: true) == .centered(maxWidth: 600))
+        #expect(FoldPosture.unfolded.paneFit(containerWidth: 669, ownsWideLayout: true) == .centered(maxWidth: 600))
+        #expect(FoldPosture.flat.paneFit(containerWidth: 440, ownsWideLayout: true) == .fill)
+    }
+
+    // Review: a Plus or Max iPhone in landscape is 956 pt wide but must not get two panes
+    @Test func twoPanesNeedAFoldableDeviceAndAWideScreen() {
+        let folded = FoldPosture(regions: [Self.verticalBand])
+        #expect(folded.supportsTwoPanes(width: 951))
+        #expect(FoldPosture.unfolded.supportsTwoPanes(width: 951))
+        #expect(!FoldPosture.unfolded.supportsTwoPanes(width: 669))
+        #expect(!FoldPosture.flat.supportsTwoPanes(width: 956))
+        #expect(!FoldPosture.flat.supportsTwoPanes(width: 874))
     }
 
     // Review Focus 1: more than one region

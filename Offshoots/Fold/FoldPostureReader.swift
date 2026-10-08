@@ -6,7 +6,7 @@
 internal import SwiftUI
 
 extension EnvironmentValues {
-    /// Whether a fold is in the way. `.flat` unless the Duo is partly open.
+    /// Whether a fold is in the way. `.flat` unless the device can fold.
     @Entry var foldPosture: FoldPosture = .flat
 }
 
@@ -45,8 +45,8 @@ private struct DivisionRegionReader: View {
 
     var body: some View {
         GeometryReader { proxy in
-            let regions = proxy.reservedRegions(kind: .division).map {
-                FoldRegion(frame: $0.frame, margins: $0.margins)
+            let regions = proxy.reservedRegions(kind: .division, options: .includeInactive).map {
+                FoldRegion(frame: $0.frame, margins: $0.margins, isActive: $0.isActive)
             }
             Color.clear
                 .onChange(of: regions, initial: true) { _, new in

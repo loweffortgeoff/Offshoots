@@ -10,6 +10,7 @@ internal import SwiftUI
 struct DecisionsListView: View {
     @Environment(DecisionStore.self) private var store
     @Binding var path: [Decision]
+    @Environment(\.foldPosture) private var foldPosture
     @State private var decisionToDelete: Decision?
     @State private var showDeleteAlert = false
     @State private var decisionToEdit: Decision?
@@ -18,7 +19,14 @@ struct DecisionsListView: View {
     var body: some View {
         GeometryReader { proxy in
             let screenWidth = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
-            layout(twoPanes: FoldLayout.usesTwoPanes(width: screenWidth))
+            layout(twoPanes: foldPosture.supportsTwoPanes(width: screenWidth))
+        }
+        .onChange(of: store.decisions) { _, decisions in
+            // A deleted decision must not stay in the path: the next rotation would push a detail for it
+            let pruned = DecisionsSelection.pruned(path: path, in: decisions)
+            if pruned != path {
+                path = pruned
+            }
         }
         .sheet(item: $decisionToEdit) { decision in
             EditDecisionView(decision: decision)
