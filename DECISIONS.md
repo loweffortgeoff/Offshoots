@@ -267,3 +267,14 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Three layout choices stand for now, and Geoff keeps the right to change them. (1) Only Decisions splits into two panes. (2) Partly open screens that do not split use one half: the top half in portrait, the left half in landscape. (3) Fully open screens that do not split use a centred column up to 600 pt. Each choice is one constant or one view, so a change is small.
 **Why:** The choices are a judgment call made before anyone has used the Duo daily. A simple rule per case is easy to move later.
 **Alternative considered:** Split more screens (for example Insights), or fill both halves when partly open. Left for a later look, after use on the Duo.
+
+## 2026-10-07 (Fold layout changes only a foldable device)
+**Decision:** Only a device with a fold gets the fold layout. The app detects it from the system: a foldable device reports a `.division` region even when fully open (inactive), and every other device reports none. The posture has three cases: `flat` (any other device, and the closed Duo: the whole screen, as before), `unfolded` (the Duo fully open: a centred column up to 600 pt, two-pane Decisions in wide landscape) and `folded` (the Duo partly open: one half, two-pane Decisions in wide landscape).
+**Why:** The final review found that a width rule changes every iPhone in landscape (874 to 956 pt wide), and gives a Pro Max iPhone the two-pane Decisions. Width alone cannot tell a Pro Max in landscape (956 pt) from the open Duo (951 pt). The review also found that one view branch per layout rebuilt the whole tab when the Duo folded, which wiped a half-typed Log entry. `FoldPane` now uses one view chain for every layout.
+**Alternative considered:** Raise the width threshold above 956 pt. Rejected: the open Duo is narrower than a Pro Max.
+
+## 2026-10-07 (Rotating the Duo rebuilds the Decisions detail)
+**Decision:** Accept it for now. When the Duo rotates between two-pane landscape and one column, the Decisions detail view is rebuilt. The selected decision stays (it lives in the path), but text typed in an open Mark Outcome or Edit sheet is lost.
+**Why:** The two layouts use different containers (`ArrangementView` and `NavigationStack`), so one view chain cannot cover both. It affects only the Duo, and only a rotation with a sheet open.
+**Alternative considered:** Keep one container and fake the split. Rejected: more code and more risk for a rare case.
+

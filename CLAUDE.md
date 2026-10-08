@@ -198,7 +198,9 @@ Spec: `docs/superpowers/specs/2026-10-07-duo-fold-layout-design.md`. Code: `Offs
   `DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer"`. The app
   still runs on iOS 18.6: every 27.1 call sits behind `#available(iOS 27.1, *)`.
 - **Posture table** (iPhone Duo simulator, from the probe): the `.division`
-  region is active only when the device is partly open. Closed 466 x 678, no
+  region is active only when the device is partly open. Fully open it is still
+  reported, as inactive; any other device reports none. The app uses that to
+  tell the Duo from other iPhones (`FoldPosture`: `flat`, `unfolded`, `folded`). Closed 466 x 678, no
   region. Partly open portrait 669 x 951, band at y 455, 40 pt tall, 20 pt
   margins. Partly open landscape 951 x 669, band at x 455. Fully open: same
   sizes, region inactive.
