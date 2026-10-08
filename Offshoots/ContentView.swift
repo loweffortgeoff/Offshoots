@@ -26,13 +26,13 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            DashboardView(selectedTab: $selectedTab, logDraft: $logDraft)
+            FoldPane { DashboardView(selectedTab: $selectedTab, logDraft: $logDraft) }
                 .tag(AppTab.dashboard)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
 
-            LogDecisionView(selectedTab: $selectedTab, draft: $logDraft)
+            FoldPane { LogDecisionView(selectedTab: $selectedTab, draft: $logDraft) }
                 .tag(AppTab.log)
                 .tabItem {
                     Label("Log", systemImage: "plus.circle.fill")
@@ -44,19 +44,20 @@ struct ContentView: View {
                     Label("Decisions", systemImage: "checklist")
                 }
 
-            AnalyticsView()
+            FoldPane { AnalyticsView() }
                 .tag(AppTab.insights)
                 .tabItem {
                     Label("Insights", systemImage: "brain.head.profile")
                 }
 
-            SettingsView()
+            FoldPane { SettingsView() }
                 .tag(AppTab.settings)
                 .tabItem {
                     Label("Settings", systemImage: "gearshape.fill")
                 }
         }
         .tint(Color.offshootPrimary)
+        .readsFoldPosture()
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 store.refreshReviewState()
