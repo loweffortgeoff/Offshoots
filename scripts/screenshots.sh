@@ -29,21 +29,37 @@
 # Scroll with slow drags that pause before lifting (Claude's simulator tool:
 # touch_path), not flicks. A flick keeps moving after release.
 #
+# iPhone Duo: DEVICE="iPhone Duo" switches to Xcode 27.1 RC and iOS 27.1, and
+# writes to Captures/<date>/duo/. The Duo has two displays, and only Geoff can
+# fold it (in DeviceHub). App Store Connect sizes:
+#   closed  1398 x 2034 (the "closed" display)  shots 01-07, same list as above
+#   open    2007 x 2853 (the "open" display)    shot 08-decisions-open
+# 08: fold the Duo partly open in landscape (Decisions list and detail side by
+# side), select a marked decision, then capture. Scroll positions for the Duo
+# are not tuned yet: check each closed shot after the first run.
+#
 # Usage:
 #   scripts/screenshots.sh              # setup
 #   scripts/screenshots.sh shot 01-dashboard
+#   DEVICE="iPhone Duo" scripts/screenshots.sh shot 08-decisions-open open
 #
 # DEVICE, OS and SCREENSHOT_OUT_DIR override the defaults.
 set -euo pipefail
 
 BUNDLE=com.geoffrey.silva.Offshoots
 DEVICE=${DEVICE:-"iPhone 18 Pro Max"}
+SUBDIR=
+if [[ $DEVICE == "iPhone Duo" ]]; then
+  OS=${OS:-27.1}
+  SUBDIR=/duo
+  export DEVELOPER_DIR=${DEVELOPER_DIR:-"/Applications/Xcode 27.1 RC.app/Contents/Developer"}
+fi
 OS=${OS:-27.0}
 ANCHOR=2026-09-27
 ROOT=${0:A:h:h}
 FIXTURE="$ROOT/docs/fixtures/screenshots.json"
 DERIVED="$ROOT/build/screenshots-dd"
-OUT_DIR=${SCREENSHOT_OUT_DIR:-"$HOME/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/$(date +%F)"}
+OUT_DIR=${SCREENSHOT_OUT_DIR:-"$HOME/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/$(date +%F)$SUBDIR"}
 
 # UDID of the available simulator named $DEVICE on iOS $OS
 udid() {
@@ -115,19 +131,30 @@ setup() {
   for name in 01-dashboard 02-log 03-detail 04-revisit 05-decisions 06-accuracy 07-patterns; do
     echo "   scripts/screenshots.sh shot $name"
   done
+  [[ -z $SUBDIR ]] || echo "   scripts/screenshots.sh shot 08-decisions-open open   (fold the Duo first)"
   echo "   Output: $OUT_DIR"
 }
 
 shot() {
-  local name=${1:?usage: scripts/screenshots.sh shot <name>}
+  local name=${1:?usage: scripts/screenshots.sh shot <name> [closed|open]}
   local id; id=$(require_udid)
   mkdir -p "$OUT_DIR"
-  xcrun simctl io "$id" screenshot "$OUT_DIR/$name.png"
-  echo "📸 $OUT_DIR/$name.png"
+  local file="$OUT_DIR/$name.png"
+  if [[ -n $SUBDIR ]]; then
+    # Duo: "primary" is the closed display, "primary-1" the open one
+    local display=primary want=1398x2034
+    if [[ ${2:-closed} == open ]]; then display=primary-1; want=2007x2853; fi
+    xcrun simctl io "$id" screenshot --display="$display" "$file"
+    local got; got=$(sips -g pixelWidth -g pixelHeight "$file" | awk '/pixelWidth/{w=$2} /pixelHeight/{h=$2} END{print w "x" h}')
+    [[ $got == "$want" ]] || echo "⚠️  $got, expected $want for ASC. Is the Duo in the right posture?" >&2
+  else
+    xcrun simctl io "$id" screenshot "$file"
+  fi
+  echo "📸 $file"
 }
 
 case ${1:-setup} in
   setup) setup ;;
   shot) shift; shot "$@" ;;
-  *) echo "Usage: scripts/screenshots.sh [setup | shot <name>]" >&2; exit 1 ;;
+  *) echo "Usage: scripts/screenshots.sh [setup | shot <name> [closed|open]]" >&2; exit 1 ;;
 esac
