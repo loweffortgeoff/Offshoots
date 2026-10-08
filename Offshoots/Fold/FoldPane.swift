@@ -22,11 +22,12 @@ struct FoldPane<Content: View>: View {
     var body: some View {
         GeometryReader { proxy in
             let screenWidth = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
-            let fit = posture.paneFit(containerWidth: screenWidth, ownsWideLayout: ownsWideLayout)
+            let origin = proxy.frame(in: .global).origin
+            let fit = posture.paneFit(containerWidth: screenWidth, ownsWideLayout: ownsWideLayout, containerOrigin: origin)
             pane(for: fit)
                 .onChange(of: fit, initial: true) { _, new in
                     #if DEBUG
-                    NSLog("FOLDPANE fit %@ width %.0f safe %@", String(describing: new), screenWidth, String(describing: proxy.safeAreaInsets))
+                    NSLog("FOLDPANE fit %@ width %.0f origin %@ safe %@", String(describing: new), screenWidth, String(describing: origin), String(describing: proxy.safeAreaInsets))
                     #endif
                 }
         }

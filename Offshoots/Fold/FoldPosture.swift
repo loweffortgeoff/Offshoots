@@ -44,7 +44,9 @@ enum PaneFit: Equatable {
 
 extension FoldPosture {
     /// `ownsWideLayout` is true for a screen that builds its own two panes on a wide screen.
-    func paneFit(containerWidth: CGFloat, ownsWideLayout: Bool) -> PaneFit {
+    /// `containerOrigin` is where the pane starts on the screen. The safe area can push it
+    /// below the top edge, and the fold is measured from the screen edge.
+    func paneFit(containerWidth: CGFloat, ownsWideLayout: Bool, containerOrigin: CGPoint = .zero) -> PaneFit {
         if ownsWideLayout, FoldLayout.usesTwoPanes(width: containerWidth) {
             return .fill
         }
@@ -52,9 +54,9 @@ extension FoldPosture {
         case .flat:
             return .centered(maxWidth: FoldLayout.readableMaxWidth)
         case .folded(.horizontal, let keepOut):
-            return .top(height: keepOut.minY)
+            return .top(height: max(0, keepOut.minY - containerOrigin.y))
         case .folded(.vertical, let keepOut):
-            return .leading(width: keepOut.minX)
+            return .leading(width: max(0, keepOut.minX - containerOrigin.x))
         }
     }
 }

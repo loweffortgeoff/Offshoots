@@ -77,6 +77,22 @@ struct FoldPostureTests {
         #expect(FoldPosture(regions: [square]) == .folded(bandAxis: .horizontal, keepOut: CGRect(x: 10, y: 100, width: 40, height: 40)))
     }
 
+    // The pane starts below the status strip, so its height is measured from its own origin
+    @Test func topPaneEndsAtTheFoldWhenThePaneStartsBelowTheScreenTop() {
+        let posture = FoldPosture(regions: [Self.horizontalBand])
+        #expect(posture.paneFit(containerWidth: 669, ownsWideLayout: false, containerOrigin: CGPoint(x: 0, y: 35)) == .top(height: 400))
+    }
+
+    @Test func leadingPaneEndsAtTheFoldWhenThePaneStartsRightOfTheScreenEdge() {
+        let posture = FoldPosture(regions: [Self.verticalBand])
+        #expect(posture.paneFit(containerWidth: 951, ownsWideLayout: false, containerOrigin: CGPoint(x: 15, y: 0)) == .leading(width: 420))
+    }
+
+    @Test func paneNeverGetsANegativeSize() {
+        let posture = FoldPosture(regions: [Self.horizontalBand])
+        #expect(posture.paneFit(containerWidth: 669, ownsWideLayout: false, containerOrigin: CGPoint(x: 0, y: 500)) == .top(height: 0))
+    }
+
     @Test func twoPanesNeedAWideScreen() {
         #expect(FoldLayout.usesTwoPanes(width: 951))
         #expect(FoldLayout.usesTwoPanes(width: 900))
