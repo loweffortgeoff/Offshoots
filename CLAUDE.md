@@ -216,9 +216,10 @@ Spec: `docs/superpowers/specs/2026-10-07-duo-fold-layout-design.md`. Code: `Offs
   trailing inset (84 pt) still reaches its content. `FoldPane` handles both: it
   gives a left pane extra width and cuts at the fold with a mask that reaches
   the screen edge. Extra height on a top pane hides the last scrolling content.
-- **Not checked on the Duo** (2026-10-07): a reminder tap in two-pane
-  landscape (the app needs notification permission first), and the splash with
-  a reset `hasSeenSplash`.
+- **Checked on the Duo** (2026-10-07): a reminder tap in two-pane landscape opens
+  the tapped decision in the detail pane (send it with `simctl push`; the app
+  needs notification permission first). **Not checked:** the splash with a reset
+  `hasSeenSplash`.
 
 # Colors
 
