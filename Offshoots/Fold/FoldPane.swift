@@ -24,7 +24,7 @@ struct FoldPane<Content: View>: View {
             let screenWidth = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
             let origin = proxy.frame(in: .global).origin
             let fit = posture.paneFit(containerWidth: screenWidth, ownsWideLayout: ownsWideLayout, containerOrigin: origin)
-            pane(for: fit, screenInsets: proxy.safeAreaInsets)
+            pane(for: fit, screenInsets: proxy.safeAreaInsets, origin: origin)
                 .onChange(of: fit, initial: true) { _, new in
                     #if DEBUG
                     NSLog("FOLDPANE fit %@ width %.0f origin %@ safe %@", String(describing: new), screenWidth, String(describing: origin), String(describing: proxy.safeAreaInsets))
@@ -35,7 +35,7 @@ struct FoldPane<Content: View>: View {
     }
 
     @ViewBuilder
-    private func pane(for fit: PaneFit, screenInsets: EdgeInsets) -> some View {
+    private func pane(for fit: PaneFit, screenInsets: EdgeInsets, origin: CGPoint) -> some View {
         switch fit {
         case .fill:
             content
@@ -45,18 +45,24 @@ struct FoldPane<Content: View>: View {
                 .frame(maxWidth: .infinity)
         case .top(let height):
             // The tab bar's bottom inset still reaches the content when the pane stops at the
-            // fold. Give the content that much extra height and clip, so the inset eats the extra.
+            // fold. Give the content that much extra height and cut it at the fold, so the inset
+            // eats the extra. The cut reaches up to the screen edge, so the navigation bar
+            // (a full-screen layer beside the status strip) stays visible.
             content
                 .frame(height: height + screenInsets.bottom)
                 .frame(height: height, alignment: .top)
-                .clipped()
+                .mask(alignment: .bottom) {
+                    Rectangle().frame(height: height + origin.y)
+                }
                 .frame(maxHeight: .infinity, alignment: .top)
         case .leading(let width):
             // The same for the trailing inset of the tab rail
             content
                 .frame(width: width + screenInsets.trailing)
                 .frame(width: width, alignment: .leading)
-                .clipped()
+                .mask(alignment: .trailing) {
+                    Rectangle().frame(width: width + origin.x)
+                }
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
