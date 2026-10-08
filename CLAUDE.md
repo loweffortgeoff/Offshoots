@@ -59,6 +59,31 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   The shot list and scroll positions are at the top of the script. Do not save
   on 02 (Log) or 04 (Revisit): a save asks for notification permission.
   The 6.9" capture size is 1320 × 2868 px.
+- **iPhone Duo screenshots (2026-10-08):** run
+  `DEVICE="iPhone Duo" scripts/screenshots.sh`. The script picks Xcode 27.1 RC
+  and iOS 27.1, and writes to `Captures/<date>/duo/`. The Duo has two displays.
+  `shot <name> closed` captures `primary` (1398 × 2034). `shot <name> open`
+  captures `primary-1` (2007 × 2853, or 2853 × 2007 in landscape). Both are ASC
+  sizes. The script warns when the size is wrong. Only Geoff can fold the Duo
+  (DeviceHub). `scripts/screenshots.sh reload` puts the date-shifted fixture
+  back and relaunches, with no erase. Use it after a stray save.
+  - **Which posture:** use closed for the single-screen shots (01, 03–07).
+    Use fully open landscape for Log (02) and for two-pane Decisions (08).
+    Partly open puts a single-pane screen in one half and leaves the other
+    half empty, which does not work as a promo image.
+  - **Wait for the model.** On a fresh install the Clean Up Note and
+    Reflection areas read "on-device model is still getting ready" and do not
+    clear on their own. Terminate and relaunch the app. The log then says
+    `Current availability state: available`, and the areas show a lock.
+  - **Typing drops characters on the Duo.** The simulator `text` action lost
+    letters ("Mo the Denver officev"). Type short chunks and check each
+    one, or paste. The Mac pasteboard overrides `simctl pbcopy`, so put the
+    text on the Mac with `pbcopy` first. Then long-press the field, tap
+    the caret, tap Select All, and tap Paste.
+  - **Wait after a tap.** The page can still be settling after a tab change
+    or fold, and a tap then misses the field. Take a screenshot first.
+  - **Do not save on 02 or 04.** A stray save adds a 13th decision. Run
+    `reload` to put the data back to 12.
 - **Insights fixtures:** `docs/fixtures/insights-seed.json` gives Good 50%,
   Top Category Tied, Trend Improving, Accuracy 67% (4 correct, 1 close,
   1 missed) and Optimistic (0.5 steps, 6 decisions) when today is 2026-09-25 to 2026-09-30. The trend windows move
