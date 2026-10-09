@@ -59,6 +59,9 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Reflection on a device without Apple Intelligence, or on iOS 18.6 to 25. Confirm Reflection does not show.
 - Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say "For testing purposes only. You will not be charged for confirming this purchase." If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
 - Restore Purchase in Settings, after a reinstall. Confirm Reflection unlocks again.
+- Build 6, iPhone Duo (iOS 27.1 or later). Closed: the splash screen is centred, and the launch screen is green, not white. Partly open: Dashboard, Log, Insights and Settings sit in one half and keep off the fold. Fully open: they sit in a centred column. In wide landscape, Decisions shows the list and the detail side by side. On any other iPhone, nothing changes.
+- Build 6, Insights: on Outcome Trends, the week labels must never touch ("Aug 23Aug 30"). On a phone, every second week is labelled.
+- Build 6, Log: leave the Log tab open past midnight, then open the app. The review date must read the new tomorrow, with the Tomorrow chip selected. A date you picked yourself stays.
 
 ## Review note
 

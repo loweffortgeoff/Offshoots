@@ -278,3 +278,13 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Why:** The two layouts use different containers (`ArrangementView` and `NavigationStack`), so one view chain cannot cover both. It affects only the Duo, and only a rotation with a sheet open.
 **Alternative considered:** Keep one container and fake the split. Rejected: more code and more risk for a rare case.
 
+## 2026-10-09 (Outcome Trends labels: drop the ones that touch)
+**Decision:** The Outcome Trends x-axis resolves label collisions greedily. It keeps a label only if it does not touch the last kept label, and drops the rest. The phone shows every second label at the default text size.
+**Why:** The labels ran together ("Aug 23Aug 30") on the wide Duo layouts. A greedy check works at any width and text size, with no tuning per device.
+**Alternative considered:** A stride computed from the chart width. Rejected: it needs a guess of the label width and breaks when the text size or date format changes.
+
+## 2026-10-09 (Log review date refreshes when the day changes, not at midnight)
+**Decision:** The Log review date is refreshed (`ReviewDatePreset.refreshed`) when `store.today` changes, which happens when the app returns to the foreground on a new day. A review date that is no longer in the future moves to the new tomorrow. A date the user picked that is still in the future stays.
+**Why:** A suspended app gets no timer at midnight. The date only matters when the user next looks at the form, so the foreground change is enough, and it needs no timer.
+**Alternative considered:** A timer that fires at midnight. Rejected: more code, and it does not run while the app is suspended.
+
