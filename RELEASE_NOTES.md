@@ -63,6 +63,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Build 6, Insights: on Outcome Trends, the week labels must never touch ("Aug 23Aug 30"). On a phone, every second week is labelled.
 - Build 6, Log: leave the Log tab open past midnight, then open the app. The review date must read the new tomorrow, with the Tomorrow chip selected. A date you picked yourself stays.
 - Build 7, purchase sheet: tap a locked Reflection control. The sheet opens with "See what your decisions add up to.", an Example card with two bars, and the "Reflection adds" list. The buy button shows the App Store price. Check it in light and dark mode, and at a large text size, where the buttons scroll with the content.
+- Build 7, Reflection Depth is back. Build 6 was archived from `main` before the `reflection-depth` merge, so it had none of this. Use a device with Apple Intelligence and decisions that have notes. Look Back: on the Log screen, pick a category with 2 or more marked decisions, tap Look Back, and check that the count line and the Expected and Turned out bars match your decisions. Patterns on Insights: each sentence has a label (Went worse, Went as predicted, Went better), and each should match your notes. Decision reflection: look for the "In other <Category> decisions" section. Log and Edit at large text sizes: the title field wraps and Stakes shows full-width buttons. The "What to Test — TestFlight build 5" list below has the full steps.
 
 ## What to Test — TestFlight build 5
 
