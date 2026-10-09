@@ -81,7 +81,8 @@ struct OutcomeTrendCard: View {
                     // Eight week labels fit only at the default text size; above it, label every second week.
                     AxisMarks(values: .stride(by: .weekOfYear, count: dynamicTypeSize > .large ? 2 : 1)) { _ in
                         AxisGridLine()
-                        AxisValueLabel(format: .dateTime.month(.abbreviated).day())
+                        // Greedy drops a label that would touch its neighbour, so dates never read as one word.
+                        AxisValueLabel(format: .dateTime.month(.abbreviated).day(), collisionResolution: .greedy(minimumSpacing: 8))
                     }
                 }
                 .chartYAxis {
