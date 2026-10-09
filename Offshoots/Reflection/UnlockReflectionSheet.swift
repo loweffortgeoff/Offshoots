@@ -267,6 +267,7 @@ private struct PurchaseControls: View {
         } label: {
             Text(title)
                 .font(.headline)
+                .foregroundStyle(Color.offshootOnPrimary)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
         }
