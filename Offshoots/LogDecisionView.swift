@@ -212,6 +212,10 @@ struct LogDecisionView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             // initial: true covers a Log tab that did not exist yet when the suggestion was tapped
+            // The date is set once, so a Log tab left open past midnight would hold today as "tomorrow"
+            .onChange(of: store.today) {
+                followUpDate = ReviewDatePreset.refreshed(followUpDate)
+            }
             .onChange(of: draft, initial: true) { _, suggestion in
                 guard let suggestion else { return }
                 title = suggestion.title

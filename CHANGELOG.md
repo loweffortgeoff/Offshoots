@@ -20,6 +20,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Reflection: the "Unlock Reflection" sheet has a new look. A leaf logo sits above a centered intro. The three features share one card with dividers and green symbols, with the footnote "Nothing appears until you tap for it." The buy and Restore Purchase buttons stay at the bottom. At accessibility text sizes they scroll with the content, so they do not cover the card. The price still comes from the App Store and stays inside the button. Purchase logic is unchanged.
 
 #### Fixed
+- Log: a Log tab left open past midnight no longer keeps the old "tomorrow" as the review date. When the app comes back to the foreground on a new day, a review date that is no longer in the future moves to the new tomorrow. A date you picked that is still in the future stays.
 - Outcome Trends: week labels that would touch their neighbour are now dropped, so "Aug 23" and "Aug 30" no longer read as one word on wide layouts such as the iPhone Duo. The iPhone 18 Pro now shows every second label at the default text size.
 - Log and Edit Decision: the title prompt has room to wrap at accessibility text sizes. Stakes uses full-width choices with scaled text and a selected state at those sizes; standard sizes keep the segmented control. Geoff verified the fix on 2026-10-04.
 - The header meta row on Decision Detail stacks from the xxLarge text size up. At larger sizes the "Neutral" rating wrapped as "Neu-tral".

@@ -34,4 +34,11 @@ enum ReviewDatePreset: Int, CaseIterable, Identifiable {
     static func matching(_ date: Date, from now: Date = Date(), calendar: Calendar = .current) -> ReviewDatePreset? {
         allCases.first { calendar.isDate($0.date(from: now, calendar: calendar), inSameDayAs: date) }
     }
+
+    /// A review date that is no longer in the future moves back to tomorrow. A
+    /// date that is still tomorrow or later stays, so a pick the user made is kept
+    static func refreshed(_ date: Date, now: Date = Date(), calendar: Calendar = .current) -> Date {
+        let startOfTomorrow = calendar.startOfDay(for: tomorrow.date(from: now, calendar: calendar))
+        return date < startOfTomorrow ? tomorrow.date(from: now, calendar: calendar) : date
+    }
 }

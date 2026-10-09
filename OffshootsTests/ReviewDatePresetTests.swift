@@ -43,4 +43,19 @@ struct ReviewDatePresetTests {
         let twoDaysOut = Self.calendar.date(byAdding: .day, value: 2, to: Self.now)!
         #expect(ReviewDatePreset.matching(twoDaysOut, from: Self.now, calendar: Self.calendar) == nil)
     }
+
+    @Test func refreshedMovesAStaleDateToTomorrow() {
+        // Set as "tomorrow" on the 27th; the clock now reads the 28th
+        let stale = ReviewDatePreset.tomorrow.date(from: Self.now, calendar: Self.calendar)
+        let nextDay = Self.calendar.date(byAdding: .day, value: 1, to: Self.now)!.addingTimeInterval(-15 * 3600)
+        let refreshed = ReviewDatePreset.refreshed(stale, now: nextDay, calendar: Self.calendar)
+        #expect(Self.calendar.isDate(refreshed, inSameDayAs: Self.calendar.date(byAdding: .day, value: 1, to: nextDay)!))
+    }
+
+    @Test func refreshedKeepsAFutureDate() {
+        let weekOut = ReviewDatePreset.oneWeek.date(from: Self.now, calendar: Self.calendar)
+        #expect(ReviewDatePreset.refreshed(weekOut, now: Self.now, calendar: Self.calendar) == weekOut)
+        let tomorrow = ReviewDatePreset.tomorrow.date(from: Self.now, calendar: Self.calendar)
+        #expect(ReviewDatePreset.refreshed(tomorrow, now: Self.now, calendar: Self.calendar) == tomorrow)
+    }
 }
