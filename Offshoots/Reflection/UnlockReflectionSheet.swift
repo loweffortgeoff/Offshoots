@@ -31,7 +31,7 @@ struct UnlockReflectionSheet: View {
                         Divider().padding(.leading, 52)
                         FeatureRow(title: "A reflection on each decision", systemImage: "arrow.triangle.2.circlepath")
                         Divider().padding(.leading, 52)
-                        FeatureRow(title: "Clearer notes, only when you tap", systemImage: "doc.text")
+                        FeatureRow(title: "A look back before you decide", systemImage: "clock.arrow.circlepath")
                     }
                     .background(Color.offshootCardBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 16))

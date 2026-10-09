@@ -27,9 +27,10 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Result Line** — Each marked decision says how the result compared with your prediction, and what unlocks next
 
 ### Reflection (optional one-time unlock)
-- **Patterns** — A short read on Insights of what repeats across your decisions. Needs 5 marked decisions.
-- **Decision reflection** — A reflection on each marked decision, from its notes and revisits.
-- **Clean Up Note** — Tap to fix spelling, capitals and punctuation in a note. It suggests; you choose `Use` or `Dismiss`.
+- **Patterns** — On Insights, one labeled sentence each on what the notes of decisions that went worse than predicted, as predicted and better than predicted have in common. Needs 5 marked decisions and 2 notes.
+- **Decision reflection** — A reflection on each marked decision, from its notes and revisits. "In other Money decisions" says what it shares with other decisions in its category that went the same way.
+- **Look Back** — On the Log screen, before the prediction: how your marked decisions in the chosen category went against their predictions: a count line, Expected and Turned out bars, and from 5 decisions a headline when one result clearly leads (all built in code). Below that, one labeled sentence per result group from the notes of the 5 newest. Needs 2 marked decisions in the category.
+- **Clean Up Note** — Tap to fix spelling, capitals and punctuation in a note. It suggests; you choose `Use` or `Dismiss`. Included with the unlock, but not listed on the purchase screen.
 - **On device** — The text comes from Apple's on-device model, so nothing leaves the phone. Output is made when you ask and is never saved.
 - **Needs** iOS 26 or later and Apple Intelligence. Other devices do not see Reflection. The app still supports iOS 18.6.
 - **Unlock** — One-time purchase with Restore in Settings.
@@ -69,7 +70,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
 | **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot fixture |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
 
 ## Project Structure
 
@@ -136,7 +137,7 @@ Offshoots/
 ├── OutcomeTrendCard.swift         # Outcomes by week
 │
 │  # Reflection (Reflection/ folder)
-├── Reflection/                    # Policy layer, live and fake generators, cards, Clean Up Note, StoreKit unlock, paywall
+├── Reflection/                    # Policy layer, live and fake generators, cards (Patterns, decision reflection, Look Back), Clean Up Note, StoreKit unlock, paywall
 │
 │  # Settings
 ├── SettingsView.swift             # Settings screen

@@ -6,29 +6,35 @@
 import Foundation
 
 enum ReflectionDigestBuilder {
-    static let maximumNotes = 8
+    /// A fixed cap per group, so one large group cannot push out the others.
+    /// Sized for the 4,096-token context on iOS 26 (Reflection Depth plan, chunk 1).
+    static let notesPerGroup = 15
     static let noteLimit = 140
     static let longNoteLimit = 400
     static let titleLimit = 120
+    static let historyLimit = 5
+    static let minimumHistory = 2
+    static let historyTitleLimit = 60
 
-    static func patterns(from decisions: [Decision], now: Date) -> PatternsDigest {
+    static func patterns(from decisions: [Decision]) -> PatternsDigest {
         let marked = decisions.filter { $0.actual != nil }
+        let worse = marked.filter { (AnalyticsEngine.predictionGap(for: $0) ?? 0) < 0 }
+        let asPredicted = marked.filter { AnalyticsEngine.predictionGap(for: $0) == 0 }
+        let better = marked.filter { (AnalyticsEngine.predictionGap(for: $0) ?? 0) > 0 }
         return PatternsDigest(
             resolvedCount: marked.count,
-            goodPercent: AnalyticsEngine.goodOutcomePercentage(from: decisions),
-            accuracy: AnalyticsEngine.accuracyBreakdown(from: decisions),
-            optimism: AnalyticsEngine.optimismBias(from: decisions),
-            trend: AnalyticsEngine.qualityTrend(from: decisions, now: now),
-            categories: groups(marked) { $0.category.rawValue.capitalized },
-            stakes: groups(marked) { $0.stakes.label },
-            revisitedCount: marked.filter { !$0.revisits.isEmpty }.count,
-            revisitsChangingOutcome: marked.filter { $0.currentOutcome != $0.actual }.count,
-            notes: recentNotes(in: marked)
+            worseCount: worse.count,
+            asPredictedCount: asPredicted.count,
+            betterCount: better.count,
+            worse: noteLines(in: worse),
+            asPredicted: noteLines(in: asPredicted),
+            better: noteLines(in: better)
         )
     }
 
-    /// Nil until an outcome is marked.
-    static func decision(_ decision: Decision) -> DecisionDigest? {
+    /// Nil until an outcome is marked. `others` may hold any decisions; only other marked
+    /// decisions in the same category become history.
+    static func decision(_ decision: Decision, among others: [Decision] = []) -> DecisionDigest? {
         guard let actual = decision.actual, let resolved = decision.resolvedDate else { return nil }
         return DecisionDigest(
             title: ReflectionText.clean(decision.title, limit: titleLimit) ?? "Untitled",
@@ -45,36 +51,64 @@ enum ReflectionDigestBuilder {
                 )
             },
             notes: ReflectionText.clean(decision.notes, limit: longNoteLimit),
-            outcomeNote: ReflectionText.clean(decision.reflection, limit: longNoteLimit)
+            outcomeNote: ReflectionText.clean(decision.reflection, limit: longNoteLimit),
+            history: history(in: decision.category, from: others.filter { $0.id != decision.id }),
+            direction: direction(of: decision)
         )
+    }
+
+    /// Marked decisions in one category, newest first and capped. Empty below `minimumHistory`.
+    static func history(in category: DecisionCategory, from decisions: [Decision]) -> [HistoryLine] {
+        let lines = decisions
+            .filter { $0.category == category && $0.actual != nil }
+            .sorted { $0.createdAt > $1.createdAt }
+            .prefix(historyLimit)
+            .map { decision in
+                HistoryLine(
+                    title: ReflectionText.clean(decision.title, limit: historyTitleLimit) ?? "Untitled",
+                    stakes: decision.stakes.label,
+                    direction: direction(of: decision),
+                    notes: ReflectionText.clean(decision.notes, limit: noteLimit),
+                    outcomeNote: ReflectionText.clean(decision.reflection, limit: noteLimit)
+                )
+            }
+        return lines.count >= minimumHistory ? Array(lines) : []
     }
 
     // MARK: - Helpers
 
-    private static func groups(_ decisions: [Decision], by label: (Decision) -> String) -> [GroupLine] {
-        Dictionary(grouping: decisions, by: label)
-            .map { label, items in
-                GroupLine(label: label, resolved: items.count, exact: items.filter { $0.expected == $0.actual }.count)
-            }
-            .sorted { $0.resolved != $1.resolved ? $0.resolved > $1.resolved : $0.label < $1.label }
-    }
-
-    private static func recentNotes(in decisions: [Decision]) -> [String] {
-        var dated: [(date: Date, text: String)] = []
+    /// The log note, the outcome note and every revisit note, newest first, capped per group.
+    private static func noteLines(in decisions: [Decision]) -> [NoteLine] {
+        var dated: [(date: Date, line: NoteLine)] = []
         for decision in decisions {
-            if let text = ReflectionText.clean(decision.notes, limit: noteLimit) {
-                dated.append((decision.createdAt, text))
+            let category = decision.category.rawValue.capitalized
+            let stakes = decision.stakes.label
+            func add(_ text: String?, on date: Date) {
+                guard let text = ReflectionText.clean(text, limit: noteLimit) else { return }
+                dated.append((date, NoteLine(category: category, stakes: stakes, text: text)))
             }
-            if let text = ReflectionText.clean(decision.reflection, limit: noteLimit) {
-                dated.append((decision.resolvedDate ?? decision.createdAt, text))
-            }
+            add(decision.notes, on: decision.createdAt)
+            add(decision.reflection, on: decision.resolvedDate ?? decision.createdAt)
             for revisit in decision.revisits {
-                if let text = ReflectionText.clean(revisit.note, limit: noteLimit) {
-                    dated.append((revisit.date, text))
-                }
+                add(revisit.note, on: revisit.date)
             }
         }
-        return dated.sorted { $0.date > $1.date }.prefix(maximumNotes).map(\.text)
+        return dated.sorted { $0.date > $1.date }.prefix(notesPerGroup).map(\.line)
+    }
+
+    /// Nil below `minimumHistory` marked decisions in the category.
+    static func lookBack(category: DecisionCategory, in decisions: [Decision]) -> LookBackDigest? {
+        let history = history(in: category, from: decisions)
+        guard !history.isEmpty else { return nil }
+        let name = category.rawValue.capitalized
+        let pairs = decisions
+            .filter { $0.category == category }
+            .compactMap { decision in decision.actual.map { OutcomePair(expected: decision.expected, actual: $0) } }
+        return LookBackDigest(category: name, history: history, stats: LookBackStats(category: name, pairs: pairs))
+    }
+
+    private static func direction(of decision: Decision) -> Int {
+        (AnalyticsEngine.predictionGap(for: decision) ?? 0).signum()
     }
 
     /// Whole calendar days, never negative.

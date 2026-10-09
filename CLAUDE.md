@@ -28,6 +28,24 @@ new fixture file is picked up with no project change. `AnalyticsEngineTests`
 pins "now" to 2026-09-27. If you change a fixture, update the expected values in the
 tests too.
 
+**Live output harness.** `ReflectionLiveOutputTests` runs the real on-device model
+on `docs/fixtures/reflection-notes.json` (Patterns, two decision reflections, Look
+Back for Money and Work) and writes token counts, prompts and output to a file. It
+is off by default. Delete the output file first: the harness adds to the end of it.
+
+```
+rm -f /tmp/reflection-live.txt; TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
+```
+
+Tests run in a cloned simulator, so `print` output from a test does not reach
+the xcodebuild log (checked 2026-10-05). That is why the harness writes to the
+`REFLECTION_LIVE_OUT` file on the Mac. Prompt changes, measurements and output
+per version are in `docs/superpowers/archive/2026-10-05-reflection-depth.md`.
+
+**Context window.** The on-device model's context is 4,096 tokens on iOS 26
+(a fixed value in the SDK) and 8,192 on the iOS 27.0 simulator. Size every
+Reflection prompt for 4,096. `theWorstCasePatternsPromptStaysSmall` pins Patterns.
+
 Bundle ID: `com.geoffrey.silva.Offshoots`.
 
 ## Simulator Testing
@@ -46,7 +64,14 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 - **Seed script:** `scripts/seed.sh <fixture>` closes the app, copies
   `docs/fixtures/<fixture>.json` in as `decisions.json` and relaunches.
   Run it with no argument to list fixtures. `SIM=<UDID>` picks another
-  simulator. The app must be installed there first.
+  simulator. The app must be installed there first. The default UDID is the
+  Mac mini's iPhone 18 Pro. On the MacBook Pro, set
+  `SIM=22F3F961-2FD9-47A0-9158-24A94F6871B4`.
+- **One "iPhone 18 Pro" simulator per Mac.** A second simulator with the same
+  name makes `-destination '…,name=iPhone 18 Pro,OS=27.0'` fail with "Unable to
+  find a device matching". On 2026-10-05 the MacBook Pro had an unused duplicate
+  (`5BD73D53…`); Geoff approved deleting it. If the error comes back, run
+  `xcrun simctl list devices available | grep "iPhone 18 Pro"`, or use `id=`.
 - **App Store screenshots:** `scripts/screenshots.sh` erases the iPhone 18 Pro
   Max (iOS 27.0), sets dark mode and a 9:41 status bar, builds, installs and
   loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
@@ -197,9 +222,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 - **Xcode rewrites the shared scheme.** When Xcode opens the project, it
   changes the `version` in `Offshoots.xcscheme` from 1.7 to 1.3. Do not
   treat that diff as Geoff's edit.
-- **The simulator runs the real on-device model.** On the Mac mini, the
-  iOS 27.0 simulator reports `SystemLanguageModel` as available and gives
-  real output (checked 2026-10-01). Greedy sampling gives the same output
+- **The simulator runs the real on-device model.** On the Mac mini
+  (checked 2026-10-01) and the MacBook Pro (checked 2026-10-05), the iOS 27.0
+  simulator reports `SystemLanguageModel` as available and gives real output.
+  A call takes 3 to 7 seconds. Greedy sampling gives the same output
   for the same input, so a prompt change can be re-tested on the simulator.
 - **App theme on the simulator.** The Settings theme is the `appTheme` key
   in the app's own plist. On 2026-10-01 a `plutil` edit of that key, made

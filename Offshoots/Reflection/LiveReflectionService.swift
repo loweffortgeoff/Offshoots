@@ -12,10 +12,26 @@ struct LiveReflectionService: ReflectionGenerating {
 
     // MARK: - Generated shapes
 
+    /// One sentence per group, so the model covers each group once and cannot repeat itself.
+    /// Asking the model to start with the trait made it copy one note (plan, chunk 6), so
+    /// code removes the group opening instead (`ReflectionText.dropGroupOpening`).
     @Generable
     struct GeneratedPatterns {
-        @Guide(description: "Two to four plain observations about patterns, one sentence each")
-        var observations: [String]
+        @Guide(description: "One sentence on what the notes on decisions that went worse than predicted share. Empty if that group has no notes")
+        var worse: String
+        @Guide(description: "One sentence on what the notes on decisions that went as predicted share. Empty if that group has no notes")
+        var asPredicted: String
+        @Guide(description: "One sentence on what the notes on decisions that went better than predicted share. Empty if that group has no notes")
+        var better: String
+    }
+
+    /// A group with no notes keeps no line, whatever the model wrote for it
+    private static func groupLines(_ generated: GeneratedPatterns, worse: Bool, asPredicted: Bool, better: Bool) -> [ReflectionGroupLine] {
+        [
+            worse ? ReflectionGroupLine(label: ReflectionGroupLine.worseLabel, text: generated.worse) : nil,
+            asPredicted ? ReflectionGroupLine(label: ReflectionGroupLine.asPredictedLabel, text: generated.asPredicted) : nil,
+            better ? ReflectionGroupLine(label: ReflectionGroupLine.betterLabel, text: generated.better) : nil,
+        ].compactMap { $0 }
     }
 
     @Generable
@@ -26,6 +42,8 @@ struct LiveReflectionService: ReflectionGenerating {
         var repeating: [String]
         @Guide(description: "One question to carry into the next revisit. Not advice")
         var nextPrompt: String
+        @Guide(description: "One sentence on what this decision has in common with the other decisions that went the same way, from their notes. Empty if none went the same way")
+        var echo: String
     }
 
     /// No `repeating` field: a decision with no written notes has nothing to repeat
@@ -35,6 +53,8 @@ struct LiveReflectionService: ReflectionGenerating {
         var summary: String
         @Guide(description: "One question to carry into the next revisit. Not advice")
         var nextPrompt: String
+        @Guide(description: "One sentence on what this decision has in common with the other decisions that went the same way, from their notes. Empty if none went the same way")
+        var echo: String
     }
 
     @Generable
@@ -68,34 +88,54 @@ struct LiveReflectionService: ReflectionGenerating {
             prompt: ReflectionPromptBuilder.patternsPrompt(digest),
             maximumTokens: 300
         )
-        return try PatternsOutput(observations: generated.observations).validated()
+        let lines = Self.groupLines(generated, worse: !digest.worse.isEmpty, asPredicted: !digest.asPredicted.isEmpty, better: !digest.better.isEmpty)
+        return try PatternsOutput(lines: lines).validated()
     }
 
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput {
+        let history = digest.history.isEmpty ? "" : ReflectionPromptBuilder.historyRule
+        // With nothing that went the same way, the echo is dropped, whatever the model wrote
+        let echo = { (text: String) in digest.sameResult.isEmpty ? "" : text }
         guard digest.hasWrittenText else {
             let generated = try await generate(
                 GeneratedDecisionSummary.self,
-                instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes,
+                instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes + history,
                 prompt: ReflectionPromptBuilder.decisionPrompt(digest),
                 maximumTokens: 300
             )
             return try DecisionReflectionOutput(
                 summary: generated.summary,
                 repeating: [],
-                nextPrompt: generated.nextPrompt
+                nextPrompt: generated.nextPrompt,
+                echo: echo(generated.echo)
             ).validated()
         }
         let generated = try await generate(
             GeneratedDecisionReflection.self,
-            instructions: ReflectionPromptBuilder.decisionInstructions,
+            instructions: ReflectionPromptBuilder.decisionInstructions + history,
             prompt: ReflectionPromptBuilder.decisionPrompt(digest),
             maximumTokens: 400
         )
         return try DecisionReflectionOutput(
             summary: generated.summary,
             repeating: generated.repeating,
-            nextPrompt: generated.nextPrompt
+            nextPrompt: generated.nextPrompt,
+            echo: echo(generated.echo)
         ).validated()
+    }
+
+    /// Reuses the Patterns shape: one sentence per result group
+    func lookBack(digest: LookBackDigest) async throws -> LookBackOutput {
+        // Nothing written means nothing to read: the counts alone, with no model call
+        guard digest.hasNotes else { return LookBackOutput(stats: digest.stats, lines: []) }
+        let generated = try await generate(
+            GeneratedPatterns.self,
+            instructions: ReflectionPromptBuilder.lookBackInstructions,
+            prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
+            maximumTokens: 300
+        )
+        let lines = Self.groupLines(generated, worse: !digest.worse.isEmpty, asPredicted: !digest.asPredicted.isEmpty, better: !digest.better.isEmpty)
+        return LookBackOutput(stats: digest.stats, lines: lines).validated()
     }
 
     func cleanUp(note: String) async throws -> CleanedNote {

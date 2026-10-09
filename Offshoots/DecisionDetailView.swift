@@ -261,7 +261,10 @@ struct DecisionDetailView: View {
                         // Reflection (paid unlock, on-device text). Unsupported devices never see it.
                         // Removing the card also drops its result, so a stale one cannot come back.
                         if ReflectionEligibility.canReflect(on: decision), reflection.gate != .hidden {
-                            DecisionReflectionCard(decision: decision)
+                            DecisionReflectionCard(
+                                decision: decision,
+                                sameCategory: store.decisions.filter { $0.category == decision.category && $0.id != decision.id }
+                            )
                         }
 
                         // Follow-up Date
