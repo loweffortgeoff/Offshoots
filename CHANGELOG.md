@@ -12,6 +12,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 - Reflection, an optional $5.99 one-time unlock with Restore in Settings. Patterns on Insights, a reflection on Decision Detail, and Clean Up Note on the Log, Mark Outcome and Revisit note fields. The text comes from the on-device model, so nothing leaves the phone. It needs Apple Intelligence on iOS 26 or later; other devices do not see Reflection.
 
 #### Changed
+- Reflection: the purchase sheet follows concept A ("Show the output"). It opens with the headline "See what your decisions add up to.", then a fixed Example card ("You undersell your Work decisions") with Expected and Turned out bars, then the "Reflection adds" list. The buy button reads "Unlock Reflection • <price>" over the line "One-time purchase. Logging and reviewing stay free.", and Restore Purchase is a text button. The navigation title is "Reflection". The buttons still stay pinned at normal sizes and scroll at accessibility sizes. Purchase logic is unchanged. Build 7.
 - Offshoots builds only with Xcode 27.1 or later, because the fold APIs are in the iOS 27.1 SDK. The app still supports iOS 18.6 at runtime.
 - The Decisions navigation path is now a list of decisions (`[Decision]`) instead of `NavigationPath`.
 - iPad: the app window now resizes freely, up to the phone width that iPadOS allows (about 512 pt). Before, it snapped between two fixed sizes. The app stays iPhone-only. The deprecated `UIRequiresFullScreen` flag is removed.

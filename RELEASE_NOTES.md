@@ -62,6 +62,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Build 6, iPhone Duo (iOS 27.1 or later). Closed: the splash screen is centred, and the launch screen is green, not white. Partly open: Dashboard, Log, Insights and Settings sit in one half and keep off the fold. Fully open: they sit in a centred column. In wide landscape, Decisions shows the list and the detail side by side. On any other iPhone, nothing changes.
 - Build 6, Insights: on Outcome Trends, the week labels must never touch ("Aug 23Aug 30"). On a phone, every second week is labelled.
 - Build 6, Log: leave the Log tab open past midnight, then open the app. The review date must read the new tomorrow, with the Tomorrow chip selected. A date you picked yourself stays.
+- Build 7, purchase sheet: tap a locked Reflection control. The sheet opens with "See what your decisions add up to.", an Example card with two bars, and the "Reflection adds" list. The buy button shows the App Store price. Check it in light and dark mode, and at a large text size, where the buttons scroll with the content.
 
 ## Review note
 

@@ -283,6 +283,11 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Why:** The labels ran together ("Aug 23Aug 30") on the wide Duo layouts. A greedy check works at any width and text size, with no tuning per device.
 **Alternative considered:** A stride computed from the chart width. Rejected: it needs a guess of the label width and breaks when the text size or date format changes.
 
+## 2026-10-09 (Purchase sheet follows concept A, "Show the output")
+**Decision:** The Unlock Reflection sheet shows a fixed, labelled Example of the output (eight Work decisions, Expected against Turned out) above the feature list, under the headline "See what your decisions add up to." The price stays in the buy button, and the buttons keep the 2026-10-02 pinning rule. The third feature row stays "Clearer notes, only when you tap", because Look Back is on `reflection-depth` and not on `main`; it becomes the Look Back row when that branch merges.
+**Why:** Geoff picked concept A (`ASC Screenshots/IAP/A — Show the output@2x.png`) before launch. A sample of the result sells Reflection better than a list of feature names. The sample is drawn in SwiftUI, not shipped as an image, so it follows light and dark mode and Dynamic Type.
+**Alternative considered:** Concept C ("Maker's note"). Using a screenshot of real output as an image asset (fixed colours, no Dynamic Type, and it would need redrawing for each size).
+
 ## 2026-10-09 (Log review date refreshes when the day changes, not at midnight)
 **Decision:** The Log review date is refreshed (`ReviewDatePreset.refreshed`) when `store.today` changes, which happens when the app returns to the foreground on a new day. A review date that is no longer in the future moves to the new tomorrow. A date the user picked that is still in the future stays.
 **Why:** A suspended app gets no timer at midnight. The date only matters when the user next looks at the form, so the foreground change is enough, and it needs no timer.
