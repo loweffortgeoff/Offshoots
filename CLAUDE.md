@@ -248,6 +248,14 @@ Spec: `docs/superpowers/specs/2026-10-07-duo-fold-layout-design.md`. Code: `Offs
   needs notification permission first). **Not checked:** the splash with a reset
   `hasSeenSplash`.
 
+# Archive and upload
+
+`scripts/archive-upload.sh` archives Release with Xcode 27.1 RC and uploads the
+build to App Store Connect (TestFlight). It refuses a dirty tree and an enabled
+`-ReflectionUnlockOnly`. `--archive-only` stops before the upload. Bump
+`CURRENT_PROJECT_VERSION` first. It was run by hand for 2.0.0 (6) on 2026-10-09.
+The upload is outward-facing: run it only when Geoff asks.
+
 # Colors
 
 Adaptive colors live in `Assets.xcassets` with light and dark values.

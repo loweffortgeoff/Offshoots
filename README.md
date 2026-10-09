@@ -147,6 +147,7 @@ Reflection.storekit                # Local StoreKit test product, on the scheme'
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
 scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pro Max
+scripts/archive-upload.sh          # Archive Release and upload to TestFlight (--archive-only to stop before upload)
 ```
 
 The app needs **Xcode 27.1 or later** (iOS 27.1 SDK) to build, on the Mac mini. It still supports iOS 18.6 at runtime. See `CLAUDE.md`, "iPhone Duo (fold layout)".
