@@ -5,9 +5,7 @@
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UIColorName</key>
-		<string>SplashBackground</string>
-		<key>UIImageName</key>
-		<string>LaunchIcon</string>
+		<string>OffshootBackground</string>
 	</dict>
 </dict>
 </plist>

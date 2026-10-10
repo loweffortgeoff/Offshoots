@@ -67,11 +67,11 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-hasSeenSplash"
+            argument = "-lastSplashDate"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "No"
+            argument = "0"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
