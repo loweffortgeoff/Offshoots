@@ -1,6 +1,6 @@
 # AGENTS.md — Offshoots
 
-Project notes for Offshoots. General guidelines live in `~/AGENTS.md`.
+Project notes for Offshoots. General guidelines live in `~/.codex/AGENTS.md`.
 
 # Development Commands
 
@@ -59,4 +59,4 @@ mini (confirmed 2026-09-24).
 - The audit and plan docs live in `docs/`.
 - `.gitignore` does not ignore Markdown, so a new doc is tracked with no
   exception.
-- Keep CHANGELOG, DECISIONS and TODO up to date as described in `~/AGENTS.md`.
+- Keep CHANGELOG, DECISIONS and TODO up to date as described in `~/.codex/AGENTS.md`.
