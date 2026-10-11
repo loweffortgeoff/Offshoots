@@ -1,16 +1,16 @@
 # AGENTS.md — Offshoots
 
-Project notes for Offshoots. General guidelines live in `../AGENTS.md`.
+Project notes for Offshoots. General guidelines live in `~/AGENTS.md`.
 
 # Development Commands
 
 ## Build Verification
 
-One scheme, one target: `Offshoots`. There is no test target, so testing means
-building and then checking behavior on the simulator.
+One shared scheme, `Offshoots`. Targets: `Offshoots` and `OffshootsTests`
+(Swift Testing). Unit tests cover logic. Check UI behavior on the simulator.
 
 ```
-xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
+DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
 ```
 
 Leave the output verbose. Do not add `-quiet`.
@@ -56,9 +56,7 @@ mini (confirmed 2026-09-24).
 
 # Docs
 
-- The audit and plan docs live in `docs/`. The 2026-09-23 audit doc lists the
-  remaining sections (3–6).
-- `.gitignore` ignores `*.md` except `README.md`, `CHANGELOG.md`,
-  `DECISIONS.md`, `TODO.md`, `AGENTS.md` and `docs/**/*.md`. When you add a
-  new root Markdown file that belongs in git, add an exception for it.
-- Keep CHANGELOG, DECISIONS and TODO up to date as described in `../AGENTS.md`.
+- The audit and plan docs live in `docs/`.
+- `.gitignore` does not ignore Markdown, so a new doc is tracked with no
+  exception.
+- Keep CHANGELOG, DECISIONS and TODO up to date as described in `~/AGENTS.md`.

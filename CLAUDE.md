@@ -1,6 +1,6 @@
 # CLAUDE.md — Offshoots
 
-Project notes for Offshoots. General guidelines live in `../CLAUDE.md`.
+Project notes for Offshoots. General guidelines live in `~/.claude/CLAUDE.md`.
 
 # Development Commands
 
@@ -11,7 +11,7 @@ One shared scheme, `Offshoots`. Targets: `Offshoots` (the app) and
 Check UI behavior on the simulator.
 
 ```
-xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
+DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
 ```
 
 Leave the output verbose. Do not add `-quiet`.
@@ -19,7 +19,7 @@ Leave the output verbose. Do not add `-quiet`.
 ## Tests
 
 ```
-xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
+DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
 ```
 
 The tests load `docs/fixtures/*.json` from the test bundle. The folder is a
@@ -34,7 +34,7 @@ Back for Money and Work) and writes token counts, prompts and output to a file. 
 is off by default. Delete the output file first: the harness adds to the end of it.
 
 ```
-rm -f /tmp/reflection-live.txt; TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
+rm -f /tmp/reflection-live.txt; DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
 ```
 
 Tests run in a cloned simulator, so `print` output from a test does not reach
@@ -199,9 +199,7 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   argument the surfaces show the locked state. There is no `-ReflectionPaywall`
   argument. In the shared scheme `-ReflectionUnlockOnly` is present but
   disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
-  would start unlocked and the paywall could not be tested. Commit
-  `b792f1c` on `main` enabled it; the `reflection` merge is a fast-forward, so
-  confirm it is disabled on `main` afterwards.
+  would start unlocked and the paywall could not be tested.
 - **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
   Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
   `RunProject` tool. The test purchase sheet says you are not charged.
@@ -233,16 +231,16 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 
 ## Test Device
 
-The iPhone 17 Pro runs iOS 27.2 Beta 2. It builds from Xcode 27.0 on the Mac
-mini (confirmed 2026-09-24). This is a test device, mostly used to confirm projects compile and build on a live device. It is connected to Xcode as `Geoff's iPhone` 
+The iPhone 17 Pro runs iOS 27.2 Beta 2. Since the fold work (2026-10-07) the app
+builds only with Xcode 27.1 on the Mac mini (see "iPhone Duo" below). This is a test device, mostly used to confirm projects compile and build on a live device. It is connected to Xcode as `Geoff's iPhone` 
 
-The iPhone 17 runs iOS 27 (non Beta, stable releases). It builds from Xcode 27.0 on the Mac mini (confirmed 2026-09-26). This is the device that is referred to when "testing" or "dogfooding" an app for N number of days or weeks (whichever the situation calls for). It is connected to Xcode as `Geoffrey's iPhone` and should be considered the device of record for any out of session or longer term (>1 day) testing.
+The iPhone 17 runs iOS 27 (non Beta, stable releases). It builds with Xcode 27.1 on the Mac mini (see "iPhone Duo" below). This is the device that is referred to when "testing" or "dogfooding" an app for N number of days or weeks (whichever the situation calls for). It is connected to Xcode as `Geoffrey's iPhone` and should be considered the device of record for any out of session or longer term (>1 day) testing.
 
 Both devices also build from Xcode 27 on the MacBook Pro. 
 
 # iPhone Duo (fold layout)
 
-Spec: `docs/superpowers/specs/2026-10-07-duo-fold-layout-design.md`. Code: `Offshoots/Fold/`.
+Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Offshoots/Fold/`.
 
 - **Offshoots builds only with Xcode 27.1 or later, on the Mac mini.** The fold
   APIs are in the iOS 27.1 SDK. Prefix commands with
@@ -301,12 +299,11 @@ while the app is running, not only before launch.
 
 # Docs
 
-- The audit and plan docs live in `docs/`. The 2026-09-23 audit doc lists the
-  remaining sections (5–6).
+- The audit and plan docs live in `docs/`.
 - `.gitignore` does not ignore Markdown, so a new doc is tracked with no
   exception. It ignores Xcode user state, build output, AI tooling folders,
   PDFs and OS files.
-- Keep CHANGELOG, DECISIONS and TODO up to date as described in `../CLAUDE.md`.
+- Keep CHANGELOG, DECISIONS and TODO up to date as described in `~/.claude/CLAUDE.md`.
 - Release docs: `RELEASE_NOTES.md` (NEW / IMPROVED / FIXED / What to Test per
   version) and `ASC_LISTING.md`. The CHANGELOG keeps `## In Progress` on top;
   the release pass moves those entries under `## Shipped` → `### <version>`.
