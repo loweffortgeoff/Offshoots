@@ -9,9 +9,9 @@ internal import SwiftUI
 
 @main
 struct OffshootsApp: App {
-    /// The splash is a first-launch welcome, not a wait on every launch
-    @AppStorage("hasSeenSplash") private var hasSeenSplash = false
-    @State private var showSplash = !UserDefaults.standard.bool(forKey: "hasSeenSplash")
+    /// The splash shows on the first cold launch of each day, not on every launch
+    @AppStorage(SplashSchedule.storageKey) private var lastSplashDate: Double = 0
+    @State private var showSplash = SplashSchedule.isDue(lastShown: UserDefaults.standard.double(forKey: SplashSchedule.storageKey))
     @AppStorage(AppTheme.storageKey) private var theme: AppTheme = .system
     /// Owned here, not in ContentView: App.init runs once, while ContentView is
     /// rebuilt when the splash ends and would decode the file again
@@ -48,7 +48,7 @@ struct OffshootsApp: App {
                     withAnimation(.easeOut(duration: 0.5)) {
                         showSplash = false
                     }
-                    hasSeenSplash = true
+                    lastSplashDate = Date.now.timeIntervalSinceReferenceDate
                 }
             }
             .onChange(of: scenePhase) { _, phase in
