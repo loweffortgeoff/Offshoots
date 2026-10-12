@@ -164,6 +164,12 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   with `interactionCommand: "t x y"`) writes a hierarchy file with each
   element's label and traits (`Selected`). End the session afterwards.
   Coordinates in that file are device points.
+  The file also lists `accessibilityHidden` elements and the children of
+  a `.combine` or `.ignore` element, nested under it. Use it to check
+  labels and nesting, not what VoiceOver skips; only listening with
+  VoiceOver shows that (checked 2026-10-11). To swipe, send
+  `t x1 y1 f x2 y2 duration` (for example `t 200 700 f 200 150 0.5`).
+  There is no `s` command.
 - **Dynamic Type checks:** `xcrun simctl ui <UDID> content_size
   accessibility-extra-extra-extra-large`, then `large` to reset. At
   accessibility sizes, layouts switch with `dynamicTypeSize.isAccessibilitySize`
