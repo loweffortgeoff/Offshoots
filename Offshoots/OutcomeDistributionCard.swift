@@ -59,6 +59,8 @@ struct OutcomeDistributionCard: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(ChartSummary.outcomes(shares))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

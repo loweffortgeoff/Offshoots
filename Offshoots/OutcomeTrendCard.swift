@@ -49,6 +49,14 @@ struct OutcomeTrendCard: View {
         return result
     }
 
+    private var trendSummary: String {
+        let data = weeklyData
+        func total(_ category: String) -> Int {
+            data.filter { $0.category == category }.reduce(0) { $0 + $1.count }
+        }
+        return ChartSummary.trend(positive: total("Positive"), neutral: total("Neutral"), negative: total("Negative"), weeks: 8)
+    }
+
     private var hasData: Bool {
         weeklyData.contains { $0.count > 0 }
     }
@@ -95,6 +103,8 @@ struct OutcomeTrendCard: View {
                 .frame(height: 200)
                 // Axis labels cannot wrap, so chart text stops growing at the largest non-accessibility size.
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(trendSummary)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

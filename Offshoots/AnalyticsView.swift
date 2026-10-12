@@ -128,6 +128,8 @@ struct StatBox: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.offshootCardBackground)
         .cornerRadius(12)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("\(title): \(value)")
     }
 }
 
@@ -199,6 +201,8 @@ struct DecisionTimelineCard: View {
                 .frame(height: 180)
                 // Axis labels cannot wrap, so chart text stops growing at the largest non-accessibility size.
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(ChartSummary.activity(dailyCounts: timelineData.map(\.count), days: 30))
             }
         }
         .padding(20)

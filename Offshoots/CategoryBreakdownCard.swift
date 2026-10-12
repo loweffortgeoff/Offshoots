@@ -69,5 +69,7 @@ private struct CategoryBarChart: View {
         // scheme changes, so rebuild the chart on a change.
         .id(colorScheme)
         .frame(height: CGFloat(data.count) * rowHeight)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ChartSummary.categories(data))
     }
 }
