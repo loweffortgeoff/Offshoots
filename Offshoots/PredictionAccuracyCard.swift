@@ -62,6 +62,8 @@ struct PredictionAccuracyCard: View {
                         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                     }
                     .frame(maxWidth: .infinity)
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel("\(breakdown.percent)% accurate")
 
                     let countsLayout = dynamicTypeSize.isAccessibilitySize
                         ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
@@ -77,6 +79,7 @@ struct PredictionAccuracyCard: View {
                                 .foregroundStyle(Color.outcomeGood)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityElement(children: .combine)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Close")
@@ -88,6 +91,7 @@ struct PredictionAccuracyCard: View {
                                 .foregroundStyle(Color.outcomeNeutral)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityElement(children: .combine)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Missed")
@@ -99,6 +103,7 @@ struct PredictionAccuracyCard: View {
                                 .foregroundStyle(Color.outcomeBad)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .accessibilityElement(children: .combine)
                     }
                     .padding(.horizontal)
 

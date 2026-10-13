@@ -18,8 +18,10 @@ struct SplashScreenView: View {
             let insets = proxy.safeAreaInsets
             let widest = max(insets.leading, insets.trailing)
             ZStack {
-                // Background: Matches App Icon
+                // Background: Matches App Icon. It fades in from the launch screen,
+                // which uses the app background so later launches show no splash.
                 Color.offshootsAccent
+                    .opacity(isAnimating ? 1 : 0)
                     .ignoresSafeArea()
                 
                 VStack(spacing: 24) {

@@ -125,7 +125,7 @@ setup() {
   local container; container=$(xcrun simctl get_app_container "$id" "$BUNDLE" data)
   mkdir -p "$container/Documents"
   shifted_fixture > "$container/Documents/decisions.json"
-  xcrun simctl spawn "$id" defaults write "$BUNDLE" hasSeenSplash -bool YES
+  xcrun simctl spawn "$id" defaults write "$BUNDLE" lastSplashDate -float 9999999999
   xcrun simctl launch "$id" "$BUNDLE" >/dev/null
 
   echo "✅ Ready. Capture each shot (see the notes at the top of this script):"

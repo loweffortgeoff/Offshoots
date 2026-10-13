@@ -164,18 +164,28 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   with `interactionCommand: "t x y"`) writes a hierarchy file with each
   element's label and traits (`Selected`). End the session afterwards.
   Coordinates in that file are device points.
+  The file also lists `accessibilityHidden` elements and the children of
+  a `.combine` or `.ignore` element, nested under it. Use it to check
+  labels and nesting, not what VoiceOver skips; only listening with
+  VoiceOver shows that (checked 2026-10-11). To swipe, send
+  `t x1 y1 f x2 y2 duration` (for example `t 200 700 f 200 150 0.5`).
+  There is no `s` command.
 - **Dynamic Type checks:** `xcrun simctl ui <UDID> content_size
   accessibility-extra-extra-extra-large`, then `large` to reset. At
   accessibility sizes, layouts switch with `dynamicTypeSize.isAccessibilitySize`
   (AnyLayout: side by side, or stacked). Chart text is capped at `.xxxLarge`.
-- **Splash on first launch only.** After a fresh install the splash shows
-  once for 2 seconds; taps in that time miss. Later launches skip it
-  (`hasSeenSplash` in the app's plist). To see it again, uninstall and
-  install again (also on a phone: delete the app, then run from Xcode).
-  `simctl spawn … defaults delete hasSeenSplash` reports that the key does
-  not exist, and a `plutil -remove` on the app's plist is ignored because
-  the preferences are cached (checked 2026-10-07). The launch screen is
-  green (`UILaunchScreen` in `Offshoots/Info.plist`) until the first frame.
+- **Splash on the first cold launch of each day.** The splash shows for
+  2 seconds; taps in that time miss. Later cold launches that day, and
+  returns from the background, skip it. The day is `lastSplashDate` in the
+  app's plist (`SplashSchedule`). To see it again, launch with
+  `-lastSplashDate 0` (`simctl launch <UDID> <bundle> -lastSplashDate 0`,
+  or enable that argument in the scheme; do not commit it enabled). A
+  `simctl spawn … defaults write` after the app has run did not take
+  effect (checked 2026-10-09); the launch argument does. The launch screen
+  is the app background (`OffshootBackground`, `UILaunchScreen` in
+  `Offshoots/Info.plist`), so a launch with no splash shows no green. After
+  a launch-screen change, uninstall the app, then shut the simulator down
+  and boot it again: iOS caches the launch screen.
 - **Menus close on their own.** Take a screenshot after opening a Picker
   menu and tap the item at once. A late tap can land on the row behind it;
   on 2026-09-25 one opened an App Store link in Safari from Settings.
@@ -269,8 +279,8 @@ Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Of
   the screen edge. Extra height on a top pane hides the last scrolling content.
 - **Checked on the Duo** (2026-10-07): a reminder tap in two-pane landscape opens
   the tapped decision in the detail pane (send it with `simctl push`; the app
-  needs notification permission first). **Not checked:** the splash with a reset
-  `hasSeenSplash`.
+  needs notification permission first). **Not checked:** the splash (launch with
+  `-lastSplashDate 0`).
 
 # Archive and upload
 
