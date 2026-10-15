@@ -30,7 +30,9 @@ tests too.
 
 **Live output harness.** `ReflectionLiveOutputTests` runs the real on-device model
 on `docs/fixtures/reflection-notes.json` (Patterns, two decision reflections, Look
-Back for Money and Work) and writes token counts, prompts and output to a file. It
+Back for Money and Work) and writes token counts, prompts and output to a file.
+For Look Back it also writes the model's raw sentence for each group before
+validation, so a missing sentence shows whether the model left it blank. It
 is off by default. Delete the output file first: the harness adds to the end of it.
 
 ```
@@ -210,6 +212,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   argument. In the shared scheme `-ReflectionUnlockOnly` is present but
   disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
   would start unlocked and the paywall could not be tested.
+- **Look Back raw output (DEBUG builds).** Each Look Back call logs
+  `LOOKBACKRAW` with the model's three sentences before validation. In
+  Xcode's console, filter on `LOOKBACKRAW`. Use it when a card is missing
+  a sentence on a phone.
 - **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
   Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
   `RunProject` tool. The test purchase sheet says you are not charged.

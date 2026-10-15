@@ -126,6 +126,18 @@ struct ReflectionDigestBuilderTests {
         #expect(digest.hasNotes == false)
     }
 
+    /// Seen 2026-10-14: a note-less "as predicted" group got an invented sentence
+    @Test func lookBackGroupWithoutNotesGetsNoSentence() throws {
+        let decisions = [
+            Make.decision(expected: .bad, actual: .good, notes: "Some sites will be closed.", reflection: "Nothing disastrous happened", resolvedAt: Make.day(7)),
+            Make.decision(expected: .neutral, actual: .neutral, resolvedAt: Make.day(7)),
+        ]
+        let digest = try #require(ReflectionDigestBuilder.lookBack(category: .work, in: decisions))
+        #expect(digest.betterHasNotes)
+        #expect(!digest.asPredictedHasNotes)
+        #expect(!digest.worseHasNotes)
+    }
+
     /// The prompt keeps the 5 newest; the counts and bars cover every marked decision
     @Test func lookBackStatsCoverEveryMarkedDecisionInTheCategory() throws {
         let decisions = (0..<8).map { _ in Make.decision(expected: .bad, actual: .good, resolvedAt: Make.day(7)) }

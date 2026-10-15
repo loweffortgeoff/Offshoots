@@ -68,6 +68,15 @@ struct ReflectionLiveOutputTests {
             prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
             schema: LiveReflectionService.GeneratedPatterns.generationSchema
         )
+        // Raw model fields before validation, so a dropped sentence shows why. Greedy sampling
+        // gives the service call below the same output.
+        let session = LanguageModelSession(instructions: ReflectionPromptBuilder.lookBackInstructions)
+        let raw = try await session.respond(
+            to: ReflectionPromptBuilder.lookBackPrompt(digest),
+            generating: LiveReflectionService.GeneratedPatterns.self,
+            options: GenerationOptions(samplingMode: .greedy, maximumResponseTokens: 300)
+        ).content
+        log("Look Back raw (\(digest.category)):\nworse: \(raw.worse)\nasPredicted: \(raw.asPredicted)\nbetter: \(raw.better)")
         let output = try await LiveReflectionService().lookBack(digest: digest)
         log("Look Back output (\(digest.category)):\n\(output.stats.headline ?? "(no headline)")\n\(output.stats.summary)\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
     }

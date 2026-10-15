@@ -86,7 +86,17 @@ struct LookBackDigest: Equatable {
     var worse: [HistoryLine] { history.filter { $0.direction < 0 } }
     var asPredicted: [HistoryLine] { history.filter { $0.direction == 0 } }
     var better: [HistoryLine] { history.filter { $0.direction > 0 } }
-    var hasNotes: Bool { history.contains { $0.notes != nil || $0.outcomeNote != nil } }
+    var hasNotes: Bool { Self.hasNotes(history) }
+
+    /// A group gets a sentence only when one of its decisions has a note. With titles alone the
+    /// model invents a pattern (seen 2026-10-14: a note-less "as predicted" group got one).
+    var worseHasNotes: Bool { Self.hasNotes(worse) }
+    var asPredictedHasNotes: Bool { Self.hasNotes(asPredicted) }
+    var betterHasNotes: Bool { Self.hasNotes(better) }
+
+    private static func hasNotes(_ lines: [HistoryLine]) -> Bool {
+        lines.contains { $0.notes != nil || $0.outcomeNote != nil }
+    }
 }
 
 /// One marked decision: what the user predicted, and the first result they marked.
