@@ -75,6 +75,17 @@ extension LookBackOutput {
     func validated() -> LookBackOutput {
         LookBackOutput(stats: stats, lines: ReflectionGroupLine.validated(lines))
     }
+
+    /// The model on a phone can copy an input line back (seen 2026-10-14). With the leftovers
+    /// stripped, that sentence is only a decision title, so it says nothing and is dropped.
+    func droppingTitleCopies(_ titles: [String]) -> LookBackOutput {
+        let copies = Set(titles.map(Self.titleKey))
+        return LookBackOutput(stats: stats, lines: lines.filter { !copies.contains(Self.titleKey($0.text)) })
+    }
+
+    private static func titleKey(_ text: String) -> String {
+        text.lowercased().trimmingCharacters(in: .whitespaces.union(CharacterSet(charactersIn: ".")))
+    }
 }
 
 extension ReflectionGroupLine {

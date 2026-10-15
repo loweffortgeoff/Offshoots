@@ -140,7 +140,7 @@ struct LiveReflectionService: ReflectionGenerating {
         NSLog("LOOKBACKRAW worse %@ | asPredicted %@ | better %@", generated.worse, generated.asPredicted, generated.better)
         #endif
         let lines = Self.groupLines(generated, worse: digest.worseHasNotes, asPredicted: digest.asPredictedHasNotes, better: digest.betterHasNotes)
-        return LookBackOutput(stats: digest.stats, lines: lines).validated()
+        return LookBackOutput(stats: digest.stats, lines: lines).validated().droppingTitleCopies(digest.history.map(\.title))
     }
 
     func cleanUp(note: String) async throws -> CleanedNote {

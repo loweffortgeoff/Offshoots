@@ -77,6 +77,16 @@ struct ReflectionOutputTests {
         #expect(output.lines == [line("Went worse", "Put off email Response.")])
     }
 
+    /// Seen 2026-10-14 on a phone: the model copied the input line back for both groups
+    @Test func lookBackDropsASentenceThatIsOnlyATitle() {
+        let stats = LookBackStats(category: "Work", pairs: [OutcomePair(expected: .bad, actual: .good), OutcomePair(expected: .neutral, actual: .neutral)])
+        let output = LookBackOutput(stats: stats, lines: [
+            line("Went as predicted", "[Medium] Reply to that email today, not Friday."),
+            line("Went better", "Waiting before acting led to a calmer result."),
+        ]).validated().droppingTitleCopies(["Reply to that email today, not Friday", "Ghost PTO"])
+        #expect(output.lines == [line("Went better", "Waiting before acting led to a calmer result.")])
+    }
+
     @Test func decisionEchoIsCleanedAndMayBeEmpty() throws {
         let output = try DecisionReflectionOutput(summary: "It aged badly.", repeating: [], nextPrompt: "", echo: "  Like the gym plan.  ").validated()
         #expect(output.echo == "Like the gym plan.")
