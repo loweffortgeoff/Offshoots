@@ -3,6 +3,7 @@
 //  Offshoots
 //
 
+import Foundation
 import FoundationModels
 
 /// The only file that imports FoundationModels. Each call makes a new session with fixed
@@ -134,6 +135,10 @@ struct LiveReflectionService: ReflectionGenerating {
             prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
             maximumTokens: 300
         )
+        #if DEBUG
+        // The raw sentences before validation, so a missing line on a device shows why
+        NSLog("LOOKBACKRAW worse %@ | asPredicted %@ | better %@", generated.worse, generated.asPredicted, generated.better)
+        #endif
         let lines = Self.groupLines(generated, worse: digest.worseHasNotes, asPredicted: digest.asPredictedHasNotes, better: digest.betterHasNotes)
         return LookBackOutput(stats: digest.stats, lines: lines).validated()
     }
