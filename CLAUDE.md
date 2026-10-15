@@ -30,7 +30,9 @@ tests too.
 
 **Live output harness.** `ReflectionLiveOutputTests` runs the real on-device model
 on `docs/fixtures/reflection-notes.json` (Patterns, two decision reflections, Look
-Back for Money and Work) and writes token counts, prompts and output to a file. It
+Back for Money and Work) and writes token counts, prompts and output to a file.
+For Look Back it also writes the model's raw sentence for each group before
+validation, so a missing sentence shows whether the model left it blank. It
 is off by default. Delete the output file first: the harness adds to the end of it.
 
 ```
