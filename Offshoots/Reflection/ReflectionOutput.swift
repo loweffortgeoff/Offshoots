@@ -82,7 +82,7 @@ extension ReflectionGroupLine {
     static func validated(_ lines: [ReflectionGroupLine]) -> [ReflectionGroupLine] {
         var seen = Set<String>()
         return lines.compactMap { line in
-            guard let text = ReflectionText.clean(line.text, limit: 400).map(ReflectionText.dropGroupOpening),
+            guard let text = ReflectionText.clean(line.text, limit: 400).map(ReflectionText.dropPromptLeftovers).map(ReflectionText.dropGroupOpening),
                   text.split(whereSeparator: \.isWhitespace).count >= PatternsOutput.minimumWords,
                   seen.insert(text).inserted
             else { return nil }

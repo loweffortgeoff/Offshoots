@@ -28,6 +28,16 @@ enum ReflectionText {
         return rest.prefix(1).uppercased() + rest.dropFirst()
     }
 
+    /// With one decision in a group, the model can copy its input line back word for word, for
+    /// example "[Medium] Put off email Response. Notes: "…" Outcome note: "…"". This removes the
+    /// stakes tag and the note labels with their quoted text (the format is
+    /// `ReflectionPromptBuilder.lookBackPrompt`). Other sentences come back unchanged.
+    static func dropPromptLeftovers(_ text: String) -> String {
+        text.replacingOccurrences(of: #"^\[(?:Low|Medium|High)\]\s*"#, with: "", options: .regularExpression)
+            .replacingOccurrences(of: #"\s*(?:Notes|Outcome note):\s*["“][^"”]*["”]?"#, with: "", options: .regularExpression)
+            .trimmingCharacters(in: .whitespaces)
+    }
+
     /// Cleaned, non-blank lines with repeats removed, in first-seen order.
     /// A `ForEach` can use the line itself as its id because lines are unique.
     static func uniqueLines(_ lines: [String], limit: Int) -> [String] {

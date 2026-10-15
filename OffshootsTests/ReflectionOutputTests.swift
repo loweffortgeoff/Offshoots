@@ -53,6 +53,30 @@ struct ReflectionOutputTests {
         #expect(output.lines == [line("Went worse", "A rush to buy.")])
     }
 
+    /// Seen on build 7 (2026-10-09): with one decision in a group, the model copied its input line back.
+    @Test(arguments: [
+        (#"[Medium] Put off email Response. Notes: "…" Outcome note: "…""#, "Put off email Response."),
+        (#"[High] Took the Denver job. Notes: "Decided over a weekend." Outcome note: "The move cost more than planned.""#,
+         "Took the Denver job."),
+        (#"[Low] Skipped the gym class. Outcome note: "Felt fine.""#, "Skipped the gym class."),
+    ])
+    func promptLeftoversAreRemoved(text: String, expected: String) {
+        #expect(ReflectionText.dropPromptLeftovers(text) == expected)
+    }
+
+    @Test func sentencesWithNoLeftoversAreLeftAlone() {
+        let text = "Agreed right away because they asked nicely, and the notes say it felt rushed."
+        #expect(ReflectionText.dropPromptLeftovers(text) == text)
+    }
+
+    @Test func lookBackValidationRemovesPromptLeftovers() {
+        let stats = LookBackStats(category: "Work", pairs: [OutcomePair(expected: .good, actual: .bad)])
+        let output = LookBackOutput(stats: stats, lines: [
+            line("Went worse", #"[Medium] Put off email Response. Notes: "…" Outcome note: "…""#),
+        ]).validated()
+        #expect(output.lines == [line("Went worse", "Put off email Response.")])
+    }
+
     @Test func decisionEchoIsCleanedAndMayBeEmpty() throws {
         let output = try DecisionReflectionOutput(summary: "It aged badly.", repeating: [], nextPrompt: "", echo: "  Like the gym plan.  ").validated()
         #expect(output.echo == "Like the gym plan.")
