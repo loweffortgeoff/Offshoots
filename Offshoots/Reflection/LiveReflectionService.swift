@@ -134,7 +134,7 @@ struct LiveReflectionService: ReflectionGenerating {
             prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
             maximumTokens: 300
         )
-        let lines = Self.groupLines(generated, worse: !digest.worse.isEmpty, asPredicted: !digest.asPredicted.isEmpty, better: !digest.better.isEmpty)
+        let lines = Self.groupLines(generated, worse: digest.worseHasNotes, asPredicted: digest.asPredictedHasNotes, better: digest.betterHasNotes)
         return LookBackOutput(stats: digest.stats, lines: lines).validated()
     }
 
