@@ -285,6 +285,16 @@ Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Of
   trailing inset (84 pt) still reaches its content. `FoldPane` handles both: it
   gives a left pane extra width and cuts at the fold with a mask that reaches
   the screen edge. Extra height on a top pane hides the last scrolling content.
+- **Two panes in wide landscape** (2026-10-16): Decisions, Dashboard, Log and
+  Insights split through `Fold/WidePanes.swift` (an `ArrangementView`) and
+  `Fold/TwoPaneReader.swift`; each passes `FoldPane(ownsWideLayout: true)`.
+  Settings stays in one pane. Inside the split, SwiftUI reports no rail inset
+  for the left pane, but its `NavigationStack` still keeps 84 pt clear;
+  `WidePanes` reads the inset outside the split and widens and masks the left
+  pane. Spec: `docs/superpowers/specs/2026-10-16-duo-wide-panes-design.md`.
+- **Reaching a tab on the Duo without taps:** build once with
+  `@State private var selectedTab: AppTab = .insights` (or `.log`, `.decisions`)
+  in `ContentView`, install, screenshot, then restore the file. Do not commit it.
 - **Checked on the Duo** (2026-10-07): a reminder tap in two-pane landscape opens
   the tapped decision in the detail pane (send it with `simctl push`; the app
   needs notification permission first). **Not checked:** the splash (launch with
