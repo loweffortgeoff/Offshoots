@@ -11,7 +11,7 @@ One shared scheme, `Offshoots`. Targets: `Offshoots` (the app) and
 Check UI behavior on the simulator.
 
 ```
-DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
+DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
 ```
 
 Leave the output verbose. Do not add `-quiet`.
@@ -19,7 +19,7 @@ Leave the output verbose. Do not add `-quiet`.
 ## Tests
 
 ```
-DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
+DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
 ```
 
 The tests load `docs/fixtures/*.json` from the test bundle. The folder is a
@@ -36,7 +36,7 @@ validation, so a missing sentence shows whether the model left it blank. It
 is off by default. Delete the output file first: the harness adds to the end of it.
 
 ```
-rm -f /tmp/reflection-live.txt; DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
+rm -f /tmp/reflection-live.txt; DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
 ```
 
 Tests run in a cloned simulator, so `print` output from a test does not reach
@@ -87,7 +87,7 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   on 02 (Log) or 04 (Revisit): a save asks for notification permission.
   The 6.9" capture size is 1320 × 2868 px.
 - **iPhone Duo screenshots (2026-10-08):** run
-  `DEVICE="iPhone Duo" scripts/screenshots.sh`. The script picks Xcode 27.1 RC
+  `DEVICE="iPhone Duo" scripts/screenshots.sh`. The script picks Xcode 27.1
   and iOS 27.1, and writes to `Captures/<date>/duo/`. The Duo has two displays.
   `shot <name> closed` captures `primary` (1398 × 2034). `shot <name> open`
   captures `primary-1` (2007 × 2853, or 2853 × 2007 in landscape). Both are ASC
@@ -260,7 +260,9 @@ Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Of
 
 - **Offshoots builds only with Xcode 27.1 or later, on the Mac mini.** The fold
   APIs are in the iOS 27.1 SDK. Prefix commands with
-  `DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer"`. The app
+  `DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"`. On the Mac
+  mini, `Xcode.app` has been Xcode 27.1 (27A9275) since 2026-10-16; the
+  27.1 RC is no longer installed. The app
   still runs on iOS 18.6: every 27.1 call sits behind `#available(iOS 27.1, *)`.
 - **Posture table** (iPhone Duo simulator, from the probe): the `.division`
   region is active only when the device is partly open. Fully open it is still
@@ -290,7 +292,7 @@ Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Of
 
 # Archive and upload
 
-`scripts/archive-upload.sh` archives Release with Xcode 27.1 RC and uploads the
+`scripts/archive-upload.sh` archives Release with Xcode 27.1 and uploads the
 build to App Store Connect (TestFlight). It refuses a dirty tree and an enabled
 `-ReflectionUnlockOnly`. `--archive-only` stops before the upload. Bump
 `CURRENT_PROJECT_VERSION` first. It was run by hand for 2.0.0 (6) on 2026-10-09.
