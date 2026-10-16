@@ -26,7 +26,7 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            FoldPane { DashboardView(selectedTab: $selectedTab, logDraft: $logDraft) }
+            FoldPane(ownsWideLayout: true) { DashboardView(selectedTab: $selectedTab, logDraft: $logDraft) }
                 .tag(AppTab.dashboard)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")

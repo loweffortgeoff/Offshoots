@@ -8,10 +8,39 @@
 internal import SwiftUI
 
 struct DashboardView: View {
+    @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
     @Binding var logDraft: StarterSuggestion?
+    /// The decision tapped in two-pane mode. See `DashboardSelection` for the fallback.
+    @State private var selectedID: UUID?
 
     var body: some View {
+        TwoPaneReader { twoPanes in
+            if twoPanes, #available(iOS 27.1, *) {
+                let shown = DashboardSelection.current(
+                    selectedID: selectedID,
+                    ready: store.readyForReviewDecisions,
+                    all: store.decisions
+                )
+                WidePanes {
+                    dashboard(selection: DashboardRowSelection(selectedID: shown?.id) { selectedID = $0.id })
+                } secondary: {
+                    NavigationStack {
+                        if let shown {
+                            DecisionDetailView(decision: shown)
+                                .id(shown.id)
+                        } else {
+                            placeholder
+                        }
+                    }
+                }
+            } else {
+                dashboard(selection: nil)
+            }
+        }
+    }
+
+    private func dashboard(selection: DashboardRowSelection?) -> some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -28,13 +57,13 @@ struct DashboardView: View {
                     VStack(spacing: 28) {
                         DashboardHeaderView()
 
-                        ReadyToReviewSection()
+                        ReadyToReviewSection(selection: selection)
 
                         StarterSuggestionsSection(logDraft: $logDraft, selectedTab: $selectedTab)
 
                         QuickStatsSection()
 
-                        RecentDecisionsSection(selectedTab: $selectedTab)
+                        RecentDecisionsSection(selectedTab: $selectedTab, selection: selection)
 
                         Spacer(minLength: 20)
                     }
@@ -53,6 +82,24 @@ struct DashboardView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+
+    /// The detail pane with no decisions yet
+    private var placeholder: some View {
+        ZStack {
+            Color.offshootBackground
+                .ignoresSafeArea()
+
+            VStack(spacing: 12) {
+                Image(systemName: "checklist")
+                    .font(.largeTitle)
+                    .foregroundStyle(Color.offshootPrimary.opacity(0.6))
+                    .accessibilityHidden(true)
+                Text("Your decisions show here")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 }
