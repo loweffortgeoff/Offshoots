@@ -32,7 +32,7 @@ struct ContentView: View {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
 
-            FoldPane { LogDecisionView(selectedTab: $selectedTab, draft: $logDraft) }
+            FoldPane(ownsWideLayout: true) { LogDecisionView(selectedTab: $selectedTab, draft: $logDraft, onOpenDecision: show) }
                 .tag(AppTab.log)
                 .tabItem {
                     Label("Log", systemImage: "plus.circle.fill")
@@ -76,8 +76,13 @@ struct ContentView: View {
 
         guard let target = store.decisions.first(where: { $0.id == id }) else { return }
 
+        show(target)
+    }
+
+    /// Opens a decision in the Decisions tab
+    private func show(_ decision: Decision) {
         selectedTab = .decisions
-        decisionsPath = [target]
+        decisionsPath = [decision]
     }
 }
 

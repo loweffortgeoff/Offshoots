@@ -14,6 +14,8 @@ struct LogDecisionView: View {
     @Binding var selectedTab: AppTab
     /// A starter suggestion to fill in; cleared once applied
     @Binding var draft: StarterSuggestion?
+    /// Opens a decision from the recent list in the Decisions tab (wide Duo only)
+    var onOpenDecision: (Decision) -> Void = { _ in }
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isNotesFocused: Bool
     @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 50
@@ -35,7 +37,23 @@ struct LogDecisionView: View {
         Calendar.current.startOfDay(for: Date().addingTimeInterval(86400))
     }
 
+    // The form's values are @State on this view, so they survive a change between one
+    // pane and two. Only the form's focus and scroll position reset.
     var body: some View {
+        TwoPaneReader { twoPanes in
+            if twoPanes, #available(iOS 27.1, *) {
+                WidePanes {
+                    form
+                } secondary: {
+                    LogRecentPane(list: .make(category: category, from: store.decisions), onOpen: onOpenDecision)
+                }
+            } else {
+                form
+            }
+        }
+    }
+
+    private var form: some View {
         NavigationStack {
             ZStack {
                 Color.offshootBackground
