@@ -109,7 +109,9 @@ half has a clear purpose, and the fold sits between them. No half is plain backg
 - **Empty category:** show the most recent decisions across all categories, headed
   "Recent Decisions". With no decisions at all, show a short placeholder.
 - **Rows:** reuse `DecisionRowView`.
-- **Row taps:** Geoff decides (open question 1 below).
+- **Row taps (Geoff, 2026-10-16):** a tap switches to the Decisions tab with that
+  decision open, as a reminder tap does through `ContentView.openDecision`. A
+  half-typed entry must survive the tab switch.
 - **State:** the form's `@State` (title, notes, category, stakes, expected, review
   date) must survive a change between one pane and two panes. The builder picks how
   (for example, keep the form at a fixed position in one view tree and add or remove
@@ -149,9 +151,3 @@ the iPhone 18 Pro (iOS 27.0) is unchanged.
   change in Log. The form's values must survive. They are `@State` on
   `LogDecisionView`, so they survive if the split is built inside that view's body.
 - "Most recent" in Log means `store.decisions` order (newest first).
-
-## Open questions for Geoff
-
-1. **Log row taps:** should a tap on a row in Log's right pane do anything? Options:
-   nothing (read-only), or switch to the Decisions tab with that decision open (as a
-   reminder tap does through `ContentView.openDecision`).
