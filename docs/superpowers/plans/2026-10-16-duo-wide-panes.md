@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - Branch `feature/duo-wide-panes`. Claude commits once per task. Geoff pushes.
-- Build only with `DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer"`, on the Mac mini.
+- Build only with `DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"`, on the Mac mini.
 - Every fold API call sits behind `#available(iOS 27.1, *)`. The app still runs on iOS 18.6.
 - Two panes only when `foldPosture.supportsTwoPanes(width:)` is true (a foldable device, width ≥ 900 pt). Nothing changes on any non-foldable iPhone, in any orientation.
 - Settings, partly open portrait and fully open portrait do not change.
@@ -23,8 +23,8 @@
 
 **Commands:**
 
-- Build: `DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build`
-- One test suite: append `-only-testing:OffshootsTests/<Suite>` to `DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test`
+- Build: `DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build`
+- One test suite: append `-only-testing:OffshootsTests/<Suite>` to `DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test`
 - Full suite: the same command with no `-only-testing`.
 
 ## Review Focus

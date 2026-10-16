@@ -29,7 +29,7 @@
 # Scroll with slow drags that pause before lifting (Claude's simulator tool:
 # touch_path), not flicks. A flick keeps moving after release.
 #
-# iPhone Duo: DEVICE="iPhone Duo" switches to Xcode 27.1 RC and iOS 27.1, and
+# iPhone Duo: DEVICE="iPhone Duo" switches to Xcode 27.1 and iOS 27.1, and
 # writes to Captures/<date>/duo/. The Duo has two displays, and only Geoff can
 # fold it (in DeviceHub). App Store Connect sizes:
 #   closed  1398 x 2034 (the "closed" display)  shots 01-07, same list as above
@@ -53,7 +53,7 @@ SUBDIR=
 if [[ $DEVICE == "iPhone Duo" ]]; then
   OS=${OS:-27.1}
   SUBDIR=/duo
-  export DEVELOPER_DIR=${DEVELOPER_DIR:-"/Applications/Xcode 27.1 RC.app/Contents/Developer"}
+  export DEVELOPER_DIR=${DEVELOPER_DIR:-"/Applications/Xcode.app/Contents/Developer"}
 fi
 OS=${OS:-27.0}
 ANCHOR=2026-09-27

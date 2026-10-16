@@ -13,6 +13,77 @@ struct AnalyticsView: View {
     @Environment(ReflectionCenter.self) private var reflection
 
     var body: some View {
+        TwoPaneReader { twoPanes in
+            if twoPanes, #available(iOS 27.1, *) {
+                // With no decisions the empty state stays in the left pane, clear of the fold
+                if store.decisions.isEmpty {
+                    WidePanes {
+                        pane(title: "Insights") { EmptyAnalyticsView() }
+                    } secondary: {
+                        Color.offshootBackground
+                            .ignoresSafeArea()
+                    }
+                } else {
+                    WidePanes {
+                        pane(title: "Insights") { whatYouDecideCards }
+                    } secondary: {
+                        pane(title: "Outcomes") { howItTurnedOutCards }
+                    }
+                }
+            } else {
+                pane(title: "Insights") {
+                    if store.decisions.isEmpty {
+                        EmptyAnalyticsView()
+                    } else {
+                        whatYouDecideCards
+                        howItTurnedOutCards
+                    }
+                }
+            }
+        }
+    }
+
+    /// Cards about the decisions themselves. The left pane on a wide Duo.
+    @ViewBuilder
+    private var whatYouDecideCards: some View {
+        // Overall Stats
+        OverallStatsCard(decisions: store.decisions)
+
+        // Decision Timeline
+        DecisionTimelineCard(decisions: store.decisions)
+
+        // Category Breakdown
+        CategoryBreakdownCard(decisions: store.decisions)
+
+        // Outcome Distribution
+        OutcomeDistributionCard(decisions: store.decisions)
+    }
+
+    /// Cards about how decisions turned out. The right pane on a wide Duo, titled "Outcomes".
+    @ViewBuilder
+    private var howItTurnedOutCards: some View {
+        // Outcome Trends
+        OutcomeTrendCard(decisions: store.decisions)
+
+        // Prediction Accuracy
+        PredictionAccuracyCard(decisions: store.decisions)
+
+        // Optimism Bias
+        OptimismCard(
+            bias: AnalyticsEngine.optimismBias(from: store.decisions),
+            markedCount: AnalyticsEngine.markedCount(from: store.decisions)
+        )
+
+        // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
+        // Removing the card also drops its result, so a stale one cannot come back.
+        if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
+            PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
+        }
+    }
+
+    /// One scrolling column of cards under a large title. Each pane on a wide Duo has its
+    /// own title, so the two columns start level.
+    private func pane<Cards: View>(title: String, @ViewBuilder cards: () -> Cards) -> some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -27,39 +98,7 @@ struct AnalyticsView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        if store.decisions.isEmpty {
-                            EmptyAnalyticsView()
-                        } else {
-                            // Overall Stats
-                            OverallStatsCard(decisions: store.decisions)
-
-                            // Decision Timeline
-                            DecisionTimelineCard(decisions: store.decisions)
-
-                            // Category Breakdown
-                            CategoryBreakdownCard(decisions: store.decisions)
-
-                            // Outcome Distribution
-                            OutcomeDistributionCard(decisions: store.decisions)
-
-                            // Outcome Trends
-                            OutcomeTrendCard(decisions: store.decisions)
-
-                            // Prediction Accuracy
-                            PredictionAccuracyCard(decisions: store.decisions)
-
-                            // Optimism Bias
-                            OptimismCard(
-                                bias: AnalyticsEngine.optimismBias(from: store.decisions),
-                                markedCount: AnalyticsEngine.markedCount(from: store.decisions)
-                            )
-
-                            // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
-                            // Removing the card also drops its result, so a stale one cannot come back.
-                            if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
-                                PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
-                            }
-                        }
+                        cards()
 
                         Spacer(minLength: 20)
                     }
@@ -68,7 +107,7 @@ struct AnalyticsView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationTitle("Insights")
+            .navigationTitle(title)
             .navigationBarTitleDisplayMode(.large)
         }
     }

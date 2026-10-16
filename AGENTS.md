@@ -10,7 +10,7 @@ One shared scheme, `Offshoots`. Targets: `Offshoots` and `OffshootsTests`
 (Swift Testing). Unit tests cover logic. Check UI behavior on the simulator.
 
 ```
-DEVELOPER_DIR="/Applications/Xcode 27.1 RC.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
+DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
 ```
 
 Leave the output verbose. Do not add `-quiet`.

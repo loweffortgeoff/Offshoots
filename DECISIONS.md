@@ -326,3 +326,14 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** The splash shows on the first cold launch of each day (`lastSplashDate`, `SplashSchedule`). The launch screen is `OffshootBackground` with no image. The splash green fades in with the icon and title.
 **Why:** The 2026-10-07 green launch screen showed on every cold launch, but the splash ran only once after install, so later launches showed bare green and looked broken. Geoff wants the full splash once a day and nothing on later opens. A launch screen cannot change by day, so it cannot be green on the first launch and plain afterwards. The fade turns the dark-to-green change on the first launch into a transition instead of the flash Geoff flagged on 2026-10-07.
 **Alternative considered:** A green launch screen with the icon on every launch (built, commit `8fcd345`, and confirmed on the phone; Geoff did not want an icon-only screen on later opens). The splash on every launch (a 2-second wait each time).
+
+## 2026-10-16 (Duo: Dashboard, Log and Insights use both halves in wide landscape)
+**Decision:** Amends the 2026-10-07 fold design ("Amendable choices" 1 and 2). In wide landscape on the Duo, Dashboard shows the selected decision beside it, Insights splits its cards into two topic groups, and Log lists recent decisions in the picked category. Settings stays in one pane. Spec: `docs/superpowers/specs/2026-10-16-duo-wide-panes-design.md`.
+**Why:** Geoff looked at the single-pane screens on the Duo and did not like the empty right half.
+**Alternative considered:** Keep one pane and accept the empty half (the 2026-10-07 choice). Split Insights with chart filtering of a decisions list (later, it needs new chart interactions).
+
+## 2026-10-16 (Duo Dashboard: the shown decision is pinned; nothing carries between one pane and two)
+**Decision:** The Dashboard detail pane pins whatever it shows, the default included, until another row is tapped or the decision is deleted. A selection is not carried when the Duo changes between one pane and two, in either direction; Dashboard keeps plain pushes and has no navigation path. Log row taps open the decision in the Decisions tab, as a reminder tap does.
+**Why:** Marking an outcome moves a decision out of Ready to Review. If the pane followed the default, it would jump to the next decision before the result banner, the payoff of a review, could show (found in the branch review). Carrying the selection across pane counts would need a Dashboard navigation path; the simplest option ships first.
+**Alternative considered:** Recompute the default every time (jumps after a mark). Carry the selection like Decisions does (more code in both Dashboard sections).
+

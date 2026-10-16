@@ -26,13 +26,13 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            FoldPane { DashboardView(selectedTab: $selectedTab, logDraft: $logDraft) }
+            FoldPane(ownsWideLayout: true) { DashboardView(selectedTab: $selectedTab, logDraft: $logDraft) }
                 .tag(AppTab.dashboard)
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.line.uptrend.xyaxis")
                 }
 
-            FoldPane { LogDecisionView(selectedTab: $selectedTab, draft: $logDraft) }
+            FoldPane(ownsWideLayout: true) { LogDecisionView(selectedTab: $selectedTab, draft: $logDraft, onOpenDecision: show) }
                 .tag(AppTab.log)
                 .tabItem {
                     Label("Log", systemImage: "plus.circle.fill")
@@ -44,7 +44,7 @@ struct ContentView: View {
                     Label("Decisions", systemImage: "checklist")
                 }
 
-            FoldPane { AnalyticsView() }
+            FoldPane(ownsWideLayout: true) { AnalyticsView() }
                 .tag(AppTab.insights)
                 .tabItem {
                     Label("Insights", systemImage: "brain.head.profile")
@@ -76,8 +76,13 @@ struct ContentView: View {
 
         guard let target = store.decisions.first(where: { $0.id == id }) else { return }
 
+        show(target)
+    }
+
+    /// Opens a decision in the Decisions tab
+    private func show(_ decision: Decision) {
         selectedTab = .decisions
-        decisionsPath = [target]
+        decisionsPath = [decision]
     }
 }
 

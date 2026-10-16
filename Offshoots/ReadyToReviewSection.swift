@@ -9,6 +9,8 @@ internal import SwiftUI
 /// Renders nothing when there's nothing to review.
 struct ReadyToReviewSection: View {
     @Environment(DecisionStore.self) private var store
+    /// Set when the Dashboard has a detail pane beside it
+    var selection: DashboardRowSelection?
 
     var body: some View {
         let ready = store.readyForReviewDecisions
@@ -36,12 +38,7 @@ struct ReadyToReviewSection: View {
 
                 VStack(spacing: 12) {
                     ForEach(ready) { decision in
-                        NavigationLink {
-                            DecisionDetailView(decision: decision)
-                        } label: {
-                            DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
-                        }
-                        .buttonStyle(.plain)
+                        DashboardDecisionRow(decision: decision, selection: selection)
                     }
                 }
             }

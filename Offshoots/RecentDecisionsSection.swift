@@ -10,6 +10,8 @@ internal import SwiftUI
 struct RecentDecisionsSection: View {
     @Environment(DecisionStore.self) private var store
     @Binding var selectedTab: AppTab
+    /// Set when the Dashboard has a detail pane beside it
+    var selection: DashboardRowSelection?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
@@ -54,12 +56,7 @@ struct RecentDecisionsSection: View {
             } else {
                 VStack(spacing: 12) {
                     ForEach(store.decisions.prefix(3)) { decision in
-                        NavigationLink {
-                            DecisionDetailView(decision: decision)
-                        } label: {
-                            DecisionRowView(decision: decision, isReadyForReview: decision.isReadyForReview(asOf: store.today))
-                        }
-                        .buttonStyle(.plain)
+                        DashboardDecisionRow(decision: decision, selection: selection)
                     }
                 }
             }

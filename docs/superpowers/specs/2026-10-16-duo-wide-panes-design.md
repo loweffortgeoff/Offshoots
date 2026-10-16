@@ -48,7 +48,7 @@ half has a clear purpose, and the fold sits between them. No half is plain backg
 
 ## Constraints
 
-- Builds only with Xcode 27.1 RC on the Mac mini. Fold APIs stay behind
+- Builds only with Xcode 27.1 on the Mac mini. Fold APIs stay behind
   `#available(iOS 27.1, *)`. The app still runs on iOS 18.6.
 - Reuse the Decisions pattern: `DecisionsSplitView` uses `ArrangementView` with
   `.arrangementViewStyle(.split.axes(.horizontal))`, and the system puts the fold
@@ -134,7 +134,7 @@ the iPhone 18 Pro (iOS 27.0) is unchanged.
 - Unit tests (Swift Testing) for the pure parts: Dashboard default selection, and the
   Log list (category filter, limit of 10, fallback when the category is empty). Put the
   logic in small pure functions, as `DecisionsSelection` does.
-- Build with the Xcode 27.1 RC. Run the full test suite before merge.
+- Build with the Xcode 27.1. Run the full test suite before merge.
 - iPhone 18 Pro (iOS 27.0): Dashboard, Log and Insights look the same as on `main`,
   in portrait and landscape.
 - Duo (Geoff in DeviceHub): partly open landscape and fully open landscape for each

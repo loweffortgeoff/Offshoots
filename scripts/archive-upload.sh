@@ -8,7 +8,7 @@
 set -euo pipefail
 
 ROOT=${0:A:h:h}
-export DEVELOPER_DIR=${DEVELOPER_DIR:-"/Applications/Xcode 27.1 RC.app/Contents/Developer"}
+export DEVELOPER_DIR=${DEVELOPER_DIR:-"/Applications/Xcode.app/Contents/Developer"}
 OUT=$ROOT/build/archive
 ARCHIVE=$OUT/Offshoots.xcarchive
 
