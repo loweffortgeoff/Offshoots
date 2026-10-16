@@ -13,6 +13,67 @@ struct AnalyticsView: View {
     @Environment(ReflectionCenter.self) private var reflection
 
     var body: some View {
+        TwoPaneReader { twoPanes in
+            if twoPanes, !store.decisions.isEmpty, #available(iOS 27.1, *) {
+                WidePanes {
+                    pane(title: "Insights") { whatYouDecideCards }
+                } secondary: {
+                    pane(title: nil) { howItTurnedOutCards }
+                }
+            } else {
+                pane(title: "Insights") {
+                    if store.decisions.isEmpty {
+                        EmptyAnalyticsView()
+                    } else {
+                        whatYouDecideCards
+                        howItTurnedOutCards
+                    }
+                }
+            }
+        }
+    }
+
+    /// Cards about the decisions themselves. The left pane on a wide Duo.
+    @ViewBuilder
+    private var whatYouDecideCards: some View {
+        // Overall Stats
+        OverallStatsCard(decisions: store.decisions)
+
+        // Decision Timeline
+        DecisionTimelineCard(decisions: store.decisions)
+
+        // Category Breakdown
+        CategoryBreakdownCard(decisions: store.decisions)
+
+        // Outcome Distribution
+        OutcomeDistributionCard(decisions: store.decisions)
+    }
+
+    /// Cards about how decisions turned out. The right pane on a wide Duo.
+    @ViewBuilder
+    private var howItTurnedOutCards: some View {
+        // Outcome Trends
+        OutcomeTrendCard(decisions: store.decisions)
+
+        // Prediction Accuracy
+        PredictionAccuracyCard(decisions: store.decisions)
+
+        // Optimism Bias
+        OptimismCard(
+            bias: AnalyticsEngine.optimismBias(from: store.decisions),
+            markedCount: AnalyticsEngine.markedCount(from: store.decisions)
+        )
+
+        // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
+        // Removing the card also drops its result, so a stale one cannot come back.
+        if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
+            PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
+        }
+    }
+
+    /// One scrolling column of cards. A `nil` title gives an inline bar with no title,
+    /// so the right pane's cards start level with the left pane's.
+    private func pane<Cards: View>(title: String?, @ViewBuilder cards: () -> Cards) -> some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -27,39 +88,7 @@ struct AnalyticsView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        if store.decisions.isEmpty {
-                            EmptyAnalyticsView()
-                        } else {
-                            // Overall Stats
-                            OverallStatsCard(decisions: store.decisions)
-
-                            // Decision Timeline
-                            DecisionTimelineCard(decisions: store.decisions)
-
-                            // Category Breakdown
-                            CategoryBreakdownCard(decisions: store.decisions)
-
-                            // Outcome Distribution
-                            OutcomeDistributionCard(decisions: store.decisions)
-
-                            // Outcome Trends
-                            OutcomeTrendCard(decisions: store.decisions)
-
-                            // Prediction Accuracy
-                            PredictionAccuracyCard(decisions: store.decisions)
-
-                            // Optimism Bias
-                            OptimismCard(
-                                bias: AnalyticsEngine.optimismBias(from: store.decisions),
-                                markedCount: AnalyticsEngine.markedCount(from: store.decisions)
-                            )
-
-                            // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
-                            // Removing the card also drops its result, so a stale one cannot come back.
-                            if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
-                                PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
-                            }
-                        }
+                        cards()
 
                         Spacer(minLength: 20)
                     }
@@ -68,8 +97,8 @@ struct AnalyticsView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationTitle("Insights")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationTitle(title ?? "")
+            .navigationBarTitleDisplayMode(title == nil ? .inline : .large)
         }
     }
 }

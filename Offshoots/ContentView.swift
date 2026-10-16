@@ -44,7 +44,7 @@ struct ContentView: View {
                     Label("Decisions", systemImage: "checklist")
                 }
 
-            FoldPane { AnalyticsView() }
+            FoldPane(ownsWideLayout: true) { AnalyticsView() }
                 .tag(AppTab.insights)
                 .tabItem {
                     Label("Insights", systemImage: "brain.head.profile")
