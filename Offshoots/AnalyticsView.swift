@@ -18,7 +18,7 @@ struct AnalyticsView: View {
                 WidePanes {
                     pane(title: "Insights") { whatYouDecideCards }
                 } secondary: {
-                    pane(title: nil) { howItTurnedOutCards }
+                    pane(title: "Outcomes") { howItTurnedOutCards }
                 }
             } else {
                 pane(title: "Insights") {
@@ -49,7 +49,7 @@ struct AnalyticsView: View {
         OutcomeDistributionCard(decisions: store.decisions)
     }
 
-    /// Cards about how decisions turned out. The right pane on a wide Duo.
+    /// Cards about how decisions turned out. The right pane on a wide Duo, titled "Outcomes".
     @ViewBuilder
     private var howItTurnedOutCards: some View {
         // Outcome Trends
@@ -71,9 +71,9 @@ struct AnalyticsView: View {
         }
     }
 
-    /// One scrolling column of cards. A `nil` title gives an inline bar with no title,
-    /// so the right pane's cards start level with the left pane's.
-    private func pane<Cards: View>(title: String?, @ViewBuilder cards: () -> Cards) -> some View {
+    /// One scrolling column of cards under a large title. Each pane on a wide Duo has its
+    /// own title, so the two columns start level.
+    private func pane<Cards: View>(title: String, @ViewBuilder cards: () -> Cards) -> some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -97,8 +97,8 @@ struct AnalyticsView: View {
                     .padding(.bottom, 40)
                 }
             }
-            .navigationTitle(title ?? "")
-            .navigationBarTitleDisplayMode(title == nil ? .inline : .large)
+            .navigationTitle(title)
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }

@@ -18,7 +18,7 @@ struct DecisionsSplitView<Primary: View>: View {
     }
 
     var body: some View {
-        ArrangementView {
+        WidePanes {
             primary
         } secondary: {
             NavigationStack {
@@ -30,7 +30,6 @@ struct DecisionsSplitView<Primary: View>: View {
                 }
             }
         }
-        .arrangementViewStyle(.split.axes(.horizontal))
     }
 
     private var placeholder: some View {
