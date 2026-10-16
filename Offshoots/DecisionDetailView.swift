@@ -32,6 +32,59 @@ struct DecisionDetailView: View {
         store.decisions.first { $0.id == decisionID } ?? snapshot
     }
 
+    /// Category, stakes and status, side by side or stacked
+    @ViewBuilder
+    private func metaRow(stacked: Bool) -> some View {
+        let layout = stacked
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout())
+        layout {
+            Label(decision.category.rawValue.capitalized, systemImage: "tag.fill")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Label(decision.stakes.label, systemImage: "flag.fill")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            if !stacked {
+                Spacer()
+            }
+
+            if let actual = decision.currentOutcome {
+                HStack(spacing: 6) {
+                    OutcomeIcon(outcome: actual)
+                        .font(.body)
+                        .accessibilityHidden(true)
+                    Text(actual.shortLabel)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(actual.themeColor)
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(actual.themeColor.opacity(0.1))
+                .cornerRadius(12)
+                .fixedSize()
+            } else {
+                HStack(spacing: 6) {
+                    Image(systemName: "hourglass")
+                        .accessibilityHidden(true)
+                        .font(.callout)
+                    Text("Pending")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                }
+                .foregroundStyle(Color.outcomePending)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.outcomePending.opacity(0.1))
+                .cornerRadius(12)
+                .fixedSize()
+            }
+        }
+    }
+
     var body: some View {
         ZStack {
             Color.offshootBackground
@@ -96,51 +149,15 @@ struct DecisionDetailView: View {
 
                             // From xxLarge up, the category, stakes and status stack. Side by side, the
                             // status badge squeezed and broke "Neutral" into "Neu-tral" just below accessibility sizes.
-                            let stacksMeta = dynamicTypeSize >= .xxLarge
-                            let metaLayout = stacksMeta
-                                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
-                                : AnyLayout(HStackLayout())
-                            metaLayout {
-                                Label(decision.category.rawValue.capitalized, systemImage: "tag.fill")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-
-                                Label(decision.stakes.label, systemImage: "flag.fill")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-
-                                if !stacksMeta {
-                                    Spacer()
-                                }
-
-                                if let actual = decision.currentOutcome {
-                                    HStack(spacing: 6) {
-                                        OutcomeIcon(outcome: actual)
-                                            .font(.body)
-                                            .accessibilityHidden(true)
-                                        Text(actual.shortLabel)
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
-                                            .foregroundStyle(actual.themeColor)
-                                    }
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(actual.themeColor.opacity(0.1))
-                                    .cornerRadius(12)
-                                } else {
-                                    HStack(spacing: 6) {
-                                        Image(systemName: "hourglass")
-                                            .accessibilityHidden(true)
-                                            .font(.callout)
-                                        Text("Pending")
-                                            .font(.subheadline)
-                                            .fontWeight(.semibold)
-                                    }
-                                    .foregroundStyle(Color.outcomePending)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(Color.outcomePending.opacity(0.1))
-                                    .cornerRadius(12)
+                            // Below that, they also stack when the row does not fit. The badge keeps its natural
+                            // width: on a partly open Duo the row fitted, but the HStack gave the Spacer room
+                            // and squeezed the badge into "Neu-tral" (checked by logging the widths).
+                            if dynamicTypeSize >= .xxLarge {
+                                metaRow(stacked: true)
+                            } else {
+                                ViewThatFits(in: .horizontal) {
+                                    metaRow(stacked: false)
+                                    metaRow(stacked: true)
                                 }
                             }
                         }
