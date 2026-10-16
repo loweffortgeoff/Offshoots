@@ -35,4 +35,13 @@ struct DashboardSelectionTests {
         let a = Make.decision(title: "A"), b = Make.decision(title: "B")
         #expect(DashboardSelection.current(selectedID: a.id, ready: [b], all: [b]) == b)
     }
+
+    // Review Focus 1, the default case: DashboardView pins the shown decision's ID,
+    // so marking the default decision's outcome keeps it on screen
+    @Test func pinnedDefaultStaysAfterItsOutcomeIsMarked() {
+        let a = Make.decision(title: "A"), b = Make.decision(title: "B")
+        let shown = DashboardSelection.current(selectedID: nil, ready: [a], all: [b, a])
+        #expect(shown == a)
+        #expect(DashboardSelection.current(selectedID: shown?.id, ready: [], all: [b, a]) == a)
+    }
 }

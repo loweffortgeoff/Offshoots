@@ -34,6 +34,12 @@ struct DashboardView: View {
                         }
                     }
                 }
+                // Pin what the pane shows, the default too. Otherwise marking the default
+                // decision's outcome moves it out of Ready to Review, and the pane jumps to
+                // the next one before the result banner shows.
+                .onChange(of: shown?.id, initial: true) { _, id in
+                    selectedID = id
+                }
             } else {
                 dashboard(selection: nil)
             }

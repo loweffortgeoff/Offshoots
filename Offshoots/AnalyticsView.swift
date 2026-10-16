@@ -14,11 +14,21 @@ struct AnalyticsView: View {
 
     var body: some View {
         TwoPaneReader { twoPanes in
-            if twoPanes, !store.decisions.isEmpty, #available(iOS 27.1, *) {
-                WidePanes {
-                    pane(title: "Insights") { whatYouDecideCards }
-                } secondary: {
-                    pane(title: "Outcomes") { howItTurnedOutCards }
+            if twoPanes, #available(iOS 27.1, *) {
+                // With no decisions the empty state stays in the left pane, clear of the fold
+                if store.decisions.isEmpty {
+                    WidePanes {
+                        pane(title: "Insights") { EmptyAnalyticsView() }
+                    } secondary: {
+                        Color.offshootBackground
+                            .ignoresSafeArea()
+                    }
+                } else {
+                    WidePanes {
+                        pane(title: "Insights") { whatYouDecideCards }
+                    } secondary: {
+                        pane(title: "Outcomes") { howItTurnedOutCards }
+                    }
                 }
             } else {
                 pane(title: "Insights") {
