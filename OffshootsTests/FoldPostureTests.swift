@@ -82,21 +82,37 @@ struct FoldPostureTests {
         #expect(FoldPosture.unfolded.paneFit(containerWidth: 951, ownsWideLayout: true) == .fill)
     }
 
-    @Test func wideLayoutOwnerStillFitsThePaneInPortrait() {
+    @Test func wideLayoutOwnerFillsTheScreenWhenPartlyOpenInPortrait() {
         let folded = FoldPosture(regions: [Self.horizontalBand])
-        #expect(folded.paneFit(containerWidth: 669, ownsWideLayout: true) == .top(height: 435))
+        #expect(folded.paneFit(containerWidth: 669, ownsWideLayout: true) == .fill)
         #expect(FoldPosture.unfolded.paneFit(containerWidth: 669, ownsWideLayout: true) == .centered(maxWidth: 600))
         #expect(FoldPosture.flat.paneFit(containerWidth: 440, ownsWideLayout: true) == .fill)
     }
 
+    // Settings does not own a layout: it keeps the top half when partly open in portrait
+    @Test func nonOwnerStillFitsTheTopPaneWhenPartlyOpenInPortrait() {
+        let folded = FoldPosture(regions: [Self.horizontalBand])
+        #expect(folded.paneFit(containerWidth: 669, ownsWideLayout: false) == .top(height: 435))
+    }
+
     // Review: a Plus or Max iPhone in landscape is 956 pt wide but must not get two panes
-    @Test func twoPanesNeedAFoldableDeviceAndAWideScreen() {
+    @Test func arrangementIsSideBySideInWideLandscape() {
         let folded = FoldPosture(regions: [Self.verticalBand])
-        #expect(folded.supportsTwoPanes(width: 951))
-        #expect(FoldPosture.unfolded.supportsTwoPanes(width: 951))
-        #expect(!FoldPosture.unfolded.supportsTwoPanes(width: 669))
-        #expect(!FoldPosture.flat.supportsTwoPanes(width: 956))
-        #expect(!FoldPosture.flat.supportsTwoPanes(width: 874))
+        #expect(folded.arrangement(width: 951) == .sideBySide)
+        #expect(FoldPosture.unfolded.arrangement(width: 951) == .sideBySide)
+    }
+
+    @Test func arrangementIsStackedWhenPartlyOpenInPortrait() {
+        let folded = FoldPosture(regions: [Self.horizontalBand])
+        #expect(folded.arrangement(width: 669) == .stacked)
+    }
+
+    @Test func arrangementIsSingleEverywhereElse() {
+        #expect(FoldPosture.unfolded.arrangement(width: 669) == .single)
+        #expect(FoldPosture.flat.arrangement(width: 466) == .single)
+        #expect(FoldPosture.flat.arrangement(width: 440) == .single)
+        #expect(FoldPosture.flat.arrangement(width: 874) == .single)
+        #expect(FoldPosture.flat.arrangement(width: 956) == .single)
     }
 
     // Review Focus 1: more than one region

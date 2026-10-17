@@ -14,7 +14,7 @@ struct LogDecisionView: View {
     @Binding var selectedTab: AppTab
     /// A starter suggestion to fill in; cleared once applied
     @Binding var draft: StarterSuggestion?
-    /// Opens a decision from the recent list in the Decisions tab (wide Duo only)
+    /// Opens a decision from the recent list in the Decisions tab (Duo with two panes only)
     var onOpenDecision: (Decision) -> Void = { _ in }
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isNotesFocused: Bool
@@ -38,22 +38,25 @@ struct LogDecisionView: View {
     }
 
     // The form's values are @State on this view, so they survive a change between one
-    // pane and two. Only the form's focus and scroll position reset.
+    // pane and two. The form's focus and scroll position reset, and so does a Clean Up Note or
+    // Look Back result that has not been used yet.
     var body: some View {
-        TwoPaneReader { twoPanes in
-            if twoPanes, #available(iOS 27.1, *) {
-                WidePanes {
-                    form
+        TwoPaneReader { arrangement in
+            if arrangement != .single, #available(iOS 27.1, *) {
+                WidePanes(arrangement: arrangement) {
+                    form(showsHero: arrangement != .stacked)
                 } secondary: {
                     LogRecentPane(list: .make(category: category, from: store.decisions), onOpen: onOpenDecision)
                 }
             } else {
-                form
+                form()
             }
         }
     }
 
-    private var form: some View {
+    /// `showsHero` is false in stacked panes: the top pane is only about 456 pt tall, and the
+    /// hero would take about 40% of it.
+    private func form(showsHero: Bool = true) -> some View {
         NavigationStack {
             ZStack {
                 Color.offshootBackground
@@ -61,24 +64,26 @@ struct LogDecisionView: View {
 
                 ScrollView {
                     VStack(spacing: 24) {
-                        // Hero section
-                        VStack(spacing: 8) {
-                            Image(systemName: "leaf.circle.fill")
-                                .accessibilityHidden(true)
-                                .font(.system(size: heroIconSize))
-                                .foregroundStyle(Color.offshootPrimary)
+                        if showsHero {
+                            // Hero section
+                            VStack(spacing: 8) {
+                                Image(systemName: "leaf.circle.fill")
+                                    .accessibilityHidden(true)
+                                    .font(.system(size: heroIconSize))
+                                    .foregroundStyle(Color.offshootPrimary)
 
-                            Text("Log a Decision")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(Color.offshootPrimary)
+                                Text("Log a Decision")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                    .foregroundStyle(Color.offshootPrimary)
 
-                            Text("Track your choices and learn from outcomes")
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
+                                Text("Track your choices and learn from outcomes")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .padding(.top, 20)
                         }
-                        .padding(.top, 20)
 
                         // Decision Input
                         VStack(alignment: .leading, spacing: 12) {

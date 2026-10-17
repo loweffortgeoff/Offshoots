@@ -5,7 +5,8 @@
 
 internal import SwiftUI
 
-/// Recent decisions beside the Log form on a wide Duo. A tap opens the decision in the
+/// Recent decisions next to the Log form on a Duo with two panes: beside it in wide
+/// landscape, below it when partly open in portrait. A tap opens the decision in the
 /// Decisions tab, as a reminder tap does.
 struct LogRecentPane: View {
     @Environment(DecisionStore.self) private var store

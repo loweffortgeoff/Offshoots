@@ -15,14 +15,14 @@ struct DashboardView: View {
     @State private var selectedID: UUID?
 
     var body: some View {
-        TwoPaneReader { twoPanes in
-            if twoPanes, #available(iOS 27.1, *) {
+        TwoPaneReader { arrangement in
+            if arrangement != .single, #available(iOS 27.1, *) {
                 let shown = DashboardSelection.current(
                     selectedID: selectedID,
                     ready: store.readyForReviewDecisions,
                     all: store.decisions
                 )
-                WidePanes {
+                WidePanes(arrangement: arrangement) {
                     dashboard(selection: DashboardRowSelection(selectedID: shown?.id) { selectedID = $0.id })
                 } secondary: {
                     NavigationStack {

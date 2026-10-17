@@ -47,18 +47,35 @@ enum PaneFit: Equatable {
     case leading(width: CGFloat)
 }
 
+/// How a screen that owns its layout arranges its panes
+enum PaneArrangement: Equatable {
+    /// One pane
+    case single
+    /// Two panes left and right: a foldable device in wide landscape
+    case sideBySide
+    /// Two panes top and bottom: the Duo partly open in portrait
+    case stacked
+}
+
 extension FoldPosture {
-    /// Two panes need a foldable device. A Plus or Max iPhone in landscape is as wide as the
-    /// open Duo, but has no fold, so it keeps the phone layout.
-    func supportsTwoPanes(width: CGFloat) -> Bool {
-        self != .flat && FoldLayout.usesTwoPanes(width: width)
+    /// Side by side needs a foldable device: a Plus or Max iPhone in landscape is as wide as the
+    /// open Duo, but has no fold, so it keeps the phone layout. Stacked needs the fold band across
+    /// the screen. The fully open Duo in portrait keeps its centred column.
+    func arrangement(width: CGFloat) -> PaneArrangement {
+        if self != .flat, FoldLayout.usesTwoPanes(width: width) {
+            return .sideBySide
+        }
+        if case .folded(.horizontal, _) = self {
+            return .stacked
+        }
+        return .single
     }
 
-    /// `ownsWideLayout` is true for a screen that builds its own two panes on a wide screen.
+    /// `ownsWideLayout` is true for a screen that builds its own two panes (side by side on a wide screen, stacked when the Duo is partly open in portrait).
     /// `containerOrigin` is where the pane starts on the screen. The safe area can push it
     /// below the top edge, and the fold is measured from the screen edge.
     func paneFit(containerWidth: CGFloat, ownsWideLayout: Bool, containerOrigin: CGPoint = .zero) -> PaneFit {
-        if ownsWideLayout, supportsTwoPanes(width: containerWidth) {
+        if ownsWideLayout, arrangement(width: containerWidth) != .single {
             return .fill
         }
         switch self {

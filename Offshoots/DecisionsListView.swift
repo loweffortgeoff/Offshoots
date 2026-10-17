@@ -19,10 +19,10 @@ struct DecisionsListView: View {
     var body: some View {
         GeometryReader { proxy in
             let screenWidth = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
-            layout(twoPanes: foldPosture.supportsTwoPanes(width: screenWidth))
+            layout(arrangement: foldPosture.arrangement(width: screenWidth))
         }
         .onChange(of: store.decisions) { _, decisions in
-            // A deleted decision must not stay in the path: the next rotation would push a detail for it
+            // A deleted decision must not stay in the path: the next rotation or fold change would push a detail for it
             let pruned = DecisionsSelection.pruned(path: path, in: decisions)
             if pruned != path {
                 path = pruned
@@ -49,11 +49,11 @@ struct DecisionsListView: View {
     }
 
     @ViewBuilder
-    private func layout(twoPanes: Bool) -> some View {
-        if twoPanes, #available(iOS 27.1, *) {
-            DecisionsSplitView(selection: DecisionsSelection.current(path: path, in: store.decisions)) {
+    private func layout(arrangement: PaneArrangement) -> some View {
+        if arrangement != .single, #available(iOS 27.1, *) {
+            DecisionsSplitView(arrangement: arrangement, selection: DecisionsSelection.current(path: path, in: store.decisions)) {
                 NavigationStack {
-                    listContent(twoPanes: true)
+                    listContent(twoPanes: true, inlineTitle: arrangement == .stacked)
                 }
             }
         } else {
@@ -66,7 +66,8 @@ struct DecisionsListView: View {
         }
     }
 
-    private func listContent(twoPanes: Bool) -> some View {
+    /// `inlineTitle` is for stacked panes, which are only about 456 pt tall: a large title would take a fifth of the pane.
+    private func listContent(twoPanes: Bool, inlineTitle: Bool = false) -> some View {
         ZStack {
             Color.offshootBackground
                 .ignoresSafeArea()
@@ -106,7 +107,7 @@ struct DecisionsListView: View {
             }
         }
         .navigationTitle("Decisions")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(inlineTitle ? .inline : .large)
     }
 
     private var emptyState: some View {

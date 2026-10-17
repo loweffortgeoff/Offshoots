@@ -13,21 +13,21 @@ struct AnalyticsView: View {
     @Environment(ReflectionCenter.self) private var reflection
 
     var body: some View {
-        TwoPaneReader { twoPanes in
-            if twoPanes, #available(iOS 27.1, *) {
-                // With no decisions the empty state stays in the left pane, clear of the fold
+        TwoPaneReader { arrangement in
+            if arrangement != .single, #available(iOS 27.1, *) {
+                // With no decisions the empty state stays in the first pane, clear of the fold
                 if store.decisions.isEmpty {
-                    WidePanes {
-                        pane(title: "Insights") { EmptyAnalyticsView() }
+                    WidePanes(arrangement: arrangement) {
+                        pane(title: "Insights", inline: arrangement == .stacked) { EmptyAnalyticsView() }
                     } secondary: {
                         Color.offshootBackground
                             .ignoresSafeArea()
                     }
                 } else {
-                    WidePanes {
-                        pane(title: "Insights") { whatYouDecideCards }
+                    WidePanes(arrangement: arrangement) {
+                        pane(title: "Insights", inline: arrangement == .stacked) { whatYouDecideCards }
                     } secondary: {
-                        pane(title: "Outcomes") { howItTurnedOutCards }
+                        pane(title: "Outcomes", inline: arrangement == .stacked) { howItTurnedOutCards }
                     }
                 }
             } else {
@@ -43,7 +43,7 @@ struct AnalyticsView: View {
         }
     }
 
-    /// Cards about the decisions themselves. The left pane on a wide Duo.
+    /// Cards about the decisions themselves. The first pane on a Duo with two panes.
     @ViewBuilder
     private var whatYouDecideCards: some View {
         // Overall Stats
@@ -59,7 +59,7 @@ struct AnalyticsView: View {
         OutcomeDistributionCard(decisions: store.decisions)
     }
 
-    /// Cards about how decisions turned out. The right pane on a wide Duo, titled "Outcomes".
+    /// Cards about how decisions turned out. The second pane on a Duo with two panes, titled "Outcomes".
     @ViewBuilder
     private var howItTurnedOutCards: some View {
         // Outcome Trends
@@ -81,9 +81,10 @@ struct AnalyticsView: View {
         }
     }
 
-    /// One scrolling column of cards under a large title. Each pane on a wide Duo has its
-    /// own title, so the two columns start level.
-    private func pane<Cards: View>(title: String, @ViewBuilder cards: () -> Cards) -> some View {
+    /// One scrolling column of cards under a title. Each pane on a Duo with two panes has its
+    /// own title, so the two columns start level. Stacked panes are only about 456 pt tall,
+    /// so their titles are inline: a large title would take a fifth of the pane.
+    private func pane<Cards: View>(title: String, inline: Bool = false, @ViewBuilder cards: () -> Cards) -> some View {
         NavigationStack {
             ZStack {
                 LinearGradient(
@@ -108,7 +109,7 @@ struct AnalyticsView: View {
                 }
             }
             .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(inline ? .inline : .large)
         }
     }
 }

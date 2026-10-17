@@ -5,20 +5,21 @@
 
 internal import SwiftUI
 
-/// Tells its content whether the screen gets two panes: a foldable device in wide
-/// landscape. Every other device, and the Duo in portrait or closed, gets one.
+/// Tells its content how the screen arranges its panes: side by side on a foldable device in
+/// wide landscape, stacked when the Duo is partly open in portrait. Every other device, and the
+/// closed or fully open Duo in portrait, gets one pane.
 struct TwoPaneReader<Content: View>: View {
     @Environment(\.foldPosture) private var foldPosture
-    private let content: (Bool) -> Content
+    private let content: (PaneArrangement) -> Content
 
-    init(@ViewBuilder content: @escaping (Bool) -> Content) {
+    init(@ViewBuilder content: @escaping (PaneArrangement) -> Content) {
         self.content = content
     }
 
     var body: some View {
         GeometryReader { proxy in
             let screenWidth = proxy.size.width + proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
-            content(foldPosture.supportsTwoPanes(width: screenWidth))
+            content(foldPosture.arrangement(width: screenWidth))
         }
     }
 }

@@ -3,7 +3,7 @@
 //  Offshoots
 //
 
-/// What the Log screen lists beside the form on a wide Duo: recent decisions in the
+/// What the Log screen lists next to the form on a Duo with two panes: recent decisions in the
 /// category being logged, or recent decisions in any category when that one has none.
 enum LogRecentList: Equatable {
     case category(DecisionCategory, [Decision])

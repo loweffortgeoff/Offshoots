@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// Which decision the Dashboard's detail pane shows on a wide Duo.
+/// Which decision the Dashboard's detail pane shows on a Duo with two panes.
 enum DashboardSelection {
     /// The chosen decision stays while it exists, even after it leaves Ready to Review.
     /// Marking an outcome does that, and the detail must stay to show the result banner,

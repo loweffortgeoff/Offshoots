@@ -5,7 +5,7 @@
 
 internal import SwiftUI
 
-/// How a Dashboard row behaves when the Dashboard has a detail pane beside it (wide Duo).
+/// How a Dashboard row behaves when the Dashboard has a detail pane beside it or below it (Duo with two panes).
 struct DashboardRowSelection {
     /// The decision the detail pane shows, so the default selection is highlighted too
     let selectedID: UUID?

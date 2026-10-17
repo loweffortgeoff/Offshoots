@@ -292,6 +292,14 @@ Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Of
   for the left pane, but its `NavigationStack` still keeps 84 pt clear;
   `WidePanes` reads the inset outside the split and widens and masks the left
   pane. Spec: `docs/superpowers/specs/2026-10-16-duo-wide-panes-design.md`.
+- **Two panes in partly open portrait** (2026-10-16): the same four tabs stack
+  their panes, first pane on top. `FoldPosture.arrangement(width:)` returns a
+  `PaneArrangement` (`single`, `sideBySide`, `stacked`); `TwoPaneReader` passes it
+  and `WidePanes(arrangement:)` sets the split axis. Stacked panes are about 456
+  pt tall, so Decisions and Insights use inline titles and Log hides its hero.
+  The bottom pane needs no tab bar inset (checked on the Duo). `FOLDPANE` debug
+  lines log each pane's size. Spec:
+  `docs/superpowers/specs/2026-10-16-duo-portrait-panes-design.md`.
 - **Reaching a tab on the Duo without taps:** build once with
   `@State private var selectedTab: AppTab = .insights` (or `.log`, `.decisions`)
   in `ContentView`, install, screenshot, then restore the file. Do not commit it.

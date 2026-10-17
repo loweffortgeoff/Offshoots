@@ -13,7 +13,7 @@ struct FoldPane<Content: View>: View {
     private let ownsWideLayout: Bool
     private let content: Content
 
-    /// Pass `ownsWideLayout: true` for a screen that builds its own two panes on a wide screen.
+    /// Pass `ownsWideLayout: true` for a screen that builds its own two panes (side by side on a wide screen, stacked when the Duo is partly open in portrait).
     init(ownsWideLayout: Bool = false, @ViewBuilder content: () -> Content) {
         self.ownsWideLayout = ownsWideLayout
         self.content = content()

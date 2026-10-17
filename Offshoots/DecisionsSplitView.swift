@@ -5,20 +5,23 @@
 
 internal import SwiftUI
 
-/// List on one side, detail on the other. When the Duo is partly open, the system
-/// puts the fold between the two.
+/// List first, detail second: side by side in wide landscape, one above the other when the
+/// Duo is partly open in portrait. When the Duo is partly open, the system puts the fold
+/// between the two.
 @available(iOS 27.1, *)
 struct DecisionsSplitView<Primary: View>: View {
+    let arrangement: PaneArrangement
     let selection: Decision?
     private let primary: Primary
 
-    init(selection: Decision?, @ViewBuilder primary: () -> Primary) {
+    init(arrangement: PaneArrangement, selection: Decision?, @ViewBuilder primary: () -> Primary) {
+        self.arrangement = arrangement
         self.selection = selection
         self.primary = primary()
     }
 
     var body: some View {
-        WidePanes {
+        WidePanes(arrangement: arrangement) {
             primary
         } secondary: {
             NavigationStack {
