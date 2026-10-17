@@ -1,6 +1,6 @@
 # App Store Connect — Current Listing (v2.0.0)
 
-Listing for the 2.0.0 relaunch. Version 1.0.0 was on the App Store before. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US.
+Listing for the 2.0.0 relaunch. Version 1.0.0 was on the App Store before. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Build 10 is the accepted RC; GM is tentatively targeted for around 2026-10-24, tied to Geoff's Duo release plan. No release is scheduled by this document.
 
 ## Subtitle (30 characters max)
 Decision Journal & Predictions — 30 characters
@@ -13,6 +13,7 @@ Predict how a decision will turn out, record what happened, then revisit it mont
 ## What's New
 Offshoots 2.0 is a big update. It keeps going after you decide.
 
+• Built for iPhone Duo: content stays clear of the fold, with paired panes for Dashboard, Log, Decisions and Insights in supported open layouts.
 • Revisit any decision later and re-rate it. Every revisit stays on a timeline ("Bad → Good"), and each one can schedule the next check-in.
 • Ready to Review: due reviews show on the Dashboard and at the top of your Decisions list.
 • Pick a review date with one tap: tomorrow, 3 days, 1 week or 1 month.
@@ -45,6 +46,9 @@ Give a decision a new rating and a note on what changed. Schedule the next check
 
 Look Back Before You Predict
 See how past decisions in the same category compared with your predictions. Counts and two simple bars compare what you expected with the first outcomes you recorded. Look Back is free and needs two marked decisions in that category.
+
+Made for iPhone Duo
+Content stays clear of the fold. Review a decision beside your Dashboard, browse a list beside its details, or see related Insights together. Paired panes work in wide landscape and partly open portrait. Settings stays in one pane.
 
 Insights
 • Prediction Accuracy: how often your guess matches reality, with near misses shown apart
@@ -127,3 +131,5 @@ The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first ca
 - 2026-10-05 (Reflection Depth): What's New and Description now name Look Back and describe Patterns as reading the notes. The purchase screen lists Patterns, the decision reflection and Look Back; Clean Up Note is no longer listed there. If the in-app purchase's own display name or description in App Store Connect mentions Clean Up Note, edit it by hand (it is not in the repo). The copy still avoids "AI coach", "advisor" and "predict" for what Reflection does.
 
 - 2026-10-17: Paid Reflection is deferred to the November 2026 2.1.0 cycle. This supersedes the 2026-10-02/05 launch instructions above. Keep the IAP out of 2.0; free Look Back is available on all supported devices. Local copy prepared; ASC writes and final screenshot promotion wait for device testing.
+
+- 2026-10-17 (RC release pass): added the implemented Duo layouts to What's New and Description. Build 10 is the RC; GM around October 24 remains tentative. Local/remote main match at `a5becbc`; ASC 2.0 remains Prepare for Submission, manual release, with build 10 not listed. Local copy is prepared for review, not applied. Preserve the existing `v2.0.0` tag; the RC docs handoff uses `v2.0.0-rc.10`.

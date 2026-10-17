@@ -1,8 +1,12 @@
 # Release Notes — v2.0.0
 
-Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 2.0 lets you revisit a decision, shows what each result means, and gets a new user to useful Insights sooner.
+**RC:** build 10, accepted on Geoff's phone. **GM target:** around October 24, 2026, tentatively aligned with the Duo release. This is release preparation, not a public-release record.
+
+Theme: Offshoots keeps going after you decide. Revisit decisions as they change, compare your predictions with the results, and use the app across the iPhone Duo's folded and open layouts.
 
 ## NEW
+
+- iPhone Duo support: content stays clear of the fold. Dashboard, Log, Decisions and Insights use paired panes in wide landscape and partly open portrait; fully open portrait keeps a readable column. Settings stays in one pane.
 
 - Revisit any marked decision and re-rate it. Add a note on what changed and schedule the next check-in. A timeline shows each change ("Bad → Good").
 - Ready to Review: due decisions show on the Dashboard and at the top of the Decisions list, with a Review or Revisit pill.
@@ -25,7 +29,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - The app asks for notification permission the first time you set a reminder, not at launch. Reminders also show while the app is open.
 - Better contrast in light mode. Dark mode uses the Soil and Loam palette.
 - Larger text sizes work across the app. Layouts stack at accessibility sizes instead of breaking words.
-- VoiceOver reads outcomes by name, and the outcome picker says which one is selected.
+- VoiceOver reads chart summaries and outcomes by name. The outcome picker says which rating is selected.
 - Edit and Delete are in a context menu on each row.
 - The Save button in Mark Outcome and Revisit stays above the keyboard. A tap outside a field closes the keyboard.
 - Ratings read Very Bad, Bad, Neutral, Good and Great, with no short forms.
@@ -44,7 +48,9 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Insights group outcomes by the week you marked them, not the week you logged the decision.
 - The trend no longer shows "Stable" when there is too little data, and Top Category shows "Tied" on a tie.
 - Outcome percentages add up to 100.
-- Category chart labels are readable in dark mode.
+- Category chart labels are readable in dark mode. Outcome Trends drops date labels that would touch.
+- The Log review date refreshes after midnight when the app returns to the foreground.
+- Decision titles, stakes choices, outcome badges and revisit rows remain readable at larger text sizes.
 
 ## What to Test — 2.0.0
 
@@ -95,3 +101,11 @@ Look Back is free and calculated from recorded predictions and first outcomes. P
 ## Next cycle — 2.1.0, November 2026
 
 The entire cycle is paid Reflection: accuracy and meaningful connections, real-note evaluation on physical devices, reliable unavailable/error states, honest purchase examples and data requirements, and purchase/Restore validation. Free Look Back stays free. See TODO for the acceptance cases and release gate. November is a target, not a committed release date.
+
+## RC release gates — 2026-10-17
+
+- Build 10 is the accepted RC. The 2026-10-24 GM target is tentative and follows Geoff's Duo release plan; no automatic release is scheduled.
+- Git push is verified at `a5becbc`. Preserve the existing `v2.0.0` tag at `86a379e`; a new reviewed RC docs handoff uses `v2.0.0-rc.10`.
+- ASC: version 2.0.0 remains Prepare for Submission with manual release. Build 10 was not returned in the live build list; archive/upload, build attachment, and review/submission remain open.
+- Refresh the iPhone Log capture and the two Duo captures that still show paid controls. Apply final listing copy and verify the Reflection IAP is excluded from 2.0.
+- The phone acceptance closes the general RC device gate. Individual Duo edge-case checks and accepted rotation limits remain recorded in TODO/DECISIONS; no physical Duo test is claimed here.

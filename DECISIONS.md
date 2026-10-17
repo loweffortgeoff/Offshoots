@@ -351,3 +351,9 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Verification (2026-10-17):** Geoff confirmed "Build 10 looks good on my phone" and approved merging `dev/free-look-back` into `main` locally. This closes the build 10 device gate. Listing/screenshots, IAP exclusion, push, upload, and submission remain separate release steps.
 
 **Integration (2026-10-17):** Fast-forwarded `dev/free-look-back` into `main` at `76107ed`. The merged app passed 202 tests in 24 suites on iPhone 18 Pro (iOS 27.0). Geoff handles `git push origin main`; no push, upload, or submission was performed.
+
+## 2026-10-17 (2.0 RC 10 and tentative Duo-aligned GM)
+**Decision:** Build 10 is the accepted Offshoots 2.0 RC. Tentatively target GM around 2026-10-24, aligned with Geoff's stated Duo release plan because this version includes full fold-aware layouts. Keep the release manual; no schedule or submission is authorized by the target date.
+**Why:** The Duo layout work belongs in the 2.0 release story alongside revisits and free Look Back. Paid Reflection remains the November 2.1.0 cycle. Phone acceptance and the pushed source are confirmed; ASC upload/review/public availability remain separate gates.
+**Tag lineage:** Preserve `v2.0.0`, which already marks the 2026-09-26 docs pass at `86a379e`. Use a distinct `v2.0.0-rc.10` tag after approval of this uncommitted release-doc set; do not amend or retag the existing release marker.
+**Current evidence:** Local and remote main match `a5becbc`; the app is 2.0.0 (10). ASC shows Prepare for Submission and manual release, with no build 10 in its current build list. This pass changes docs only and performs no Git writes or ASC changes.

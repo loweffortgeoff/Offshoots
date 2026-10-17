@@ -1,62 +1,26 @@
 # Changelog
 
-In-flight changes from coding sessions. The release pass turns these into release notes.
+Release scope and development history. A prepared RC entry below does not establish public availability.
 
 ## In Progress
 
-#### Release scope — 2026-10-17
-- Build 10: Look Back is free on iOS 18.6+, with immediate category counts, first-outcome bars, calculated headline and Copy. Paid text, note cleanup, purchase controls and model/StoreKit startup are disabled for 2.0.
-- Verification: 202 tests pass and Release simulator build passes on Xcode 27.1. Debug UI checked on iPhone 18 Pro (iOS 27.0), including light/dark and accessibility sizes. Release simulator UI smoke was blocked by another app's permission prompt. Geoff accepted build 10 on his phone and approved the local merge on 2026-10-17; he handles the push.
-- Paid Reflection is the whole November 2026 2.1.0 cycle. Earlier Reflection entries below record implementation history, not features shipping in 2.0; see TODO for the quality and purchase gates.
-
-#### Earlier implementation history
-
-##### Added
-- iPhone Duo: the app keeps content off the fold. When the Duo is partly open, Dashboard, Log, Insights and Settings sit in one half (the top half in portrait, the left half in landscape). Navigation bars, back buttons and toolbar buttons stay visible. The fold comes from the system's `.division` reserved region, so other iPhones are unchanged.
-- iPhone Duo: Decisions shows the list and the detail side by side in wide landscape (screen width 900 pt or more), partly open or fully open.
-- iPhone Duo: when fully open, the other screens sit in a centred column up to 600 pt wide. The phone layout no longer stretches across the screen.
-- iPhone Duo: in wide landscape (partly or fully open), Dashboard, Log and Insights use both halves instead of leaving the right half empty. Dashboard shows the selected decision's detail on the right; with no tap it shows the first decision ready for review, else the most recent, and it stays on a decision after you mark its outcome. Insights puts Overview, Activity, Categories and Outcomes on the left and Trends, Accuracy, Optimism and Patterns on the right under the title "Outcomes". Log lists up to 10 recent decisions in the category being logged (all categories when that one has none), and a tap opens the decision in Decisions. Settings and portrait are unchanged, and other iPhones are unchanged.
-- iPhone Duo: when partly open in portrait, Dashboard, Log, Decisions and Insights use both halves, with the same pairs as landscape: the first pane on top, the second below the fold. The titles in Decisions and Insights are inline in this layout, and the Log hero is hidden, so the panes keep room for content. Settings stays in the top half. Fully open portrait is unchanged.
-- Settings > Data > Import Decisions restores an Export Decisions file. An empty app imports at once. Otherwise it asks "Replace N decisions with M from the file?" first. A wrong file shows "This file is not an Offshoots export." Old reminders are cancelled and the imported decisions' future reminders are scheduled.
-- Reflection, an optional $5.99 one-time unlock with Restore in Settings. Patterns on Insights, a reflection on Decision Detail, and Clean Up Note on the Log, Mark Outcome and Revisit note fields. The text comes from the on-device model, so nothing leaves the phone. It needs Apple Intelligence on iOS 26 or later; other devices do not see Reflection.
-
-- Reflection: Look Back on the Log screen, between Stakes and Expected Outcome. It counts how your marked decisions in the chosen category went against their predictions, shows Expected and Turned out as two bars, and gives one labeled sentence per result group from the notes of the 5 newest. From 5 decisions, a clear lean adds a headline such as "Your Money decisions tend to fall short of your predictions". It needs 2 marked decisions in the category; below that it says how many to go.
-
-#### Changed
-- VoiceOver on Insights: each chart reads as one short summary instead of mark by mark. Decision Activity gives the 30-day total and the most in one day. Categories names the top category (or the tie) and each count. Outcomes reads each share ("Good 40%"). Outcome Trends gives the 8-week positive, neutral and negative totals. The Prediction Accuracy ring reads "70% accurate". The Overview tiles and the Correct, Close and Missed counts each read as one item ("Total: 12", "Correct, 7"). Build 8.
-- Splash: the splash now shows on the first cold launch of each day, not only once after install. Later cold launches that day and returns from the background go straight to the Dashboard. The launch screen is the app background again (no green), and the splash green fades in with the icon and title. Before, every launch after the first showed about a second of plain green with no logo. Build 8.
-- Reflection: the purchase sheet follows concept A ("Show the output"). It opens with the headline "See what your decisions add up to.", then a fixed Example card ("Your Work decisions tend to beat your predictions", the wording Look Back uses) with Expected and Turned out bars, then the "Reflection adds" list. The buy button reads "Unlock Reflection • <price>" over the line "One-time purchase. Logging and reviewing stay free.", and Restore Purchase is a text button. The navigation title is "Reflection". The buttons still stay pinned at normal sizes and scroll at accessibility sizes. Purchase logic is unchanged. Build 7.
-- Offshoots builds only with Xcode 27.1 or later, because the fold APIs are in the iOS 27.1 SDK. The app still supports iOS 18.6 at runtime.
-- The Decisions navigation path is now a list of decisions (`[Decision]`) instead of `NavigationPath`.
-- Reflection: Patterns now compares your notes, grouped by result (worse than predicted, as predicted, better). It writes one sentence per group under a fixed label (Went worse, Went as predicted, Went better) and no longer repeats the Insights numbers. Below 2 notes it says to add a note.
-- Reflection: the decision reflection now looks at up to 5 other decisions in the same category. A new "In other <Category> decisions" section says what this decision shares with the ones that went the same way.
-- Reflection: the "Unlock Reflection" sheet lists Patterns, the decision reflection and Look Back. Clean Up Note stays in the app but leaves the list.
-- iPad: the app window now resizes freely, up to the phone width that iPadOS allows (about 512 pt). Before, it snapped between two fixed sizes. The app stays iPhone-only. The deprecated `UIRequiresFullScreen` flag is removed.
-- Reflection: the purchase sheet no longer says "not charged" when the purchase is unverified. The paywall keeps its pending state and clears the old Restore message. A control that is not ready says "Reopen the app in a little while." The Settings footer now covers text generation only. The Import picker shows "unreadable" for a file it cannot read.
-- Reflection: Restore Purchase is full width at accessibility text sizes.
-- Reflection: the "Unlock Reflection" sheet has a new look. A leaf logo sits above a centered intro. The three features share one card with dividers and green symbols, with the footnote "Nothing appears until you tap for it." The buy and Restore Purchase buttons stay at the bottom. At accessibility text sizes they scroll with the content, so they do not cover the card. The price still comes from the App Store and stays inside the button. Purchase logic is unchanged.
-
-#### Fixed
-- iPhone Duo: in two-pane landscape the left pane (Decisions list, and the new Dashboard, Log and Insights panes) no longer stops 84 pt short of the split. Its `NavigationStack` kept the tab rail's inset clear although the rail sits beside the right pane. `WidePanes` reads the inset outside the split and widens the left pane by that much.
-- Decision detail: the outcome badge no longer breaks into "Neu-tral" in a narrow detail pane (partly open Duo). The row fitted, but the HStack squeezed the badge; the badge now keeps its natural width, and the row stacks when it really does not fit.
-- Reflection: Look Back hides a sentence that only repeats a decision title. The model on a phone can copy its input back ("[Medium] Reply to that email today, not Friday."); the card then shows the counts and bars without it. Build 8.
-- Reflection: Look Back no longer writes a sentence for a result group whose decisions have no notes. With titles alone the model made one up (seen 2026-10-14 on a Work card, where the note-less "as predicted" decision got a sentence). Build 8.
-- Reflection: Look Back no longer shows its own prompt text. With one decision in a group, the on-device model could copy the input line back word for word, so the card read "[Medium] Put off email Response. Notes: \"…\" Outcome note: \"…\"" (build 7). Each group sentence now loses a leading `[Low]`, `[Medium]` or `[High]` and the `Notes:` and `Outcome note:` labels with their quoted text (`ReflectionText.dropPromptLeftovers`). This hides the leak only; whether the sentences copy notes at all is still open. Build 8.
-- Log: a Log tab left open past midnight no longer keeps the old "tomorrow" as the review date. When the app comes back to the foreground on a new day, a review date that is no longer in the future moves to the new tomorrow. A date you picked that is still in the future stays.
-- Outcome Trends: week labels that would touch their neighbour are now dropped, so "Aug 23" and "Aug 30" no longer read as one word on wide layouts such as the iPhone Duo. The iPhone 18 Pro now shows every second label at the default text size.
-- Log and Edit Decision: the title prompt has room to wrap at accessibility text sizes. Stakes uses full-width choices with scaled text and a selected state at those sizes; standard sizes keep the segmented control. Geoff verified the fix on 2026-10-04.
-- The header meta row on Decision Detail stacks from the xxLarge text size up. At larger sizes the "Neutral" rating wrapped as "Neu-tral".
-- At accessibility text sizes, the revisit rows on Decision Detail broke the rating ("Good") and the date into one-letter columns. Each row now stacks the icons, the rating and the date at accessibility sizes, and keeps the side-by-side layout at other sizes. `RevisitHistoryCard` has its own file.
-
----
+No additional app changes are assigned to the 2.0 RC. Release preparation remains in TODO. Paid Reflection owns the November 2026 2.1.0 cycle.
 
 ## Shipped
 
 ### 2.0.0 — It Keeps Going After You Decide
 
-_Revisits, Ready to Review, review-date presets, a result line and starter suggestions, plus Insights that count revisits, a full UI and accessibility pass, and the Tip Jar removed. Release pass prepared 2026-09-26. Baseline: every commit after `0e29c15`, the 1.0 upload (2026-01-04)._
+**RC scope prepared 2026-10-17; not publicly released.** Build 10 is Geoff's accepted RC. GM is tentatively targeted for around 2026-10-24, aligned with his Duo release plan; the date remains provisional.
+
+The first public baseline is the 1.0 upload, `0e29c15` (2026-01-04). Existing tag `v2.0.0` marks the earlier 2026-09-26 docs pass at `86a379e`; preserve it. This pass consolidates the later 152 commits into the same 2.0 scope. Use `v2.0.0-rc.10` for a reviewed RC docs handoff; do not move the old tag.
 
 #### Added
+- Free Look Back on Log: immediate counts, Expected/Turned out bars and Copy from two marked decisions in the category. It compares every prediction with its first outcome; the calculated headline needs five decisions and a clear lean.
+- iPhone Duo: content and navigation stay clear of the fold. Dashboard, Log, Decisions and Insights use paired panes in wide landscape and partly open portrait; Settings stays in one pane.
+- iPhone Duo: Dashboard pairs the review list with a selected decision. With no selection it shows the first decision ready for review, else the most recent, and keeps that decision after an outcome is marked.
+- iPhone Duo: Decisions pairs its list and details. Log pairs the form with up to ten recent decisions; tapping one opens its details in Decisions.
+- iPhone Duo: Insights pairs outcome/activity cards with trends, prediction accuracy and optimism. Fully open portrait keeps a readable centered column; other iPhones keep their existing layout.
+- Settings > Data > Import Decisions restores an Export Decisions file. An empty app imports at once. Otherwise it asks "Replace N decisions with M from the file?" first. A wrong file shows "This file is not an Offshoots export." Old reminders are cancelled and the imported decisions' future reminders are scheduled.
 - Revisits. You can re-rate a marked decision, add a note, and chain another revisit. A timeline shows each change.
 - A Ready to Review section on the Dashboard and the Decisions list, with a "Review" row badge.
 - A completed decision that is due for a revisit shows a "Revisit" pill, like the "Review" pill on a pending decision.
@@ -74,6 +38,11 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - `CardTitle`, one title row for the seven Insights cards. At accessibility sizes it drops the decorative icon and puts the note ("Last 30 days") under the title.
 
 #### Changed
+- VoiceOver on Insights: each chart reads as one short summary instead of mark by mark. Decision Activity gives the 30-day total and the most in one day. Categories names the top category (or the tie) and each count. Outcomes reads each share ("Good 40%"). Outcome Trends gives the 8-week positive, neutral and negative totals. The Prediction Accuracy ring reads "70% accurate". The Overview tiles and the Correct, Close and Missed counts each read as one item ("Total: 12", "Correct, 7"). Build 8.
+- Splash: the splash now shows on the first cold launch of each day, not only once after install. Later cold launches that day and returns from the background go straight to the Dashboard. The launch screen is the app background again (no green), and the splash green fades in with the icon and title. Before, every launch after the first showed about a second of plain green with no logo. Build 8.
+- Offshoots builds only with Xcode 27.1 or later, because the fold APIs are in the iOS 27.1 SDK. The app still supports iOS 18.6 at runtime.
+- The Decisions navigation path is now a list of decisions (`[Decision]`) instead of `NavigationPath`.
+- iPad: the app window now resizes freely, up to the phone width that iPadOS allows (about 512 pt). Before, it snapped between two fixed sizes. The app stays iPhone-only. The deprecated `UIRequiresFullScreen` flag is removed.
 - The app asks for notification permission the first time it needs to schedule a reminder, not at launch.
 - The trend shows earlier. With 6 or more marked decisions and not enough data for the 30-day windows, the Dashboard tile compares the older half with the newer half and reads "Trend · So far".
 - Progress in place of empty states: the trend tile reads "N of 6 marked", the Optimism card counts toward 3, and empty Insights cards say "Mark your first outcome to see this."
@@ -94,13 +63,20 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - The Save button in Revisit and Mark Outcome is pinned at the bottom. It stays above the keyboard and no longer sits at the screen edge when a follow-up is on.
 - Rows in the Decisions list have a context menu with Edit and Delete. It replaces a hidden long-press gesture that went straight to the delete alert.
 - `decisions.json` is written with sorted keys, so the same decisions always give the same file. Existing files load unchanged.
-- The splash ("Welcome to Offshoots") shows on the first launch only, not for 2 seconds on every launch.
+- The splash ("Welcome to Offshoots") appears on the first cold launch each day; later opens and background returns go straight to the app.
 - Settings > We Also Make shows each app's real icon, with a light and a dark variant taken from that app's own icon set. The Task(ed) placeholder icon is gone. Muzzletoff is now listed as EveryPaw (same App Store ID).
 - The top rating reads "Great", not "Very Good". Short labels are spelled out ("Very Bad", not "V. Bad").
 - Settings > We Also Make lists AisleWise, Muzzletoff and Task(ed) only (April cleanup); five other apps are gone.
-- Known: the placeholder in the decision title field is cut off at accessibility sizes. SwiftUI draws a placeholder on one line. The Stakes segmented control does not grow with the text (system control). Confirmed and repaired on `fix/decision-form-accessibility` on 2026-10-04; see In Progress.
 
 #### Fixed
+- Import reports an unreadable file clearly.
+- iPhone Duo: in two-pane landscape the left pane (Decisions list, and the new Dashboard, Log and Insights panes) no longer stops 84 pt short of the split. Its `NavigationStack` kept the tab rail's inset clear although the rail sits beside the right pane. `WidePanes` reads the inset outside the split and widens the left pane by that much.
+- Decision detail: the outcome badge no longer breaks into "Neu-tral" in a narrow detail pane (partly open Duo). The row fitted, but the HStack squeezed the badge; the badge now keeps its natural width, and the row stacks when it really does not fit.
+- Log: a Log tab left open past midnight no longer keeps the old "tomorrow" as the review date. When the app comes back to the foreground on a new day, a review date that is no longer in the future moves to the new tomorrow. A date you picked that is still in the future stays.
+- Outcome Trends: week labels that would touch their neighbour are now dropped, so "Aug 23" and "Aug 30" no longer read as one word on wide layouts such as the iPhone Duo. The iPhone 18 Pro now shows every second label at the default text size.
+- Log and Edit Decision: the title prompt has room to wrap at accessibility text sizes. Stakes uses full-width choices with scaled text and a selected state at those sizes; standard sizes keep the segmented control. Geoff verified the fix on 2026-10-04.
+- The header meta row on Decision Detail stacks from the xxLarge text size up. At larger sizes the "Neutral" rating wrapped as "Neu-tral".
+- At accessibility text sizes, the revisit rows on Decision Detail broke the rating ("Good") and the date into one-letter columns. Each row now stacks the icons, the rating and the date at accessibility sizes, and keeps the side-by-side layout at other sizes. `RevisitHistoryCard` has its own file.
 - The detail screen now shows edits and outcomes at once. It no longer shows a stale copy.
 - Tapping a reminder opens the Decisions tab and the right decision. This works for cold launch and repeat taps.
 - The Settings "Follow-up Reminders" toggle now cancels reminders when off and reschedules them when on.
@@ -133,7 +109,7 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 
 #### Removed
 - The Tip Jar screen, its StoreKit manager and the Support section in Settings. The four tip products are already Removed from Sale in App Store Connect.
-- The StoreKit framework link. Nothing else in the app used StoreKit.
+- The old Tip Jar StoreKit manager. StoreKit remains in the dormant Reflection implementation; no purchase setup runs in 2.0.
 - The unused Decision Quality Score function and its README line.
 - Unused `SectionHeader` view, and the unused `deletePending(at:)` and `deleteCompleted(at:)` helpers in the Decisions list.
 
@@ -155,13 +131,15 @@ _Revisits, Ready to Review, review-date presets, a result line and starter sugge
 - `scripts/seed.sh` and Insights fixtures in `docs/fixtures/` for simulator checks.
 - `scripts/screenshots.sh` sets up the iPhone 18 Pro Max for App Store captures: dark mode, 9:41, seeded data moved to today, no splash. The status bar shows a plain full battery, not a charging bolt. The shot notes in the script give the scroll position that worked for each shot.
 - `docs/fixtures/screenshots.json` with `ScreenshotFixtureTests`, which pins every number the shots show. First full capture pass: 7 dark-mode shots in `ASC Screenshots/Offshoots/Captures/2026-09-26/`.
-- `MARKETING_VERSION` 2.0.0, build 1 (was 1.0, build 3).
+- `MARKETING_VERSION` 2.0.0, RC build 10. The previous public 1.0 upload was build 3.
 - Docs: added the README (2026-03-12) and `.gitignore` (2026-07-12); started CHANGELOG, DECISIONS and TODO; tracked `docs/` in git; drafted `ASC_LISTING.md` for the relaunch; replaced the blanket `*.md` ignore with a Task(ed)-style `.gitignore`; the README lists all source files and the current tech stack.
 
 #### Verification
 - Sections 1–2 testing gate: simulator checks 1–5 pass on iOS 27.0 (2026-09-24). Results are in `docs/2026-09-23-audit-bugfixes-and-core-loop.md`.
 - Device check passed on the iPhone 17 Pro (iOS 27.2 Beta 2). A real reminder arrived the next day and a tap opened the decision (2026-09-25).
 - VoiceOver pass on the iPhone 17 with VoiceOver on (2026-09-26).
+- Build 10: 202 tests in 24 suites pass on iPhone 18 Pro (iOS 27.0), with a Release simulator build on Xcode 27.1. Geoff accepted the build on his phone on 2026-10-17.
+- Local and remote main match at `a5becbc` (2026-10-17). ASC still shows 2.0.0 in preparation, manual release, and no uploaded build 10; RC designation is separate from upload or public release.
 
 ### 1.0 (before this changelog, from git history)
 
@@ -169,3 +147,20 @@ _Build 3 uploaded 2026-01-04 from `0e29c15`. Released 2026-01-12._
 
 - 2025-12: first build. Decision tracking, dashboard, analytics, notifications, botanical color theme.
 - 2026-01: Swift Charts insights, settings, decision editing, 5-point outcome scale, stakes, reflection, secondary follow-up, tip jar with 4 consumable purchases.
+
+## Deferred implementation history — November 2.1.0
+
+The following work reached development/TestFlight builds but is disabled in the 2.0 RC. It is not part of the 2.0 purchase or feature promise.
+
+- Reflection, an optional $5.99 one-time unlock with Restore in Settings. Patterns on Insights, a reflection on Decision Detail, and Clean Up Note on the Log, Mark Outcome and Revisit note fields. The text comes from the on-device model, so nothing leaves the phone. It needs Apple Intelligence on iOS 26 or later; other devices do not see Reflection.
+- Reflection: Look Back on the Log screen, between Stakes and Expected Outcome. It counts how your marked decisions in the chosen category went against their predictions, shows Expected and Turned out as two bars, and gives one labeled sentence per result group from the notes of the 5 newest. From 5 decisions, a clear lean adds a headline such as "Your Money decisions tend to fall short of your predictions". It needs 2 marked decisions in the category; below that it says how many to go.
+- Reflection: the purchase sheet follows concept A ("Show the output"). It opens with the headline "See what your decisions add up to.", then a fixed Example card ("Your Work decisions tend to beat your predictions", the wording Look Back uses) with Expected and Turned out bars, then the "Reflection adds" list. The buy button reads "Unlock Reflection • <price>" over the line "One-time purchase. Logging and reviewing stay free.", and Restore Purchase is a text button. The navigation title is "Reflection". The buttons still stay pinned at normal sizes and scroll at accessibility sizes. Purchase logic is unchanged. Build 7.
+- Reflection: Patterns now compares your notes, grouped by result (worse than predicted, as predicted, better). It writes one sentence per group under a fixed label (Went worse, Went as predicted, Went better) and no longer repeats the Insights numbers. Below 2 notes it says to add a note.
+- Reflection: the decision reflection now looks at up to 5 other decisions in the same category. A new "In other <Category> decisions" section says what this decision shares with the ones that went the same way.
+- Reflection: the "Unlock Reflection" sheet lists Patterns, the decision reflection and Look Back. Clean Up Note stays in the app but leaves the list.
+- Reflection: the purchase sheet no longer says "not charged" when the purchase is unverified. The paywall keeps its pending state and clears the old Restore message. A control that is not ready says "Reopen the app in a little while." The Settings footer now covers text generation only. The Import picker shows "unreadable" for a file it cannot read.
+- Reflection: Restore Purchase is full width at accessibility text sizes.
+- Reflection: the "Unlock Reflection" sheet has a new look. A leaf logo sits above a centered intro. The three features share one card with dividers and green symbols, with the footnote "Nothing appears until you tap for it." The buy and Restore Purchase buttons stay at the bottom. At accessibility text sizes they scroll with the content, so they do not cover the card. The price still comes from the App Store and stays inside the button. Purchase logic is unchanged.
+- Reflection: Look Back hides a sentence that only repeats a decision title. The model on a phone can copy its input back ("[Medium] Reply to that email today, not Friday."); the card then shows the counts and bars without it. Build 8.
+- Reflection: Look Back no longer writes a sentence for a result group whose decisions have no notes. With titles alone the model made one up (seen 2026-10-14 on a Work card, where the note-less "as predicted" decision got a sentence). Build 8.
+- Reflection: Look Back no longer shows its own prompt text. With one decision in a group, the on-device model could copy the input line back word for word, so the card read "[Medium] Put off email Response. Notes: \"…\" Outcome note: \"…\"" (build 7). Each group sentence now loses a leading `[Low]`, `[Medium]` or `[High]` and the `Notes:` and `Outcome note:` labels with their quoted text (`ReflectionText.dropPromptLeftovers`). This hides the leak only; whether the sentences copy notes at all is still open. Build 8.
