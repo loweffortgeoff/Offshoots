@@ -368,3 +368,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-17 (Approved screenshot promotion and upload)
 **Decision:** Geoff approved promotion and ASC upload of those three replacements. Archive their originals, preserve every other image and the remote ordering, keep Reflection excluded, and stop before App Review. The existing duplicate Duo Accuracy image is outside this replacement.
 **Verification:** Three uploads are Complete with matching checksums/dimensions at their original positions. Build 10 remains attached; 2.0.0 is Prepare for Submission with manual release and zero App Store review submissions. Reflection remains a draft outside the version setup; internal/external TestFlight now report Testing.
+
+## 2026-10-17 (Simpler standard iPhone screenshot candidates)
+**Decision:** Keep the seven captions, dark background, green accents and RC10 Look Back capture. Use one upright phone per image; remove vines, detached UI and the large background chart. Preserve the Duo and current release images; show the new set before any replacement or upload.
+**Approval and verification:** Geoff approved local replacement and ASC upload. All seven standard iPhone images are Complete in 2.0.0 en-US with matching checksums/dimensions/order; old local files are archived in `Sunset/2026-10-17-iphone-flat-replaced/iPhone/`. Duo IDs, order, checksums and local files are unchanged; build 10 and manual Prepare for Submission remain unchanged.

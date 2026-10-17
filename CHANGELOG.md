@@ -142,6 +142,7 @@ The first public baseline is the 1.0 upload, `0e29c15` (2026-01-04). Existing ta
 - RC tag `v2.0.0-rc.10` and local/remote main match `62ad837` (2026-10-17). Build 10 archived/uploaded with Xcode 27.1, processed Valid, and is attached to the 2.0.0 draft. Internal Low Effort is testing; test instructions and approved listing copy were saved and read back.
 - Reflection remains a draft outside the 2.0 review setup. ASC remains Prepare for Submission with manual release; App Review and restoring App Store availability remain open. The latest read reports internal/external TestFlight testing; this screenshot pass submitted no review.
 - Three approved Release build 10 screenshot replacements (Duo 3/4, iPhone Log) were promoted and uploaded to ASC 2.0.0 en-US. All are Complete with matching checksums/dimensions and original positions. Old local files are archived in `Sunset/2026-10-17-rc10-replaced/`; other images are preserved.
+- Seven approved standard iPhone images now use upright phones, existing captions and no vines or detached UI. Promoted and uploaded to ASC 2.0.0 en-US; all Complete with matching checksums, 1290 × 2796 dimensions and original order. Old files are in `Sunset/2026-10-17-iphone-flat-replaced/iPhone/`; local and remote Duo sets are unchanged.
 
 ### 1.0 (before this changelog, from git history)
 

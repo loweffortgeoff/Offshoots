@@ -4,7 +4,6 @@
 - [ ] **RC 10 release preparation.** Geoff accepted build 10 and selected it as the RC. GM is tentatively around 2026-10-24, aligned with his Duo release plan; do not schedule or declare it live from this date.
 - [ ] **App Review and manual GM.** Build 10 is uploaded, processed and attached to 2.0.0. Internal/external TestFlight now report Testing. ASC remains Prepare for Submission with manual release; submit the App Store version only when authorized.
 - [ ] **App Store availability.** ASC reports the app is removed from sale. Confirm and restore the intended territories before GM; availability was not changed during TestFlight preparation.
-- [ ] **Existing duplicate Duo Accuracy image in ASC.** The live Duo set contains two identical `Offshoots_Duo_01_Accuracy.png` entries. This predates the three-image replacement; confirm removal of one duplicate before GM.
 - [ ] **Insights Optimism card hides misses in both directions.** It shows the average gap, so 6 decisions that went worse and 7 that went better read as "Well calibrated" (seen on `reflection-notes.json`, 2026-10-05). Show the split as well, or say when the misses cancel out. This is the free card, separate from Reflection. Reflection no longer sends the average to the model (DECISIONS 2026-10-05).
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
@@ -33,6 +32,8 @@
 **Outside this cycle:** App Intents, Siri/Spotlight, widgets, sync/backup, and saved monthly reviews.
 
 ## Done
+- [x] **Seven simpler iPhone screenshots approved, promoted and uploaded.** ASC 2.0.0 en-US reports all seven Complete with matching checksums/dimensions/order. Old files are in `Sunset/2026-10-17-iphone-flat-replaced/iPhone/`; local and remote Duo sets are unchanged. — 2026-10-17
+- [x] **Duo screenshot count checked.** ASC now has seven Duo images and one Accuracy entry. This pass made no Duo changes; the earlier duplicate warning is no longer current. — 2026-10-17
 - [x] **Three approved screenshot replacements promoted/uploaded.** Duo 3/4 and iPhone Log are in `App Store Version` and ASC 2.0.0 en-US, Complete with matching checksums/dimensions and original positions. Old local files are archived in `Sunset/2026-10-17-rc10-replaced/`; all other files are preserved. Reflection remains excluded; no review was submitted by this upload. — 2026-10-17
 - [x] **Build 10 screenshot replacements prepared.** Captured Release 2.0.0 (10): Duo shot 3 omits Clean Up Note, shot 4 omits the paid Reflection card, and iPhone Log shows free Look Back. Reused caption artwork/frame compositor; visually checked all three staged renders. Simulator data/settings restored. — 2026-10-17
 - [x] **RC tag pushed.** Local/remote `v2.0.0-rc.10` and main resolve to `62ad837`; the existing `v2.0.0` tag stays intact. — 2026-10-17
