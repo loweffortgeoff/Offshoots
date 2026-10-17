@@ -15,7 +15,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - App Theme in Settings: System, Light or Dark.
 - Export your decisions as JSON, or delete them all (with a confirmation).
 - Import Decisions in Settings > Data restores an Export file. If the app already holds decisions, it asks before it replaces them.
-- Reflection, a one-time unlock, for devices with Apple Intelligence on iOS 26 or later. Patterns on Insights compares the notes on decisions that went worse than predicted, as predicted and better. Each marked decision gets a reflection that also looks at other decisions in its category. Look Back on the Log screen shows how your past decisions in a category went against your predictions, with two bars, before you predict. Clean Up Note fixes spelling and punctuation in a note when you tap it. Everything runs on the device, runs only when you ask, and is never saved. Restore Purchase is in Settings.
+- Free Look Back on Log: compare every marked decision in the category with its first recorded outcome. Counts and Expected/Turned out bars appear from two decisions; a clear lean can add a headline from five. No purchase or Apple Intelligence is needed.
 
 ## IMPROVED
 
@@ -29,7 +29,7 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Edit and Delete are in a context menu on each row.
 - The Save button in Mark Outcome and Revisit stays above the keyboard. A tap outside a field closes the keyboard.
 - Ratings read Very Bad, Bad, Neutral, Good and Great, with no short forms.
-- The welcome splash shows on the first launch only.
+- The welcome splash shows on the first cold launch each day.
 - Settings is simpler: the Tip Jar is gone.
 
 ## FIXED
@@ -55,10 +55,14 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Export decisions from Settings. Confirm the JSON file opens and holds every decision.
 - Switch App Theme between System, Light and Dark while the app runs.
 - Import: export from Settings, then import the file. Confirm an empty app imports at once, and an app with decisions asks "Replace N decisions with M from the file?". A file that is not an Offshoots export shows an error.
-- Reflection, on a device with Apple Intelligence (iOS 26 or later). Confirm each surface: Patterns on Insights (needs 5 marked decisions and 2 notes), the reflection on a marked decision (with "In other <Category> decisions" when 2 or more others exist), Look Back on the Log screen (needs 2 marked decisions in the category; the headline needs 5 and a clear lean; check the bars against the decisions), and Clean Up Note on the Log, Mark Outcome and Revisit notes (3 words or more). Confirm the output matches the notes and gives no advice.
-- Reflection on a device without Apple Intelligence, or on iOS 18.6 to 25. Confirm Reflection does not show.
-- Reflection purchase. The paywall must show the price from the App Store. Try the purchase. TestFlight purchases are free. The purchase screen must say "For testing purposes only. You will not be charged for confirming this purchase." If you do not see that text, do not continue. Send feedback from TestFlight or contact Geoff directly.
-- Restore Purchase in Settings, after a reinstall. Confirm Reflection unlocks again.
+- Build 10, free Look Back: open Log and pick a category with two or more marked decisions. Counts and bars appear without a tap or purchase. Check with notes and without notes; switch categories and confirm the card updates. Below two marked decisions, check the count-to-go message.
+- Build 10, first outcomes: revisit a decision with a different rating. Look Back still compares the prediction with the first outcome. From five decisions, check that a headline appears only for a clear majority. Check Copy, light/dark mode, large text, and VoiceOver.
+- Build 10, paid package deferred: no Patterns, generated decision reflection, Clean Up Note, purchase prompt, or Reflection Settings. Personal reflection notes and revisits remain. Confirm on a physical phone before release.
+
+## Historical TestFlight checks — builds 6–9
+
+These record earlier builds. Build 10 supersedes their paid Reflection checks and the old green-launch-screen instruction. The current launch screen uses the app background.
+
 - Build 6, iPhone Duo (iOS 27.1 or later). Closed: the splash screen is centred, and the launch screen is green, not white. Partly open: Dashboard, Log, Insights and Settings sit in one half and keep off the fold. Fully open: they sit in a centred column. In wide landscape, Decisions shows the list and the detail side by side. On any other iPhone, nothing changes.
 - Build 6, Insights: on Outcome Trends, the week labels must never touch ("Aug 23Aug 30"). On a phone, every second week is labelled.
 - Build 6, Log: leave the Log tab open past midnight, then open the app. The review date must read the new tomorrow, with the Tomorrow chip selected. A date you picked yourself stays.
@@ -69,9 +73,9 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 - Build 9, iPhone Duo portrait panes: partly open in portrait, Dashboard, Log, Decisions and Insights use both halves, the first pane on top and the second below the fold. The titles in Decisions and Insights are inline and the Log hero is hidden, so the panes keep room for content. Settings stays in the top half. Fully open portrait is unchanged.
 - Build 9, other iPhones: nothing changes. On a non-Duo iPhone, check the four tabs in portrait and landscape, and open a marked decision at a large text size: the category, stakes and status row must read normally, with the outcome badge on one line ("Neutral", not "Neu-tral").
 
-## What to Test — TestFlight build 5
+## Historical TestFlight checks — build 5
 
-Paste into the TestFlight "What to Test" field. Build 5 is archived from the `reflection-depth` branch (2026-10-05).
+Historical reference only. Build 5 is archived from the `reflection-depth` branch (2026-10-05).
 
 Reflection has more to say in this build. Use a device with Apple Intelligence, and decisions that have notes.
 
@@ -82,6 +86,10 @@ Reflection has more to say in this build. Use a device with Apple Intelligence, 
 - Without the purchase: the Look Back button shows a lock and opens the purchase screen. The purchase screen lists Patterns, the decision reflection and Look Back.
 - Log and Edit at large text sizes: the title field has room to wrap, and Stakes shows full-width buttons.
 
-## Review note
+## Review note — 2.0.0
 
-Apple reviews a first in-app purchase together with an app version. Before submission, the product `com.geoffrey.silva.Offshoots.reflection` must be "Ready to Submit" and attached to the version.
+Look Back is free and calculated from recorded predictions and first outcomes. Paid Reflection is disabled in this version. Do not submit the Reflection IAP with 2.0.0. The existing product and purchase work belong to the November 2026 2.1.0 cycle.
+
+## Next cycle — 2.1.0, November 2026
+
+The entire cycle is paid Reflection: accuracy and meaningful connections, real-note evaluation on physical devices, reliable unavailable/error states, honest purchase examples and data requirements, and purchase/Restore validation. Free Look Back stays free. See TODO for the acceptance cases and release gate. November is a target, not a committed release date.

@@ -21,7 +21,7 @@ Offshoots 2.0 is a big update. It keeps going after you decide.
 • Starter suggestions help you log your first decisions.
 • Choose Light, Dark or System appearance, and export your data as JSON.
 • Import your decisions back from an Export file.
-• Reflection, an optional one-time unlock for devices with Apple Intelligence on iOS 26 or later: patterns in your notes, a reflection on each decision, and a look back at similar decisions before you decide. It runs on your device.
+• Free Look Back: before you predict, compare past decisions in the same category with their first recorded outcomes. Counts and two bars show what you expected and what happened.
 • Larger text and VoiceOver improvements, plus many bug fixes.
 
 ## Description
@@ -43,8 +43,8 @@ Rate the result from Very Bad to Great and add a reflection. Each marked decisio
 Revisit Any Time
 Give a decision a new rating and a note on what changed. Schedule the next check-in if you want one. The timeline shows each change ("Bad → Good").
 
-Reflection (optional, one-time purchase)
-On a device with Apple Intelligence and iOS 26 or later, unlock Reflection to read what your decisions say over time. See what your notes have in common when things went worse or better than you expected, get a reflection on each decision, and look back at past decisions in the same category before you decide. Tap Clean Up Note to fix spelling and punctuation in a note. It runs on your device, only when you ask, and nothing is saved or sent. Devices without Apple Intelligence do not see Reflection.
+Look Back Before You Predict
+See how past decisions in the same category compared with your predictions. Counts and two simple bars compare what you expected with the first outcomes you recorded. Look Back is free and needs two marked decisions in that category.
 
 Insights
 • Prediction Accuracy: how often your guess matches reality, with near misses shown apart
@@ -112,6 +112,8 @@ Two clusters: decision journals (log and review) and prediction trackers (foreca
 - "regret" ↔ "hindsight"
 
 ## Screenshots
+2026-10-17 audit: the Duo `Offshoots_Duo_03_Revisit.png` shows Clean Up Note and `Offshoots_Duo_04_Revisits.png` shows the paid Reflection lock. Replace both before submission; existing files remain preserved. Refresh the iPhone Log capture to include the new free card. Final promotion/upload follows device approval.
+
 The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first capture pass is in `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/2026-09-26/`.
 
 ## Notes
@@ -123,3 +125,5 @@ The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first ca
 - `RELEASE_NOTES.md` starts with 2.0.0. The next ASO refresh diffs against the `v2.0.0` tag.
 - 2026-10-02 (Reflection): What's New and Description now cover Reflection and Import Decisions. Reflection copy avoids "AI coach", "advisor" and "predict". In-app purchase: `com.geoffrey.silva.Offshoots.reflection`, non-consumable, $5.99, Family Sharing off, Apple ID 6818254209. It is not "Ready to Submit" yet (see TODO). Add it to the app version in App Store Connect, with a review screenshot of the paywall and a review note that the unlock needs a device with Apple Intelligence. App Privacy answers do not change: no data is collected, and the model runs on the device. Subtitle, promo text and keywords are unchanged. Check at the next ASO pass whether "reflect" and "journal" still fit.
 - 2026-10-05 (Reflection Depth): What's New and Description now name Look Back and describe Patterns as reading the notes. The purchase screen lists Patterns, the decision reflection and Look Back; Clean Up Note is no longer listed there. If the in-app purchase's own display name or description in App Store Connect mentions Clean Up Note, edit it by hand (it is not in the repo). The copy still avoids "AI coach", "advisor" and "predict" for what Reflection does.
+
+- 2026-10-17: Paid Reflection is deferred to the November 2026 2.1.0 cycle. This supersedes the 2026-10-02/05 launch instructions above. Keep the IAP out of 2.0; free Look Back is available on all supported devices. Local copy prepared; ASC writes and final screenshot promotion wait for device testing.

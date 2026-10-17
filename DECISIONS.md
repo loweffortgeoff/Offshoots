@@ -342,3 +342,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Why:** Geoff saw the empty bottom half after the landscape work and asked to carry the pairs over. The pane split is one parameter on `ArrangementView` (`.split.axes(.vertical)`), so one rule serves both orientations.
 **Accepted, not fixed:** Opening the hinge to partly open portrait now rebuilds the four screens, as rotating the Duo already does (see 2026-10-07, "Rotating the Duo rebuilds the Decisions detail"). On the closed Duo, an open Mark Outcome sheet, a Dashboard push or an unused Clean Up Note result is lost when the Duo opens partly in portrait. The code reviewer found this. The Log form's values survive (checked on the Duo).
 **Alternative considered:** Keep the top half only (the 2026-10-07 choice). A separate bottom-pane layout per screen (more code for no gain).
+
+## 2026-10-17 (Free Look Back in 2.0; paid Reflection in November 2.1.0)
+**Decision:** Ship 2.0 with immediate free Look Back counts, bars, Copy, and the existing calculated headline on iOS 18.6+. Disable paid production Reflection before model/StoreKit/debug setup; preserve its code and all user notes. This supersedes the earlier 2.0 IAP/paid Look Back instructions.
+**Why:** Geoff's real examples contain outcome contradictions, altered comparisons, and unsupported repetition. The paid upgrade owns the November 2026 2.1.0 cycle, gated by scored real-note evaluation and physical-device acceptance; free Look Back stays free. Spec: `docs/superpowers/specs/2026-10-17-free-look-back-design.md`.
+**Alternative considered:** Ship the filtered generated text with 2.0. Rejected by Geoff. No exact November week is assigned; unrelated platform integrations stay outside the cycle.

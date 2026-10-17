@@ -4,7 +4,14 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 ## In Progress
 
-#### Added
+#### Release scope — 2026-10-17
+- Build 10: Look Back is free on iOS 18.6+, with immediate category counts, first-outcome bars, calculated headline and Copy. Paid text, note cleanup, purchase controls and model/StoreKit startup are disabled for 2.0.
+- Verification: 202 tests pass and Release simulator build passes on Xcode 27.1. Debug UI checked on iPhone 18 Pro (iOS 27.0), including light/dark and accessibility sizes. Release UI smoke was blocked by another app's permission prompt; physical-device testing is pending.
+- Paid Reflection is the whole November 2026 2.1.0 cycle. Earlier Reflection entries below record implementation history, not features shipping in 2.0; see TODO for the quality and purchase gates.
+
+#### Earlier implementation history
+
+##### Added
 - iPhone Duo: the app keeps content off the fold. When the Duo is partly open, Dashboard, Log, Insights and Settings sit in one half (the top half in portrait, the left half in landscape). Navigation bars, back buttons and toolbar buttons stay visible. The fold comes from the system's `.division` reserved region, so other iPhones are unchanged.
 - iPhone Duo: Decisions shows the list and the detail side by side in wide landscape (screen width 900 pt or more), partly open or fully open.
 - iPhone Duo: when fully open, the other screens sit in a centred column up to 600 pt wide. The phone layout no longer stretches across the screen.

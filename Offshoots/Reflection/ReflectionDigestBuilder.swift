@@ -100,11 +100,8 @@ enum ReflectionDigestBuilder {
     static func lookBack(category: DecisionCategory, in decisions: [Decision]) -> LookBackDigest? {
         let history = history(in: category, from: decisions)
         guard !history.isEmpty else { return nil }
-        let name = category.rawValue.capitalized
-        let pairs = decisions
-            .filter { $0.category == category }
-            .compactMap { decision in decision.actual.map { OutcomePair(expected: decision.expected, actual: $0) } }
-        return LookBackDigest(category: name, history: history, stats: LookBackStats(category: name, pairs: pairs))
+        let stats = LookBackStats.build(category: category, decisions: decisions)
+        return LookBackDigest(category: stats.category, history: history, stats: stats)
     }
 
     private static func direction(of decision: Decision) -> Int {

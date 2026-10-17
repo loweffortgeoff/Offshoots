@@ -10,11 +10,14 @@ import Observation
 /// user unlocked it, and which generator to use. Views read `gate` and nothing else.
 @Observable
 final class ReflectionCenter {
+    /// Paid Reflection is reserved for 2.1.0 after its physical-device quality gate.
+    private static let paidFeaturesEnabled = false
+
     private(set) var availability: ModelAvailability
     /// Debug launch flags only. A real unlock comes from `entitlement`.
     @ObservationIgnored private let forceUnlocked: Bool
     @ObservationIgnored let entitlement: ReflectionEntitlement?
-    /// Nil only in the debug branches, where the gate is never `paywalled`
+    /// Nil while the paid release is disabled, and in explicit developer branches.
     @ObservationIgnored let purchase: ReflectionPurchase?
     @ObservationIgnored let generator: any ReflectionGenerating
     @ObservationIgnored private let availabilityProvider: () -> ModelAvailability
@@ -52,15 +55,18 @@ final class ReflectionCenter {
         availability = availabilityProvider()
     }
 
-    /// The real model on iOS 26 and later. Everything else is `unsupported`, so the surfaces hide.
-    static func make() -> ReflectionCenter {
+    /// The release switch runs before availability, StoreKit, and developer launch overrides.
+    static func make(arguments: [String] = ProcessInfo.processInfo.arguments) -> ReflectionCenter {
+        guard paidFeaturesEnabled else {
+            return ReflectionCenter(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })
+        }
         #if DEBUG
         // Canned output, unlocked: layout checks and screenshots.
-        if ProcessInfo.processInfo.arguments.contains("-ReflectionFake") {
+        if arguments.contains("-ReflectionFake") {
             return ReflectionCenter(generator: FakeReflectionGenerator(), availabilityProvider: { .available }, forceUnlocked: true)
         }
         // The real model, unlocked, with no purchase.
-        if ProcessInfo.processInfo.arguments.contains("-ReflectionUnlockOnly"), #available(iOS 26, *) {
+        if arguments.contains("-ReflectionUnlockOnly"), #available(iOS 26, *) {
             return ReflectionCenter(generator: LiveReflectionService(), availabilityProvider: LiveReflectionService.availability, forceUnlocked: true)
         }
         #endif
@@ -77,7 +83,7 @@ final class ReflectionCenter {
     }
 }
 
-/// Stands in below iOS 26. The gate hides every surface, so no call ever reaches it.
+/// Stands in while paid Reflection is deferred, or below iOS 26. No model or StoreKit work.
 private struct UnavailableReflectionGenerator: ReflectionGenerating {
     func patterns(digest: PatternsDigest) async throws -> PatternsOutput { throw ReflectionError.failed }
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput { throw ReflectionError.failed }

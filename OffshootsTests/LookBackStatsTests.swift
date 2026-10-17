@@ -4,6 +4,37 @@ import Testing
 @MainActor
 struct LookBackStatsTests {
 
+    @Test func directHistoryCountsAllMarkedDecisionsWithoutNotes() {
+        let decisions = (0..<8).map { _ in Make.marked(.neutral, .good) }
+            + [Make.decision(), Make.decision(category: .money, actual: .bad)]
+        let stats = LookBackStats.build(category: .work, decisions: decisions)
+        #expect(stats.total == 8)
+        #expect(stats.betterCount == 8)
+        #expect(stats.summary == "Of the 8 Work decisions you marked, 8 went better.")
+        #expect(stats.spokenRow("Expected", \.expected) == "Expected: 8 Neutral.")
+        #expect(stats.spokenRow("Turned out", \.actual) == "Turned out: 8 Good.")
+    }
+
+    @Test func directHistoryKeepsFirstOutcomeAfterRevisiting() {
+        let decision = Make.decision(expected: .neutral, actual: .good,
+            revisits: [Revisit(date: Make.day(20), outcome: .bad, note: "Changed later")])
+        let stats = LookBackStats.build(category: .work, decisions: [decision])
+        #expect(stats.betterCount == 1)
+        #expect(stats.pairs == [OutcomePair(expected: .neutral, actual: .good)])
+        #expect(stats.headline == nil)
+    }
+
+    @Test func directHistoryUpdatesWithCategoryAndNewOutcome() {
+        var decisions = [Make.marked(.bad, .good), Make.decision(category: .home, expected: .good)]
+        #expect(LookBackStats.build(category: .home, decisions: decisions).total == 0)
+        decisions[1].actual = .bad
+        let stats = LookBackStats.build(category: .home, decisions: decisions)
+        #expect(stats.total == 1)
+        #expect(stats.worseCount == 1)
+        #expect(stats.betterCount == 0)
+        #expect(stats.category == "Home")
+    }
+
     private func stats(worse: Int = 0, asPredicted: Int = 0, better: Int = 0) -> LookBackStats {
         let pairs = Array(repeating: OutcomePair(expected: .good, actual: .bad), count: worse)
             + Array(repeating: OutcomePair(expected: .good, actual: .good), count: asPredicted)

@@ -8,13 +8,15 @@
 # Then drive the taps (Claude's simulator tool, or by hand) and capture each shot:
 #
 #   01-dashboard   Dashboard, top of screen. No row text half under the tab bar.
-#   02-log         Log tab. Title "Move to the Denver office", category Work,
+#   02-log         Log tab. Free Look Back appears before Expected Outcome.
+#                  No paid controls or generated text in the 2.0 capture set.
+#                  Log tab. Title "Move to the Denver office", category Work,
 #                  note "Better team, longer winters. Leaning yes.", stakes High,
 #                  prediction Good. Scroll about 33 pt: the leaf icon clears the
 #                  Dynamic Island and the outcome labels clear the tab bar.
 #                  DO NOT SAVE: a save asks for notification permission.
 #   03-detail      Decisions > History > "Say yes to leading the offsite". Scroll
-#                  to the bottom of the page: the result line, Reflection, the
+#                  to the bottom of the page: the result line, the personal note, the
 #                  Neutral > Good timeline and the Revisit Decision button.
 #   04-revisit     From 03, Revisit Decision. Pick Great, note "It led to a
 #                  promotion talk." Tap the keyboard's Done. DO NOT SAVE.

@@ -26,14 +26,13 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Reflection Notes** — Add written reflections to any decision
 - **Result Line** — Each marked decision says how the result compared with your prediction, and what unlocks next
 
-### Reflection (optional one-time unlock)
-- **Patterns** — On Insights, one labeled sentence each on what the notes of decisions that went worse than predicted, as predicted and better than predicted have in common. Needs 5 marked decisions and 2 notes.
-- **Decision reflection** — A reflection on each marked decision, from its notes and revisits. "In other Money decisions" says what it shares with other decisions in its category that went the same way.
-- **Look Back** — On the Log screen, before the prediction: how your marked decisions in the chosen category went against their predictions: a count line, Expected and Turned out bars, and from 5 decisions a headline when one result clearly leads (all built in code). Below that, one labeled sentence per result group from the notes of the 5 newest. Needs 2 marked decisions in the category.
-- **Clean Up Note** — Tap to fix spelling, capitals and punctuation in a note. It suggests; you choose `Use` or `Dismiss`. Included with the unlock, but not listed on the purchase screen.
-- **On device** — The text comes from Apple's on-device model, so nothing leaves the phone. Output is made when you ask and is never saved.
-- **Needs** iOS 26 or later and Apple Intelligence. Other devices do not see Reflection. The app still supports iOS 18.6.
-- **Unlock** — One-time purchase with Restore in Settings.
+### Look Back (free)
+- On Log, before Expected Outcome: counts and Expected/Turned out bars for every marked decision in the selected category. The comparison uses each first recorded outcome, even after a revisit.
+- Needs two marked decisions in the category. Below that, the card says how many remain. From five, a clear majority adds a calculated headline. Results update directly, with Copy and no generation wait.
+- Works on iOS 18.6+ without Apple Intelligence, notes, or a purchase.
+
+### Reflection (planned for 2.1.0, November 2026)
+Paid Patterns, generated decision reflections, generated note observations, and Clean Up Note are dormant in 2.0. `ReflectionCenter.paidFeaturesEnabled` is false before model availability, debug flags, and StoreKit setup. Keep the implementation for the November quality cycle; free Look Back remains free. See TODO and `docs/superpowers/specs/2026-10-17-free-look-back-design.md`.
 
 ### Revisits
 - **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.
@@ -56,7 +55,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - **Log Decision** — Quick entry form
 - **Decisions List** — Browse all decisions
 - **Insights** — Full analytics dashboard
-- **Settings** — Notifications, data overview, JSON export and import, delete all, app theme (System, Light, Dark), Reflection unlock and Restore
+- **Settings** — Notifications, data overview, JSON export and import, delete all, app theme (System, Light, Dark)
 
 ## Tech Stack
 
@@ -65,8 +64,8 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 | **SwiftUI** | All UI — views, navigation, charts |
 | **Charts** | Analytics visualizations |
 | **UserNotifications** | Follow-up reminders |
-| **FoundationModels** | Reflection text from the on-device model (iOS 26+, behind `#available`) |
-| **StoreKit** | Reflection one-time unlock, Restore (StoreKit 2) |
+| **FoundationModels** | Retained for 2.1.0; production Reflection is disabled in 2.0 |
+| **StoreKit** | Retained for 2.1.0; purchase setup is skipped in 2.0 |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
 | **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |
@@ -74,7 +73,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 
 ## Project Structure
 
-All app sources sit flat in `Offshoots/`. The groups below are for reading only.
+App sources sit in `Offshoots/`, with LookBack, Reflection and Fold feature folders.
 
 ```
 Offshoots/
@@ -136,15 +135,16 @@ Offshoots/
 ├── CategoryBreakdownCard.swift    # Decisions by category
 ├── OutcomeTrendCard.swift         # Outcomes by week
 │
-│  # Reflection (Reflection/ folder)
-├── Reflection/                    # Policy layer, live and fake generators, cards (Patterns, decision reflection, Look Back), Clean Up Note, StoreKit unlock, paywall
+│  # Free Look Back and deferred Reflection
+├── LookBack/                      # Free card, statistics and comparison bars
+├── Reflection/                    # Deferred 2.1.0 policy, generators, paid cards, note cleanup and purchase UI
 │
 │  # Settings
 ├── SettingsView.swift             # Settings screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
 OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, Reflection policy, screenshot fixture
-Reflection.storekit                # Local StoreKit test product, on the scheme's Run action
+Reflection.storekit                # Retained local StoreKit test product for the 2.1.0 cycle
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
 scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pro Max
