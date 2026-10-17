@@ -116,9 +116,9 @@ Two clusters: decision journals (log and review) and prediction trackers (foreca
 - "regret" ↔ "hindsight"
 
 ## Screenshots
-2026-10-17 audit: the Duo `Offshoots_Duo_03_Revisit.png` shows Clean Up Note and `Offshoots_Duo_04_Revisits.png` shows the paid Reflection lock. Replace both before submission; existing files remain preserved. Refresh the iPhone Log capture to include the new free card. Final promotion/upload follows device approval.
+2026-10-17: Geoff approved exactly Duo `Offshoots_Duo_03_Revisit.png`, `Offshoots_Duo_04_Revisits.png`, and iPhone `Offshoots_02_Log.png` from Release build 10. Promoted to `App Store Version/` and uploaded to ASC 2.0.0 en-US; all three are Complete with matching checksums/dimensions and original positions. Prior files are archived in `Sunset/2026-10-17-rc10-replaced/`. Other screenshots are preserved, including an existing duplicate Duo Accuracy entry in ASC.
 
-The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first capture pass is in `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/2026-09-26/`.
+Final iPhone marketing PNGs are 1290 × 2796; Duo PNGs are 2007 × 2853. `scripts/screenshots.sh` supplies raw captures (default Pro Max: 1320 × 2868; this refresh used iPhone 18 Pro: 1206 × 2622). The first capture pass is in `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/2026-09-26/`.
 
 ## Notes
 
@@ -133,3 +133,7 @@ The 6.9" set (1320 × 2868 px) comes from `scripts/screenshots.sh`. The first ca
 - 2026-10-17: Paid Reflection is deferred to the November 2026 2.1.0 cycle. This supersedes the 2026-10-02/05 launch instructions above. Keep the IAP out of 2.0; free Look Back is available on all supported devices. Local copy prepared; ASC writes and final screenshot promotion wait for device testing.
 
 - 2026-10-17 (RC release pass): added the implemented Duo layouts to What's New and Description. Build 10 is the RC; GM around October 24 remains tentative. Local/remote main match at `a5becbc`; ASC 2.0 remains Prepare for Submission, manual release, with build 10 not listed. Local copy is prepared for review, not applied. Preserve the existing `v2.0.0` tag; the RC docs handoff uses `v2.0.0-rc.10`.
+
+- 2026-10-17 (approved ASC transfer): What's New and Description updated and read back; Promotional Text and Keywords already matched. Build 10 is uploaded/Valid, attached to 2.0.0, and available to internal Low Effort. Reflection remains a draft outside the version review setup. Neither beta nor App Store review was submitted; manual release remains selected. Screenshot replacement and restoring the app's removed-from-sale availability remain open.
+
+- 2026-10-17 (approved screenshot upload): the three replacements are promoted and verified in ASC; review state remains Prepare for Submission with manual release and no App Store review submission. Reflection remains a draft outside the version setup. Availability and the pre-existing duplicate Duo Accuracy entry remain open.

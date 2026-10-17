@@ -139,7 +139,9 @@ The first public baseline is the 1.0 upload, `0e29c15` (2026-01-04). Existing ta
 - Device check passed on the iPhone 17 Pro (iOS 27.2 Beta 2). A real reminder arrived the next day and a tap opened the decision (2026-09-25).
 - VoiceOver pass on the iPhone 17 with VoiceOver on (2026-09-26).
 - Build 10: 202 tests in 24 suites pass on iPhone 18 Pro (iOS 27.0), with a Release simulator build on Xcode 27.1. Geoff accepted the build on his phone on 2026-10-17.
-- Local and remote main match at `a5becbc` (2026-10-17). ASC still shows 2.0.0 in preparation, manual release, and no uploaded build 10; RC designation is separate from upload or public release.
+- RC tag `v2.0.0-rc.10` and local/remote main match `62ad837` (2026-10-17). Build 10 archived/uploaded with Xcode 27.1, processed Valid, and is attached to the 2.0.0 draft. Internal Low Effort is testing; test instructions and approved listing copy were saved and read back.
+- Reflection remains a draft outside the 2.0 review setup. ASC remains Prepare for Submission with manual release; App Review and restoring App Store availability remain open. The latest read reports internal/external TestFlight testing; this screenshot pass submitted no review.
+- Three approved Release build 10 screenshot replacements (Duo 3/4, iPhone Log) were promoted and uploaded to ASC 2.0.0 en-US. All are Complete with matching checksums/dimensions and original positions. Old local files are archived in `Sunset/2026-10-17-rc10-replaced/`; other images are preserved.
 
 ### 1.0 (before this changelog, from git history)
 

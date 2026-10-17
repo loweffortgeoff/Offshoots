@@ -105,7 +105,9 @@ The entire cycle is paid Reflection: accuracy and meaningful connections, real-n
 ## RC release gates — 2026-10-17
 
 - Build 10 is the accepted RC. The 2026-10-24 GM target is tentative and follows Geoff's Duo release plan; no automatic release is scheduled.
-- Git push is verified at `a5becbc`. Preserve the existing `v2.0.0` tag at `86a379e`; a new reviewed RC docs handoff uses `v2.0.0-rc.10`.
-- ASC: version 2.0.0 remains Prepare for Submission with manual release. Build 10 was not returned in the live build list; archive/upload, build attachment, and review/submission remain open.
-- Refresh the iPhone Log capture and the two Duo captures that still show paid controls. Apply final listing copy and verify the Reflection IAP is excluded from 2.0.
+- RC tag `v2.0.0-rc.10` and local/remote main resolve to `62ad837`. The existing `v2.0.0` tag at `86a379e` remains intact.
+- ASC: build 10 is uploaded, processed Valid, attached to 2.0.0, and reporting internal/external TestFlight testing. Test instructions were saved and read back. Version 2.0.0 remains Prepare for Submission with manual release; this screenshot pass submitted no review.
+- Approved listing copy is saved and verified; Reflection remains a draft outside the 2.0 review setup. Geoff approved the three replacements (Duo 3/4, iPhone Log); promotion and ASC upload are verified Complete with matching checksums/dimensions and original positions. Old files are archived locally.
+- The existing duplicate Duo Accuracy image remains in ASC; it was outside the three-image replacement.
+- ASC reports the app is removed from sale. Restore the intended App Store availability before GM; availability was left unchanged during TestFlight preparation.
 - The phone acceptance closes the general RC device gate. Individual Duo edge-case checks and accepted rotation limits remain recorded in TODO/DECISIONS; no physical Duo test is claimed here.

@@ -355,5 +355,16 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-17 (2.0 RC 10 and tentative Duo-aligned GM)
 **Decision:** Build 10 is the accepted Offshoots 2.0 RC. Tentatively target GM around 2026-10-24, aligned with Geoff's stated Duo release plan because this version includes full fold-aware layouts. Keep the release manual; no schedule or submission is authorized by the target date.
 **Why:** The Duo layout work belongs in the 2.0 release story alongside revisits and free Look Back. Paid Reflection remains the November 2.1.0 cycle. Phone acceptance and the pushed source are confirmed; ASC upload/review/public availability remain separate gates.
-**Tag lineage:** Preserve `v2.0.0`, which already marks the 2026-09-26 docs pass at `86a379e`. Use a distinct `v2.0.0-rc.10` tag after approval of this uncommitted release-doc set; do not amend or retag the existing release marker.
-**Current evidence:** Local and remote main match `a5becbc`; the app is 2.0.0 (10). ASC shows Prepare for Submission and manual release, with no build 10 in its current build list. This pass changes docs only and performs no Git writes or ASC changes.
+**Tag lineage:** Preserve `v2.0.0`, which marks the 2026-09-26 docs pass at `86a379e`. Geoff approved and pushed `v2.0.0-rc.10`; the tag and local/remote main resolve to `62ad837`.
+**Current evidence:** Build 10 archived/uploaded with Xcode 27.1 and processed Valid. It is attached to 2.0.0; internal Low Effort is testing. Approved listing copy and test instructions were saved and read back; Reflection remains a draft outside the version review setup.
+
+## 2026-10-17 (TestFlight preparation stops before review)
+**Decision:** Prepare RC 10 for internal TestFlight and save the approved ASC copy. Leave beta and App Store review unsubmitted, as Geoff requested; retain manual release and the November 2.1.0 paid Reflection plan.
+**Remaining gate:** ASC reports Offshoots is removed from sale. Restore the intended availability before GM when authorized; this preparation did not change territories or availability.
+
+## 2026-10-17 (Review three build 10 screenshot replacements before upload)
+**Decision:** Refresh only Duo shots 3/4 and iPhone Log, preserve originals, and stop at staged review. Use actual Release build 10 captures and existing caption/frame assets. The iPhone 18 Pro replaces the unavailable Pro Max capture device; final canvases retain the existing slot dimensions.
+
+## 2026-10-17 (Approved screenshot promotion and upload)
+**Decision:** Geoff approved promotion and ASC upload of those three replacements. Archive their originals, preserve every other image and the remote ordering, keep Reflection excluded, and stop before App Review. The existing duplicate Duo Accuracy image is outside this replacement.
+**Verification:** Three uploads are Complete with matching checksums/dimensions at their original positions. Build 10 remains attached; 2.0.0 is Prepare for Submission with manual release and zero App Store review submissions. Reflection remains a draft outside the version setup; internal/external TestFlight now report Testing.
