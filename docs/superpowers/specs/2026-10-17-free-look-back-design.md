@@ -22,3 +22,5 @@ Approved by Geoff on 2026-10-17. Supersedes the paid Look Back and 2.0 Reflectio
 
 ## Handoff
 Run unit tests and a Release build. Inspect the app on iPhone 18 Pro (iOS 27.0) in light, dark, and accessibility sizes. Commit locally on dev/free-look-back. Stop at Ready for Geoff's device testing; do not merge or push.
+
+**Handoff update (2026-10-17):** Geoff accepted build 10 on his phone and approved the local merge into main. This supersedes the device-testing stop above. Push and release actions remain separate.

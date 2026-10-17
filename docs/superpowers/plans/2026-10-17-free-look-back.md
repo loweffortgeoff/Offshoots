@@ -2,6 +2,8 @@
 
 > **For agentic workers:** Use superpowers:executing-plans. Implement inline. Use one fresh whole-branch reviewer and a subagent for Xcode device interactions.
 
+**Current status (2026-10-17):** Geoff accepted build 10 on his phone and approved the local merge to main. The original stop-at-device-testing instruction below records the implementation handoff; this approval supersedes that stop. Push and release actions remain separate.
+
 **Goal:** Ship free deterministic Look Back in 2.0.0 and reserve the paid Reflection upgrade for November 2.1.0.
 
 **Architecture:** Extract the existing statistics and bars into LookBack/. Build free results directly from decisions. Short-circuit ReflectionCenter.make before model, debug overrides, or StoreKit setup while the paid release switch is off.
@@ -57,3 +59,7 @@
 - Execution ruling: use the approved branch in the existing clean checkout; no added worktree. Keep the plan/spec tracked and in place after implementation. November 2.1.0 remains planned, not started.
 - Original simulator decisions and preferences were restored byte-for-byte, with hash checks; appearance/text size restored and Xcode interaction session closed. Seven raw verification captures are saved under `ASC Screenshots/Offshoots/Captures/2026-10-17/free-look-back-verification/`; these are evidence/source captures, not promoted App Store images.
 - Largest accessibility Look Back was inspected in dark mode. Light accessibility capture did not include the card; that combination remains part of device testing.
+
+## Device acceptance and integration — 2026-10-17
+- Geoff confirmed "Build 10 looks good on my phone" and authorized the local merge into main. No app code changed after device acceptance. The device gate is closed; the earlier simulator limitation remains historical evidence.
+- Keep this plan/spec in place. Do not archive them automatically. November 2.1.0 remains the paid Reflection cycle.

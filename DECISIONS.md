@@ -347,3 +347,5 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Ship 2.0 with immediate free Look Back counts, bars, Copy, and the existing calculated headline on iOS 18.6+. Disable paid production Reflection before model/StoreKit/debug setup; preserve its code and all user notes. This supersedes the earlier 2.0 IAP/paid Look Back instructions.
 **Why:** Geoff's real examples contain outcome contradictions, altered comparisons, and unsupported repetition. The paid upgrade owns the November 2026 2.1.0 cycle, gated by scored real-note evaluation and physical-device acceptance; free Look Back stays free. Spec: `docs/superpowers/specs/2026-10-17-free-look-back-design.md`.
 **Alternative considered:** Ship the filtered generated text with 2.0. Rejected by Geoff. No exact November week is assigned; unrelated platform integrations stay outside the cycle.
+
+**Verification (2026-10-17):** Geoff confirmed "Build 10 looks good on my phone" and approved merging `dev/free-look-back` into `main` locally. This closes the build 10 device gate. Listing/screenshots, IAP exclusion, push, upload, and submission remain separate release steps.

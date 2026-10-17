@@ -48,6 +48,8 @@ Theme: Offshoots keeps going after you decide. 1.0 stopped at the first result. 
 
 ## What to Test — 2.0.0
 
+Build 10 device acceptance: Geoff confirmed it looks good on his phone and approved the local merge on 2026-10-17. Keep the checks below as release regression guidance; this report does not mark every older 2.0 check complete.
+
 - Upgrade from 1.0 with existing decisions. Confirm every decision, outcome and reflection loads unchanged.
 - Log a decision with the Tomorrow preset. The next day, confirm the reminder arrives and a tap opens the decision.
 - Mark an outcome, then revisit it. Confirm the timeline, the result line and the Insights numbers.

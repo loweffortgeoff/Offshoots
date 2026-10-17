@@ -6,7 +6,7 @@ In-flight changes from coding sessions. The release pass turns these into releas
 
 #### Release scope — 2026-10-17
 - Build 10: Look Back is free on iOS 18.6+, with immediate category counts, first-outcome bars, calculated headline and Copy. Paid text, note cleanup, purchase controls and model/StoreKit startup are disabled for 2.0.
-- Verification: 202 tests pass and Release simulator build passes on Xcode 27.1. Debug UI checked on iPhone 18 Pro (iOS 27.0), including light/dark and accessibility sizes. Release UI smoke was blocked by another app's permission prompt; physical-device testing is pending.
+- Verification: 202 tests pass and Release simulator build passes on Xcode 27.1. Debug UI checked on iPhone 18 Pro (iOS 27.0), including light/dark and accessibility sizes. Release simulator UI smoke was blocked by another app's permission prompt. Geoff accepted build 10 on his phone and approved the local merge on 2026-10-17; he handles the push.
 - Paid Reflection is the whole November 2026 2.1.0 cycle. Earlier Reflection entries below record implementation history, not features shipping in 2.0; see TODO for the quality and purchase gates.
 
 #### Earlier implementation history
