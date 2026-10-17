@@ -63,3 +63,4 @@
 ## Device acceptance and integration — 2026-10-17
 - Geoff confirmed "Build 10 looks good on my phone" and authorized the local merge into main. No app code changed after device acceptance. The device gate is closed; the earlier simulator limitation remains historical evidence.
 - Keep this plan/spec in place. Do not archive them automatically. November 2.1.0 remains the paid Reflection cycle.
+- Integration verified: `main` fast-forwarded to `76107ed`, including the implementation and phone-acceptance docs. The merged app passed 202 tests in 24 suites; result bundle `/tmp/offshoots-build10-merge-76107ed.xcresult`. Push remains Geoff's step.

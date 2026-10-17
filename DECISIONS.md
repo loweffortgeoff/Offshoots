@@ -349,3 +349,5 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Alternative considered:** Ship the filtered generated text with 2.0. Rejected by Geoff. No exact November week is assigned; unrelated platform integrations stay outside the cycle.
 
 **Verification (2026-10-17):** Geoff confirmed "Build 10 looks good on my phone" and approved merging `dev/free-look-back` into `main` locally. This closes the build 10 device gate. Listing/screenshots, IAP exclusion, push, upload, and submission remain separate release steps.
+
+**Integration (2026-10-17):** Fast-forwarded `dev/free-look-back` into `main` at `76107ed`. The merged app passed 202 tests in 24 suites on iPhone 18 Pro (iOS 27.0). Geoff handles `git push origin main`; no push, upload, or submission was performed.
