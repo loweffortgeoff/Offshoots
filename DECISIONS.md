@@ -372,3 +372,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-17 (Simpler standard iPhone screenshot candidates)
 **Decision:** Keep the seven captions, dark background, green accents and RC10 Look Back capture. Use one upright phone per image; remove vines, detached UI and the large background chart. Preserve the Duo and current release images; show the new set before any replacement or upload.
 **Approval and verification:** Geoff approved local replacement and ASC upload. All seven standard iPhone images are Complete in 2.0.0 en-US with matching checksums/dimensions/order; old local files are archived in `Sunset/2026-10-17-iphone-flat-replaced/iPhone/`. Duo IDs, order, checksums and local files are unchanged; build 10 and manual Prepare for Submission remain unchanged.
+
+## 2026-10-21 (Approved roadmap and Things work queue)
+**Decision:** Order 2.1.0 as scored cases, grounded observations, faithful cleanup, failure recovery, purchase promise, then device acceptance/release preparation. Keep free Look Back free, the Optimism fix outside RC10, future ideas parked, and the final paid feature list/exact November week open.
+**Why:** Establish evidence before fixes and purchase claims. Use an Offshoots Things area with Feature Work, Bug Fixes, and Testing - Offshoots projects; keep 2.0 release work separate, all dates unset, and the Testing source unchanged.
+**Alternative considered:** Keep one broad Reflection task. Distinct actionable phases need separate tasks with explicit dependencies. Approval covers documentation and Things setup, not app implementation or release actions.

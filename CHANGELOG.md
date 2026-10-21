@@ -6,6 +6,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 No additional app changes are assigned to the 2.0 RC. Release preparation remains in TODO. Paid Reflection owns the November 2026 2.1.0 cycle.
 
+- 2026-10-21: Groomed the 2.1.0 Reflection roadmap into six ordered tasks. Moved the Optimism fix outside RC scope and mapped release, feature, bug, and testing work to undated Things tasks.
+
 ## Shipped
 
 ### 2.0.0 — It Keeps Going After You Decide
