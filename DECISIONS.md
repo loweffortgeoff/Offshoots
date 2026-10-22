@@ -360,7 +360,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 
 ## 2026-10-17 (TestFlight preparation stops before review)
 **Decision:** Prepare RC 10 for internal TestFlight and save the approved ASC copy. Leave beta and App Store review unsubmitted, as Geoff requested; retain manual release and the November 2.1.0 paid Reflection plan.
-**Remaining gate:** ASC reports Offshoots is removed from sale. Restore the intended availability before GM when authorized; this preparation did not change territories or availability.
+**Remaining gate:** ~~ASC reports Offshoots is removed from sale. Restore the intended availability before GM when authorized; this preparation did not change territories or availability.~~
+**Update (2026-10-22):** Geoff reactivated Offshoots 1.0 on the App Store and submitted 2.0 for App Store review.
 
 ## 2026-10-17 (Review three build 10 screenshot replacements before upload)
 **Decision:** Refresh only Duo shots 3/4 and iPhone Log, preserve originals, and stop at staged review. Use actual Release build 10 captures and existing caption/frame assets. The iPhone 18 Pro replaces the unavailable Pro Max capture device; final canvases retain the existing slot dimensions.

@@ -109,5 +109,6 @@ The entire cycle is paid Reflection: accuracy and meaningful connections, real-n
 - ASC: build 10 is uploaded, processed Valid, attached to 2.0.0, and reporting internal/external TestFlight testing. Test instructions were saved and read back. Version 2.0.0 remains Prepare for Submission with manual release; this screenshot pass submitted no review.
 - Approved listing copy is saved and verified; Reflection remains a draft outside the 2.0 review setup. Geoff approved the three replacements (Duo 3/4, iPhone Log); promotion and ASC upload are verified Complete with matching checksums/dimensions and original positions. Old files are archived locally.
 - The existing duplicate Duo Accuracy image remains in ASC; it was outside the three-image replacement.
-- ASC reports the app is removed from sale. Restore the intended App Store availability before GM; availability was left unchanged during TestFlight preparation.
+- ~~ASC reports the app is removed from sale. Restore the intended App Store availability before GM; availability was left unchanged during TestFlight preparation.~~
+  - 2026-10-22: Geoff reactivated Offshoots 1.0 on the App Store and submitted 2.0 for App Store review.
 - The phone acceptance closes the general RC device gate. Individual Duo edge-case checks and accepted rotation limits remain recorded in TODO/DECISIONS; no physical Duo test is claimed here.

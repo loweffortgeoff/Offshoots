@@ -3,7 +3,9 @@
 ## Next — 2.0.0 free Look Back
 - [ ] **RC 10 release preparation.** Geoff accepted build 10 and selected it as the RC. GM is tentatively around 2026-10-24, aligned with his Duo release plan; do not schedule or declare it live from this date.
 - [ ] **App Review and manual GM.** Build 10 is uploaded, processed and attached to 2.0.0. Internal/external TestFlight now report Testing. ASC remains Prepare for Submission with manual release; submit the App Store version only when authorized.
-- [ ] **App Store availability.** ASC reports the app is removed from sale. Confirm and restore the intended territories before GM; availability was not changed during TestFlight preparation.
+  - 2026-10-22: Geoff submitted 2.0 for App Store review. Manual GM still pending.
+- [x] **App Store availability.** ~~ASC reports the app is removed from sale. Confirm and restore the intended territories before GM; availability was not changed during TestFlight preparation.~~
+  - 2026-10-22: Geoff reactivated Offshoots 1.0 on the App Store.
 
 ## Backlog — remaining audit sections (see `docs/2026-09-23-audit-bugfixes-and-core-loop.md`)
 - [ ] **Correct the Optimism card’s misleading calibration summary.** It shows the average gap, so 6 decisions that went worse and 7 that went better read as "Well calibrated" (seen on `reflection-notes.json`, 2026-10-05). Show the split as well, or say when the misses cancel out. This is the free card, separate from Reflection. Reflection no longer sends the average to the model (DECISIONS 2026-10-05). Keep this fix outside the accepted 2.0 RC.
