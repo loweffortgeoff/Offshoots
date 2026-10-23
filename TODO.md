@@ -1,9 +1,10 @@
 # TODO
 
 ## Next — 2.0.0 free Look Back
-- [ ] **RC 10 release preparation.** Geoff accepted build 10 and selected it as the RC. GM is tentatively around 2026-10-24, aligned with his Duo release plan; do not schedule or declare it live from this date.
-- [ ] **App Review and manual GM.** Build 10 is uploaded, processed and attached to 2.0.0. Internal/external TestFlight now report Testing. ASC remains Prepare for Submission with manual release; submit the App Store version only when authorized.
+- [x] **RC 10 release preparation.** Geoff accepted build 10 and selected it as the RC. GM is tentatively around 2026-10-24, aligned with his Duo release plan; do not schedule or declare it live from this date.
+- [x] **App Review and manual GM.** Build 10 is uploaded, processed and attached to 2.0.0. Internal/external TestFlight now report Testing. ASC remains Prepare for Submission with manual release; submit the App Store version only when authorized.
   - 2026-10-22: Geoff submitted 2.0 for App Store review. Manual GM still pending.
+  - 2026-10-22: 2.0.0 approved. Released.
 - [x] **App Store availability.** ~~ASC reports the app is removed from sale. Confirm and restore the intended territories before GM; availability was not changed during TestFlight preparation.~~
   - 2026-10-22: Geoff reactivated Offshoots 1.0 on the App Store.
 
