@@ -6,6 +6,11 @@
 import Foundation
 
 enum ReflectionText {
+    /// Conservative exclusion of recognizable model-control text. Not a semantic safety proof.
+    static func looksLikeModelInstruction(_ text: String) -> Bool {
+        text.range(of: #"(?is)ignore\b.{0,60}\b(instructions?|rules)\b|\bsystem override\b|\bprompt leak\b|<\|(?:system|assistant|user)\|>|\breveal\b.{0,40}\bsystem prompt\b"#, options: .regularExpression) != nil
+    }
+
     /// Collapses whitespace, trims, and cuts to `limit` characters with an ellipsis.
     /// Nil when nothing is left, so blank notes never reach a prompt.
     static func clean(_ text: String?, limit: Int) -> String? {

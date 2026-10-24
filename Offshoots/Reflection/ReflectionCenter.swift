@@ -79,7 +79,7 @@ final class ReflectionCenter {
                 generator: LiveReflectionService(),
                 availabilityProvider: LiveReflectionService.availability,
                 entitlement: entitlement,
-                purchase: ReflectionPurchase(entitlement: entitlement)
+                purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { LiveReflectionService.availability() == .available })
             )
         }
         return ReflectionCenter(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })

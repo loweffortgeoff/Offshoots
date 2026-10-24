@@ -276,13 +276,9 @@ struct DecisionDetailView: View {
                             RevisitHistoryCard(decision: decision)
                         }
 
-                        // Reflection (paid unlock, on-device text). Unsupported devices never see it.
-                        // Removing the card also drops its result, so a stale one cannot come back.
+                        // Saved readings remain visible when generation is unavailable.
                         if ReflectionVisibility.showEntry(gate: reflection.gate, savedCount: history.readings.filter { $0.kind == .decision(decision.id) }.count) {
-                            DecisionReflectionCard(
-                                decision: decision,
-                                sameCategory: store.decisions.filter { $0.category == decision.category && $0.id != decision.id }
-                            )
+                            DecisionReflectionCard(decisionID: decision.id)
                         }
 
                         // Follow-up Date

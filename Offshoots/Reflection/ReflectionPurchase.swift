@@ -26,7 +26,10 @@ final class ReflectionPurchase {
     @ObservationIgnored private var product: Product?
     @ObservationIgnored private let entitlement: ReflectionEntitlement
 
-    init(entitlement: ReflectionEntitlement) {
+    @ObservationIgnored private let canPurchase: () -> Bool
+
+    init(entitlement: ReflectionEntitlement, canPurchase: @escaping () -> Bool = { true }) {
+        self.canPurchase = canPurchase
         self.entitlement = entitlement
     }
 
@@ -50,6 +53,11 @@ final class ReflectionPurchase {
     /// Returns true when the purchase went through and the unlock is on.
     @discardableResult
     func buy() async -> Bool {
+        guard canPurchase() else {
+            state = .failed("Apple Intelligence must be available before you purchase Reflection. Check device and language support, then try again.")
+            return false
+        }
+        guard state != .purchasing && state != .pending else { return false }
         guard let product else { return false }
         state = .purchasing
         do {

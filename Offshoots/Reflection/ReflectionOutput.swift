@@ -23,10 +23,14 @@ struct CleanedNote: Equatable {
 enum ReflectionError: Error, Equatable {
     /// The model answered, but nothing usable came back
     case emptyOutput
+    case insufficientEvidence
+    case instructionLikeInput
     case failed
 
     var userMessage: String {
         switch self {
+        case .instructionLikeInput: "Reflection could not safely read this note. Your original note is unchanged."
+        case .insufficientEvidence: "These records do not support a clear connection yet. Add notes or return after more outcomes."
         case .emptyOutput: "Nothing useful came back. Try again."
         case .failed: "Reflection could not finish. Try again."
         }

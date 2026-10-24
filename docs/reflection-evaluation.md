@@ -17,3 +17,15 @@ Exact source records for Groceries, Ghost PTO, More Ghost PTO, the recorded inpu
 ## Baseline
 
 On 2026-10-24 this Mac (macOS Darwin 27.0, Xcode 27.1 build 27A9275) passed 202 unit tests on iPhone 18 Pro (iOS 27.0). The opt-in live model suite was excluded by its existing environment gate. Physical-device output, usefulness, and latency remain unmeasured.
+
+## Local implementation evidence — 2026-10-24
+
+Geoffrey's Mac mini runs macOS 27.0.1 (26A434) and Xcode 27.1 (27A9275). The revised local suite passes 229 tests in 31 suites on iPhone 18 Pro (iOS 27.0), with the opt-in model suite excluded from that count.
+
+The model is available on this simulator. The first 36-case diagnostic run exposed copied individual notes: 18 of 26 labeled eligible cases returned no generated observations; seven cases returned preflight errors/abstentions. The live purchase-sample assertion failed. That baseline did not meet the paid-quality gate.
+
+A simpler one-connection schema and short request-local references then produced the captured purchase example in `fixtures/reflection-purchase-sample.json`. The next 36-case diagnostic run completed, but also exposed command-like text being repeated. Recognizable model-control text is now omitted whole before generation; original journal records stay intact. This conservative exclusion is not proof against every instruction-like input.
+
+Decision readings now use only their own recorded stages. Code supplies the rating timeline; the model may add one comparison between two cited stages. Saved-history access, refund/source-change request invalidation, failed writes, and coordinated backup rollback have unit evidence. Fake-output UI checks cover generation, refresh, relaunch history, evidence navigation, light/dark, and largest text. Final artifact UI review and independent code review are still pending at this entry.
+
+Physical-device quality, cleanup meaning preservation, usefulness scores, sandbox purchase/Restore/refund, and the exact real-note regressions remain unaccepted. Production paid Reflection remains disabled. Local model results do not clear those gates.

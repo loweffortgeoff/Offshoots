@@ -1,0 +1,16 @@
+{
+  "text": "Both decisions involved a purchase made quickly due to a time-sensitive offer.",
+  "sources": [
+    "Annual gym plan: original note says price goes up tomorrow, signed on the spot.",
+    "Laptop: original note says sale ends tonight, bought in a hurry."
+  ],
+  "evidenceKeys": [
+    "R1.log",
+    "R2.log"
+  ],
+  "captured": "2026-10-24",
+  "device": "iPhone 18 Pro simulator, iOS 27.0 (24A434)",
+  "modelAvailability": "available",
+  "evaluation": "Accepted for this fixed illustrative synthetic-data example only. Not physical-device or corpus acceptance.",
+  "rawCapture": "live-tuned-cases.log SAMPLE RAW/SAMPLE DISPLAY"
+}

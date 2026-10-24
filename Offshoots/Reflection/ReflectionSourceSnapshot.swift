@@ -21,6 +21,8 @@ struct ReflectionSourceSnapshot: Codable, Equatable {
         // Conservative UTF-8 bound for older models lacking token-count APIs.
         // Newer models also check instructions + schema + prompt + response at request time.
         for decision in ordered {
+            let written = [decision.title, decision.notes, decision.reflection] + decision.revisits.map(\.note)
+            guard !written.compactMap({ $0 }).contains(where: ReflectionText.looksLikeModelInstruction) else { continue }
             let candidate = Self(decisions: kept + [decision], eligibleDecisionIDs: [], subjectID: subjectID, omittedCount: 0)
             if candidate.prompt.utf8.count <= 1800 { kept.append(decision) }
         }
@@ -29,14 +31,14 @@ struct ReflectionSourceSnapshot: Codable, Equatable {
     }
 
     var evidence: [ReflectionEvidence] {
-        decisions.flatMap { d -> [ReflectionEvidence] in
-            let prefix = d.id.uuidString
+        decisions.enumerated().flatMap { index,d -> [ReflectionEvidence] in
+            let prefix = "R\(index + 1)"
             func item(_ suffix: String, _ stage: ReflectionEvidence.Stage, _ date: Date, _ text: String?, revisitID: UUID? = nil) -> ReflectionEvidence? {
                 guard let text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-                return ReflectionEvidence(key: prefix + ":" + suffix, decisionID: d.id, stage: stage, revisitID: revisitID, date: date, text: text)
+                return ReflectionEvidence(key: prefix + "." + suffix, decisionID: d.id, stage: stage, revisitID: revisitID, date: date, text: text)
             }
             var values = [item("record", .record, d.createdAt,
-                "\(d.title) | \(d.category.rawValue) | expected \(d.expected.shortLabel), first \(d.actual?.shortLabel ?? "unmarked")"),
+                "\(d.title) | \(d.category.rawValue) | expected \(d.expected.shortLabel), first \(d.actual?.shortLabel ?? "unmarked") on \(d.resolvedDate?.ISO8601Format() ?? "unknown date")"),
                 item("log", .log, d.createdAt, d.notes),
                 item("outcome", .outcome, d.resolvedDate ?? d.createdAt, d.reflection)].compactMap { $0 }
             values += d.revisits.sorted { $0.date == $1.date ? $0.id.uuidString < $1.id.uuidString : $0.date < $1.date }.compactMap {
@@ -49,7 +51,7 @@ struct ReflectionSourceSnapshot: Codable, Equatable {
     var prompt: String {
         evidence.map { "[\($0.key)] \($0.stage.rawValue) \($0.date.ISO8601Format()): \($0.text)" }.joined(separator: "\n")
     }
-    var scope: String { "Read \(decisions.count) of \(eligibleDecisionIDs.count) marked decisions. \(omittedCount) omitted to fit this reading." }
+    var scope: String { "Read \(decisions.count) of \(eligibleDecisionIDs.count) marked decisions. \(omittedCount) omitted from this reading." }
 
     func validate() throws {
         guard Set(decisions.map(\.id)).count == decisions.count,

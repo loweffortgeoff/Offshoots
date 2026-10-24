@@ -19,4 +19,12 @@ struct ReflectionObservation: Codable, Equatable, Identifiable {
         }
         return self
     }
+    func validatedChange(against snapshot: ReflectionSourceSnapshot, subjectID: UUID) throws -> Self {
+        let value = try validated(against: snapshot, minimumDecisions: 1)
+        let ordered = evidenceKeys.compactMap { key in snapshot.evidence.first { $0.key == key } }
+        guard ordered.count == 2, ordered.allSatisfy({ $0.decisionID == subjectID }),
+              ordered[0].date <= ordered[1].date else { throw ReflectionError.emptyOutput }
+        return value
+    }
+
 }

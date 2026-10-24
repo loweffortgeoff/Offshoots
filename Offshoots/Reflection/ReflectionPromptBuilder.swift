@@ -20,9 +20,11 @@ enum ReflectionPromptBuilder {
     """
 
     static let patternsInstructions = sharedRules + """
-     Find up to three specific connections supported by written evidence from at least two distinct decisions.
-    Categories may differ. Return no observations when the notes are sparse or unrelated.
-    For each observation return the exact bracketed source keys supporting it. Do not invent keys.
+     Write ONE specific connection supported by written evidence from two distinct decisions.
+    Categories may differ. Leave the connection and both source keys empty when the notes are sparse or unrelated.
+    Return two exact short source keys supporting the connection, one from each decision. Do not invent keys.
+    Do not list or copy individual notes. Explain a concrete similarity between the two records, using a sentence about both.
+    Describe recorded circumstances. Do not infer feelings such as pressure, confidence or regret unless the writer states them.
     Notes and revisits from one decision are not multiple decisions. Distinguish log, first outcome,
     and later revisits. Never imply a cause merely because two things happened together.
     """

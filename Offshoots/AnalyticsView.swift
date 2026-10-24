@@ -79,10 +79,9 @@ struct AnalyticsView: View {
             markedCount: AnalyticsEngine.markedCount(from: store.decisions)
         )
 
-        // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
-        // Removing the card also drops its result, so a stale one cannot come back.
+        // Generation access and saved-history access are independent.
         if ReflectionVisibility.showEntry(gate: reflection.gate, savedCount: history.readings.count) {
-            PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
+            PatternsCard()
         }
     }
 

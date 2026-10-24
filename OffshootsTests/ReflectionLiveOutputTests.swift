@@ -28,7 +28,7 @@ struct ReflectionLiveOutputTests {
             "Patterns",
             instructions: ReflectionPromptBuilder.patternsInstructions,
             prompt: prompt,
-            schema: LiveReflectionService.GeneratedPatterns.generationSchema
+            schema: LiveReflectionService.GeneratedConnection.generationSchema
         )
         let output = try await LiveReflectionService(rawOutput: { log("RAW: " + $0) }).patterns(digest: digest)
         log("Patterns output:\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
@@ -44,7 +44,7 @@ struct ReflectionLiveOutputTests {
             "Decision: \(title)",
             instructions: ReflectionPromptBuilder.decisionInstructions + ReflectionPromptBuilder.historyRule,
             prompt: ReflectionPromptBuilder.decisionPrompt(digest),
-            schema: LiveReflectionService.GeneratedDecisionReflection.generationSchema
+            schema: LiveReflectionService.GeneratedDecisionChange.generationSchema
         )
         let output = try await LiveReflectionService(rawOutput: { log("RAW: " + $0) }).reflect(on: digest)
         log("""
@@ -72,6 +72,16 @@ struct ReflectionLiveOutputTests {
         log("Look Back output (\(digest.category)):\n\(output.stats.headline ?? "(no headline)")\n\(output.stats.summary)\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
     }
 
+    @Test func purchaseSample() async throws {
+        guard #available(iOS 26.4, *) else { return }
+        try requireModel()
+        let decisions = Array(try Fixture.load("reflection-notes").prefix(2))
+        let output = try await LiveReflectionService(rawOutput: { log("SAMPLE RAW: " + $0) })
+            .patterns(digest: ReflectionDigestBuilder.patterns(from: decisions))
+        log("SAMPLE DISPLAY: \(output)")
+        #expect(!output.observations.isEmpty, "A purchase sample must demonstrate a supported generated connection")
+    }
+
     @Test func acceptanceCases() async throws {
         guard #available(iOS 26.4, *) else { return }
         try requireModel()
@@ -81,6 +91,9 @@ struct ReflectionLiveOutputTests {
         for value in cases {
             let start = Date()
             log("CASE \(value.id) | eligible \(value.eligible) | OS \(ProcessInfo.processInfo.operatingSystemVersionString) | device \(ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "physical-device; record hardware manually") | scope \(value.decisions.map(\.id))")
+            let inputs = value.surface == "decision" ? Array(value.decisions.prefix(1)) : value.decisions
+            let selected = ReflectionSourceSnapshot.capture(decisions: inputs, subjectID: value.surface == "decision" ? inputs.first?.id : nil)
+            log("SELECTED \(value.id): \(selected.scope) keys \(selected.evidence.map { "\($0.key)=\($0.decisionID)" })")
             let service = LiveReflectionService(rawOutput: { log("RAW \(value.id): " + $0) })
             do {
                 switch value.surface {

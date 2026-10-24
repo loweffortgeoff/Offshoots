@@ -10,7 +10,7 @@ struct ReflectionSettingsSection: View {
     @Environment(ReflectionCenter.self) private var center
 
     var body: some View {
-        if center.gate != .hidden, let purchase = center.purchase {
+        if let purchase = center.purchase {
             Section {
                 if center.isUnlocked {
                     Label("Reflection is unlocked", systemImage: "checkmark.circle")
@@ -27,7 +27,7 @@ struct ReflectionSettingsSection: View {
             } header: {
                 Text("Reflection")
             } footer: {
-                Text("Reflection text is made on your device and is never sent anywhere.")
+                Text("Saved readings remain available when generation is unavailable.")
             }
             .listRowBackground(Color.offshootCardBackground)
         }

@@ -34,7 +34,9 @@ final class ReflectionRequestController {
         let request = UUID()
         token = request
         let startingEpoch = epoch()
-        let snapshot = ReflectionSourceSnapshot.capture(decisions: decisions, subjectID: {
+        let sources: [Decision]
+        if case .decision(let id) = kind { sources = decisions.filter { $0.id == id } } else { sources = decisions }
+        let snapshot = ReflectionSourceSnapshot.capture(decisions: sources, subjectID: {
             if case .decision(let id) = kind { return id }; return nil
         }())
         error = nil

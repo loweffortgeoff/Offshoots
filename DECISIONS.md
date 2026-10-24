@@ -385,3 +385,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Draft boundary:** `docs/superpowers/specs/2026-10-24-paid-reflection-design.md` contains proposed navigation, storage, deletion, and local backup details for review. Authorization covers this documentation task, not implementation. The scored physical-device quality gate remains.
 
 **Approval (2026-10-24):** Geoff approved the full spec, including navigation, storage, deletion, local backup, and access rules. The implementation plan is `docs/superpowers/plans/2026-10-24-paid-reflection.md`; execution awaits plan review. Production activation still requires physical-device quality acceptance.
+
+## 2026-10-24 (Native execution and local evaluation boundaries)
+**Decision:** Geoff approved native execution of the plan. Use short request-local evidence keys, intact bounded snapshots, a calculated rating timeline, and an optional generated comparison. Preserve dated readings across refresh, refund, and model loss.
+**Why:** Live diagnostics copied individual notes and exposed instruction-like text. Simplify the schema and omit recognizable control text whole; structural validation does not establish semantic truth. Keep activation gated by scored physical-device acceptance.
+**Persistence:** Keep the existing decision JSON array. Store readings separately; coordinate replacement with a recoverable original-byte marker. Block editing if rollback cannot complete. Saved readings are included in the explicit full-backup path.

@@ -38,7 +38,7 @@ enum ReflectionDigestBuilder {
     static func decision(_ decision: Decision, among others: [Decision] = []) -> DecisionDigest? {
         guard let actual = decision.actual, let resolved = decision.resolvedDate else { return nil }
         return DecisionDigest(
-            snapshot: .capture(decisions: [decision] + others.filter { $0.id != decision.id }, subjectID: decision.id),
+            snapshot: .capture(decisions: [decision], subjectID: decision.id),
             title: ReflectionText.clean(decision.title, limit: titleLimit) ?? "Untitled",
             category: decision.category.rawValue.capitalized,
             stakes: decision.stakes.label,
