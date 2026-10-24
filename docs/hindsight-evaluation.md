@@ -1,6 +1,6 @@
 # Hindsight evaluation
 
-Date: 2026-10-24. Status: local checks pass; independent code review is pending. Production purchase/capture remain disabled. Generated Reflection remains disabled separately.
+Date: 2026-10-24. Status: local checks and independent-review fixes pass. Physical-device and paid-value acceptance remain open. Production purchase/capture remain disabled. Generated Reflection remains disabled separately.
 
 ## Scope and test inputs
 
@@ -10,7 +10,7 @@ The approved design records what someone would repeat or change at an existing o
 
 ## Automated and local StoreKit evidence
 
-The final regular xcresult summary reports **255 passed, nine opt-in tests skipped, zero failed** on iPhone 18 Pro (iOS 27.0). Parameterized leaf counts differ. Task-level regular suites also passed after data, access, capture, and review changes. New regressions were observed failing before the relevant changes: missing persistence/event pairing, verification uncertainty, delayed refresh after revocation, startup subscription order, a stale first-review overwrite, and combined filter toggles.
+The final regular xcresult summary reports **255 passed, ten opt-in tests skipped, zero failed** on iPhone 18 Pro (iOS 27.0). Parameterized leaf counts differ. Task-level regular suites also passed after data, access, capture, and review changes. New regressions were observed failing before the relevant changes: missing persistence/event pairing, verification uncertainty, delayed refresh after revocation, startup subscription order, a stale first-review overwrite, and combined filter toggles.
 
 The opt-in `HindsightStoreKitIntegrationTests` and synthetic fixture test pass. The local test creates a transaction with `SKTestSession` for existing product `com.geoffrey.silva.Offshoots.reflection`, confirms capture while generated Reflection is unavailable, invokes Restore, then refunds and verifies no new structured answer is saved. Recorded answers remain reviewable/exportable. Simulated product-loading and App Store sync network errors leave verified ownership intact. A new Restore uncertainty assertion failed before the controller fix and passes after: verification uncertainty now says it could not verify the purchase, rather than claiming no earlier purchase exists.
 
@@ -22,7 +22,7 @@ Running-app checks passed on iPhone 18 Pro, iOS 27.0, UDID `204520A6-E5B5-447D-8
 
 The first visual pass found a clipped largest-text outcome picker and the spoken label “1 decisions.” A wrapping native Menu and singular label fixed both. A second Xcode-driven pass confirms full “All outcomes” in both themes at the largest text size, working filters, exact AX label “Different choice, 1 decision,” full dark long-note history, and light Mark Outcome choices with one note field. Default and largest-text paywall coverage is representative in both themes. This is not a full screen-by-screen theme/size matrix or actual VoiceOver listening.
 
-Local screenshots and detailed reports are retained at `/tmp/offshoots-hindsight-evidence-2026-10-24/ui/` and `ui-retest/`. These are local temporary artifacts, not tracked release images. Original Documents and preferences were backed up before seeding; final restoration follows the code review and any additional test installs.
+Local screenshots and detailed reports are retained at `/tmp/offshoots-hindsight-evidence-2026-10-24/ui/` and `ui-retest/`. These are local temporary artifacts, not tracked release images. Original Documents and preferences were backed up before seeding; the original Documents and preferences were restored to the current post-test app container and verified against backup hashes. The app is terminated and content size is Large.
 
 The initial Xcode gesture command returned `Invalid command: 'swipe'. To recover, review again all available commands in device-interaction skill`. That pass continued with the T3 device driver. The retest used the installed Xcode verification runbook and correct gesture syntax; no fallback was needed. Xcode reported `applicationState: NotRun` despite a live hierarchy and working interactions. App verification uses the observed hierarchy and screenshots, not that status label.
 
@@ -31,6 +31,14 @@ The initial Xcode gesture command returned `Invalid command: 'swipe'. To recover
 The Release simulator build passes. Its executable contains none of the three Hindsight Debug launch-flag strings. The production Hindsight factory creates no purchase or entitlement service while disabled. Generated Reflection's release gate remains false. Debug preview ownership is isolated behind Debug compilation; preview Buy cannot run a transaction. Existing saved hindsight remains readable even when capture is disabled or ownership is absent.
 
 Previously verified ownership is retained through verification uncertainty within the process. Cold-launch/offline access relies on StoreKit's locally verified transaction cache; no preference is independent proof of purchase. A verified accepted-product revocation or a clean empty entitlement snapshot removes capture access. Physical offline relaunch must be checked separately.
+
+## Independent review and fixes
+
+A fresh GPT-6 Astra review checked the whole branch through `1b70f5f`, including all five Hindsight review-focus areas. It found one Important issue: Restore used a historical ownership-resolution flag, so a clean startup check followed by verification failure could still claim no earlier purchase existed. The new parameterized local StoreKit regression reproduced that failure for both a prior owner and a prior nonowner. The controller now uses the latest verification result separately from retained access. Both cases and recovery to a later clean check pass. No second review was claimed; the corrective pass is verified by tests and a green regular suite/Release build.
+
+The reviewer also found missing `ReflectionHistoryStore` injection in the updated Analytics and Settings previews. Both preview environments are repaired and compile with the app. Canvas rendering was not separately measured. This related preview repair was folded into the same pass under Geoff's standing project instruction.
+
+Review boundaries retained: generated Reflection quality/activation remain deferred; phone/VoiceOver/offline/sandbox evidence remains open; real-history value and customer name/price/copy require Geoff's acceptance; signing/distribution/ASC readiness are not established by this local review. These boundaries prevent an unsupported release claim, not completion of the approved local implementation.
 
 ## Open acceptance gates
 

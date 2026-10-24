@@ -263,5 +263,6 @@ struct DecisionTimelineCard: View {
     AnalyticsView()
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(ReflectionHistoryStore())
         .environment(HindsightAccess.make())
 }   

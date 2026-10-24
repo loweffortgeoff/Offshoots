@@ -13,6 +13,7 @@ final class ReflectionEntitlement {
     static let acceptedProductIDs: Set<String> = ["com.geoffrey.silva.Offshoots.reflection"]
     private(set) var isUnlocked = false
     private(set) var hasResolvedOwnership = false
+    private(set) var latestVerificationFailed = false
     @ObservationIgnored private let source: any ReflectionEntitlementSource
     @ObservationIgnored private let accepted: Set<String>
     @ObservationIgnored private var listener: Task<Void, Never>?
@@ -54,6 +55,7 @@ final class ReflectionEntitlement {
     }
 
     private func apply(_ snapshot: EntitlementSnapshot) {
+        latestVerificationFailed = snapshot.hasVerificationFailure
         let owned = snapshot.verifiedProductIDs.subtracting(snapshot.revokedProductIDs)
         if Self.unlocks(entitled: owned, accepted: accepted) {
             isUnlocked = true

@@ -64,5 +64,6 @@ struct SettingsView: View {
     SettingsView()
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(ReflectionHistoryStore())
         .environment(HindsightAccess.make())
 }

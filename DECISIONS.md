@@ -414,3 +414,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-24 (Hindsight native execution approved)
 **Decision:** Geoff approved the implementation plan for native execution. Persist optional answers in existing decision/revisit JSON, preserve recorded event/outcome pairing, and reuse the existing one-time product with independent Hindsight access.
 **Activation:** Both production Hindsight purchase/capture and generated Reflection remain disabled. Local implementation does not clear phone, real-history usefulness, or customer-copy acceptance; no external tracker or App Store change is authorized.
+
+## 2026-10-24 (Hindsight local handoff; activation remains off)
+**Evidence:** 255 regular tests pass with ten opt-in skips; explicit local StoreKit/fixture tests and the Release build pass. Simulator flows and accessibility retests pass; the independent-review Restore finding is fixed with a failing-then-passing regression.
+**Boundary:** Keep production purchase/capture and generated Reflection disabled. Phone/VoiceOver/offline/sandbox checks, real-history usefulness, final customer copy, and distribution readiness remain open; original simulator files were restored and hash-checked.

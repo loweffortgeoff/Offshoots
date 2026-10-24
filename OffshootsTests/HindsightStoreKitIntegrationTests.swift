@@ -6,6 +6,27 @@ import StoreKitTest
 @MainActor
 @Suite(.enabled(if: ProcessInfo.processInfo.environment["HINDSIGHT_STOREKIT"] == "1"), .serialized)
 struct HindsightStoreKitIntegrationTests {
+    @Test(arguments: [false, true])
+    func restoreReportsLatestVerificationAfterEarlierResolvedCheck(wasOwned: Bool) async throws {
+        final class BundleToken {}
+        let config = try #require(Bundle(for: BundleToken.self).url(forResource: "reflection-purchase", withExtension: "storekit"))
+        let session = try SKTestSession(contentsOf: config)
+        session.disableDialogs = true
+        let source = HindsightTestEntitlementSource(snapshot: .init(
+            verifiedProductIDs: wasOwned ? ReflectionEntitlement.acceptedProductIDs : [], hasVerificationFailure: false))
+        let entitlement = ReflectionEntitlement(source: source)
+        await entitlement.refresh()
+        #expect(entitlement.hasResolvedOwnership)
+        source.snapshot = .init(verifiedProductIDs: [], hasVerificationFailure: true)
+        let purchase = ReflectionPurchase(entitlement: entitlement, featureName: "Hindsight")
+        await purchase.restore()
+        #expect(entitlement.isUnlocked == wasOwned)
+        #expect(purchase.restoreMessage == "The purchase could not be verified. Try Restore Purchase again later.")
+        source.snapshot = .init(verifiedProductIDs: wasOwned ? ReflectionEntitlement.acceptedProductIDs : [], hasVerificationFailure: false)
+        await purchase.restore()
+        #expect(purchase.restoreMessage == (wasOwned ? "Hindsight is unlocked." : "No earlier purchase was found."))
+    }
+
     @Test func existingProductUnlocksCaptureRestoreAndRefundWithoutAModel() async throws {
         final class BundleToken {}
         let config = try #require(Bundle(for: BundleToken.self).url(forResource: "reflection-purchase", withExtension: "storekit"))
