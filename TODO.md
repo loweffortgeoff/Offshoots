@@ -23,15 +23,15 @@
     - Foundation Models work is consolidated into the November 2.1.0 paid Reflection cycle below.
 
 ## 2.1.0 — Paid Reflection, November 2026
-**Cycle story:** Find useful, supported connections in the decision journal. November is the target; the exact week remains open and follows the current release gate. Free Look Back stays free.
+**Cycle story:** Find supported connections across categories and show how decisions aged. Generate on request and save dated readings with their evidence. November remains the target; free Look Back stays free. Review the [draft design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md) before implementation planning.
 - [ ] **1. Define and score Reflection acceptance cases.** Build 30–50 cases from real/sparse notes, changed outcomes, unrelated decisions, long histories, supported languages, and command-like text. Include Groceries (Good called Neutral), Ghost PTO (Bad → Good called a match), More Ghost PTO (Monday comparison changed), and input copying.
-- [ ] **2. Make generated observations follow the evidence.** Use the scored cases to correct outcome contradictions, changed comparisons, and copied input. Require multiple supporting decisions for repeated patterns; omit unsupported/empty sections, preserve the user’s voice, and check raw and displayed output.
+- [ ] **2. Make generated observations follow the evidence.** Correct contradictions, changed comparisons, and copied input. Link distinct supporting decisions, including across categories; preserve note stages and chronology. Add on-request generation and dated saved readings after design approval; check raw and displayed output.
 - [ ] **3. Preserve meaning in Clean Up Note.** Check negation, amounts, names, comparisons, and intent on physical devices, including the 2026-10-01 command-like note. Keep cleanup as a bonus.
-- [ ] **4. Make Reflection recover from failures.** Preserve useful results during refresh/failure; keep ownership and Restore visible when the model is unavailable. Explain recovery, bound waits, and fit prompts to the device context.
+- [ ] **4. Make Reflection recover from failures.** Preserve saved readings during refresh/failure and model unavailability. Validate persistence, changed/deleted sources, and local backup/import behavior from the approved design. Keep ownership and Restore visible; bound waits and context size.
 - [ ] **5. Align the purchase promise with proven output.** After output quality is demonstrated, show actual generated text and explain data requirements. Reassess the paid feature rows; keep the existing one-time product and exclude free Look Back from the paid promise.
 - [ ] **6. Validate and prepare the 2.1.0 release.** After steps 2–5, run physical-device quality and purchase/Restore/refund checks. Require zero factual reversals, meaning changes, or prompt leaks and ≥90% useful eligible outputs; target 95% within 10 seconds. After Geoff accepts the quality evidence, prepare IAP metadata/review screenshot, product attachment, listing, and screenshots; preserve separate submission/release approval.
-**Sequence:** Establish the evaluation in step 1 before fixes. Steps 2–4 feed the final evaluation; step 5 uses proven output. The final paid feature list remains open.
-**Outside this cycle:** Contrition feelings (idea only), App Intents, Siri/Spotlight, widgets, sync/backup, and saved monthly reviews.
+**Sequence:** Review the design, then establish the evaluation in step 1 before fixes. Steps 2–4 feed the final evaluation; step 5 uses proven output. Core paid benefits are agreed; detailed behavior remains in draft.
+**Outside this cycle:** Contrition feelings (idea only), App Intents, Siri/Spotlight, widgets, cloud sync/backup services, and scheduled monthly reviews. Local export/import of saved readings is part of the draft persistence scope.
 **Things:** Offshoots → Feature Work holds these six tasks. Bug Fixes holds the Optimism fix; Testing - Offshoots holds the remaining Duo checks. The Offshoots area holds the separate 2.0 release task. Dates remain unset.
 
 ## Done

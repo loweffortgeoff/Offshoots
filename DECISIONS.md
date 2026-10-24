@@ -378,3 +378,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Order 2.1.0 as scored cases, grounded observations, faithful cleanup, failure recovery, purchase promise, then device acceptance/release preparation. Keep free Look Back free, the Optimism fix outside RC10, future ideas parked, and the final paid feature list/exact November week open.
 **Why:** Establish evidence before fixes and purchase claims. Use an Offshoots Things area with Feature Work, Bug Fixes, and Testing - Offshoots projects; keep 2.0 release work separate, all dates unset, and the Testing source unchanged.
 **Alternative considered:** Keep one broad Reflection task. Distinct actionable phases need separate tasks with explicit dependencies. Approval covers documentation and Things setup, not app implementation or release actions.
+
+## 2026-10-24 (Paid Reflection: evidence, manual generation, and saved history)
+**Decision:** Center 2.1.0 on supported Patterns across categories and how individual decisions aged. Generate only on request. Save dated readings and their evidence; later journal changes must not rewrite them. Keep Clean Up Note as a bonus and free Look Back free.
+**Why:** Look Back serves the moment before a decision. Paid Reflection must add inspectable connections and a history the user can revisit. This explicitly reverses the earlier “not saved” rule; scheduled monthly reviews remain outside scope.
+**Draft boundary:** `docs/superpowers/specs/2026-10-24-paid-reflection-design.md` contains proposed navigation, storage, deletion, and local backup details for review. Authorization covers this documentation task, not implementation. The scored physical-device quality gate remains.

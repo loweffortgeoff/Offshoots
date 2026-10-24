@@ -4,7 +4,9 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
-No additional app changes are assigned to the 2.0 RC. Release preparation remains in TODO. Paid Reflection owns the November 2026 2.1.0 cycle.
+Paid Reflection owns the November 2026 2.1.0 cycle. The product design is under review; app implementation has not started.
+
+- 2026-10-24: Drafted the paid Reflection design: evidence-linked Patterns across categories, decision history readings, manual generation, and saved dated readings. Recorded the reversal of unsaved output and retained the existing quality gate.
 
 - 2026-10-21: Groomed the 2.1.0 Reflection roadmap into six ordered tasks. Moved the Optimism fix outside RC scope and mapped release, feature, bug, and testing work to undated Things tasks.
 
@@ -12,7 +14,7 @@ No additional app changes are assigned to the 2.0 RC. Release preparation remain
 
 ### 2.0.0 — It Keeps Going After You Decide
 
-**RC scope prepared 2026-10-17; not publicly released.** Build 10 is Geoff's accepted RC. GM is tentatively targeted for around 2026-10-24, aligned with his Duo release plan; the date remains provisional.
+**Live, as reported by Geoff on 2026-10-24.** Build 10 was the accepted RC. The exact public release time was not checked in this documentation session.
 
 The first public baseline is the 1.0 upload, `0e29c15` (2026-01-04). Existing tag `v2.0.0` marks the earlier 2026-09-26 docs pass at `86a379e`; preserve it. This pass consolidates the later 152 commits into the same 2.0 scope. Use `v2.0.0-rc.10` for a reviewed RC docs handoff; do not move the old tag.
 
