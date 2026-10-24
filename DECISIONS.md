@@ -390,3 +390,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Geoff approved native execution of the plan. Use short request-local evidence keys, intact bounded snapshots, a calculated rating timeline, and an optional generated comparison. Preserve dated readings across refresh, refund, and model loss.
 **Why:** Live diagnostics copied individual notes and exposed instruction-like text. Simplify the schema and omit recognizable control text whole; structural validation does not establish semantic truth. Keep activation gated by scored physical-device acceptance.
 **Persistence:** Keep the existing decision JSON array. Store readings separately; coordinate replacement with a recoverable original-byte marker. Block editing if rollback cannot complete. Saved readings are included in the explicit full-backup path.
+
+## 2026-10-24 (Keep paid Reflection disabled after local evaluation)
+**Decision:** Keep production Reflection disabled. Local engineering and review fixes pass 238 automated checks and a Release build, but author scoring accepts only 6/17 eligible core synthetic readings. Do not treat existing evidence IDs as proof of a sentence's truth.
+**Why:** The model invents shared meetings/planning and mental states, forces unrelated connections, and misses the notes' language. Retain the saved-history implementation and frozen evaluation; resolve generated-text quality before physical release acceptance or activation.

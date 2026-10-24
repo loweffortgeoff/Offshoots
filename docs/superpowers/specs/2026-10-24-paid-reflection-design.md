@@ -1,6 +1,6 @@
 # Paid Reflection for 2.1.0
 
-Status: Approved by Geoff on 2026-10-24. Proceed to implementation planning. Execution of the implementation plan remains a separate approval.
+Status: Geoff approved the design and native plan execution on 2026-10-24. Local implementation is complete; generated-text quality acceptance and production activation remain open.
 
 ## Purpose
 
@@ -115,4 +115,4 @@ No scheduled generation, monthly reviews, reminders for generated readings, advi
 
 The six existing roadmap phases remain. Add saved history, evidence navigation, and persistence acceptance within the observation and recovery phases. Keep unrelated free Optimism and Duo work separate.
 
-Plan the evaluation and implementation in bounded chunks. App code, activation of paid features, release actions, and push are outside this documentation task. Plan: `../plans/2026-10-24-paid-reflection.md`.
+Native implementation is authorized and recorded in `../plans/2026-10-24-paid-reflection.md`. The generated-text gate failed in local evaluation. Physical acceptance, production activation, merge, push, and release actions remain separate. See `../../reflection-evaluation.md`.

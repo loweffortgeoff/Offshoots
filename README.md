@@ -32,7 +32,7 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - Works on iOS 18.6+ without Apple Intelligence, notes, or a purchase.
 
 ### Reflection (planned for 2.1.0, November 2026)
-Paid Reflection is dormant in 2.0. The approved 2.1.0 design adds evidence-linked Patterns across categories and readings of how a decision aged, generated on request and saved as dated history. Clean Up Note remains a bonus; free Look Back stays free. See the [approved design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md), [implementation plan](docs/superpowers/plans/2026-10-24-paid-reflection.md), and TODO. Local implementation is under evaluation. `ReflectionCenter.paidFeaturesEnabled` remains false until physical-device quality acceptance. See [evaluation status](docs/reflection-evaluation.md).
+Paid Reflection is dormant in 2.0. The approved 2.1.0 design adds evidence-linked Patterns across categories and readings of how a decision aged, generated on request and saved as dated history. Clean Up Note remains a bonus; free Look Back stays free. See the [approved design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md), [implementation plan](docs/superpowers/plans/2026-10-24-paid-reflection.md), and TODO. Local engineering checks pass, but generated-text quality fails the release gate. `ReflectionCenter.paidFeaturesEnabled` remains false. See [evaluation status](docs/reflection-evaluation.md) for scored cases and the remaining real-note/device gates.
 
 ### Revisits
 - **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.

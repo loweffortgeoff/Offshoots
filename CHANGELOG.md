@@ -6,6 +6,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 Paid Reflection owns the November 2026 2.1.0 cycle. Geoff approved the design and native implementation. Local implementation is under verification; production paid Reflection remains disabled.
 
+- 2026-10-24: Fixed independent-review findings and passed 238 automated checks, local StoreKit transaction/Restore/refund, Release build, and final simulator UI checks. Scored model quality fails at 6/17 eligible core cases; paid activation remains blocked.
+
 - 2026-10-24: Implemented evidence-linked readings, dated local history, source-change labels, manual refresh, failure recovery, and full backup/restore. Added 36 synthetic evaluation cases; physical-device quality and real-note acceptance remain open.
 
 - 2026-10-24: Recorded spec approval and wrote the implementation plan. Sequenced evaluation, evidence, saved history, recovery, backup, cleanup, purchase, and device acceptance; production activation remains gated.

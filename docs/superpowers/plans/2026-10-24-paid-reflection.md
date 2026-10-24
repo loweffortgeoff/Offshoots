@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans for native implementation or superpowers:subagent-driven-development if Geoff selects delegation. Steps use checkbox (`- [ ]`) syntax for tracking. Geoff approved this plan and native execution on 2026-10-24. Physical acceptance and production activation remain separately gated.
 
-**Execution status:** Tasks 1–8 have local implementation and test evidence. Final review and artifact checks are in progress. Missing real-note inputs and physical-device quality leave Task 9 acceptance and Task 10 activation open.
+**Execution status:** Local engineering, independent review fixes, and final artifact checks are complete. 238 automated checks and the Release build pass. Generated-text quality fails (6/17 eligible core synthetic cases). Real-note coverage and quality work remain open in Tasks 1–2; Task 9 physical acceptance and Task 10 activation are not complete. See [evaluation](../../reflection-evaluation.md).
 
 **Goal:** Deliver useful, evidence-linked Patterns and decision readings that users generate deliberately and retain as dated history.
 
@@ -67,12 +67,12 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** `ReflectionEvaluationCase` decodes a stable case ID, surface, source decisions, eligible/abstention classification, expected evidence, prohibited facts, and human scoring notes. `ReflectionEvaluationCase.load(from: Data) throws -> [ReflectionEvaluationCase]` rejects duplicate IDs and malformed references.
 
-- [ ] Add failing codec tests for duplicate IDs, unknown expected decision IDs, and missing eligibility. Include an assertion that three notes on one decision do not qualify as cross-decision support.
-- [ ] Run `ReflectionEvaluationCaseTests` and confirm the intended failure.
+- [x] Add failing codec tests for duplicate IDs, unknown expected decision IDs, and missing eligibility. Include an assertion that three notes on one decision do not qualify as cross-decision support.
+- [x] Run `ReflectionEvaluationCaseTests` and confirm the intended failure.
 - [ ] Implement the codec and assemble 30–50 scored cases covering spec examples A–E, sparse/unrelated data, cross-category evidence, changing outcomes, long notes/histories, supported languages, and command-like text. Label synthetic cases. Locate exact Groceries, Ghost PTO, More Ghost PTO, and copying records; never invent their contents. If absent, keep those cases explicitly pending and report that evidence gap.
-- [ ] Extend the opt-in live harness to record case ID, device/OS, model availability, prompt scope, duration, raw output, displayed output, and error/cancellation status. Capture raw and displayed output from the same model response, not two requests assumed to match.
-- [ ] Document scoring: hard failure for invented facts, reversed meaning/ratings, prompt leaks, or invalid evidence; useful eligible output must add a specific supported observation. Score justified abstention separately. Count eligible empty/filtered/error results against usefulness and timeouts against latency; never count skipped model runs as passes.
-- [ ] Run the codec suite and collect a pre-change baseline where the real model is available. Record unavailable hardware/model as unmeasured. Commit the evaluation foundation locally.
+- [x] Extend the opt-in live harness to record case ID, device/OS, model availability, prompt scope, duration, raw output, displayed output, and error/cancellation status. Capture raw and displayed output from the same model response, not two requests assumed to match.
+- [x] Document scoring: hard failure for invented facts, reversed meaning/ratings, prompt leaks, or invalid evidence; useful eligible output must add a specific supported observation. Score justified abstention separately. Count eligible empty/filtered/error results against usefulness and timeouts against latency; never count skipped model runs as passes.
+- [x] Run the codec suite and collect a pre-change baseline where the real model is available. Record unavailable hardware/model as unmeasured. Commit the evaluation foundation locally.
 
 ## Task 2: Preserve evidence identity and stop forced observations
 
@@ -80,13 +80,13 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** `ReflectionSourceSnapshot.capture(decisions: [Decision], subjectID: UUID?) -> ReflectionSourceSnapshot`; `ReflectionObservation.validated(against: ReflectionSourceSnapshot, minimumDecisions: Int) throws -> ReflectionObservation`. `PatternsOutput.observations` is `[ReflectionObservation]`; decision output retains a summary and optional supported observations. Preserve source-compatible dormant Look Back values or update all their callers/tests in this task.
 
-- [ ] Add failing tests: multiple notes from one decision fail recurring support; two distinct cross-category decisions may qualify; unknown or duplicate model keys cannot establish support; first outcome stays distinct from later revisits; ordering is deterministic on tied dates; unrelated records allow abstention.
-- [ ] Run `ReflectionDigestBuilderTests`, `ReflectionEligibilityTests`, `ReflectionOutputTests`, and `ReflectionPromptBuilderTests` and confirm intended failures.
-- [ ] Capture exact source records and request-local evidence keys. Include note stage and dated outcome context in prompts. Sort selected records deterministically. Count distinct decisions rather than note fields for Patterns eligibility. Use at least two evidence-bearing marked decisions as the generation minimum; remove the old five-marked-decisions requirement that is unrelated to evidence quality.
-- [ ] Change generated schemas to optional observations with evidence references. Resolve keys against this request only. Reject unknown keys and observations with fewer than two distinct supporting decisions when they claim recurrence. Keep decision chronology calculations in code. Do not require a sentence per outcome group, a repeat, echo, or next question.
-- [ ] Budget instructions, schema, selected records, and response against the available context. Drop whole evidence units or whole records instead of cutting notes mid-meaning. Report selected/omitted scope. If one note cannot fit intact, exclude it explicitly or decline generation; do not silently paraphrase it. Availability-gate newer token-count APIs and use conservative tested budgeting on older supported model OS versions.
-- [ ] Update fake outputs and the live harness to the new types. Keep arbitrary prose validation claims honest: structural evidence validation does not establish semantic truth. Use the case evaluation for unsupported meaning and causal claims.
-- [ ] Run the named suites plus the fixture and free `LookBackStatsTests` suites. Review the case results against the baseline. Commit the evidence/generation chunk locally.
+- [x] Add failing tests: multiple notes from one decision fail recurring support; two distinct cross-category decisions may qualify; unknown or duplicate model keys cannot establish support; first outcome stays distinct from later revisits; ordering is deterministic on tied dates; unrelated records allow abstention.
+- [x] Run `ReflectionDigestBuilderTests`, `ReflectionEligibilityTests`, `ReflectionOutputTests`, and `ReflectionPromptBuilderTests` and confirm intended failures.
+- [x] Capture exact source records and request-local evidence keys. Include note stage and dated outcome context in prompts. Sort selected records deterministically. Count distinct decisions rather than note fields for Patterns eligibility. Use at least two evidence-bearing marked decisions as the generation minimum; remove the old five-marked-decisions requirement that is unrelated to evidence quality.
+- [x] Change generated schemas to optional observations with evidence references. Resolve keys against this request only. Reject unknown keys and observations with fewer than two distinct supporting decisions when they claim recurrence. Keep decision chronology calculations in code. Do not require a sentence per outcome group, a repeat, echo, or next question.
+- [x] Budget instructions, schema, selected records, and response against the available context. Drop whole evidence units or whole records instead of cutting notes mid-meaning. Report selected/omitted scope. If one note cannot fit intact, exclude it explicitly or decline generation; do not silently paraphrase it. Availability-gate newer token-count APIs and use conservative tested budgeting on older supported model OS versions.
+- [x] Update fake outputs and the live harness to the new types. Keep arbitrary prose validation claims honest: structural evidence validation does not establish semantic truth. Use the case evaluation for unsupported meaning and causal claims.
+- [x] Run the named suites plus the fixture and free `LookBackStatsTests` suites. Review the case results against the baseline. Commit the evidence/generation chunk locally.
 
 ## Task 3: Persist immutable readings and source history
 
@@ -94,11 +94,11 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** `SavedReflection` stores `id: UUID`, `generatedAt: Date`, `kind: Kind` (`patterns` or `decision(UUID)`), content, and snapshot. `ReflectionHistoryStore.init(saveURL: URL)` loads local data; `append(_ reading: SavedReflection) throws`, `delete(id: UUID) throws`, and `replaceAll(with: [SavedReflection]) throws` write atomically before publishing changes. `ReflectionFreshness.status(for: SavedReflection, decisions: [Decision]) -> ReflectionFreshness` returns changed/missing/newly-eligible IDs.
 
-- [ ] Add failing tests for encode/decode with ISO 8601 dates, two refreshes preserving separate IDs/dates, relaunch persistence, untouched journal text, failed append/delete retaining previous disk and memory state, and unreadable-file preservation with writes blocked until explicit recovery.
-- [ ] Run `ReflectionHistoryStoreTests` and confirm the intended failure.
-- [ ] Implement a versioned `reflections.json` file with an injectable write failure seam. A missing file means empty history. An unreadable/unknown-version file means a visible recovery error, not permission to overwrite it. Keep the file and provide a recovery export path.
-- [ ] Add freshness tests for source note edits, changed ratings, new revisits, deleted sources, added eligible Patterns decisions, and unchanged saved text/evidence. Implement comparisons against exact snapshots; do not use process-randomized hashes as persistent fingerprints.
-- [ ] Run both new suites and commit the history chunk locally.
+- [x] Add failing tests for encode/decode with ISO 8601 dates, two refreshes preserving separate IDs/dates, relaunch persistence, untouched journal text, failed append/delete retaining previous disk and memory state, and unreadable-file preservation with writes blocked until explicit recovery.
+- [x] Run `ReflectionHistoryStoreTests` and confirm the intended failure.
+- [x] Implement a versioned `reflections.json` file with an injectable write failure seam. A missing file means empty history. An unreadable/unknown-version file means a visible recovery error, not permission to overwrite it. Keep the file and provide a recovery export path.
+- [x] Add freshness tests for source note edits, changed ratings, new revisits, deleted sources, added eligible Patterns decisions, and unchanged saved text/evidence. Implement comparisons against exact snapshots; do not use process-randomized hashes as persistent fingerprints.
+- [x] Run both new suites and commit the history chunk locally.
 
 ## Task 4: Control requests without losing saved content
 
@@ -106,12 +106,12 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** `ReflectionRequestController.start(kind: SavedReflection.Kind, decisions: [Decision])`, `cancel()`, and read-only request status. Inject generator, history store, clock/timeout, and current entitlement/source checks. Leave `ReflectionRun` available for unsaved Clean Up Note. Separate `canGenerate` from `canReadHistory`.
 
-- [ ] Add failing tests for failed refresh retaining prior content; cancelled/empty/unsupported results saving nothing; save failure showing an unsaved result and error; refund or journal replacement during a request preventing append; source edits during a request invalidating its save; and stale responses from an older request being ignored.
-- [ ] Run `ReflectionRequestControllerTests` and confirm intended failures.
-- [ ] Implement generation from a captured snapshot. Before saving, recheck request token, entitlement, cancellation, and source state. Save exactly once after validation. A source change requires a fresh user request; never automatically restart.
-- [ ] Use a 20-second request deadline as an implementation default, separate from the 10-second quality target. Timeout returns control and ignores late completions even if the provider ignores cancellation. Do not use a structured race that still waits for an uncooperative losing task. Prevent unbounded overlapping provider calls while one is still draining.
-- [ ] Keep saved content readable when unsupported, not ready, refunded, or locked. Gate new generation/refresh/cleanup. Preserve ownership and Restore. Add Debug-only fake/live evaluation configuration ahead of the dormant-production return only in Debug builds; Release must still skip model/StoreKit setup while disabled.
-- [ ] Run controller, gate, entitlement, run, and `ReflectionReleaseTests` suites. Commit the request/recovery chunk locally.
+- [x] Add failing tests for failed refresh retaining prior content; cancelled/empty/unsupported results saving nothing; save failure showing an unsaved result and error; refund or journal replacement during a request preventing append; source edits during a request invalidating its save; and stale responses from an older request being ignored.
+- [x] Run `ReflectionRequestControllerTests` and confirm intended failures.
+- [x] Implement generation from a captured snapshot. Before saving, recheck request token, entitlement, cancellation, and source state. Save exactly once after validation. A source change requires a fresh user request; never automatically restart.
+- [x] Use a 20-second request deadline as an implementation default, separate from the 10-second quality target. Timeout returns control and ignores late completions even if the provider ignores cancellation. Do not use a structured race that still waits for an uncooperative losing task. Prevent unbounded overlapping provider calls while one is still draining.
+- [x] Keep saved content readable when unsupported, not ready, refunded, or locked. Gate new generation/refresh/cleanup. Preserve ownership and Restore. Add Debug-only fake/live evaluation configuration ahead of the dormant-production return only in Debug builds; Release must still skip model/StoreKit setup while disabled.
+- [x] Run controller, gate, entitlement, run, and `ReflectionReleaseTests` suites. Commit the request/recovery chunk locally.
 
 ## Task 5: Add saved readings and inspectable evidence to the UI
 
@@ -119,12 +119,12 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** App owns one history store and provides it through the environment. `ReflectionHistoryView(kind: SavedReflection.Kind?)` presents dated entries. `SavedReflectionView(readingID: UUID)` resolves its saved record by stable ID. Evidence rows resolve current decisions by UUID and show retained source evidence when missing/changed.
 
-- [ ] Add a small view-policy test suite for visibility with saved history but no current decisions, no entitlement, or no model. Saved content must remain reachable in all three cases. Verify no model call on history access or source changes.
-- [ ] Run that suite and confirm the intended failure. Implement the visibility policy independently of current eligibility and the old `.hidden` generation gate.
-- [ ] Wire Generate/Refresh/Cancel to the controller. Keep the latest saved reading visible while loading or displaying errors. Add dated history and confirmed reading deletion. Use source-change labels and an “At generation” evidence section. A source link opens the current record; a deleted source has an explanatory state.
-- [ ] Expose all saved readings from Insights history, including decision readings whose subject was deleted. Do not add a top-level tab. New eligible decisions flag Patterns for refresh without generating automatically.
+- [x] Add a small view-policy test suite for visibility with saved history but no current decisions, no entitlement, or no model. Saved content must remain reachable in all three cases. Verify no model call on history access or source changes.
+- [x] Run that suite and confirm the intended failure. Implement the visibility policy independently of current eligibility and the old `.hidden` generation gate.
+- [x] Wire Generate/Refresh/Cancel to the controller. Keep the latest saved reading visible while loading or displaying errors. Add dated history and confirmed reading deletion. Use source-change labels and an “At generation” evidence section. A source link opens the current record; a deleted source has an explanatory state.
+- [x] Expose all saved readings from Insights history, including decision readings whose subject was deleted. Do not add a top-level tab. New eligible decisions flag Patterns for refresh without generating automatically.
 - [ ] Inspect fake success, no evidence, empty history, changed/deleted sources, unavailable model, failed save/refresh, and refund on the allowed simulator. Check light/dark, largest Dynamic Type, VoiceOver labels, long localized notes, and layout changes that rebuild a view. Reopening the view must recover saved content without a request.
-- [ ] Run affected suites and a simulator build. Capture the running UI and commit the UI chunk locally.
+- [x] Run affected suites and a simulator build. Capture the running UI and commit the UI chunk locally.
 
 ## Task 6: Back up, restore, and delete the new local data coherently
 
@@ -132,12 +132,12 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** `ReflectionBackup.encode(decisions: [Decision], readings: [SavedReflection]) throws -> Data`; `ReflectionBackup.decode(_ data: Data) throws -> ReflectionBackup`. `JournalDataCoordinator.restore(_ backup: ReflectionBackup) throws`, `importDecisions(_ decisions: [Decision]) throws`, and `deleteAll() throws` coordinate both stores, in-flight invalidation, and reminder reconciliation.
 
-- [ ] Add failing round-trip tests for decisions/readings/evidence, old decision arrays, unknown backup versions, duplicate record IDs, and invalid evidence keys. Permit a saved source snapshot whose live decision was intentionally deleted.
-- [ ] Run `ReflectionBackupTests` and confirm intended failures. Implement a versioned full-backup envelope with ISO 8601 dates and explicit full-backup actions. Preserve existing decision-only export/import behavior and labels.
-- [ ] Add coordinator tests for replacing both stores, decision-only replacement clearing history, deleting all when decisions are empty but history exists, and invalidating in-flight generation. Inject failure before/between writes; after relaunch the journal and reading store must represent the same completed transaction.
-- [ ] Implement coordinated writes with staged files and a small recoverable transaction marker. Drain prior decision writes before replacement, restore both old files on failure, and resolve an interrupted transaction before loading stores on launch. Publish memory state and reschedule/cancel reminders only for a completed transaction. This is local file coordination, not a new database layer.
-- [ ] Extract the Settings Data section and import state into `SettingsDataSection.swift` as a move-only change before adding backup actions. Add clear full-restore/decision-only-replacement confirmations. Warn that decision-only import clears saved readings, even when no current decisions exist. Delete All clears both stores and cancels reminders with confirmation.
-- [ ] Update every single-decision deletion confirmation, including list/context menu paths: retained excerpts remain in saved readings. Single deletion does not remove saved history. Ensure full backup/import and history deletion remain available without ownership/model access.
+- [x] Add failing round-trip tests for decisions/readings/evidence, old decision arrays, unknown backup versions, duplicate record IDs, and invalid evidence keys. Permit a saved source snapshot whose live decision was intentionally deleted.
+- [x] Run `ReflectionBackupTests` and confirm intended failures. Implement a versioned full-backup envelope with ISO 8601 dates and explicit full-backup actions. Preserve existing decision-only export/import behavior and labels.
+- [x] Add coordinator tests for replacing both stores, decision-only replacement clearing history, deleting all when decisions are empty but history exists, and invalidating in-flight generation. Inject failure before/between writes; after relaunch the journal and reading store must represent the same completed transaction.
+- [x] Implement coordinated writes with staged files and a small recoverable transaction marker. Drain prior decision writes before replacement, restore both old files on failure, and resolve an interrupted transaction before loading stores on launch. Publish memory state and reschedule/cancel reminders only for a completed transaction. This is local file coordination, not a new database layer.
+- [x] Extract the Settings Data section and import state into `SettingsDataSection.swift` as a move-only change before adding backup actions. Add clear full-restore/decision-only-replacement confirmations. Warn that decision-only import clears saved readings, even when no current decisions exist. Delete All clears both stores and cancels reminders with confirmation.
+- [x] Update every single-decision deletion confirmation, including list/context menu paths: retained excerpts remain in saved readings. Single deletion does not remove saved history. Ensure full backup/import and history deletion remain available without ownership/model access.
 - [ ] Run backup/coordinator/import/store suites and inspect export, restore, cancelled restore, single deletion, and Delete All on the allowed simulator. Commit the backup/data-lifecycle chunk locally.
 
 ## Task 7: Prove Clean Up Note preserves meaning
@@ -147,8 +147,8 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 **Interfaces:** Keep `ReflectionGenerating.cleanUp(note: String) async throws -> CleanedNote` and explicit Use/Dismiss. Do not save a generated-reading entry for cleanup.
 
 - [ ] Add cases for negation, names, amounts, comparisons, intent, and the exact 2026-10-01 command-like note when available. Pin Use/Dismiss and changed-input behavior: stale suggestions cannot overwrite edited text.
-- [ ] Run affected suites and record the pre-change live cleanup scores.
-- [ ] Tune cleanup instructions and bounded request behavior against those cases. Keep model output separate from original text until acceptance. Do not claim a heuristic proves semantic equivalence. Failed physical-device meaning preservation blocks shipping cleanup.
+- [x] Run affected suites and record the pre-change live cleanup scores.
+- [x] Tune cleanup instructions and bounded request behavior against those cases. Keep model output separate from original text until acceptance. Do not claim a heuristic proves semantic equivalence. Failed physical-device meaning preservation blocks shipping cleanup.
 - [ ] Run the case set and existing suites. Record any remaining failure explicitly; do not silently remove a promised paid row. Commit the accepted cleanup work locally.
 
 ## Task 8: Align the purchase and ownership experience
@@ -157,20 +157,20 @@ Keep `ReflectionGenerating.patterns(digest:)`, `reflect(on:)`, and `cleanUp(note
 
 **Interfaces:** Reuse `ReflectionPurchase` and the existing product ID. The sample is a fixed, scored generated reading with labeled synthetic sources. Reading history has no purchase gate; generation controls do.
 
-- [ ] Add policy tests for ownership/Restore visibility during model loss, generation blocked after refund, saved history still readable/deletable, and no live personal preview before purchase.
-- [ ] Run relevant suites and confirm intended failures.
-- [ ] Replace free Look Back charts and the pre-decision paid row with a scored model-generated sample demonstrating the two core benefits and saved history. State model/device requirements, at least two distinct note-bearing decisions for Patterns, and what is usable with current data. Keep unavailable devices from purchasing a currently unusable generator while leaving Restore and history visible.
+- [x] Add policy tests for ownership/Restore visibility during model loss, generation blocked after refund, saved history still readable/deletable, and no live personal preview before purchase.
+- [x] Run relevant suites and confirm intended failures.
+- [x] Replace free Look Back charts and the pre-decision paid row with a scored model-generated sample demonstrating the two core benefits and saved history. State model/device requirements, at least two distinct note-bearing decisions for Patterns, and what is usable with current data. Keep unavailable devices from purchasing a currently unusable generator while leaving Restore and history visible.
 - [ ] Inspect the purchase sheet with fake/sample output at light/dark and accessibility sizes. Validate local StoreKit purchase/Restore/refund; report physical sandbox evidence separately. Commit the purchase chunk locally.
 
 ## Task 9: Final evaluation and handoff for device acceptance
 
 **Files:** Update `docs/reflection-evaluation.md`, README, CHANGELOG, DECISIONS, TODO, and the plan checkboxes. Add focused regression tests only for failures discovered here.
 
-- [ ] Run the complete unit suite once with the exact allowed simulator destination and a Release build with the same explicit destination. Require `TEST SUCCEEDED` and `BUILD SUCCEEDED`; report skipped live-model checks separately.
+- [x] Run the complete unit suite once with the exact allowed simulator destination and a Release build with the same explicit destination. Require `TEST SUCCEEDED` and `BUILD SUCCEEDED`; report skipped live-model checks separately.
 - [ ] Run all 30–50 cases on supported physical hardware. Score raw/displayed output, evidence, eligible usefulness, abstention, cleanup fidelity, and latency. Include the exact recorded real-note failures before claiming the acceptance gate passed. Keep controlled evaluation output separate from user history.
 - [ ] Check persistence through relaunch, changed/deleted source navigation, backup/restore, interrupted restore recovery, unavailable model/locale, purchase/Restore/refund, and accessibility on physical devices. Record device, OS, and the tested build.
-- [ ] Request a fresh whole-branch code review after tests pass. Address findings within this feature and rerun only affected checks. Update docs with actual evidence and remaining blockers. Commit the final verification record locally.
-- [ ] Stop for Geoff's acceptance of quality evidence. Keep production paid features disabled if the gate has not passed. No release claims follow from local tests alone.
+- [x] Request a fresh whole-branch code review after tests pass. Address findings within this feature and rerun only affected checks. Update docs with actual evidence and remaining blockers. Commit the final verification record locally.
+- [x] Stop for Geoff's acceptance of quality evidence. Keep production paid features disabled if the gate has not passed. No release claims follow from local tests alone.
 
 ## Task 10: Activate only after quality acceptance
 
@@ -186,4 +186,4 @@ Spec coverage: evidence and chronology → Task 2; saved immutable history/fresh
 
 All five Review Focus conditions have a named owning test task. New interfaces are defined above before their consumers. The existing six roadmap phases remain the tracker view; these tasks split their implementation into testable chunks.
 
-Recommend native implementation in this thread with a fresh whole-branch review. The evidence, request, history, and backup tasks share interfaces and benefit from one implementation context. Wait for Geoff's plan review and execution-method selection before creating the feature branch or editing app code.
+Geoff selected native implementation. One fresh whole-branch review was completed and its findings were fixed with regressions. Keep the branch local. The remaining chapter is generated-text quality and real-note/device acceptance; no production activation or release action is authorized by the local test result.

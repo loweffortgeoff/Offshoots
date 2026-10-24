@@ -1,0 +1,443 @@
+{
+  "commit": "2a86e7f",
+  "date": "2026-10-24",
+  "machine": "Geoffrey's Mac mini",
+  "macOS": "27.0.1 (26A434)",
+  "xcode": "27.1 (27A9275)",
+  "device": "iPhone 18 Pro simulator",
+  "deviceOS": "27.0 (24A434)",
+  "model": "SystemLanguageModel.default; available; exact model revision not captured",
+  "sampling": "greedy",
+  "assessment": "Author-rated local diagnostic only. The paid quality gate FAILS. Not physical-device acceptance or a statistically representative estimate.",
+  "summary": {
+    "eligible_reading": {
+      "passed": 6,
+      "total": 17
+    },
+    "abstention": {
+      "passed": 8,
+      "total": 10
+    },
+    "cleanup": {
+      "passed": 5,
+      "total": 5
+    }
+  },
+  "lifecycleCases": 4,
+  "results": [
+    {
+      "id": "price-deadlines",
+      "cohort": "eligible_reading",
+      "verdict": "pass",
+      "reason": "Specific connection/comparison follows the cited notes.",
+      "seconds": 0.9285140037536621,
+      "selected": "SELECTED price-deadlines: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R1.log=A1000000-0000-4000-8000-000000000002\", \"R1.outcome=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\", \"R2.log=A1000000-0000-4000-8000-000000000001\", \"R2.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW price-deadlines: GeneratedConnection(connection: \"Both decisions involved a quick purchase made under time pressure.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 96C9CF97-5B4C-45F6-B731-E4CAA1A6760C, text: \"Both decisions involved a quick purchase made under time pressure.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "cross-category-immediacy",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Infers that neither decision received full consideration; the laptop note does not establish this.",
+      "seconds": 0.9507349729537964,
+      "selected": "SELECTED cross-category-immediacy: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\", \"R2.record=A1000000-0000-4000-8000-000000000001\", \"R2.log=A1000000-0000-4000-8000-000000000001\", \"R2.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW cross-category-immediacy: GeneratedConnection(connection: \"Both decisions involved a quick action taken before full consideration of consequences.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 20CBB229-D664-4DF9-A418-A2D4AAAB8602, text: \"Both decisions involved a quick action taken before full consideration of consequences.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "work-immediate-commitments",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Claims both agreements happened in a meeting without availability checks; only one source states that.",
+      "seconds": 1.325368046760559,
+      "selected": "SELECTED work-immediate-commitments: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000008\", \"R1.log=A1000000-0000-4000-8000-000000000008\", \"R1.outcome=A1000000-0000-4000-8000-000000000008\", \"R2.record=A1000000-0000-4000-8000-000000000006\", \"R2.log=A1000000-0000-4000-8000-000000000006\", \"R2.outcome=A1000000-0000-4000-8000-000000000006\", \"R2.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW work-immediate-commitments: GeneratedConnection(connection: \"Both decisions involved immediate agreement in a meeting without checking availability beforehand.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: AB0E7429-9762-4307-8AF0-50CAD2416276, text: \"Both decisions involved immediate agreement in a meeting without checking availability beforehand.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "dread-across-categories",
+      "cohort": "eligible_reading",
+      "verdict": "pass",
+      "reason": "Specific connection/comparison follows the cited notes.",
+      "seconds": 1.984766960144043,
+      "selected": "SELECTED dread-across-categories: Read 3 of 3 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000013\", \"R1.log=A1000000-0000-4000-8000-000000000013\", \"R1.outcome=A1000000-0000-4000-8000-000000000013\", \"R2.record=A1000000-0000-4000-8000-000000000011\", \"R2.log=A1000000-0000-4000-8000-000000000011\", \"R2.outcome=A1000000-0000-4000-8000-000000000011\", \"R3.record=A1000000-0000-4000-8000-000000000007\", \"R3.log=A1000000-0000-4000-8000-000000000007\", \"R3.outcome=A1000000-0000-4000-8000-000000000007\"]",
+      "raw": [
+        "RAW dread-across-categories: GeneratedConnection(connection: \"Both decisions involved a situation where the writer expressed dread about the upcoming event.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 4509CDBE-2198-4C4C-A374-07C424E7696B, text: \"Both decisions involved a situation where the writer expressed dread about the upcoming event.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "preparation-matched",
+      "cohort": "eligible_reading",
+      "verdict": "pass",
+      "reason": "Specific connection/comparison follows the cited notes.",
+      "seconds": 1.7140599489212036,
+      "selected": "SELECTED preparation-matched: Read 3 of 3 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000017\", \"R1.log=A1000000-0000-4000-8000-000000000017\", \"R2.record=A1000000-0000-4000-8000-000000000016\", \"R2.log=A1000000-0000-4000-8000-000000000016\", \"R2.outcome=A1000000-0000-4000-8000-000000000016\", \"R3.record=A1000000-0000-4000-8000-000000000003\", \"R3.log=A1000000-0000-4000-8000-000000000003\", \"R3.outcome=A1000000-0000-4000-8000-000000000003\"]",
+      "raw": [
+        "RAW preparation-matched: GeneratedConnection(connection: \"Both decisions involved checking information before acting—one by getting quotes and reviews, the other by comparing lenders and reading fine print.\", firstSource: \"R2.log\", secondSource: \"R3.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 18B6A8B3-33B7-4647-8C08-D68E056868B8, text: \"Both decisions involved checking information before acting—one by getting quotes and reviews, the other by comparing lenders and reading fine print.\", evidenceKeys: [\"R2.log\", \"R3.log\"])])"
+    },
+    {
+      "id": "single-three-notes",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.0004220008850097656,
+      "selected": "SELECTED single-three-notes: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [],
+      "displayed": "ERROR single-three-notes seconds 0.0004220008850097656: emptyOutput"
+    },
+    {
+      "id": "empty",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.00012099742889404297,
+      "selected": "SELECTED empty: Read 0 of 0 marked decisions. 0 omitted from this reading. keys []",
+      "raw": [],
+      "displayed": "ERROR empty seconds 0.00012099742889404297: emptyOutput"
+    },
+    {
+      "id": "pending-only",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.00013709068298339844,
+      "selected": "SELECTED pending-only: Read 0 of 0 marked decisions. 0 omitted from this reading. keys []",
+      "raw": [],
+      "displayed": "ERROR pending-only seconds 0.00013709068298339844: emptyOutput"
+    },
+    {
+      "id": "pending-and-one-marked",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.0003249645233154297,
+      "selected": "SELECTED pending-and-one-marked: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000001\", \"R1.log=A1000000-0000-4000-8000-000000000001\", \"R1.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [],
+      "displayed": "ERROR pending-and-one-marked seconds 0.0003249645233154297: emptyOutput"
+    },
+    {
+      "id": "unrelated",
+      "cohort": "abstention",
+      "verdict": "fail",
+      "reason": "Forces a generic connection based on Neutral expectations instead of a meaningful shared circumstance.",
+      "seconds": 2.341591954231262,
+      "selected": "SELECTED unrelated: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000015\", \"R1.log=A1000000-0000-4000-8000-000000000015\", \"R1.outcome=A1000000-0000-4000-8000-000000000015\", \"R2.record=A1000000-0000-4000-8000-000000000012\", \"R2.log=A1000000-0000-4000-8000-000000000012\", \"R2.outcome=A1000000-0000-4000-8000-000000000012\"]",
+      "raw": [
+        "RAW unrelated: GeneratedConnection(connection: \"Both decisions involved a change in routine or interaction that began with an expectation of neutrality.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 45A89EB9-02F4-4E73-BCAD-35F4CD8E2F57, text: \"Both decisions involved a change in routine or interaction that began with an expectation of neutrality.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "titles-only",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.00027692317962646484,
+      "selected": "SELECTED titles-only: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [],
+      "displayed": "ERROR titles-only seconds 0.00027692317962646484: emptyOutput"
+    },
+    {
+      "id": "whitespace-notes",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.00025594234466552734,
+      "selected": "SELECTED whitespace-notes: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [],
+      "displayed": "ERROR whitespace-notes seconds 0.00025594234466552734: emptyOutput"
+    },
+    {
+      "id": "changed-outcome",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Adds an unrecorded state of acceptance after handover.",
+      "seconds": 1.6910220384597778,
+      "selected": "SELECTED changed-outcome: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW changed-outcome: GeneratedDecisionChange(change: \"Initial commitment to leading project without calendar check contrasted with acceptance after handover.\", earlierSource: \"R1.log\", laterSource: \"R1.revisit1\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Great. Your first outcome was Bad. On Aug 7, 2026, you rated it Neutral.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [Offshoots.ReflectionObservation(id: BD0E73D6-170B-46E3-A638-37E4C910A06A, text: \"Initial commitment to leading project without calendar check contrasted with acceptance after handover.\", evidenceKeys: [\"R1.log\", \"R1.revisit1\"])])"
+    },
+    {
+      "id": "first-outcome-only",
+      "cohort": "eligible_reading",
+      "verdict": "pass",
+      "reason": "Specific connection/comparison follows the cited notes.",
+      "seconds": 1.9387379884719849,
+      "selected": "SELECTED first-outcome-only: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000001\", \"R1.log=A1000000-0000-4000-8000-000000000001\", \"R1.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW first-outcome-only: GeneratedDecisionChange(change: \"The initial decision involved a purchase based on a time-sensitive sale, while the later reflection indicates the item was not required at all.\", earlierSource: \"R1.log\", laterSource: \"R1.outcome\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Good. Your first outcome was Bad.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [Offshoots.ReflectionObservation(id: 4D8F7B1F-CFDD-47E4-85B0-0D19E15F1868, text: \"The initial decision involved a purchase based on a time-sensitive sale, while the later reflection indicates the item was not required at all.\", evidenceKeys: [\"R1.log\", \"R1.outcome\"])])"
+    },
+    {
+      "id": "no-written-timeline",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Correct calculated ratings, but no supported generated observation adds value beyond the existing timeline.",
+      "seconds": 1.086164951324463,
+      "selected": "SELECTED no-written-timeline: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW no-written-timeline: GeneratedDecisionChange(change: \"Initial directive to lead launch project shifted to neutral stance.\", earlierSource: \"R1.outcome\", laterSource: \"R1.revisit1\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Great. Your first outcome was Bad. On Aug 7, 2026, you rated it Neutral.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [])"
+    },
+    {
+      "id": "improved-later",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Dependency on handover for resolution is stronger than the recorded account.",
+      "seconds": 1.5386589765548706,
+      "selected": "SELECTED improved-later: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW improved-later: GeneratedDecisionChange(change: \"Initial commitment to leading project without calendar check shifted to dependency on handover for resolution.\", earlierSource: \"R1.log\", laterSource: \"R1.revisit1\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Great. Your first outcome was Bad. On Aug 7, 2026, you rated it Good.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [Offshoots.ReflectionObservation(id: 8FB2E5AF-16D2-4738-B5DC-1A90FC6FE041, text: \"Initial commitment to leading project without calendar check shifted to dependency on handover for resolution.\", evidenceKeys: [\"R1.log\", \"R1.revisit1\"])])"
+    },
+    {
+      "id": "worsened-later",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Moves realization of overload to after handover; the first outcome note recorded overload earlier.",
+      "seconds": 1.2127050161361694,
+      "selected": "SELECTED worsened-later: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW worsened-later: GeneratedDecisionChange(change: \"Initial acceptance without calendar check shifted to post-handover realization of overload.\", earlierSource: \"R1.log\", laterSource: \"R1.revisit1\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Great. Your first outcome was Bad. On Aug 7, 2026, you rated it Very Bad.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [Offshoots.ReflectionObservation(id: 8B01E871-D20B-480C-8B08-A0C8C3E1EB50, text: \"Initial acceptance without calendar check shifted to post-handover realization of overload.\", evidenceKeys: [\"R1.log\", \"R1.revisit1\"])])"
+    },
+    {
+      "id": "out-of-order-revisits",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Calculated chronology is correct; optional generated comparison is absent after validation.",
+      "seconds": 1.6612619161605835,
+      "selected": "SELECTED out-of-order-revisits: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\", \"R1.revisit2=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW out-of-order-revisits: GeneratedDecisionChange(change: \"From \\'Too much at once. Lost two weekends to it.\\' to \\'Neutral: It settled once I handed off the reporting.\\'\", earlierSource: \"outcome\", laterSource: \"revisit1\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Great. Your first outcome was Bad. On Aug 7, 2026, you rated it Neutral. On Sep 7, 2026, you rated it Good.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [])"
+    },
+    {
+      "id": "equal-dates",
+      "cohort": "eligible_reading",
+      "verdict": "pass",
+      "reason": "Specific connection/comparison follows the cited notes.",
+      "seconds": 1.0247429609298706,
+      "selected": "SELECTED equal-dates: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000001\", \"R1.log=A1000000-0000-4000-8000-000000000001\", \"R1.outcome=A1000000-0000-4000-8000-000000000001\", \"R2.record=A1000000-0000-4000-8000-000000000002\", \"R2.log=A1000000-0000-4000-8000-000000000002\", \"R2.outcome=A1000000-0000-4000-8000-000000000002\"]",
+      "raw": [
+        "RAW equal-dates: GeneratedConnection(connection: \"Both decisions involved a quick action taken due to a time-sensitive warning.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: BFEA983E-B1EA-4D62-8E5B-B0765AED2E17, text: \"Both decisions involved a quick action taken due to a time-sensitive warning.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "command-in-note",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.0003139972686767578,
+      "selected": "SELECTED command-in-note: Read 0 of 2 marked decisions. 2 omitted from this reading. keys []",
+      "raw": [],
+      "displayed": "ERROR command-in-note seconds 0.0003139972686767578: emptyOutput"
+    },
+    {
+      "id": "quoted-command",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Conservative control-text exclusion leaves this frozen eligible case without a reading.",
+      "seconds": 0.0002499818801879883,
+      "selected": "SELECTED quoted-command: Read 0 of 1 marked decisions. 1 omitted from this reading. keys []",
+      "raw": [],
+      "displayed": "ERROR quoted-command seconds 0.0002499818801879883: emptyOutput"
+    },
+    {
+      "id": "negation",
+      "cohort": "cleanup",
+      "verdict": "pass",
+      "reason": "Meaning, names, amounts, comparisons, and uncertainty remain intact in this synthetic case.",
+      "seconds": 0.9908709526062012,
+      "selected": "SELECTED negation: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000001\", \"R1.log=A1000000-0000-4000-8000-000000000001\", \"R1.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW negation: GeneratedCleanNote(text: \"I did not need it. I would not buy it again.\")"
+      ],
+      "displayed": "DISPLAY CleanedNote(text: \"I did not need it. I would not buy it again.\")"
+    },
+    {
+      "id": "amount",
+      "cohort": "cleanup",
+      "verdict": "pass",
+      "reason": "Meaning, names, amounts, comparisons, and uncertainty remain intact in this synthetic case.",
+      "seconds": 0.9263569116592407,
+      "selected": "SELECTED amount: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000003\", \"R1.log=A1000000-0000-4000-8000-000000000003\", \"R1.outcome=A1000000-0000-4000-8000-000000000003\"]",
+      "raw": [
+        "RAW amount: GeneratedCleanNote(text: \"Compared 3 lenders. Saved $60 a month, not $600.\")"
+      ],
+      "displayed": "DISPLAY CleanedNote(text: \"Compared 3 lenders. Saved $60 a month, not $600.\")"
+    },
+    {
+      "id": "names",
+      "cohort": "cleanup",
+      "verdict": "pass",
+      "reason": "Meaning, names, amounts, comparisons, and uncertainty remain intact in this synthetic case.",
+      "seconds": 1.1253210306167603,
+      "selected": "SELECTED names: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000013\", \"R1.log=A1000000-0000-4000-8000-000000000013\", \"R1.outcome=A1000000-0000-4000-8000-000000000013\"]",
+      "raw": [
+        "RAW names: GeneratedCleanNote(text: \"Jen said no. Alex agreed to host. I did not ask them to swap.\")"
+      ],
+      "displayed": "DISPLAY CleanedNote(text: \"Jen said no. Alex agreed to host. I did not ask them to swap.\")"
+    },
+    {
+      "id": "comparison",
+      "cohort": "cleanup",
+      "verdict": "pass",
+      "reason": "Meaning, names, amounts, comparisons, and uncertainty remain intact in this synthetic case.",
+      "seconds": 0.8356660604476929,
+      "selected": "SELECTED comparison: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW comparison: GeneratedCleanNote(text: \"Monday was worse than Friday. I would choose Friday again.\")"
+      ],
+      "displayed": "DISPLAY CleanedNote(text: \"Monday was worse than Friday. I would choose Friday again.\")"
+    },
+    {
+      "id": "intent",
+      "cohort": "cleanup",
+      "verdict": "pass",
+      "reason": "Meaning, names, amounts, comparisons, and uncertainty remain intact in this synthetic case.",
+      "seconds": 0.5083580017089844,
+      "selected": "SELECTED intent: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000008\", \"R1.log=A1000000-0000-4000-8000-000000000008\", \"R1.outcome=A1000000-0000-4000-8000-000000000008\"]",
+      "raw": [
+        "RAW intent: GeneratedCleanNote(text: \"I might decline next time. I have not decided.\")"
+      ],
+      "displayed": "DISPLAY CleanedNote(text: \"I might decline next time. I have not decided.\")"
+    },
+    {
+      "id": "spanish",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Responds in English despite Spanish notes.",
+      "seconds": 1.9954040050506592,
+      "selected": "SELECTED spanish: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000013\", \"R1.log=A1000000-0000-4000-8000-000000000013\", \"R1.outcome=A1000000-0000-4000-8000-000000000013\", \"R2.record=A1000000-0000-4000-8000-000000000007\", \"R2.log=A1000000-0000-4000-8000-000000000007\", \"R2.outcome=A1000000-0000-4000-8000-000000000007\"]",
+      "raw": [
+        "RAW spanish: GeneratedConnection(connection: \"Both decisions included a note expressing fear about the interaction.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 8A98E70F-DAD0-43A5-9DB5-36E04662D123, text: \"Both decisions included a note expressing fear about the interaction.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "french",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Responds in English despite French notes.",
+      "seconds": 1.9038910865783691,
+      "selected": "SELECTED french: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R1.log=A1000000-0000-4000-8000-000000000002\", \"R1.outcome=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\", \"R2.log=A1000000-0000-4000-8000-000000000001\", \"R2.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW french: GeneratedConnection(connection: \"Both decisions involved immediate acceptance before a price increase, followed by a negative outcome.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 5C96FBD6-14AD-48E9-A4C6-CEBF91D04A69, text: \"Both decisions involved immediate acceptance before a price increase, followed by a negative outcome.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "long-negation",
+      "cohort": "abstention",
+      "verdict": "pass",
+      "reason": "No generated claim returned for insufficient or excluded evidence.",
+      "seconds": 0.02950906753540039,
+      "selected": "SELECTED long-negation: Read 0 of 2 marked decisions. 2 omitted from this reading. keys []",
+      "raw": [],
+      "displayed": "ERROR long-negation seconds 0.02950906753540039: emptyOutput"
+    },
+    {
+      "id": "long-history",
+      "cohort": "eligible_reading",
+      "verdict": "fail",
+      "reason": "Claims typing a response fast while annoyed is an example of checking information first.",
+      "seconds": 1.6418589353561401,
+      "selected": "SELECTED long-history: Read 6 of 17 marked decisions. 11 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000017\", \"R1.log=A1000000-0000-4000-8000-000000000017\", \"R2.record=A1000000-0000-4000-8000-000000000016\", \"R2.log=A1000000-0000-4000-8000-000000000016\", \"R2.outcome=A1000000-0000-4000-8000-000000000016\", \"R3.record=A1000000-0000-4000-8000-000000000015\", \"R3.log=A1000000-0000-4000-8000-000000000015\", \"R3.outcome=A1000000-0000-4000-8000-000000000015\", \"R4.record=A1000000-0000-4000-8000-000000000014\", \"R4.log=A1000000-0000-4000-8000-000000000014\", \"R4.outcome=A1000000-0000-4000-8000-000000000014\", \"R5.record=A1000000-0000-4000-8000-000000000013\", \"R5.log=A1000000-0000-4000-8000-000000000013\", \"R5.outcome=A1000000-0000-4000-8000-000000000013\", \"R6.record=A1000000-0000-4000-8000-000000000009\", \"R6.log=A1000000-0000-4000-8000-000000000009\", \"R6.outcome=A1000000-0000-4000-8000-000000000009\"]",
+      "raw": [
+        "RAW long-history: GeneratedConnection(connection: \"Both decisions involved checking information before acting—one by getting two quotes and reviews, the other by typing a response fast while still annoyed.\", firstSource: \"R2.log\", secondSource: \"R4.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 5C392798-A441-4C7D-8EF5-01D5C4FC9943, text: \"Both decisions involved checking information before acting—one by getting two quotes and reviews, the other by typing a response fast while still annoyed.\", evidenceKeys: [\"R2.log\", \"R4.log\"])])"
+    },
+    {
+      "id": "one-empty-in-group",
+      "cohort": "eligible_reading",
+      "verdict": "pass",
+      "reason": "Specific connection/comparison follows the cited notes.",
+      "seconds": 1.4586679935455322,
+      "selected": "SELECTED one-empty-in-group: Read 3 of 3 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000004\", \"R2.record=A1000000-0000-4000-8000-000000000002\", \"R2.log=A1000000-0000-4000-8000-000000000002\", \"R2.outcome=A1000000-0000-4000-8000-000000000002\", \"R3.record=A1000000-0000-4000-8000-000000000001\", \"R3.log=A1000000-0000-4000-8000-000000000001\", \"R3.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW one-empty-in-group: GeneratedConnection(connection: \"Both decisions involved immediate action based on a time-sensitive offer.\", firstSource: \"R2.log\", secondSource: \"R3.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 7BE6C355-8107-4563-BCC6-3DFAE99D3176, text: \"Both decisions involved immediate action based on a time-sensitive offer.\", evidenceKeys: [\"R2.log\", \"R3.log\"])])"
+    },
+    {
+      "id": "same-outcome-different-notes",
+      "cohort": "abstention",
+      "verdict": "fail",
+      "reason": "Invents prior planning for the pipe/plumber record; should abstain.",
+      "seconds": 1.954872965812683,
+      "selected": "SELECTED same-outcome-different-notes: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000016\", \"R1.log=A1000000-0000-4000-8000-000000000016\", \"R1.outcome=A1000000-0000-4000-8000-000000000016\", \"R2.record=A1000000-0000-4000-8000-000000000003\", \"R2.log=A1000000-0000-4000-8000-000000000003\", \"R2.outcome=A1000000-0000-4000-8000-000000000003\"]",
+      "raw": [
+        "RAW same-outcome-different-notes: GeneratedConnection(connection: \"Both decisions involved a clear expectation of a positive outcome based on prior planning.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: D52FDD4A-1F49-4763-98A5-E4DA5DBDE22F, text: \"Both decisions involved a clear expectation of a positive outcome based on prior planning.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "changed-source-history",
+      "cohort": "lifecycle",
+      "verdict": "text_only",
+      "reason": "This diagnostic invokes generation only. Actual persistence/refund/restore actions have separate automated evidence.",
+      "seconds": 0.9488840103149414,
+      "selected": "SELECTED changed-source-history: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R1.log=A1000000-0000-4000-8000-000000000002\", \"R1.outcome=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\", \"R2.log=A1000000-0000-4000-8000-000000000001\", \"R2.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW changed-source-history: GeneratedConnection(connection: \"Both decisions involved a quick purchase made under time pressure.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 28818839-F4AD-434F-9B38-39019B896850, text: \"Both decisions involved a quick purchase made under time pressure.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "deleted-source-history",
+      "cohort": "lifecycle",
+      "verdict": "text_only",
+      "reason": "This diagnostic invokes generation only. Actual persistence/refund/restore actions have separate automated evidence.",
+      "seconds": 0.9446160793304443,
+      "selected": "SELECTED deleted-source-history: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R1.log=A1000000-0000-4000-8000-000000000002\", \"R1.outcome=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\", \"R2.log=A1000000-0000-4000-8000-000000000001\", \"R2.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW deleted-source-history: GeneratedConnection(connection: \"Both decisions involved a quick purchase made under time pressure.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 9ECBA08B-E121-4049-B13B-B0BD1A2EE0A5, text: \"Both decisions involved a quick purchase made under time pressure.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    },
+    {
+      "id": "refund-history",
+      "cohort": "lifecycle",
+      "verdict": "text_only",
+      "reason": "This diagnostic invokes generation only. Actual persistence/refund/restore actions have separate automated evidence.",
+      "seconds": 2.12874698638916,
+      "selected": "SELECTED refund-history: Read 1 of 1 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000006\", \"R1.log=A1000000-0000-4000-8000-000000000006\", \"R1.outcome=A1000000-0000-4000-8000-000000000006\", \"R1.revisit1=A1000000-0000-4000-8000-000000000006\"]",
+      "raw": [
+        "RAW refund-history: GeneratedDecisionChange(change: \"Initial commitment to leading project without calendar check contrasted with acceptance after handover.\", earlierSource: \"R1.log\", laterSource: \"R1.revisit1\")"
+      ],
+      "displayed": "DISPLAY DecisionReflectionOutput(summary: \"You predicted Great. Your first outcome was Bad. On Aug 7, 2026, you rated it Neutral.\", repeating: [], nextPrompt: \"\", echo: \"\", observations: [Offshoots.ReflectionObservation(id: 2C8EA88F-DA9D-408A-99AA-FB41AA7BADAD, text: \"Initial commitment to leading project without calendar check contrasted with acceptance after handover.\", evidenceKeys: [\"R1.log\", \"R1.revisit1\"])])"
+    },
+    {
+      "id": "restore-history",
+      "cohort": "lifecycle",
+      "verdict": "text_only",
+      "reason": "This diagnostic invokes generation only. Actual persistence/refund/restore actions have separate automated evidence.",
+      "seconds": 0.9872809648513794,
+      "selected": "SELECTED restore-history: Read 2 of 2 marked decisions. 0 omitted from this reading. keys [\"R1.record=A1000000-0000-4000-8000-000000000002\", \"R1.log=A1000000-0000-4000-8000-000000000002\", \"R1.outcome=A1000000-0000-4000-8000-000000000002\", \"R2.record=A1000000-0000-4000-8000-000000000001\", \"R2.log=A1000000-0000-4000-8000-000000000001\", \"R2.outcome=A1000000-0000-4000-8000-000000000001\"]",
+      "raw": [
+        "RAW restore-history: GeneratedConnection(connection: \"Both decisions involved a quick purchase made under time pressure.\", firstSource: \"R1.log\", secondSource: \"R2.log\")"
+      ],
+      "displayed": "DISPLAY PatternsOutput(lines: [], observations: [Offshoots.ReflectionObservation(id: 69D5710A-C4FC-42F9-90AB-60DC045AFFA7, text: \"Both decisions involved a quick purchase made under time pressure.\", evidenceKeys: [\"R1.log\", \"R2.log\"])])"
+    }
+  ]
+}
