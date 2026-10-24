@@ -6,12 +6,16 @@
 import Foundation
 import FoundationModels
 
-/// The only file that imports FoundationModels. Each call makes a new session with fixed
+/// Each call makes a new session with fixed
 /// instructions, greedy sampling and a token cap. Nothing is kept between calls.
 @available(iOS 26.0, *)
 struct LiveReflectionService: ReflectionGenerating {
     /// Explicit evaluation hook. Production never supplies it.
     var rawOutput: ((String) -> Void)? = nil
+
+    #if DEBUG
+    var evaluationResponder: (any ReflectionModelResponding)? = nil
+    #endif
 
 
     @Generable
@@ -161,6 +165,14 @@ struct LiveReflectionService: ReflectionGenerating {
                 let schemaCount = try await model.tokenCount(for: type.generationSchema)
                 guard instructionCount + promptCount + schemaCount + maximumTokens < model.contextSize else { throw ReflectionError.failed }
             }
+            #if DEBUG
+            if let evaluationResponder {
+                let response = try await evaluationResponder.respond(to: prompt, generating: type,
+                    instructions: instructions, maximumTokens: maximumTokens)
+                rawOutput?(String(describing: response))
+                return response
+            }
+            #endif
             let session = LanguageModelSession(instructions: instructions)
             let options = GenerationOptions(samplingMode: .greedy, maximumResponseTokens: maximumTokens)
             let response = try await session.respond(to: prompt, generating: type, options: options).content

@@ -1,6 +1,6 @@
 # Reflection evaluation
 
-Status: Local engineering checks pass. The generated-text quality gate fails. Physical-device acceptance is not claimed.
+Status: Local engineering checks pass. Both local-model and PCC generated-text quality gates fail. Physical-device acceptance is not claimed.
 
 ## Cases and scoring
 
@@ -51,13 +51,41 @@ Final UI checks used Xcode interactions and screenshots on the allowed simulator
 
 An Apple Account sign-in prompt appeared during the Release smoke check and was cancelled. Its cause was not established; local StoreKit tests had run earlier. Release paid entry points remained absent, and the disabled factory is covered by tests. The earlier transient evidence-link exit did not recur in the final serial check. Simulator files/preferences were restored and the app was terminated.
 
-## Next session — evaluate Private Cloud Compute
+## PCC comparison — 2026-10-24
 
-Resume `dev/paid-reflection`. Geoff reports it pushed; it remains open work, not ready to merge. He is returning to `main` for website work. Keep production paid Reflection disabled.
+Geoff approved the evaluation. `dev/paid-reflection` was fast-forwarded to entitlement commit `fe73b78`. The project now configures `com.apple.developer.private-cloud-compute` for both app configurations. PCC reported available and below quota on iPhone 18 Pro (iOS 27.0, build 24A434), on Geoffrey's Mac mini with macOS 27.0.1 and Xcode 27.1. An actual request returned `Ready`. Account entitlement enablement was reported by Geoff; membership/download eligibility was not independently checked in the developer portal; runtime access is confirmed for this simulator only.
 
-1. Confirm the developer account's PCC access: Small Business Program membership, download eligibility, and the managed entitlement. The project has no PCC entitlement configured. See [Apple's access requirements](https://developer.apple.com/private-cloud-compute/).
-2. Add an evaluation-only PCC backend through the existing generator seam. Start with moderate reasoning and identical frozen inputs/prompts. Compare quality first; expand the current small input budget in a separate pass. See [Apple's PCC integration guidance](https://developer.apple.com/documentation/foundationmodels/adding-server-side-intelligence-with-private-cloud-compute).
-3. Score unsupported claims, useful connections, abstention, language, and latency. Repeat on hardware and add the exact missing real-note cases. A larger model is a candidate, not evidence that the gate passes.
-4. If PCC passes, propose it for Patterns and decision readings. Assess Clean Up Note separately for local use. Preserve free Look Back, saved readings, source evidence, and Restore.
+The [scored PCC record](evaluations/2026-10-24-pcc-moderate.json) preserves all 36 captures, source snapshots, actual prompts/instructions, response caps, raw structured output, displayed output from the same response, timing, availability/quota, errors, author scores, and source hashes. The provider exists only in the test target; its shared-service seam compiles only in Debug. No production backend was selected. Paid Reflection remains disabled.
 
-PCC requires iOS 27+, eligible Apple Intelligence hardware/region, internet, and daily user quota handling. Explain these limits before purchase; a one-time app unlock must not imply unlimited generations. Keep saved readings available offline or at quota exhaustion. Use local generated readings as a fallback only after they pass the same quality gate. Account eligibility and PCC output quality are still unverified.
+Inputs, prompts, schemas, validation, the 1,800-byte snapshot budget, and the local token-count preflight match the frozen baseline. PCC uses moderate reasoning, greedy sampling, and the same 400-token reading/500-token cleanup response caps. The diagnostic also checks cleanup for comparison; this does not approve PCC for cleanup. Expanded context and different prompts were not tested.
+
+- Useful, supported core readings: **7/17**, versus **6/17** locally. Sparse/excluded/filtered eligible cases remain in the frozen denominator. Scores are author judgments; borderline wording and usefulness calls are explained per case.
+- Correct abstention: **8/10**, unchanged. All eight successes came from shared app preflight, not model abstention. Both unrelated inputs still received forced connections.
+- Synthetic cleanup meaning: **5/5**, unchanged. Exact real-note fidelity remains open. Spanish and French readings still returned English.
+- Captured 27 model responses and nine shared preflight rejections. No attempted model request failed or exhausted quota. Two rating/metadata-only generated comparisons were filtered out. Four lifecycle cases remain generation-only, outside text-quality scoring.
+- Simulator response-path latency: median **1.29 s**, nearest-rank p95 **1.84 s**, maximum **3.23 s**; 27/27 attempted requests completed within 10 seconds. Preflight rejections are reported separately. These results do not establish physical-device latency.
+
+The quality gate still fails. A long-history sentence calls paint sample pots “written material.” Other outputs infer unchecked details or unsupported chronology, and the unrelated cases force generic themes. Cleaner Work output and some supported timeline comparisons do not clear the zero-unsupported-facts or 90% useful-output gates. A larger model alone did not solve the problem under these prompts.
+
+### Engineering verification and reproduction
+
+The transport regression failed before the seam was connected and passed after implementation. It checks that an evaluation-provider failure reaches the caller without local fallback. The regular xcresult summary reports 233 passed, eight opt-in tests skipped, zero failures; parameterized leaf counts differ. Model diagnostics and local StoreKit integration were disabled for that regular run. The separate PCC suite passes two capture/access tests; this is capture success, not text-quality acceptance. The Release simulator build passes and contains no PCC provider or responder-seam symbols. Xcode emitted its existing App Intents metadata and OS-build parsing warnings.
+
+Run the full opt-in suite with a fresh absolute capture path. Method-only filtering without parentheses selected zero tests during setup; that empty run was discarded. Require two executed tests and 36 capture rows:
+
+```sh
+TEST_RUNNER_REFLECTION_PCC=1 \
+TEST_RUNNER_REFLECTION_PCC_OUT=/tmp/offshoots-pcc-new-run.jsonl \
+xcodebuild -project Offshoots.xcodeproj -scheme Offshoots \
+  -destination 'platform=iOS Simulator,id=204520A6-E5B5-447D-8A6B-028317014DD8' \
+  -parallel-testing-enabled NO \
+  -only-testing:OffshootsTests/ReflectionPCCOutputTests test
+```
+
+The harness refuses to overwrite an existing capture. Each record is written after the case completes; a process kill during a request can leave that case uncaptured. Keep the result bundle/log and check all 36 IDs before scoring. This comparison retains the on-device token preflight, so it does not establish PCC operation when the on-device model is unavailable.
+
+## Next quality work
+
+Keep production paid Reflection disabled. Review the frozen failures before another prompt/schema experiment. Keep context expansion separate so it does not obscure this comparison. Do not choose a production backend from this result. Physical-device quality/latency, exact missing real-note cases, VoiceOver, and phone purchase/Restore/refund remain open.
+
+PCC requires iOS 27+, eligible Apple Intelligence hardware/region, internet, and daily user quota handling. Explain these limits before purchase; a one-time app unlock must not imply unlimited generations. Keep saved readings available offline or at quota exhaustion. Use local generated readings as a fallback only after they pass the same quality gate. See [Apple's access requirements](https://developer.apple.com/private-cloud-compute/) and [integration guidance](https://developer.apple.com/documentation/foundationmodels/adding-server-side-intelligence-with-private-cloud-compute).

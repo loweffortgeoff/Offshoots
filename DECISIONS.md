@@ -398,3 +398,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-24 (PCC evaluation next; Reflection branch remains open)
 **Direction:** Evaluate Private Cloud Compute for Patterns and decision readings before selecting the production backend. Confirm entitlement access, compare identical frozen inputs with moderate reasoning, then evaluate expanded context separately. Preserve the saved-history implementation and quality gate.
 **Handoff:** Geoff reports the branch pushed and is returning to `main` for website work. `dev/paid-reflection` remains open and unmerged. PCC adoption is conditional on quality, eligibility, network/quota handling, and purchase honesty; implementation of that evaluation has not started.
+
+## 2026-10-24 (PCC access works; quality remains blocked)
+**Decision:** Keep PCC in the test target and production Reflection disabled. The frozen moderate-reasoning comparison passes 7/17 useful core readings, 8/10 abstentions, and 5/5 synthetic cleanup cases; unsupported claims and English output for Spanish/French notes remain.
+**Why:** Runtime access and fast simulator responses establish feasibility, not paid usefulness. Preserve this comparison before changing prompts or context; physical-device and exact real-note acceptance remain open.
