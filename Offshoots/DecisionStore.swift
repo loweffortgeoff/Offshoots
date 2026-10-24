@@ -13,12 +13,13 @@ internal import SwiftUI
 final class DecisionStore {
     private(set) var decisions: [Decision] = []
     private(set) var revision = UUID()
+    private(set) var recoveryError: String?
 
     /// The clock that review readiness is measured against. Stored, so views
     /// that depend on it redraw when `refreshReviewState()` moves it forward
     private(set) var today = Date()
 
-    private let saveURL: URL
+    let saveURL: URL
     private let queue = DispatchQueue(label: "DecisionStoreQueue", qos: .background)
 
     init(saveURL: URL = URL.documentsDirectory.appendingPathComponent("decisions.json")) {
@@ -246,6 +247,7 @@ final class DecisionStore {
     }
 
     private func save() {
+        guard recoveryError == nil else { return }
         revision = UUID()
         let currentDecisions = decisions
 
@@ -257,6 +259,19 @@ final class DecisionStore {
                 print("[DecisionStore] ❌ Failed to save decisions:", error)
             }
         }
+    }
+
+    func blockAfterRestoreFailure() {
+        recoveryError = "The interrupted restore needs recovery. Restart Offshoots after restoring storage or file access. Original data remains in the recovery marker."
+        revision = UUID()
+    }
+
+    /// Coordinated replacement has already committed both files before this publishes UI state.
+    func publishRestored(_ imported: [Decision]) {
+        ReminderManager.shared.cancelAllReminders()
+        decisions = imported
+        revision = UUID()
+        ReminderManager.shared.rescheduleAll(for: imported)
     }
 
     // MARK: - File format

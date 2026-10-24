@@ -15,11 +15,19 @@ struct OffshootsApp: App {
     @AppStorage(AppTheme.storageKey) private var theme: AppTheme = .system
     /// Owned here, not in ContentView: App.init runs once, while ContentView is
     /// rebuilt when the splash ends and would decode the file again
-    @State private var store = DecisionStore()
+    @State private var store: DecisionStore
     @State private var reflection = ReflectionCenter.make()
+    @State private var reflectionHistory: ReflectionHistoryStore
+    @State private var startupError: String?
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
+        var recoveryError: String?
+        do { try JournalDataCoordinator.recover(directory: .documentsDirectory) }
+        catch { recoveryError = "The interrupted restore could not be recovered. Free storage or restore file access, then restart Offshoots. Your original files have been retained." }
+        _store = State(initialValue: DecisionStore())
+        _reflectionHistory = State(initialValue: ReflectionHistoryStore())
+        _startupError = State(initialValue: recoveryError)
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
     }
 
@@ -27,10 +35,15 @@ struct OffshootsApp: App {
         WindowGroup {
             ZStack {
                 // Main App Content
+                if let startupError = startupError ?? store.recoveryError {
+                    ContentUnavailableView("Restore needs attention", systemImage: "externaldrive.badge.exclamationmark", description: Text(startupError))
+                } else {
                 ContentView()
                     .environment(store)
                     .environment(reflection)
-                    .opacity(showSplash ? 0 : 1) // Fade in when splash is gone
+                    .environment(reflectionHistory)
+                    .opacity(showSplash ? 0 : 1)
+                } // Fade in when splash is gone
                 
                 // Splash Screen Overlay
                 if showSplash {

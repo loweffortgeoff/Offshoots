@@ -43,7 +43,7 @@ struct DecisionsListView: View {
             }
         } message: {
             if let decision = decisionToDelete {
-                Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone.")
+                Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone. Excerpts already saved in reflections will remain until you delete those readings.")
             }
         }
     }

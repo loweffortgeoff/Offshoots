@@ -11,6 +11,7 @@ internal import Charts
 struct AnalyticsView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(ReflectionCenter.self) private var reflection
+    @Environment(ReflectionHistoryStore.self) private var history
 
     var body: some View {
         TwoPaneReader { arrangement in
@@ -18,7 +19,10 @@ struct AnalyticsView: View {
                 // With no decisions the empty state stays in the first pane, clear of the fold
                 if store.decisions.isEmpty {
                     WidePanes(arrangement: arrangement) {
-                        pane(title: "Insights", inline: arrangement == .stacked) { EmptyAnalyticsView() }
+                        pane(title: "Insights", inline: arrangement == .stacked) {
+                            EmptyAnalyticsView()
+                            if !history.readings.isEmpty { ReflectionReadingCard(kind: .patterns) }
+                        }
                     } secondary: {
                         Color.offshootBackground
                             .ignoresSafeArea()
@@ -34,6 +38,7 @@ struct AnalyticsView: View {
                 pane(title: "Insights") {
                     if store.decisions.isEmpty {
                         EmptyAnalyticsView()
+                        if !history.readings.isEmpty { ReflectionReadingCard(kind: .patterns) }
                     } else {
                         whatYouDecideCards
                         howItTurnedOutCards
@@ -76,7 +81,7 @@ struct AnalyticsView: View {
 
         // Patterns (Reflection unlock, on-device text). Unsupported devices never see it.
         // Removing the card also drops its result, so a stale one cannot come back.
-        if ReflectionEligibility.canShowPatterns(for: store.decisions), reflection.gate != .hidden {
+        if ReflectionVisibility.showEntry(gate: reflection.gate, savedCount: history.readings.count) {
             PatternsCard(decisions: store.decisions, hasNotes: ReflectionEligibility.hasNotesForPatterns(store.decisions))
         }
     }

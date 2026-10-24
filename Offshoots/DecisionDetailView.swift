@@ -10,6 +10,7 @@ internal import SwiftUI
 struct DecisionDetailView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(ReflectionCenter.self) private var reflection
+    @Environment(ReflectionHistoryStore.self) private var history
     @Environment(\.dismiss) private var dismiss
     @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 56
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -277,7 +278,7 @@ struct DecisionDetailView: View {
 
                         // Reflection (paid unlock, on-device text). Unsupported devices never see it.
                         // Removing the card also drops its result, so a stale one cannot come back.
-                        if ReflectionEligibility.canReflect(on: decision), reflection.gate != .hidden {
+                        if ReflectionVisibility.showEntry(gate: reflection.gate, savedCount: history.readings.filter { $0.kind == .decision(decision.id) }.count) {
                             DecisionReflectionCard(
                                 decision: decision,
                                 sameCategory: store.decisions.filter { $0.category == decision.category && $0.id != decision.id }
@@ -397,7 +398,7 @@ struct DecisionDetailView: View {
                 dismiss()
             }
         } message: {
-            Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone.")
+            Text("Are you sure you want to delete \"\(decision.title)\"? This action cannot be undone. Excerpts already saved in reflections will remain until you delete those readings.")
         }
     }
 }
