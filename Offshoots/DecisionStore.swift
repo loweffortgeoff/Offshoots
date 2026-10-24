@@ -12,6 +12,7 @@ internal import SwiftUI
 @Observable
 final class DecisionStore {
     private(set) var decisions: [Decision] = []
+    private(set) var revision = UUID()
 
     /// The clock that review readiness is measured against. Stored, so views
     /// that depend on it redraw when `refreshReviewState()` moves it forward
@@ -245,6 +246,7 @@ final class DecisionStore {
     }
 
     private func save() {
+        revision = UUID()
         let currentDecisions = decisions
 
         queue.async { [saveURL] in

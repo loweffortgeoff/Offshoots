@@ -3,10 +3,14 @@ import Testing
 
 @MainActor
 struct ReflectionReleaseTests {
+    @Test func debugFakeSupportsLocalEvaluation() {
+        #if DEBUG
+        #expect(ReflectionCenter.make(arguments: ["-ReflectionFake"]).canGenerate)
+        #endif
+    }
     /// Catches a release factory that creates StoreKit or exposes the paid package in 2.0.
-    @Test(arguments: [[], ["-ReflectionFake"], ["-ReflectionUnlockOnly"]])
-    func productionLaunchHasNoPaidEntryPoint(arguments: [String]) {
-        let center = ReflectionCenter.make(arguments: arguments)
+    @Test func productionLaunchHasNoPaidEntryPoint() {
+        let center = ReflectionCenter.make(arguments: [])
         #expect(center.gate == .hidden)
         #expect(center.purchase == nil)
         #expect(center.entitlement == nil)

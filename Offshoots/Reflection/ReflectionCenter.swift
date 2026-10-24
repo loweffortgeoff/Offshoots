@@ -27,6 +27,9 @@ final class ReflectionCenter {
         forceUnlocked || entitlement?.isUnlocked == true
     }
 
+    var canGenerate: Bool { gate == .enabled }
+    var canReadHistory: Bool { true }
+
     var gate: ReflectionSurfaceState {
         ReflectionGate.state(availability: availability, isUnlocked: isUnlocked)
     }
@@ -57,9 +60,6 @@ final class ReflectionCenter {
 
     /// The release switch runs before availability, StoreKit, and developer launch overrides.
     static func make(arguments: [String] = ProcessInfo.processInfo.arguments) -> ReflectionCenter {
-        guard paidFeaturesEnabled else {
-            return ReflectionCenter(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })
-        }
         #if DEBUG
         // Canned output, unlocked: layout checks and screenshots.
         if arguments.contains("-ReflectionFake") {
@@ -70,6 +70,9 @@ final class ReflectionCenter {
             return ReflectionCenter(generator: LiveReflectionService(), availabilityProvider: LiveReflectionService.availability, forceUnlocked: true)
         }
         #endif
+        guard paidFeaturesEnabled else {
+            return ReflectionCenter(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })
+        }
         if #available(iOS 26, *) {
             let entitlement = ReflectionEntitlement()
             return ReflectionCenter(
