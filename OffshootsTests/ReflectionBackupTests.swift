@@ -5,7 +5,8 @@ import Testing
 @MainActor
 struct ReflectionBackupTests {
     @Test func roundTripAndLegacyRemainSeparate() throws {
-        let d = Make.decision(actual: .good, notes: "A note")
+        var d = Make.decision(actual: .good, notes: "A note")
+        d.hindsight = .differentChoice
         let reading = SavedReflection(kind: .decision(d.id), summary: "Good first outcome", observations: [], snapshot: .capture(decisions: [d], subjectID: d.id))
         let bytes = try ReflectionBackup.encode(decisions: [d], readings: [reading])
         let result = try ReflectionBackup.decode(bytes)

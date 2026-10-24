@@ -111,12 +111,14 @@ final class DecisionStore {
         id: UUID,
         actual: DecisionOutcome,
         reflection: String? = nil,
-        secondaryFollowUpDate: Date? = nil
+        secondaryFollowUpDate: Date? = nil,
+        hindsight: HindsightAnswer? = nil
     ) {
         guard let index = decisions.firstIndex(where: { $0.id == id }) else { return }
 
         ReminderManager.shared.cancelReminder(for: decisions[index])
 
+        decisions[index].hindsight = hindsight
         decisions[index].actual = actual
         decisions[index].resolvedAt = Date()
         if let reflection, !reflection.isEmpty {
@@ -137,7 +139,8 @@ final class DecisionStore {
         id: UUID,
         outcome: DecisionOutcome,
         note: String? = nil,
-        nextRevisitDate: Date? = nil
+        nextRevisitDate: Date? = nil,
+        hindsight: HindsightAnswer? = nil
     ) {
         guard let index = decisions.firstIndex(where: { $0.id == id }),
               decisions[index].actual != nil else { return }
@@ -146,7 +149,7 @@ final class DecisionStore {
 
         let trimmedNote = note?.trimmingCharacters(in: .whitespacesAndNewlines)
         decisions[index].revisits.append(
-            Revisit(outcome: outcome, note: trimmedNote?.isEmpty == false ? trimmedNote : nil)
+            Revisit(outcome: outcome, note: trimmedNote?.isEmpty == false ? trimmedNote : nil, hindsight: hindsight)
         )
         decisions[index].secondaryFollowUpDate = nextRevisitDate
 

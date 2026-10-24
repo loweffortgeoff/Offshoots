@@ -96,12 +96,14 @@ struct Revisit: Identifiable, Codable, Equatable, Hashable {
     var date: Date
     var outcome: DecisionOutcome
     var note: String?
+    var hindsight: HindsightAnswer?
 
-    init(id: UUID = UUID(), date: Date = Date(), outcome: DecisionOutcome, note: String? = nil) {
+    init(id: UUID = UUID(), date: Date = Date(), outcome: DecisionOutcome, note: String? = nil, hindsight: HindsightAnswer? = nil) {
         self.id = id
         self.date = date
         self.outcome = outcome
         self.note = note
+        self.hindsight = hindsight
     }
 }
 
@@ -115,6 +117,7 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
     var actual: DecisionOutcome?
     var notes: String?
     var reflection: String?
+    var hindsight: HindsightAnswer?
     var createdAt: Date
     var resolvedAt: Date?
     var followUpDate: Date
@@ -136,7 +139,8 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         resolvedAt: Date? = nil,
         followUpDate: Date,
         secondaryFollowUpDate: Date? = nil,
-        revisits: [Revisit] = []
+        revisits: [Revisit] = [],
+        hindsight: HindsightAnswer? = nil
     ) {
         self.id = id
         self.title = title
@@ -151,12 +155,13 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         self.followUpDate = followUpDate
         self.secondaryFollowUpDate = secondaryFollowUpDate
         self.revisits = revisits
+        self.hindsight = hindsight
     }
 
     // Custom decoding so files saved before `revisits` existed still load
     private enum CodingKeys: String, CodingKey {
         case id, title, category, stakes, expected, actual, notes, reflection
-        case createdAt, resolvedAt, followUpDate, secondaryFollowUpDate, revisits
+        case createdAt, resolvedAt, followUpDate, secondaryFollowUpDate, revisits, hindsight
     }
 
     init(from decoder: Decoder) throws {
@@ -169,6 +174,7 @@ struct Decision: Identifiable, Codable, Equatable, Hashable {
         actual = try container.decodeIfPresent(DecisionOutcome.self, forKey: .actual)
         notes = try container.decodeIfPresent(String.self, forKey: .notes)
         reflection = try container.decodeIfPresent(String.self, forKey: .reflection)
+        hindsight = try container.decodeIfPresent(HindsightAnswer.self, forKey: .hindsight)
         createdAt = try container.decode(Date.self, forKey: .createdAt)
         resolvedAt = try container.decodeIfPresent(Date.self, forKey: .resolvedAt)
         followUpDate = try container.decode(Date.self, forKey: .followUpDate)
