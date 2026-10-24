@@ -20,10 +20,14 @@
 - [ ] **Explore the following for future release** *as a full IOS 27 feature parity upgrade cycle*
     - [ ] App Intents
     - [ ] Siri/Spotlight Integrations (iOS 18.6+)
-    - Foundation Models work is consolidated into the November 2.1.0 paid Reflection cycle below.
+    - Foundation Models work is retained in the paused generated-Reflection cycle below.
 
-## 2.1.0 — Paid Reflection, November 2026
-**Cycle story:** Find supported connections across categories and show how decisions aged. Generate on request and save dated readings with their evidence. November remains the target; free Look Back stays free. The [design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md) and native execution are approved. Local implementation follows the [plan](docs/superpowers/plans/2026-10-24-paid-reflection.md); [quality acceptance](docs/reflection-evaluation.md) remains open.
+## 2.1.0 — Paid feature direction under review
+- [ ] **Review the Hindsight design.** Direction approved: optional structured answers, existing notes/timeline, and calculated comparisons. Review the [draft](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), especially paid access and ownership rules, before an implementation plan.
+**Current direction:** Hindsight is the proposed paid foundation. Generated Reflection is outside its purchase promise; its existing work and six tasks below are retained on hold. November was the prior target and is not a new delivery commitment. Things remains unchanged pending full-design approval.
+
+### Prior generated-Reflection cycle — on hold
+**Prior cycle story:** Find supported connections across categories and show how decisions aged. Generate on request and save dated readings with their evidence. November was its target; free Look Back stays free. The [design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md) and native execution are approved. Local implementation follows the [plan](docs/superpowers/plans/2026-10-24-paid-reflection.md); [quality acceptance](docs/reflection-evaluation.md) remains open.
 - [ ] **1. Define and score Reflection acceptance cases.** Build 30–50 cases from real/sparse notes, changed outcomes, unrelated decisions, long histories, supported languages, and command-like text. Include Groceries (Good called Neutral), Ghost PTO (Bad → Good called a match), More Ghost PTO (Monday comparison changed), and input copying.
 - [ ] **2. Make generated observations follow the evidence.** Saved readings, links, and request handling are implemented. Fix unsupported meeting/planning and mental-state claims, forced connections, and English responses to Spanish/French notes in the frozen [scored cases](docs/evaluations/2026-10-24-reflection.json); require the quality gate before activation.
 - [ ] **3. Preserve meaning in Clean Up Note.** Check negation, amounts, names, comparisons, and intent on physical devices, including the 2026-10-01 command-like note. Keep cleanup as a bonus.
@@ -32,7 +36,7 @@
 - [ ] **6. Validate and prepare the 2.1.0 release.** After steps 2–5, run physical-device quality and purchase/Restore/refund checks. Require zero factual reversals, meaning changes, or prompt leaks and ≥90% useful eligible outputs; target 95% within 10 seconds. After Geoff accepts the quality evidence, prepare IAP metadata/review screenshot, product attachment, listing, and screenshots; preserve separate submission/release approval.
 **Status:** This PCC session passes 233 regular tests (eight opt-in skips), two PCC capture/access tests, and the Release build. Prior local StoreKit and UI evidence remains recorded. Quality fails at 6/17 local and 7/17 PCC core cases; real-note/device acceptance, phone purchase flow, and activation remain open.
 **PCC result:** Runtime access works on the allowed simulator. Moderate reasoning yields 7/17 useful core readings, 8/10 abstentions, and 5/5 synthetic cleanup cases. Quality still fails; keep production disabled. Review the [frozen PCC failures](docs/evaluations/2026-10-24-pcc-moderate.json) before another prompt/schema experiment; test larger context separately.
-**Outside this cycle:** Contrition feelings (idea only), App Intents, Siri/Spotlight, widgets, cloud sync/backup services, and scheduled monthly reviews. Local export/import of saved readings is part of the approved persistence scope.
+**Outside this draft:** A separate feelings scale, App Intents, Siri/Spotlight, widgets, cloud sync/backup services, and scheduled monthly reviews. The Hindsight proposal adapts the Contrition concept; it does not port that app. Local export/import of saved readings is part of the approved persistence scope.
 **Things:** Offshoots → Feature Work holds these six tasks. Bug Fixes holds the Optimism fix; Testing - Offshoots holds the remaining Duo checks. The Offshoots area holds the separate 2.0 release task. Dates remain unset.
 
 ## Done

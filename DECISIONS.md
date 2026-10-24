@@ -402,3 +402,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-24 (PCC access works; quality remains blocked)
 **Decision:** Keep PCC in the test target and production Reflection disabled. The frozen moderate-reasoning comparison passes 7/17 useful core readings, 8/10 abstentions, and 5/5 synthetic cleanup cases; unsupported claims and English output for Spanish/French notes remain.
 **Why:** Runtime access and fast simulator responses establish feasibility, not paid usefulness. Preserve this comparison before changing prompts or context; physical-device and exact real-note acceptance remain open.
+
+## 2026-10-24 (Hindsight direction approved; full design pending)
+**Direction:** Geoff approved recording what someone would repeat or change: Same approach, Different approach, Different choice, or Not sure, with optional writing at existing reviews/revisits. Keep existing free features intact and generated Reflection outside the proposed paid promise.
+**Boundary:** The [Hindsight design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md) is a draft for review. Paid access, entitlement reuse, data/review rules, and implementation await full-design approval; no app code or external tracker changed.
