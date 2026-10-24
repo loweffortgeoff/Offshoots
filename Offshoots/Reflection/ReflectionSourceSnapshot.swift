@@ -8,8 +8,9 @@ struct ReflectionSourceSnapshot: Codable, Equatable {
     let omittedCount: Int
 
     static func capture(decisions: [Decision], subjectID: UUID?) -> Self {
+        let normalized = (try? DecisionStore.decode(DecisionStore.encode(decisions))) ?? decisions
         var seen = Set<UUID>()
-        let eligible = decisions.filter { $0.actual != nil && seen.insert($0.id).inserted }
+        let eligible = normalized.filter { $0.actual != nil && seen.insert($0.id).inserted }
             .sorted { $0.createdAt == $1.createdAt ? $0.id.uuidString < $1.id.uuidString : $0.createdAt > $1.createdAt }
         let ordered = eligible.sorted { a,b in
             if a.id == subjectID { return b.id != subjectID }
