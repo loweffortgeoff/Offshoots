@@ -22,6 +22,7 @@ struct AnalyticsView: View {
                         pane(title: "Insights", inline: arrangement == .stacked) {
                             EmptyAnalyticsView()
                             if !history.readings.isEmpty { ReflectionReadingCard(kind: .patterns) }
+                        HindsightInsightsSection(entries: [])
                         }
                     } secondary: {
                         Color.offshootBackground
@@ -39,6 +40,7 @@ struct AnalyticsView: View {
                     if store.decisions.isEmpty {
                         EmptyAnalyticsView()
                         if !history.readings.isEmpty { ReflectionReadingCard(kind: .patterns) }
+                        HindsightInsightsSection(entries: [])
                     } else {
                         whatYouDecideCards
                         howItTurnedOutCards
@@ -83,6 +85,7 @@ struct AnalyticsView: View {
         if ReflectionVisibility.showEntry(gate: reflection.gate, savedCount: history.readings.count) {
             PatternsCard()
         }
+        HindsightInsightsSection(entries: HindsightSummary.entries(from: store.decisions))
     }
 
     /// One scrolling column of cards under a title. Each pane on a Duo with two panes has its
@@ -260,4 +263,5 @@ struct DecisionTimelineCard: View {
     AnalyticsView()
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(HindsightAccess.make())
 }   

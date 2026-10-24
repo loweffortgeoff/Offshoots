@@ -43,6 +43,7 @@ struct SettingsView: View {
                 .listRowBackground(Color.offshootCardBackground)
 
                 ReflectionSettingsSection()
+                HindsightSettingsSection()
 
                 // MARK: - About Section
                 AboutSectionView(currentAppName: "Offshoots")
@@ -63,4 +64,5 @@ struct SettingsView: View {
     SettingsView()
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(HindsightAccess.make())
 }
