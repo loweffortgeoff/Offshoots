@@ -61,6 +61,8 @@ enum ReflectionPromptBuilder {
     Keep the meaning, the first-person voice and the same language. \
     Add nothing the note does not say or imply. \
     Never tell the user what to choose. Add no advice, labels or new facts. \
+    Preserve every negation, name, amount, comparison, uncertainty and intention. \
+    When a sentence is ambiguous, keep its wording rather than guess. \
     Keep about the same length. \
     Reply with the rewritten note only.
     """

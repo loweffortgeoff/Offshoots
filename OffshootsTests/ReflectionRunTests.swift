@@ -4,6 +4,15 @@ import Testing
 @MainActor
 struct ReflectionRunTests {
 
+    @Test func boundedWaitEndsWithoutApplyingLateCleanup() async {
+        let run = ReflectionRun<String>(timeout: .milliseconds(1))
+        await run.start {
+            try await Task.sleep(for: .seconds(2))
+            return "Late replacement"
+        }.value
+        if case .error = run.state {} else { Issue.record("Expected a visible timeout error") }
+    }
+
     @Test func startsIdle() {
         #expect(ReflectionRun<String>().state == .idle)
     }
