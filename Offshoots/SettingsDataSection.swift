@@ -13,6 +13,9 @@ struct SettingsDataSection: View {
 
     var body: some View {
         Section {
+            LabeledContent("Total Decisions", value: "\(store.decisions.count)")
+            LabeledContent("Completed", value: "\(store.completedDecisions.count)")
+            LabeledContent("Pending", value: "\(store.pendingDecisions.count)")
             ShareLink(item: DecisionsExport(decisions: store.decisions), preview: SharePreview("Offshoots Decisions")) {
                 Label("Export Decisions", systemImage: "square.and.arrow.up")
             }

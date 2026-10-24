@@ -1,0 +1,33 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "5.99",
+      "familyShareable" : false,
+      "internalID" : "6F5C2D7A-0000-4000-8000-000000000001",
+      "localizations" : [
+        {
+          "description" : "Patterns across your decisions, a reflection on each decision, and clearer notes. Runs on your device.",
+          "displayName" : "Reflection",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.geoffrey.silva.Offshoots.reflection",
+      "referenceName" : "Reflection",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 4,
+    "minor" : 0
+  }
+}

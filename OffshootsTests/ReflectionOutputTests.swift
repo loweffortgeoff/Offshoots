@@ -3,6 +3,16 @@ import Testing
 
 @MainActor
 struct ReflectionOutputTests {
+    @Test func invalidOptionalModelEvidenceKeepsTheCalculatedTimeline() throws {
+        guard #available(iOS 26, *) else { return }
+        let d = Make.decision(actual: .bad, notes: "Original", reflection: "Later")
+        let snapshot = ReflectionSourceSnapshot.capture(decisions: [d], subjectID: d.id)
+        let generated = LiveReflectionService.GeneratedDecisionChange(change: "Unsupported", earlierSource: "missing", laterSource: "missing")
+        let output = LiveReflectionService.decisionOutput(generated, subject: d, snapshot: snapshot)
+        #expect(output.summary == DecisionReflectionOutput.timeline(d))
+        #expect(output.observations.isEmpty)
+    }
+
 
     private func line(_ label: String, _ text: String) -> ReflectionGroupLine {
         ReflectionGroupLine(label: label, text: text)

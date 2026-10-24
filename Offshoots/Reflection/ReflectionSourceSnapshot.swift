@@ -33,16 +33,16 @@ struct ReflectionSourceSnapshot: Codable, Equatable {
     var evidence: [ReflectionEvidence] {
         decisions.enumerated().flatMap { index,d -> [ReflectionEvidence] in
             let prefix = "R\(index + 1)"
-            func item(_ suffix: String, _ stage: ReflectionEvidence.Stage, _ date: Date, _ text: String?, revisitID: UUID? = nil) -> ReflectionEvidence? {
+            func item(_ suffix: String, _ stage: ReflectionEvidence.Stage, _ date: Date, _ text: String?, revisitID: UUID? = nil, containsWrittenNote: Bool = true) -> ReflectionEvidence? {
                 guard let text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return nil }
-                return ReflectionEvidence(key: prefix + "." + suffix, decisionID: d.id, stage: stage, revisitID: revisitID, date: date, text: text)
+                return ReflectionEvidence(key: prefix + "." + suffix, decisionID: d.id, stage: stage, revisitID: revisitID, date: date, text: text, containsWrittenNote: containsWrittenNote)
             }
             var values = [item("record", .record, d.createdAt,
-                "\(d.title) | \(d.category.rawValue) | expected \(d.expected.shortLabel), first \(d.actual?.shortLabel ?? "unmarked") on \(d.resolvedDate?.ISO8601Format() ?? "unknown date")"),
+                "\(d.title) | \(d.category.rawValue) | expected \(d.expected.shortLabel), first \(d.actual?.shortLabel ?? "unmarked") on \(d.resolvedDate?.ISO8601Format() ?? "unknown date")", containsWrittenNote: false),
                 item("log", .log, d.createdAt, d.notes),
                 item("outcome", .outcome, d.resolvedDate ?? d.createdAt, d.reflection)].compactMap { $0 }
-            values += d.revisits.sorted { $0.date == $1.date ? $0.id.uuidString < $1.id.uuidString : $0.date < $1.date }.compactMap {
-                item($0.id.uuidString, .revisit, $0.date, "\($0.outcome.shortLabel): \($0.note ?? "")", revisitID: $0.id)
+            values += d.revisits.sorted { $0.date == $1.date ? $0.id.uuidString < $1.id.uuidString : $0.date < $1.date }.enumerated().compactMap { index,revisit in
+                item("revisit\(index + 1)", .revisit, revisit.date, "\(revisit.outcome.shortLabel): \(revisit.note ?? "")", revisitID: revisit.id, containsWrittenNote: revisit.note?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false)
             }
             return values
         }

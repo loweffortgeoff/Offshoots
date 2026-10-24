@@ -25,10 +25,12 @@ enum ReflectionError: Error, Equatable {
     case emptyOutput
     case insufficientEvidence
     case instructionLikeInput
+    case providerBusy
     case failed
 
     var userMessage: String {
         switch self {
+        case .providerBusy: "Another reflection is still finishing. Wait a moment before trying again."
         case .instructionLikeInput: "Reflection could not safely read this note. Your original note is unchanged."
         case .insufficientEvidence: "These records do not support a clear connection yet. Add notes or return after more outcomes."
         case .emptyOutput: "Nothing useful came back. Try again."

@@ -6,6 +6,7 @@ struct ReflectionObservation: Codable, Equatable, Identifiable {
     let evidenceKeys: [String]
 
     func validated(against snapshot: ReflectionSourceSnapshot, minimumDecisions: Int) throws -> Self {
+        try snapshot.validate()
         let known = Dictionary(uniqueKeysWithValues: snapshot.evidence.map { ($0.key, $0) })
         guard !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               !evidenceKeys.isEmpty, Set(evidenceKeys).count == evidenceKeys.count,
@@ -14,7 +15,7 @@ struct ReflectionObservation: Codable, Equatable, Identifiable {
         else { throw ReflectionError.emptyOutput }
         // Recurring observations need written evidence from every supporting decision.
         if minimumDecisions > 1 {
-            let written = Set(evidenceKeys.compactMap { known[$0] }.filter { $0.stage != .record }.map(\.decisionID))
+            let written = Set(evidenceKeys.compactMap { known[$0] }.filter { $0.containsWrittenNote }.map(\.decisionID))
             guard written.count >= minimumDecisions else { throw ReflectionError.emptyOutput }
         }
         return self
@@ -22,7 +23,7 @@ struct ReflectionObservation: Codable, Equatable, Identifiable {
     func validatedChange(against snapshot: ReflectionSourceSnapshot, subjectID: UUID) throws -> Self {
         let value = try validated(against: snapshot, minimumDecisions: 1)
         let ordered = evidenceKeys.compactMap { key in snapshot.evidence.first { $0.key == key } }
-        guard ordered.count == 2, ordered.allSatisfy({ $0.decisionID == subjectID }),
+        guard ordered.count == 2, ordered.allSatisfy({ $0.decisionID == subjectID && $0.containsWrittenNote }),
               ordered[0].date <= ordered[1].date else { throw ReflectionError.emptyOutput }
         return value
     }

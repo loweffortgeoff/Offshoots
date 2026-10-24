@@ -8,5 +8,6 @@ struct ReflectionEvidence: Codable, Equatable, Identifiable {
     let revisitID: UUID?
     let date: Date
     let text: String
+    let containsWrittenNote: Bool
     var id: String { key }
 }

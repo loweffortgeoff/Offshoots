@@ -41,7 +41,7 @@ final class ReflectionCenter {
         entitlement: ReflectionEntitlement? = nil,
         purchase: ReflectionPurchase? = nil
     ) {
-        self.generator = generator
+        self.generator = ReflectionProviderCoordinator(base: generator)
         self.availabilityProvider = availabilityProvider
         self.availability = availabilityProvider()
         self.forceUnlocked = forceUnlocked
@@ -61,6 +61,12 @@ final class ReflectionCenter {
     /// The release switch runs before availability, StoreKit, and developer launch overrides.
     static func make(arguments: [String] = ProcessInfo.processInfo.arguments) -> ReflectionCenter {
         #if DEBUG
+        // Locked layout preview. Buying is disabled in this explicit developer configuration.
+        if arguments.contains("-ReflectionFakeLocked") {
+            let entitlement = ReflectionEntitlement()
+            return ReflectionCenter(generator: FakeReflectionGenerator(), availabilityProvider: { .available },
+                entitlement: entitlement, purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { false }))
+        }
         // Canned output, unlocked: layout checks and screenshots.
         if arguments.contains("-ReflectionFake") {
             return ReflectionCenter(generator: FakeReflectionGenerator(), availabilityProvider: { .available }, forceUnlocked: true)
@@ -74,16 +80,19 @@ final class ReflectionCenter {
             return ReflectionCenter(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })
         }
         if #available(iOS 26, *) {
-            let entitlement = ReflectionEntitlement()
-            return ReflectionCenter(
-                generator: LiveReflectionService(),
-                availabilityProvider: LiveReflectionService.availability,
-                entitlement: entitlement,
-                purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { LiveReflectionService.availability() == .available })
-            )
+            return makePaid(generator: LiveReflectionService(), availabilityProvider: LiveReflectionService.availability)
         }
-        return ReflectionCenter(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })
+        return makePaid(generator: UnavailableReflectionGenerator(), availabilityProvider: { .unsupported })
     }
+
+    /// Ownership and Restore do not depend on model or OS eligibility for generation.
+    static func makePaid(generator: any ReflectionGenerating, availabilityProvider: @escaping () -> ModelAvailability) -> ReflectionCenter {
+        let entitlement = ReflectionEntitlement()
+        return ReflectionCenter(generator: generator, availabilityProvider: availabilityProvider,
+            entitlement: entitlement,
+            purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { availabilityProvider() == .available }))
+    }
+
 }
 
 /// Stands in while paid Reflection is deferred, or below iOS 26. No model or StoreKit work.
