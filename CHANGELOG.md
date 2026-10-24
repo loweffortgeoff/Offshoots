@@ -4,11 +4,13 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2026-10-24: Geoff approved the full Hindsight design. Wrote the five-task implementation plan with backward-compatible answers, offline ownership, existing review/history integration, and calculated comparisons; execution awaits plan approval.
+
 - 2026-10-24: Drafted Hindsight after Geoff approved the direction: optional same/different approach or choice check-ins, dated history, and calculated review across decisions. Full design and implementation await approval; generated Reflection is outside the proposed paid promise.
 
 - 2026-10-24: Added a test-only PCC comparison at moderate reasoning. All 36 cases captured; quality still fails at 7/17 useful core readings (local baseline 6/17). Regular tests and Release build pass; production Reflection remains disabled.
 
-The 2.1.0 paid direction is under review after local and PCC quality failures. The prior generated-Reflection implementation and evaluation remain tracked; production paid Reflection remains disabled.
+Hindsight is the approved 2.1.0 paid direction after local and PCC quality failures; its implementation plan awaits approval. The prior generated-Reflection implementation and evaluation remain tracked; production paid Reflection remains disabled.
 
 - 2026-10-24: Recorded PCC as the next comparative evaluation for paid readings. Geoff reports the branch pushed; `dev/paid-reflection` remains open work while he returns to `main` for website work.
 

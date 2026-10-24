@@ -22,9 +22,10 @@
     - [ ] Siri/Spotlight Integrations (iOS 18.6+)
     - Foundation Models work is retained in the paused generated-Reflection cycle below.
 
-## 2.1.0 — Paid feature direction under review
-- [ ] **Review the Hindsight design.** Direction approved: optional structured answers, existing notes/timeline, and calculated comparisons. Review the [draft](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), especially paid access and ownership rules, before an implementation plan.
-**Current direction:** Hindsight is the proposed paid foundation. Generated Reflection is outside its purchase promise; its existing work and six tasks below are retained on hold. November was the prior target and is not a new delivery commitment. Things remains unchanged pending full-design approval.
+## 2.1.0 — Hindsight design approved
+- [x] **Approve the Hindsight design.** Geoff approved the full [design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), including paid access and offline ownership rules. — 2026-10-24
+- [ ] **Review the Hindsight implementation plan.** Approve the [five-task plan](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) before code changes; native execution with a final independent review is recommended.
+**Current direction:** Hindsight is the approved paid direction. Generated Reflection is outside its purchase promise; its existing work and six tasks below are retained on hold. November was the prior target and is not a new delivery commitment. Things was not changed in this documentation session.
 
 ### Prior generated-Reflection cycle — on hold
 **Prior cycle story:** Find supported connections across categories and show how decisions aged. Generate on request and save dated readings with their evidence. November was its target; free Look Back stays free. The [design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md) and native execution are approved. Local implementation follows the [plan](docs/superpowers/plans/2026-10-24-paid-reflection.md); [quality acceptance](docs/reflection-evaluation.md) remains open.

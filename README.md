@@ -31,8 +31,8 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - Needs two marked decisions in the category. Below that, the card says how many remain. From five, a clear majority adds a calculated headline. Results update directly, with Copy and no generation wait.
 - Works on iOS 18.6+ without Apple Intelligence, notes, or a purchase.
 
-### Paid feature direction (2.1.0 under review)
-The current proposal is [Hindsight check-ins](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md): record what you would repeat or change, then review recorded answers across decisions. Geoff approved the direction; the full design and implementation remain unapproved. Generated Reflection is outside the proposed purchase promise.
+### Paid feature direction (2.1.0 design approved)
+The approved design is [Hindsight check-ins](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md): record what you would repeat or change, then review recorded answers across decisions. Geoff approved the full design; the [implementation plan](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) awaits approval. App implementation has not started. Generated Reflection is outside the proposed purchase promise.
 
 ### Generated Reflection (retained; activation blocked)
 Paid Reflection is dormant in 2.0. The earlier approved 2.1.0 design proposed evidence-linked Patterns across categories and readings of how a decision aged, generated on request and saved as dated history. Clean Up Note was part of that proposal; free Look Back stays free. See the [approved design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md), [implementation plan](docs/superpowers/plans/2026-10-24-paid-reflection.md), and TODO. Local engineering checks pass, but generated-text quality fails the release gate. `ReflectionCenter.paidFeaturesEnabled` remains false. See [evaluation status](docs/reflection-evaluation.md) for scored cases and the remaining real-note/device gates.

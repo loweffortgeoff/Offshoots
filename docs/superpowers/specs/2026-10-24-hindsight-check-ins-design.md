@@ -1,6 +1,6 @@
 # Hindsight check-ins
 
-Status: **Draft for review. Product direction approved; this document and implementation are not yet approved.**
+Status: **Full design approved by Geoff on 2026-10-24. Implementation awaits separate plan approval.**
 Date: 2026-10-24
 Working name: **Hindsight**. Final customer name and price remain open.
 
@@ -57,7 +57,7 @@ Show **N decisions with a recorded answer**. Exclude unanswered decisions from t
 
 Allow the person to filter the list by the five existing outcome ratings as well as a hindsight answer. This supports examining Good outcomes with Different choice, or Bad outcomes with Same approach, without inventing an emotional meaning. Filters combine; an empty intersection explains that no recorded check-ins match. Do not add a score, personality label, advice, inferred theme, causal statement, category ranking, or another chart in this version.
 
-## Purchase proposal — for review
+## Approved purchase boundary
 
 The proposed paid capability is structured hindsight capture plus the new cross-decision review. The four-choice field alone is not the full purchase promise. Existing free notes, reviews, revisits, timelines, analytics, and Look Back remain usable without a purchase.
 
@@ -89,6 +89,6 @@ Builder choices: exact Swift type/file names, view composition, and layout withi
 - Check the running app at default and largest text in light/dark mode on iPhone 18 Pro (iOS 27.0). Check VoiceOver and real-phone usability separately. Automated correctness does not establish paid value.
 - Review a small set of real decision histories with Geoff. Confirm the cross-decision view reveals useful distinctions beyond the existing notes and timeline. Do not activate a paid package solely because counts and persistence pass tests.
 
-## Decisions still requiring approval
+## Approval and release boundary
 
-Review this complete design before an implementation plan. Confirm the proposed paid boundary, reuse of the existing entitlement, and the author-selected data/review rules. November 2.1.0 is the prior target, not a new delivery commitment. Final name, price, and sale copy can be settled before release; they do not authorize app or App Store changes now.
+Geoff approved this complete design, including the paid boundary, existing-entitlement reuse, offline ownership, retained reading access, and the author-selected data/review rules. The [implementation plan](../plans/2026-10-24-hindsight-check-ins.md) awaits separate review and approval. November 2.1.0 is the prior target, not a new delivery commitment. Final name, price, and sale copy can be settled before release; they do not authorize app or App Store changes now.
