@@ -39,6 +39,13 @@ final class ReflectionPurchase {
         self.entitlement = entitlement
     }
 
+    #if DEBUG
+    /// Shows a ready price without StoreKit. Layout checks only; buying stays on the real product path.
+    func useLayoutFixture(price: String) {
+        state = .ready(displayPrice: price)
+    }
+    #endif
+
     func loadProduct() async {
         // A reopened sheet keeps a pending Ask to Buy, so it cannot start a second purchase.
         if state != .pending { state = .loading }

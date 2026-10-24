@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2026-10-24: The Hindsight purchase sheet follows Geoff's layout: centered headline, app mark, labeled example, and the one-time unlock button. The feature list and Apple Intelligence sentence are no longer on that sheet.
+
 - 2026-10-24: Geoff set the paid package name to Hindsight and the United States price to $5.99 on the existing non-consumable. Both local StoreKit files now use that name and describe recording what you would repeat or change. App Store Connect remains Prepare for Submission. Paywall sentences and activation stay open.
 
 - 2026-10-24: Fixed the independent-review Restore defect: latest verification uncertainty no longer claims purchase absence after an earlier clean check. Parameterized regression, 255 regular tests, local StoreKit, and Release build pass; repaired two preview environments and restored simulator files.
