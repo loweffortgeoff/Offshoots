@@ -4,7 +4,9 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
-Paid Reflection owns the November 2026 2.1.0 cycle. The product design is under review; app implementation has not started.
+Paid Reflection owns the November 2026 2.1.0 cycle. Geoff approved the product design. The implementation plan awaits review; app implementation has not started.
+
+- 2026-10-24: Recorded spec approval and wrote the implementation plan. Sequenced evaluation, evidence, saved history, recovery, backup, cleanup, purchase, and device acceptance; production activation remains gated.
 
 - 2026-10-24: Drafted the paid Reflection design: evidence-linked Patterns across categories, decision history readings, manual generation, and saved dated readings. Recorded the reversal of unsaved output and retained the existing quality gate.
 

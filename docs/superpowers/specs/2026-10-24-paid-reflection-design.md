@@ -1,6 +1,6 @@
 # Paid Reflection for 2.1.0
 
-Status: Draft for Geoff's review. Product direction agreed on 2026-10-24. Implementation is not authorized by this document.
+Status: Approved by Geoff on 2026-10-24. Proceed to implementation planning. Execution of the implementation plan remains a separate approval.
 
 ## Purpose
 
@@ -37,9 +37,9 @@ Separate prediction accuracy from later outcome changes. Use the first outcome f
 
 Explain which records were read and any sampling limits. Do not claim to have read the entire journal when context limits require a subset. Fit prompts to the available context without silently cutting away a negation or comparison.
 
-## Proposed interaction and storage details
+## Interaction and storage details
 
-These are engineering proposals for this draft, not decisions already made by Geoff.
+Geoff approved these engineering proposals with the full spec on 2026-10-24.
 
 - Keep Patterns on Insights and the decision reading on Decision Detail. Add Generate for the first reading and Refresh for a new reading. Provide dated history from those surfaces without a new top-level tab.
 - Save each successful, validated reading automatically. Refresh creates a new dated entry. It never replaces an earlier entry. Keep older readings accessible after relaunch.
@@ -115,4 +115,4 @@ No scheduled generation, monthly reviews, reminders for generated readings, advi
 
 The six existing roadmap phases remain. Add saved history, evidence navigation, and persistence acceptance within the observation and recovery phases. Keep unrelated free Optimism and Duo work separate.
 
-Review this draft before writing the implementation plan. After approval, plan the evaluation and implementation in bounded chunks. App code, activation of paid features, release actions, and push are outside this documentation task.
+Plan the evaluation and implementation in bounded chunks. App code, activation of paid features, release actions, and push are outside this documentation task. Plan: `../plans/2026-10-24-paid-reflection.md`.
