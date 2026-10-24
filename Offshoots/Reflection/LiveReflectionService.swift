@@ -10,6 +10,9 @@ import FoundationModels
 /// instructions, greedy sampling and a token cap. Nothing is kept between calls.
 @available(iOS 26.0, *)
 struct LiveReflectionService: ReflectionGenerating {
+    /// Explicit evaluation hook. Production never supplies it.
+    var rawOutput: ((String) -> Void)? = nil
+
 
     // MARK: - Generated shapes
 
@@ -135,10 +138,6 @@ struct LiveReflectionService: ReflectionGenerating {
             prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
             maximumTokens: 300
         )
-        #if DEBUG
-        // The raw sentences before validation, so a missing line on a device shows why
-        NSLog("LOOKBACKRAW worse %@ | asPredicted %@ | better %@", generated.worse, generated.asPredicted, generated.better)
-        #endif
         let lines = Self.groupLines(generated, worse: digest.worseHasNotes, asPredicted: digest.asPredictedHasNotes, better: digest.betterHasNotes)
         return LookBackOutput(stats: digest.stats, lines: lines).validated().droppingTitleCopies(digest.history.map(\.title))
     }
@@ -164,7 +163,9 @@ struct LiveReflectionService: ReflectionGenerating {
         do {
             let session = LanguageModelSession(instructions: instructions)
             let options = GenerationOptions(samplingMode: .greedy, maximumResponseTokens: maximumTokens)
-            return try await session.respond(to: prompt, generating: type, options: options).content
+            let response = try await session.respond(to: prompt, generating: type, options: options).content
+            rawOutput?(String(describing: response))
+            return response
         } catch is CancellationError {
             throw CancellationError()
         } catch let error as ReflectionError {

@@ -30,7 +30,7 @@ struct ReflectionLiveOutputTests {
             prompt: prompt,
             schema: LiveReflectionService.GeneratedPatterns.generationSchema
         )
-        let output = try await LiveReflectionService().patterns(digest: digest)
+        let output = try await LiveReflectionService(rawOutput: { log("RAW: " + $0) }).patterns(digest: digest)
         log("Patterns output:\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
     }
 
@@ -46,7 +46,7 @@ struct ReflectionLiveOutputTests {
             prompt: ReflectionPromptBuilder.decisionPrompt(digest),
             schema: LiveReflectionService.GeneratedDecisionReflection.generationSchema
         )
-        let output = try await LiveReflectionService().reflect(on: digest)
+        let output = try await LiveReflectionService(rawOutput: { log("RAW: " + $0) }).reflect(on: digest)
         log("""
         Decision output (\(title)):
         Summary: \(output.summary)
@@ -68,17 +68,36 @@ struct ReflectionLiveOutputTests {
             prompt: ReflectionPromptBuilder.lookBackPrompt(digest),
             schema: LiveReflectionService.GeneratedPatterns.generationSchema
         )
-        // Raw model fields before validation, so a dropped sentence shows why. Greedy sampling
-        // gives the service call below the same output.
-        let session = LanguageModelSession(instructions: ReflectionPromptBuilder.lookBackInstructions)
-        let raw = try await session.respond(
-            to: ReflectionPromptBuilder.lookBackPrompt(digest),
-            generating: LiveReflectionService.GeneratedPatterns.self,
-            options: GenerationOptions(samplingMode: .greedy, maximumResponseTokens: 300)
-        ).content
-        log("Look Back raw (\(digest.category)):\nworse: \(raw.worse)\nasPredicted: \(raw.asPredicted)\nbetter: \(raw.better)")
-        let output = try await LiveReflectionService().lookBack(digest: digest)
+        let output = try await LiveReflectionService(rawOutput: { log("RAW: " + $0) }).lookBack(digest: digest)
         log("Look Back output (\(digest.category)):\n\(output.stats.headline ?? "(no headline)")\n\(output.stats.summary)\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
+    }
+
+    @Test func acceptanceCases() async throws {
+        guard #available(iOS 26.4, *) else { return }
+        try requireModel()
+        final class BundleToken {}
+        let url = try #require(Bundle(for: BundleToken.self).url(forResource: "reflection-acceptance", withExtension: "json"))
+        let cases = try ReflectionEvaluationCase.load(from: Data(contentsOf: url))
+        for value in cases {
+            let start = Date()
+            log("CASE \(value.id) | eligible \(value.eligible) | OS \(ProcessInfo.processInfo.operatingSystemVersionString) | device \(ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "physical-device; record hardware manually") | scope \(value.decisions.map(\.id))")
+            let service = LiveReflectionService(rawOutput: { log("RAW \(value.id): " + $0) })
+            do {
+                switch value.surface {
+                case "patterns":
+                    log("DISPLAY \(try await service.patterns(digest: ReflectionDigestBuilder.patterns(from: value.decisions)))")
+                case "decision":
+                    if let decision = value.decisions.first, let digest = ReflectionDigestBuilder.decision(decision, among: value.decisions) {
+                        log("DISPLAY \(try await service.reflect(on: digest))")
+                    }
+                default:
+                    log("DISPLAY \(try await service.cleanUp(note: value.decisions.first?.notes ?? ""))")
+                }
+                log("COMPLETE \(value.id) seconds \(Date().timeIntervalSince(start))")
+            } catch {
+                log("ERROR \(value.id) seconds \(Date().timeIntervalSince(start)): \(error)")
+            }
+        }
     }
 
     // MARK: - Helpers
