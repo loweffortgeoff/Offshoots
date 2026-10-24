@@ -10,13 +10,13 @@
       "internalID" : "6F5C2D7A-0000-4000-8000-000000000001",
       "localizations" : [
         {
-          "description" : "Patterns across your decisions, a reflection on each decision, and clearer notes. Runs on your device.",
-          "displayName" : "Reflection",
+          "description" : "Record what you would repeat or change.",
+          "displayName" : "Hindsight",
           "locale" : "en_US"
         }
       ],
       "productID" : "com.geoffrey.silva.Offshoots.reflection",
-      "referenceName" : "Reflection",
+      "referenceName" : "Hindsight",
       "type" : "NonConsumable"
     }
   ],

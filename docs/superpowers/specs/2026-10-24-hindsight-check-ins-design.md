@@ -2,7 +2,7 @@
 
 Status: **Full design approved by Geoff on 2026-10-24. Implementation plan and native execution approved. Production activation remains separate.**
 Date: 2026-10-24
-Working name: **Hindsight**. Final customer name and price remain open.
+Customer name: **Hindsight**. United States price: **$5.99**, on the existing non-consumable. Paywall sentences remain open.
 
 ## Intent
 
@@ -67,7 +67,7 @@ For nonowners, show a compact optional purchase entry at existing review/revisit
 
 Author's access proposals: saved answers and their notes remain readable and exportable after an ownership loss or while StoreKit is unavailable. This includes the Hindsight counts, outcome filters, and decision list whenever saved answers exist, including answers restored from an import. Reading existing data does not require a new purchase. Require verified ownership only to add a new structured answer. Use StoreKit's locally verified ownership state for offline use. A previously verified owner can add answers without a fresh network check on each Save; recheck ownership through the normal StoreKit lifecycle and block new answers after confirmed revocation. A transient StoreKit failure must not erase known ownership. A person with no verified ownership remains unable to add an answer while verification is pending or unavailable. Do not add a separate license server. Do not block free saves while ownership is pending or unavailable. An ownership loss before Save must not silently discard a selected answer: retain the draft, explain the issue, and allow restoring ownership or clearing the optional answer before saving the free review. No deletion on refund.
 
-This is a commercial proposal, not evidence of willingness to pay. Final package name, price, and App Store/IAP copy require Geoff's review. Do not change App Store Connect, submit, upload, or activate a purchase from this document.
+This is a commercial proposal, not evidence of willingness to pay. Geoff set the package name to Hindsight and the United States price to $5.99 on 2026-10-24. Paywall sentences still require his review. Do not submit, upload, or activate a purchase from this document.
 
 ## Data and implementation boundaries
 

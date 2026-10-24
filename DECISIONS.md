@@ -415,6 +415,10 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Geoff approved the implementation plan for native execution. Persist optional answers in existing decision/revisit JSON, preserve recorded event/outcome pairing, and reuse the existing one-time product with independent Hindsight access.
 **Activation:** Both production Hindsight purchase/capture and generated Reflection remain disabled. Local implementation does not clear phone, real-history usefulness, or customer-copy acceptance; no external tracker or App Store change is authorized.
 
+## 2026-10-24 (Hindsight name and US price)
+**Decision:** The paid package is named Hindsight. The United States price is $5.99 (proceeds $5.09 on the current price schedule). It stays the existing non-consumable `com.geoffrey.silva.Offshoots.reflection`, Apple ID 6818254209, Family Sharing off.
+**Record:** App Store Connect shows reference name Hindsight and status Prepare for Submission. The in-app sheet already titles itself Hindsight and reads the price from StoreKit. Both local StoreKit files now use display name and reference name Hindsight, with the description "Record what you would repeat or change." The App Store localization display name was not in the screenshot. Paywall sentences in the sheet remain open. No submission, upload, or sale.
+
 ## 2026-10-24 (Hindsight local handoff; activation remains off)
 **Evidence:** 255 regular tests pass with ten opt-in skips; explicit local StoreKit/fixture tests and the Release build pass. Simulator flows and accessibility retests pass; the independent-review Restore finding is fixed with a failing-then-passing regression.
 **Boundary:** Keep production purchase/capture and generated Reflection disabled. Phone/VoiceOver/offline/sandbox checks, real-history usefulness, final customer copy, and distribution readiness remain open; original simulator files were restored and hash-checked.

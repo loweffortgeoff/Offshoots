@@ -38,13 +38,13 @@ A fresh GPT-6 Astra review checked the whole branch through `1b70f5f`, including
 
 The reviewer also found missing `ReflectionHistoryStore` injection in the updated Analytics and Settings previews. Both preview environments are repaired and compile with the app. Canvas rendering was not separately measured. This related preview repair was folded into the same pass under Geoff's standing project instruction.
 
-Review boundaries retained: generated Reflection quality/activation remain deferred; phone/VoiceOver/offline/sandbox evidence remains open; real-history value and customer name/price/copy require Geoff's acceptance; signing/distribution/ASC readiness are not established by this local review. These boundaries prevent an unsupported release claim, not completion of the approved local implementation.
+Review boundaries retained: generated Reflection quality/activation remain deferred; phone/VoiceOver/offline/sandbox evidence remains open; real-history value and paywall sentences require Geoff's acceptance. He set the name to Hindsight and the United States price to $5.99 on 2026-10-24. Signing, distribution, and submission readiness are not established by this local review. These boundaries prevent an unsupported release claim, not completion of the approved local implementation.
 
 ## Open acceptance gates
 
 - Physical-device usability, VoiceOver listening, offline relaunch ownership, and phone sandbox purchase-button/Restore/refund checks.
 - Geoff's review of real histories for useful distinctions beyond the existing free notes and timeline. Correct counts are not proof of paid value.
-- Final customer name, price, customer copy, and matching StoreKit product metadata. No App Store Connect change, upload, review submission, merge, push, or release is part of this implementation.
+- Paywall sentences, and a check that the App Store localization display name and description match the local StoreKit files. Those files now say Hindsight and "Record what you would repeat or change." The reference name and United States price ($5.99, proceeds $5.09) are recorded; status remains Prepare for Submission. No upload, review submission, merge, push, or release is part of this implementation.
 
 ## Reproduction
 

@@ -147,7 +147,7 @@ Offshoots/
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
 OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, Reflection policy, screenshot fixture
-Reflection.storekit                # Retained local StoreKit test product for the 2.1.0 cycle
+Reflection.storekit                # Local StoreKit test product; Hindsight on the existing product ID
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
 scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pro Max

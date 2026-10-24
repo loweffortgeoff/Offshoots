@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2026-10-24: Geoff set the paid package name to Hindsight and the United States price to $5.99 on the existing non-consumable. Both local StoreKit files now use that name and describe recording what you would repeat or change. App Store Connect remains Prepare for Submission. Paywall sentences and activation stay open.
+
 - 2026-10-24: Fixed the independent-review Restore defect: latest verification uncertainty no longer claims purchase absence after an earlier clean check. Parameterized regression, 255 regular tests, local StoreKit, and Release build pass; repaired two preview environments and restored simulator files.
 
 - 2026-10-24: Implemented optional Hindsight answers in reviews/revisits, dated history, and calculated answer/outcome filtering. 255 regular tests pass (ten opt-in skips), plus local StoreKit ownership/Restore/refund and simulator flows. Fixed largest-text filtering and Restore uncertainty; independent review fixes pass and production stays disabled pending acceptance.
