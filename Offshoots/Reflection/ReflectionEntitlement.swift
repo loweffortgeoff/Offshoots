@@ -1,30 +1,22 @@
-//
-//  ReflectionEntitlement.swift
-//  Offshoots
-//
-
 import Foundation
 import Observation
 import StoreKit
 
-/// Where the owned product IDs come from. StoreKit in the app, a hand-driven fake in tests.
 protocol ReflectionEntitlementSource {
-    func currentProductIDs() async -> Set<String>
-    /// The full set of owned IDs, sent again after every change (purchase, refund, restore)
-    func updates() -> AsyncStream<Set<String>>
+    func currentSnapshot() async -> EntitlementSnapshot
+    func updates() -> AsyncStream<EntitlementSnapshot>
 }
 
-/// Whether Reflection is unlocked. It checks a list of product IDs, so a one-time purchase
-/// and a later subscription can both unlock without any other change.
+/// Shared one-time ownership. Model and product-loading availability are separate.
 @Observable
 final class ReflectionEntitlement {
-    /// Add a subscription's ID here if one ever ships. Never remove the one-time ID.
     static let acceptedProductIDs: Set<String> = ["com.geoffrey.silva.Offshoots.reflection"]
-
     private(set) var isUnlocked = false
+    private(set) var hasResolvedOwnership = false
     @ObservationIgnored private let source: any ReflectionEntitlementSource
     @ObservationIgnored private let accepted: Set<String>
     @ObservationIgnored private var listener: Task<Void, Never>?
+    @ObservationIgnored private var revision = 0
 
     init(source: any ReflectionEntitlementSource = StoreKitEntitlementSource(), accepted: Set<String> = acceptedProductIDs) {
         self.source = source
@@ -35,50 +27,81 @@ final class ReflectionEntitlement {
         !entitled.isDisjoint(with: accepted)
     }
 
-    /// Reads what is owned now, then keeps listening for changes.
     func start() async {
-        await refresh()
         listener?.cancel()
         listener = listen()
+        await refresh()
     }
 
     func refresh() async {
-        isUnlocked = Self.unlocks(entitled: await source.currentProductIDs(), accepted: accepted)
+        revision += 1
+        let request = revision
+        let snapshot = await source.currentSnapshot()
+        guard revision == request else { return }
+        apply(snapshot)
     }
 
     @discardableResult
     func listen() -> Task<Void, Never> {
-        // Subscribe before the task starts, so a change sent right away is not missed
         let updates = source.updates()
-        let accepted = accepted
         return Task { [weak self] in
-            for await ids in updates {
-                self?.isUnlocked = Self.unlocks(entitled: ids, accepted: accepted)
+            for await snapshot in updates {
+                guard !Task.isCancelled else { break }
+                self?.revision += 1
+                self?.apply(snapshot)
             }
         }
+    }
+
+    private func apply(_ snapshot: EntitlementSnapshot) {
+        let owned = snapshot.verifiedProductIDs.subtracting(snapshot.revokedProductIDs)
+        if Self.unlocks(entitled: owned, accepted: accepted) {
+            isUnlocked = true
+            hasResolvedOwnership = true
+        } else if !snapshot.revokedProductIDs.isDisjoint(with: accepted) || !snapshot.hasVerificationFailure {
+            isUnlocked = false
+            hasResolvedOwnership = true
+        }
+        // Uncertainty cannot grant new access or erase ownership verified earlier in this process.
+        // Cold-launch ownership comes from StoreKit's locally verified transaction cache.
     }
 }
 
-/// The StoreKit 2 source. Revoked (refunded) transactions do not count.
 struct StoreKitEntitlementSource: ReflectionEntitlementSource {
-    func currentProductIDs() async -> Set<String> {
+    func currentSnapshot() async -> EntitlementSnapshot {
         var ids = Set<String>()
+        var failedVerification = false
         for await result in Transaction.currentEntitlements {
-            if case .verified(let transaction) = result, transaction.revocationDate == nil {
-                ids.insert(transaction.productID)
+            switch result {
+            case .verified(let transaction):
+                if transaction.revocationDate == nil { ids.insert(transaction.productID) }
+            case .unverified:
+                failedVerification = true
             }
         }
-        return ids
+        return EntitlementSnapshot(verifiedProductIDs: ids, hasVerificationFailure: failedVerification)
     }
 
-    func updates() -> AsyncStream<Set<String>> {
+    func updates() -> AsyncStream<EntitlementSnapshot> {
         AsyncStream { continuation in
             let task = Task {
                 for await result in Transaction.updates {
-                    if case .verified(let transaction) = result {
+                    let current = await currentSnapshot()
+                    var ids = current.verifiedProductIDs
+                    var revoked = Set<String>()
+                    var failed = current.hasVerificationFailure
+                    switch result {
+                    case .verified(let transaction):
+                        if transaction.revocationDate != nil {
+                            ids.remove(transaction.productID)
+                            revoked.insert(transaction.productID)
+                        } else { ids.insert(transaction.productID) }
                         await transaction.finish()
+                    case .unverified:
+                        failed = true
                     }
-                    continuation.yield(await currentProductIDs())
+                    continuation.yield(EntitlementSnapshot(verifiedProductIDs: ids,
+                        revokedProductIDs: revoked, hasVerificationFailure: failed))
                 }
                 continuation.finish()
             }

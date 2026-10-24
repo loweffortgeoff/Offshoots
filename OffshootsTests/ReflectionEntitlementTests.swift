@@ -9,19 +9,19 @@ import Testing
 /// A source the test drives by hand.
 private final class FakeEntitlementSource: ReflectionEntitlementSource {
     var current: Set<String>
-    private var continuation: AsyncStream<Set<String>>.Continuation?
+    private var continuation: AsyncStream<EntitlementSnapshot>.Continuation?
 
     init(current: Set<String> = []) { self.current = current }
 
-    func currentProductIDs() async -> Set<String> { current }
+    func currentSnapshot() async -> EntitlementSnapshot { .init(verifiedProductIDs: current, hasVerificationFailure: false) }
 
-    func updates() -> AsyncStream<Set<String>> {
+    func updates() -> AsyncStream<EntitlementSnapshot> {
         AsyncStream { continuation = $0 }
     }
 
     func push(_ ids: Set<String>) {
         current = ids
-        continuation?.yield(ids)
+        continuation?.yield(.init(verifiedProductIDs: ids, hasVerificationFailure: false))
     }
 
     func finish() { continuation?.finish() }

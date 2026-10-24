@@ -27,8 +27,14 @@ final class ReflectionPurchase {
     @ObservationIgnored private let entitlement: ReflectionEntitlement
 
     @ObservationIgnored private let canPurchase: () -> Bool
+    @ObservationIgnored private let featureName: String
+    @ObservationIgnored private let purchaseBlockedMessage: String
 
-    init(entitlement: ReflectionEntitlement, canPurchase: @escaping () -> Bool = { true }) {
+    init(entitlement: ReflectionEntitlement, canPurchase: @escaping () -> Bool = { true },
+         featureName: String = "Reflection",
+         purchaseBlockedMessage: String = "Apple Intelligence must be available before you purchase Reflection. Check device and language support, then try again.") {
+        self.featureName = featureName
+        self.purchaseBlockedMessage = purchaseBlockedMessage
         self.canPurchase = canPurchase
         self.entitlement = entitlement
     }
@@ -54,7 +60,7 @@ final class ReflectionPurchase {
     @discardableResult
     func buy() async -> Bool {
         guard canPurchase() else {
-            state = .failed("Apple Intelligence must be available before you purchase Reflection. Check device and language support, then try again.")
+            state = .failed(purchaseBlockedMessage)
             return false
         }
         guard state != .purchasing && state != .pending else { return false }
@@ -92,7 +98,7 @@ final class ReflectionPurchase {
         do {
             try await AppStore.sync()
             await entitlement.refresh()
-            restoreMessage = entitlement.isUnlocked ? "Reflection is unlocked." : "No earlier purchase was found."
+            restoreMessage = entitlement.isUnlocked ? "\(featureName) is unlocked." : "No earlier purchase was found."
         } catch {
             restoreMessage = "Restore did not finish. Try again."
         }
