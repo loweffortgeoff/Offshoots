@@ -98,7 +98,13 @@ final class ReflectionPurchase {
         do {
             try await AppStore.sync()
             await entitlement.refresh()
-            restoreMessage = entitlement.isUnlocked ? "\(featureName) is unlocked." : "No earlier purchase was found."
+            if entitlement.isUnlocked {
+                restoreMessage = "\(featureName) is unlocked."
+            } else if entitlement.hasResolvedOwnership {
+                restoreMessage = "No earlier purchase was found."
+            } else {
+                restoreMessage = "The purchase could not be verified. Try Restore Purchase again later."
+            }
         } catch {
             restoreMessage = "Restore did not finish. Try again."
         }

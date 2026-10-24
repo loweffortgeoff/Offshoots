@@ -1,0 +1,147 @@
+[
+  {
+    "id": "C1000000-0000-4000-8000-000000000001",
+    "title": "A partial workday",
+    "category": "work",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [],
+    "actual": "bad",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "differentApproach",
+    "reflection": "Synthetic example: I would space out short checks, handle critical items, and leave less urgent work for my usual catch-up."
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000002",
+    "title": "A useful project with too much travel",
+    "category": "other",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [],
+    "actual": "good",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "differentChoice",
+    "reflection": "The project went well. I would choose work with less travel."
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000003",
+    "title": "Set a difficult boundary",
+    "category": "work",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [],
+    "actual": "bad",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "sameApproach",
+    "reflection": "The conversation went poorly. I still stand by having it."
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000004",
+    "title": "Try a new routine",
+    "category": "other",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [],
+    "actual": "neutral",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "notSure",
+    "reflection": "I need more time to decide what I would repeat."
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000005",
+    "title": "A decision still in progress",
+    "category": "work",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": []
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000006",
+    "title": "A first answer without a note",
+    "category": "other",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [],
+    "actual": "good",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "sameApproach"
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000007",
+    "title": "Change the check-in approach",
+    "category": "work",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [
+      {
+        "id": "D1000000-0000-4000-8000-000000000001",
+        "date": "2026-09-20T12:00:00Z",
+        "outcome": "good",
+        "note": "A later outcome with no new Hindsight answer."
+      }
+    ],
+    "actual": "bad",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "differentApproach",
+    "reflection": "I would agree on the workload first."
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000008",
+    "title": "Tied and backdated reviews",
+    "category": "other",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [
+      {
+        "id": "D1000000-0000-4000-8000-000000000002",
+        "date": "2026-09-25T12:00:00Z",
+        "outcome": "good",
+        "hindsight": "sameApproach"
+      },
+      {
+        "id": "D1000000-0000-4000-8000-000000000003",
+        "date": "2026-09-25T12:00:00Z",
+        "outcome": "bad",
+        "hindsight": "differentApproach"
+      },
+      {
+        "id": "D1000000-0000-4000-8000-000000000004",
+        "date": "2026-09-12T12:00:00Z",
+        "outcome": "neutral",
+        "hindsight": "notSure"
+      }
+    ],
+    "actual": "neutral",
+    "resolvedAt": "2026-09-08T12:00:00Z"
+  },
+  {
+    "id": "C1000000-0000-4000-8000-000000000009",
+    "title": "Long note with a different approach",
+    "category": "work",
+    "stakes": "medium",
+    "expected": "good",
+    "createdAt": "2026-09-01T12:00:00Z",
+    "followUpDate": "2026-09-08T12:00:00Z",
+    "revisits": [],
+    "actual": "neutral",
+    "resolvedAt": "2026-09-08T12:00:00Z",
+    "hindsight": "differentApproach",
+    "reflection": "Synthetic example. I would keep the underlying choice but change how I carried it out. I would agree on the important parts first. I would leave time between commitments. A different approach does not mean I regret the whole choice. This note should remain readable at large text sizes and in the full decision history."
+  }
+]

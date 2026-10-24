@@ -22,7 +22,7 @@ struct AnalyticsView: View {
                         pane(title: "Insights", inline: arrangement == .stacked) {
                             EmptyAnalyticsView()
                             if !history.readings.isEmpty { ReflectionReadingCard(kind: .patterns) }
-                        HindsightInsightsSection(entries: [])
+                            HindsightInsightsSection(entries: [])
                         }
                     } secondary: {
                         Color.offshootBackground

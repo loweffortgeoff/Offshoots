@@ -1,6 +1,6 @@
 # Hindsight check-ins
 
-Status: **Full design approved by Geoff on 2026-10-24. Implementation awaits separate plan approval.**
+Status: **Full design approved by Geoff on 2026-10-24. Implementation plan and native execution approved. Production activation remains separate.**
 Date: 2026-10-24
 Working name: **Hindsight**. Final customer name and price remain open.
 
@@ -91,4 +91,4 @@ Builder choices: exact Swift type/file names, view composition, and layout withi
 
 ## Approval and release boundary
 
-Geoff approved this complete design, including the paid boundary, existing-entitlement reuse, offline ownership, retained reading access, and the author-selected data/review rules. The [implementation plan](../plans/2026-10-24-hindsight-check-ins.md) awaits separate review and approval. November 2.1.0 is the prior target, not a new delivery commitment. Final name, price, and sale copy can be settled before release; they do not authorize app or App Store changes now.
+Geoff approved this complete design, including the paid boundary, existing-entitlement reuse, offline ownership, retained reading access, and the author-selected data/review rules. Geoff approved the [implementation plan](../plans/2026-10-24-hindsight-check-ins.md) for native execution. November 2.1.0 is the prior target, not a new delivery commitment. Final name, price, and sale copy can be settled before release; they do not authorize app or App Store changes now.

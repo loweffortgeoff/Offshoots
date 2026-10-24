@@ -24,7 +24,7 @@ struct HindsightReviewView: View {
                     }
                     .buttonStyle(.plain)
                     .foregroundStyle(Color.offshootPrimary)
-                    .accessibilityLabel("\(answer.label), \(HindsightSummary.count(answer, in: entries)) decisions")
+                    .accessibilityLabel("\(answer.label), \(HindsightSummary.count(answer, in: entries)) \(HindsightSummary.count(answer, in: entries) == 1 ? "decision" : "decisions")")
                     .accessibilityAddTraits(filter.answer == answer ? .isSelected : [])
                 }
             } header: {
@@ -33,13 +33,7 @@ struct HindsightReviewView: View {
                 Text("Each decision counts once. A skipped answer is excluded. Not sure is a recorded answer. Counts include all recorded decisions; filters change the list below.")
             }
             Section {
-                Picker("Recorded outcome", selection: $filter.outcome) {
-                    Text("All outcomes").tag(DecisionOutcome?.none)
-                    ForEach(DecisionOutcome.allCases) { outcome in
-                        Text(outcome.shortLabel).tag(Optional(outcome))
-                    }
-                }
-                .tint(Color.offshootPrimary)
+                HindsightOutcomeFilter(selection: $filter.outcome)
                 if filter.answer != nil || filter.outcome != nil {
                     Button("Clear filters") { filter = HindsightReviewFilter() }
                         .tint(Color.offshootPrimary)

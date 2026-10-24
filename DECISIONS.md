@@ -410,3 +410,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-24 (Full Hindsight design approved)
 **Decision:** Geoff approved the full [Hindsight design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), including entitlement reuse, offline verified-owner capture, and continued reading/filter/export access after ownership loss.
 **Next gate:** The [implementation plan](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) is ready for review. App implementation and production activation remain separate approvals; no app code, external tracker, or App Store state changed.
+
+## 2026-10-24 (Hindsight native execution approved)
+**Decision:** Geoff approved the implementation plan for native execution. Persist optional answers in existing decision/revisit JSON, preserve recorded event/outcome pairing, and reuse the existing one-time product with independent Hindsight access.
+**Activation:** Both production Hindsight purchase/capture and generated Reflection remain disabled. Local implementation does not clear phone, real-history usefulness, or customer-copy acceptance; no external tracker or App Store change is authorized.

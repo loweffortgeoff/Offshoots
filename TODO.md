@@ -24,7 +24,8 @@
 
 ## 2.1.0 — Hindsight design approved
 - [x] **Approve the Hindsight design.** Geoff approved the full [design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), including paid access and offline ownership rules. — 2026-10-24
-- [ ] **Review the Hindsight implementation plan.** Approve the [five-task plan](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) before code changes; native execution with a final independent review is recommended.
+- [x] **Approve the Hindsight implementation plan.** Geoff approved [native execution](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) with a final independent review. — 2026-10-24
+- [ ] **Accept Hindsight before activation.** Local implementation passes 255 regular tests (nine opt-in skips), local StoreKit, and representative simulator checks; independent review is pending. Review [evidence](docs/hindsight-evaluation.md), real-history value, physical-device/VoiceOver, phone ownership/purchase, and final customer copy before enabling capture or sale.
 **Current direction:** Hindsight is the approved paid direction. Generated Reflection is outside its purchase promise; its existing work and six tasks below are retained on hold. November was the prior target and is not a new delivery commitment. Things was not changed in this documentation session.
 
 ### Prior generated-Reflection cycle — on hold

@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2026-10-24: Implemented optional Hindsight answers in reviews/revisits, dated history, and calculated answer/outcome filtering. 255 regular tests pass (nine opt-in skips), plus local StoreKit ownership/Restore/refund and simulator flows. Fixed largest-text filtering and Restore uncertainty; production stays disabled pending independent review and acceptance.
+
 - 2026-10-24: Geoff approved the full Hindsight design. Wrote the five-task implementation plan with backward-compatible answers, offline ownership, existing review/history integration, and calculated comparisons; execution awaits plan approval.
 
 - 2026-10-24: Drafted Hindsight after Geoff approved the direction: optional same/different approach or choice check-ins, dated history, and calculated review across decisions. Full design and implementation await approval; generated Reflection is outside the proposed paid promise.
