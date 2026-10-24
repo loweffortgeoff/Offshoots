@@ -114,4 +114,5 @@ struct DashboardView: View {
     DashboardView(selectedTab: .constant(.dashboard), logDraft: .constant(nil))
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(HindsightAccess.make())
 }

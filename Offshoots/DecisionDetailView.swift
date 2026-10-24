@@ -253,23 +253,7 @@ struct DecisionDetailView: View {
                             .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
                         }
 
-                        // Reflection
-                        if let reflection = decision.reflection {
-                            VStack(alignment: .leading, spacing: 12) {
-                                Label("Reflection", systemImage: "lightbulb.fill")
-                                    .font(.headline)
-                                    .foregroundStyle(Color.offshootPrimary)
-
-                                Text(reflection)
-                                    .font(.body)
-                                    .foregroundStyle(.primary)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(20)
-                            .background(Color.offshootCardBackground)
-                            .cornerRadius(16)
-                            .shadow(color: .black.opacity(0.05), radius: 8, y: 2)
-                        }
+                        FirstOutcomeReflectionCard(note: decision.reflection, hindsight: decision.hindsight, date: decision.resolvedDate)
 
                         // Revisit history
                         if !decision.revisits.isEmpty {

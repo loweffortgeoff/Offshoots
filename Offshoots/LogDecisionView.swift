@@ -334,4 +334,5 @@ struct SavedConfirmationView: View {
     LogDecisionView(selectedTab: .constant(.log), draft: .constant(nil))
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(HindsightAccess.make())
 }

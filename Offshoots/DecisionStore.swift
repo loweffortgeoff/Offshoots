@@ -114,7 +114,8 @@ final class DecisionStore {
         secondaryFollowUpDate: Date? = nil,
         hindsight: HindsightAnswer? = nil
     ) {
-        guard let index = decisions.firstIndex(where: { $0.id == id }) else { return }
+        guard let index = decisions.firstIndex(where: { $0.id == id }),
+              decisions[index].actual == nil else { return }
 
         ReminderManager.shared.cancelReminder(for: decisions[index])
 

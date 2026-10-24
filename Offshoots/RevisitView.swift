@@ -12,6 +12,10 @@ struct RevisitView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(ReflectionCenter.self) private var reflectionCenter
 
+    @Environment(HindsightAccess.self) private var hindsightAccess
+    @State private var hindsight: HindsightAnswer?
+    @State private var ownershipBlocked = false
+
     let decision: Decision
 
     @FocusState private var isNoteFocused: Bool
@@ -67,6 +71,8 @@ struct RevisitView: View {
                         .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
+                        HindsightCheckInSection(answer: $hindsight, access: hindsightAccess)
+
                         // Note
                         VStack(alignment: .leading, spacing: 12) {
                             Label("What Changed?", systemImage: "lightbulb.fill")
@@ -77,7 +83,7 @@ struct RevisitView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
-                            TextField("What shifted since you last looked?", text: $note, axis: .vertical)
+                            TextField(hindsight == nil ? "What shifted since you last looked?" : "What would you keep or change?", text: $note, axis: .vertical)
                                 .focused($isNoteFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
@@ -120,23 +126,30 @@ struct RevisitView: View {
                 .scrollDismissesKeyboard(.immediately)
                 // Save stays in view: above the keyboard, and never at the screen edge.
                 .safeAreaInset(edge: .bottom) {
-                    Button {
-                        saveRevisit()
-                    } label: {
-                        HStack {
-                            Image(systemName: "checkmark.circle.fill")
-                            Text("Save Revisit")
-                                .fontWeight(.semibold)
+                    VStack(spacing: 8) {
+                        if ownershipBlocked && hindsight != nil && !hindsightAccess.canCapture {
+                            Text("Restore your purchase or clear the optional Hindsight answer before saving.")
+                                .font(.callout).foregroundStyle(.secondary)
+                                .accessibilityIdentifier("hindsightSaveBlocked")
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Color.offshootPrimary)
-                        .foregroundStyle(Color.offshootOnPrimary)
-                        .cornerRadius(14)
+                        Button {
+                            saveRevisit()
+                        } label: {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Save Revisit")
+                                    .fontWeight(.semibold)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.offshootPrimary)
+                            .foregroundStyle(Color.offshootOnPrimary)
+                            .cornerRadius(14)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .background(Color.offshootBackground)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background(Color.offshootBackground)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -161,12 +174,18 @@ struct RevisitView: View {
         let impact = UIImpactFeedbackGenerator(style: .medium)
         impact.impactOccurred()
 
-        store.addRevisit(
-            id: decision.id,
-            outcome: selectedOutcome,
-            note: note,
-            nextRevisitDate: scheduleNext ? nextRevisitDate : nil
-        )
+        guard hindsightAccess.performSave(answer: hindsight, save: { answer in
+            store.addRevisit(
+                id: decision.id,
+                outcome: selectedOutcome,
+                note: note,
+                nextRevisitDate: scheduleNext ? nextRevisitDate : nil,
+                hindsight: answer
+            )
+        }) else {
+            ownershipBlocked = true
+            return
+        }
 
         dismiss()
     }
@@ -240,4 +259,5 @@ struct NextRevisitPicker: View {
     ))
     .environment(DecisionStore())
     .environment(ReflectionCenter.make())
+    .environment(HindsightAccess.make())
 }

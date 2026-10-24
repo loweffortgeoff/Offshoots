@@ -75,6 +75,10 @@ struct RevisitHistoryCard: View {
                             .foregroundStyle(.secondary)
                     }
 
+                    if let answer = entry.revisit.hindsight {
+                        HindsightHistoryLabel(answer: answer, date: entry.revisit.date)
+                    }
+
                     if let note = entry.revisit.note {
                         Text(note)
                             .font(.subheadline)

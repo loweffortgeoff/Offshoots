@@ -17,6 +17,7 @@ struct OffshootsApp: App {
     /// rebuilt when the splash ends and would decode the file again
     @State private var store: DecisionStore
     @State private var reflection = ReflectionCenter.make()
+    @State private var hindsight = HindsightAccess.make()
     @State private var reflectionHistory: ReflectionHistoryStore
     @State private var startupError: String?
     @Environment(\.scenePhase) private var scenePhase
@@ -42,6 +43,7 @@ struct OffshootsApp: App {
                     .environment(store)
                     .environment(reflection)
                     .environment(reflectionHistory)
+                    .environment(hindsight)
                     .opacity(showSplash ? 0 : 1)
                 } // Fade in when splash is gone
                 
@@ -54,6 +56,7 @@ struct OffshootsApp: App {
             }
             .preferredColorScheme(theme.colorScheme)
             .task { await reflection.start() }
+            .task { await hindsight.start() }
             .onAppear {
                 guard showSplash else { return }
                 // Wait 2 seconds, then dismiss splash
@@ -66,7 +69,10 @@ struct OffshootsApp: App {
             }
             .onChange(of: scenePhase) { _, phase in
                 // The model can finish downloading while the app is in the background
-                if phase == .active { reflection.refreshAvailability() }
+                if phase == .active {
+                    reflection.refreshAvailability()
+                    Task { await hindsight.refresh() }
+                }
             }
         }
     }

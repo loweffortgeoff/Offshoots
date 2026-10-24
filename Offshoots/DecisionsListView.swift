@@ -223,5 +223,6 @@ struct DecisionsListView: View {
     DecisionsListView(path: .constant([]))
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(HindsightAccess.make())
 }
 

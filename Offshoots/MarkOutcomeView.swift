@@ -13,6 +13,10 @@ struct MarkOutcomeView: View {
     /// Reflection's on-device features. Not `Decision.reflection`, the user's own note
     @Environment(ReflectionCenter.self) private var reflectionCenter
 
+    @Environment(HindsightAccess.self) private var hindsightAccess
+    @State private var hindsight: HindsightAnswer?
+    @State private var ownershipBlocked = false
+
     let decision: Decision
 
     @FocusState private var isNoteFocused: Bool
@@ -66,6 +70,8 @@ struct MarkOutcomeView: View {
                         .background(Color.offshootCardBackground)
                         .cornerRadius(16)
 
+                        HindsightCheckInSection(answer: $hindsight, access: hindsightAccess)
+
                         // Reflection
                         VStack(alignment: .leading, spacing: 12) {
                             Label("Reflection", systemImage: "lightbulb.fill")
@@ -76,7 +82,7 @@ struct MarkOutcomeView: View {
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
 
-                            TextField(currentHint, text: $reflection, axis: .vertical)
+                            TextField(hindsight == nil ? currentHint : "What would you keep or change?", text: $reflection, axis: .vertical)
                                 .focused($isNoteFocused)
                                 .textFieldStyle(.plain)
                                 .padding(12)
@@ -119,23 +125,30 @@ struct MarkOutcomeView: View {
                 .scrollDismissesKeyboard(.immediately)
                 // Save stays in view: above the keyboard, and never at the screen edge.
                 .safeAreaInset(edge: .bottom) {
-                    Button {
-                        saveOutcome()
-                    } label: {
-                        HStack {
-                            Image(systemName: "checkmark.circle.fill")
-                            Text("Save Outcome")
-                                .fontWeight(.semibold)
+                    VStack(spacing: 8) {
+                        if ownershipBlocked && hindsight != nil && !hindsightAccess.canCapture {
+                            Text("Restore your purchase or clear the optional Hindsight answer before saving.")
+                                .font(.callout).foregroundStyle(.secondary)
+                                .accessibilityIdentifier("hindsightSaveBlocked")
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(Color.offshootPrimary)
-                        .foregroundStyle(Color.offshootOnPrimary)
-                        .cornerRadius(14)
+                        Button {
+                            saveOutcome()
+                        } label: {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                Text("Save Outcome")
+                                    .fontWeight(.semibold)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.offshootPrimary)
+                            .foregroundStyle(Color.offshootOnPrimary)
+                            .cornerRadius(14)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        .background(Color.offshootBackground)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background(Color.offshootBackground)
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -163,12 +176,18 @@ struct MarkOutcomeView: View {
         let impact = UIImpactFeedbackGenerator(style: .medium)
         impact.impactOccurred()
 
-        store.resolveDecision(
-            id: decision.id,
-            actual: selectedOutcome,
-            reflection: reflection.isEmpty ? nil : reflection,
-            secondaryFollowUpDate: setFollowUpReminder ? secondaryFollowUpDate : nil
-        )
+        guard hindsightAccess.performSave(answer: hindsight, save: { answer in
+            store.resolveDecision(
+                id: decision.id,
+                actual: selectedOutcome,
+                reflection: reflection.isEmpty ? nil : reflection,
+                secondaryFollowUpDate: setFollowUpReminder ? secondaryFollowUpDate : nil,
+                hindsight: answer
+            )
+        }) else {
+            ownershipBlocked = true
+            return
+        }
 
         dismiss()
     }
@@ -183,4 +202,5 @@ struct MarkOutcomeView: View {
     ))
     .environment(DecisionStore())
     .environment(ReflectionCenter.make())
+    .environment(HindsightAccess.make())
 }
