@@ -394,3 +394,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-24 (Keep paid Reflection disabled after local evaluation)
 **Decision:** Keep production Reflection disabled. Local engineering and review fixes pass 238 automated checks and a Release build, but author scoring accepts only 6/17 eligible core synthetic readings. Do not treat existing evidence IDs as proof of a sentence's truth.
 **Why:** The model invents shared meetings/planning and mental states, forces unrelated connections, and misses the notes' language. Retain the saved-history implementation and frozen evaluation; resolve generated-text quality before physical release acceptance or activation.
+
+## 2026-10-24 (PCC evaluation next; Reflection branch remains open)
+**Direction:** Evaluate Private Cloud Compute for Patterns and decision readings before selecting the production backend. Confirm entitlement access, compare identical frozen inputs with moderate reasoning, then evaluate expanded context separately. Preserve the saved-history implementation and quality gate.
+**Handoff:** Geoff reports the branch pushed and is returning to `main` for website work. `dev/paid-reflection` remains open and unmerged. PCC adoption is conditional on quality, eligibility, network/quota handling, and purchase honesty; implementation of that evaluation has not started.

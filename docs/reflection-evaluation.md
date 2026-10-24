@@ -50,3 +50,14 @@ The local StoreKit check creates a transaction with `SKTestSession`, checks app 
 Final UI checks used Xcode interactions and screenshots on the allowed simulator. Full backup/restore rows and destructive confirmation copy were inspected; round-trip and interrupted-write behavior have automated evidence, not a complete Files-picker UI round-trip. No purchase was attempted in the paywall preview. VoiceOver listening and physical-device testing remain open.
 
 An Apple Account sign-in prompt appeared during the Release smoke check and was cancelled. Its cause was not established; local StoreKit tests had run earlier. Release paid entry points remained absent, and the disabled factory is covered by tests. The earlier transient evidence-link exit did not recur in the final serial check. Simulator files/preferences were restored and the app was terminated.
+
+## Next session — evaluate Private Cloud Compute
+
+Resume `dev/paid-reflection`. Geoff reports it pushed; it remains open work, not ready to merge. He is returning to `main` for website work. Keep production paid Reflection disabled.
+
+1. Confirm the developer account's PCC access: Small Business Program membership, download eligibility, and the managed entitlement. The project has no PCC entitlement configured. See [Apple's access requirements](https://developer.apple.com/private-cloud-compute/).
+2. Add an evaluation-only PCC backend through the existing generator seam. Start with moderate reasoning and identical frozen inputs/prompts. Compare quality first; expand the current small input budget in a separate pass. See [Apple's PCC integration guidance](https://developer.apple.com/documentation/foundationmodels/adding-server-side-intelligence-with-private-cloud-compute).
+3. Score unsupported claims, useful connections, abstention, language, and latency. Repeat on hardware and add the exact missing real-note cases. A larger model is a candidate, not evidence that the gate passes.
+4. If PCC passes, propose it for Patterns and decision readings. Assess Clean Up Note separately for local use. Preserve free Look Back, saved readings, source evidence, and Restore.
+
+PCC requires iOS 27+, eligible Apple Intelligence hardware/region, internet, and daily user quota handling. Explain these limits before purchase; a one-time app unlock must not imply unlimited generations. Keep saved readings available offline or at quota exhaustion. Use local generated readings as a fallback only after they pass the same quality gate. Account eligibility and PCC output quality are still unverified.
