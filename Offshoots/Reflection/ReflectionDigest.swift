@@ -15,6 +15,7 @@ struct NoteLine: Equatable {
 /// Marked decisions, split by how the first result compared with the prediction. The prompt
 /// reads this, never raw models. It leaves out the numbers the Insights cards already show.
 struct PatternsDigest: Equatable {
+    var snapshot: ReflectionSourceSnapshot? = nil
     let resolvedCount: Int
     let worseCount: Int
     let asPredictedCount: Int
@@ -46,6 +47,7 @@ struct HistoryLine: Equatable {
 /// One marked decision, ready for a prompt. Equatable so a card can clear a stale result
 /// when the decision changes.
 struct DecisionDigest: Equatable {
+    var snapshot: ReflectionSourceSnapshot? = nil
     let title: String
     let category: String
     let stakes: String

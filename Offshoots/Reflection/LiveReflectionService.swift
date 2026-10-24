@@ -14,6 +14,25 @@ struct LiveReflectionService: ReflectionGenerating {
     var rawOutput: ((String) -> Void)? = nil
 
 
+    @Generable
+    struct GeneratedObservation {
+        @Guide(description: "A specific supported observation. No advice, causal claims, or general personality labels.")
+        var text: String
+        @Guide(description: "Exact bracketed source keys read from this request supporting the observation.")
+        var sources: [String]
+    }
+    @Generable
+    struct GeneratedReading {
+        @Guide(description: "Zero to three observations. Empty when nothing useful is supported.")
+        var observations: [GeneratedObservation]
+    }
+
+    private func observations(_ generated: GeneratedReading, snapshot: ReflectionSourceSnapshot, minimum: Int) -> [ReflectionObservation] {
+        generated.observations.prefix(3).compactMap {
+            try? ReflectionObservation(text: $0.text, evidenceKeys: $0.sources).validated(against: snapshot, minimumDecisions: minimum)
+        }
+    }
+
     // MARK: - Generated shapes
 
     /// One sentence per group, so the model covers each group once and cannot repeat itself.
@@ -86,46 +105,25 @@ struct LiveReflectionService: ReflectionGenerating {
     // MARK: - ReflectionGenerating
 
     func patterns(digest: PatternsDigest) async throws -> PatternsOutput {
-        let generated = try await generate(
-            GeneratedPatterns.self,
+        guard let snapshot = digest.snapshot,
+              ReflectionEligibility.hasNotesForPatterns(snapshot.decisions) else { throw ReflectionError.emptyOutput }
+        let generated = try await generate(GeneratedReading.self,
             instructions: ReflectionPromptBuilder.patternsInstructions,
-            prompt: ReflectionPromptBuilder.patternsPrompt(digest),
-            maximumTokens: 300
-        )
-        let lines = Self.groupLines(generated, worse: !digest.worse.isEmpty, asPredicted: !digest.asPredicted.isEmpty, better: !digest.better.isEmpty)
-        return try PatternsOutput(lines: lines).validated()
+            prompt: ReflectionPromptBuilder.patternsPrompt(digest), maximumTokens: 600)
+        return PatternsOutput(observations: observations(generated, snapshot: snapshot, minimum: 2))
     }
 
     func reflect(on digest: DecisionDigest) async throws -> DecisionReflectionOutput {
-        let history = digest.history.isEmpty ? "" : ReflectionPromptBuilder.historyRule
-        // With nothing that went the same way, the echo is dropped, whatever the model wrote
-        let echo = { (text: String) in digest.sameResult.isEmpty ? "" : text }
-        guard digest.hasWrittenText else {
-            let generated = try await generate(
-                GeneratedDecisionSummary.self,
-                instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes + history,
-                prompt: ReflectionPromptBuilder.decisionPrompt(digest),
-                maximumTokens: 300
-            )
-            return try DecisionReflectionOutput(
-                summary: generated.summary,
-                repeating: [],
-                nextPrompt: generated.nextPrompt,
-                echo: echo(generated.echo)
-            ).validated()
-        }
-        let generated = try await generate(
-            GeneratedDecisionReflection.self,
-            instructions: ReflectionPromptBuilder.decisionInstructions + history,
-            prompt: ReflectionPromptBuilder.decisionPrompt(digest),
-            maximumTokens: 400
-        )
-        return try DecisionReflectionOutput(
-            summary: generated.summary,
-            repeating: generated.repeating,
-            nextPrompt: generated.nextPrompt,
-            echo: echo(generated.echo)
-        ).validated()
+        guard let snapshot = digest.snapshot,
+              let subject = snapshot.decisions.first(where: { $0.id == snapshot.subjectID }) else { throw ReflectionError.emptyOutput }
+        let generated = try await generate(GeneratedReading.self,
+            instructions: ReflectionPromptBuilder.decisionInstructionsWithoutNotes + """
+             Add only optional observations with exact source keys. The subject's first result and revisits are different stages.
+            Do not invent repeating themes or require a next question. Return empty observations when there is no further insight.
+            """,
+            prompt: ReflectionPromptBuilder.decisionPrompt(digest), maximumTokens: 600)
+        return DecisionReflectionOutput(summary: DecisionReflectionOutput.timeline(subject),
+            observations: observations(generated, snapshot: snapshot, minimum: 1))
     }
 
     /// Reuses the Patterns shape: one sentence per result group
@@ -161,6 +159,13 @@ struct LiveReflectionService: ReflectionGenerating {
         maximumTokens: Int
     ) async throws -> Content {
         do {
+            if #available(iOS 26.4, *) {
+                let model = SystemLanguageModel.default
+                let instructionCount = try await model.tokenCount(for: instructions)
+                let promptCount = try await model.tokenCount(for: prompt)
+                let schemaCount = try await model.tokenCount(for: type.generationSchema)
+                guard instructionCount + promptCount + schemaCount + maximumTokens < model.contextSize else { throw ReflectionError.failed }
+            }
             let session = LanguageModelSession(instructions: instructions)
             let options = GenerationOptions(samplingMode: .greedy, maximumResponseTokens: maximumTokens)
             let response = try await session.respond(to: prompt, generating: type, options: options).content

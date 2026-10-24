@@ -5,13 +5,16 @@ import Testing
 @MainActor
 struct ReflectionPromptBuilderTests {
 
-    @Test func patternsPromptGroupsTheNotesByResult() throws {
-        let prompt = ReflectionPromptBuilder.patternsPrompt(ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes")))
-
-        #expect(prompt.contains("Marked decisions: 17. Against the first prediction: 6 went worse, 4 went as predicted, 7 went better."))
-        #expect(prompt.contains("Notes from decisions that went worse than predicted:\n- [Relationships, Medium] Made it worse."))
-        #expect(prompt.contains("- [Money, High] Saw the sale ends tonight and bought it in a hurry."))
-        #expect(prompt.contains("Notes from decisions that went better than predicted:"))
+    @Test func patternsPromptIncludesSourceKeysStagesAndScope() throws {
+        let digest = ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes"))
+        let snapshot = try #require(digest.snapshot)
+        let prompt = ReflectionPromptBuilder.patternsPrompt(digest)
+        #expect(prompt.contains(snapshot.scope))
+        for evidence in snapshot.evidence {
+            #expect(prompt.contains("[" + evidence.key + "]"))
+            #expect(prompt.contains(evidence.text))
+        }
+        #expect(prompt.contains("first"))
     }
 
     @Test func patternsPromptLeavesOutTheInsightsNumbers() throws {
@@ -21,9 +24,9 @@ struct ReflectionPromptBuilderTests {
         }
     }
 
-    @Test func anEmptyGroupSaysNone() {
-        let digest = ReflectionDigestBuilder.patterns(from: [Make.decision(expected: .good, actual: .bad, notes: "Rushed it", resolvedAt: Make.day(7))])
-        #expect(ReflectionPromptBuilder.patternsPrompt(digest).contains("Notes from decisions that went as predicted:\n- none"))
+    @Test func emptyInputReportsNoRecords() {
+        let digest = ReflectionDigestBuilder.patterns(from: [])
+        #expect(ReflectionPromptBuilder.patternsPrompt(digest).contains("Read 0 of 0"))
     }
 
     /// Every group full, every note at the limit, must stay well inside the 4,096-token
@@ -43,21 +46,20 @@ struct ReflectionPromptBuilderTests {
         let decision = Make.decision(title: "Move cities", expected: .good, actual: .bad, notes: "Cheaper rent", createdAt: Make.day(0), resolvedAt: Make.day(10), revisits: [revisit])
         let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(decision)))
 
-        #expect(prompt.contains("Decision: Move cities"))
-        #expect(prompt.contains("Predicted: Good. First result: Bad, after 10 days."))
-        #expect(prompt.contains("30 days after the first result: Good. \"Fine now\""))
-        #expect(prompt.contains("Notes: \"Cheaper rent\""))
+        #expect(prompt.contains("Move cities | work | expected Good, first Bad"))
+        #expect(prompt.contains("Good: Fine now"))
+        #expect(prompt.contains("Cheaper rent"))
+        #expect(prompt.contains(revisit.date.ISO8601Format()))
     }
 
-    @Test func decisionPromptListsTheCategoryHistory() throws {
+    @Test func decisionPromptNamesTheSubjectAndSelectionScope() throws {
         let decisions = try Fixture.load("reflection-notes")
         let laptop = try #require(decisions.first { $0.title == "Upgrade to the new laptop" })
-        let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(laptop, among: decisions)))
-
-        // The laptop went worse, so the gym plan and the concert tickets are the same result
-        #expect(prompt.contains("Other Money decisions that also went worse than predicted:\n- Buy concert tickets for the whole group: went worse than predicted."))
-        #expect(prompt.contains("- Sign up for the annual gym plan: went worse than predicted. Notes: \"The salesperson said the price goes up tomorrow, so I signed on the spot.\" Outcome note: \"Went four times. Paid for a whole year.\""))
-        #expect(prompt.contains("Other Money decisions that went differently:\n- Sell the old bike: went better than predicted."))
+        let digest = try #require(ReflectionDigestBuilder.decision(laptop, among: decisions))
+        let prompt = ReflectionPromptBuilder.decisionPrompt(digest)
+        #expect(prompt.contains("Subject: " + laptop.id.uuidString))
+        #expect(prompt.contains("omitted"))
+        #expect(prompt.contains(laptop.notes ?? "MISSING"))
     }
 
     @Test func noHistoryMeansNoHistorySection() throws {
