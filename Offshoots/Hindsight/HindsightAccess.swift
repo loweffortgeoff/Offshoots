@@ -3,7 +3,11 @@ import Observation
 
 @MainActor @Observable
 final class HindsightAccess {
+    #if HINDSIGHT_TESTFLIGHT
+    private static let productionEnabled = true
+    #else
     private static let productionEnabled = false
+    #endif
     let isEnabled: Bool
     let entitlement: ReflectionEntitlement?
     let purchase: ReflectionPurchase?

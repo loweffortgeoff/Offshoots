@@ -429,3 +429,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 
 ## 2026-10-25 (Optimism fix belongs to 2.1.0)
 **Decision:** Track the free Optimism calibration fix under 2.1.0. Keep its existing Things task in Offshoots → Bug Fixes, scheduled for Today.
+
+## 2026-10-25 (Enable Hindsight for a TestFlight purchase evaluation)
+**Decision:** Enable Hindsight purchase and capture only in the 2.1.0 TestFlight archive by compiling with `HINDSIGHT_TESTFLIGHT`. Keep the default Release build and generated Reflection disabled.
+**Why:** Geoff wants to test the first Hindsight experience and sandbox purchase in TestFlight. He will use separate Debug installs and `-HindsightLocked` / `-HindsightPreview` for locked and owned states. AI-assisted Reflection remains a later build.
