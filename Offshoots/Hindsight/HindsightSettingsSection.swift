@@ -10,6 +10,7 @@ struct HindsightSettingsSection: View {
                     Label("Hindsight is unlocked", systemImage: "checkmark.circle")
                 } else {
                     Button("Explore Hindsight") { showPurchase = true }
+                        .sheet(isPresented: $showPurchase) { HindsightPurchaseSheet(purchase: purchase) }
                 }
                 Button("Restore Purchase") { Task { await purchase.restore() } }
                     .disabled(purchase.isRestoring)
@@ -18,7 +19,6 @@ struct HindsightSettingsSection: View {
             footer: { Text("Saved answers remain readable and exportable if ownership changes.") }
             .tint(Color.offshootPrimary)
             .listRowBackground(Color.offshootCardBackground)
-            .sheet(isPresented: $showPurchase) { HindsightPurchaseSheet(purchase: purchase) }
         }
     }
 }
