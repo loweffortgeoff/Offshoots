@@ -27,8 +27,14 @@ final class HindsightAccess {
         return true
     }
 
-    static func make(arguments: [String] = ProcessInfo.processInfo.arguments) -> HindsightAccess {
+    /// DEBUG only. `-HindsightStoreKit` sets this key, so Home Screen launches stay enabled; `-HindsightStoreKitOff` clears it.
+    static let debugStoreKitKey = "debugHindsightStoreKit"
+
+    static func make(arguments: [String] = ProcessInfo.processInfo.arguments,
+                     defaults: UserDefaults = .standard) -> HindsightAccess {
         #if DEBUG
+        if arguments.contains("-HindsightStoreKitOff") { defaults.removeObject(forKey: debugStoreKitKey) }
+        else if arguments.contains("-HindsightStoreKit") { defaults.set(true, forKey: debugStoreKitKey) }
         if arguments.contains("-HindsightPreview") || arguments.contains("-HindsightLocked") {
             let owned = arguments.contains("-HindsightPreview")
             let entitlement = ReflectionEntitlement(source: HindsightPreviewEntitlementSource(owned: owned))
@@ -36,7 +42,7 @@ final class HindsightAccess {
                 purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { false },
                     featureName: "Hindsight", purchaseBlockedMessage: "Purchases are disabled in this preview."))
         }
-        if arguments.contains("-HindsightStoreKit") { return enabled() }
+        if defaults.bool(forKey: debugStoreKitKey) { return enabled() }
         #endif
         guard productionEnabled else { return HindsightAccess(isEnabled: false, entitlement: nil, purchase: nil) }
         return enabled()

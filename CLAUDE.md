@@ -217,6 +217,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   argument. In the shared scheme `-ReflectionUnlockOnly` is present but
   disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
   would start unlocked and the paywall could not be tested.
+- **Hindsight launch arguments (DEBUG builds only).** `-HindsightStoreKit`
+  turns Hindsight on with real StoreKit and saves the
+  `debugHindsightStoreKit` key, so later Home Screen launches stay on.
+  `-HindsightStoreKitOff` clears the key. Uninstalling also clears it.
 - **Look Back raw output (DEBUG builds).** Each Look Back call logs
   `LOOKBACKRAW` with the model's three sentences before validation. In
   Xcode's console, filter on `LOOKBACKRAW`. Use it when a card is missing

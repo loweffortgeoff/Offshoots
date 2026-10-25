@@ -95,7 +95,7 @@ struct HindsightAccessTests {
     }
 
     @Test func disabledFactoryDoesNotCreatePurchaseOrExposeCapture() {
-        let access = HindsightAccess.make(arguments: [])
+        let access = HindsightAccess.make(arguments: [], defaults: freshDefaults())
         #expect(!access.isEnabled)
         #expect(!access.canCapture)
         #expect(access.entitlement == nil)
@@ -112,5 +112,22 @@ struct HindsightAccessTests {
         #expect(!access.canCapture)
         #expect(await access.purchase?.buy() == false)
         #endif
+    }
+
+    @Test func storeKitArgumentPersistsUntilTurnedOff() {
+        #if DEBUG
+        let defaults = freshDefaults()
+        #expect(HindsightAccess.make(arguments: ["-HindsightStoreKit"], defaults: defaults).isEnabled)
+        #expect(HindsightAccess.make(arguments: [], defaults: defaults).isEnabled)
+        #expect(!HindsightAccess.make(arguments: ["-HindsightStoreKitOff"], defaults: defaults).isEnabled)
+        #expect(!HindsightAccess.make(arguments: [], defaults: defaults).isEnabled)
+        #endif
+    }
+
+    private func freshDefaults() -> UserDefaults {
+        let name = "HindsightAccessTests-\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: name)!
+        defaults.removePersistentDomain(forName: name)
+        return defaults
     }
 }
