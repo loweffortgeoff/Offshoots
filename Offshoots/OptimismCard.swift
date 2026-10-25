@@ -39,6 +39,11 @@ struct OptimismCard: View {
                     }
                 }
                 .accessibilityElement(children: .combine)
+
+                Text("First outcomes: \(bias.worse) worse, \(bias.matched) as predicted, \(bias.better) better.")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             } else {
                 let remaining = AnalyticsEngine.minimumBiasSample - markedCount
                 Text("\(markedCount) of \(AnalyticsEngine.minimumBiasSample) marked. Mark \(remaining) more to see whether you tend to expect too much or too little.")
@@ -57,6 +62,7 @@ struct OptimismCard: View {
         switch lean {
         case .optimistic: return "Optimistic"
         case .calibrated: return "Well calibrated"
+        case .noLean: return "No overall lean"
         case .pessimistic: return "Pessimistic"
         }
     }
@@ -65,6 +71,7 @@ struct OptimismCard: View {
         switch lean {
         case .optimistic: return "arrow.up.right.circle.fill"
         case .calibrated: return "scope"
+        case .noLean: return "arrow.left.arrow.right.circle"
         case .pessimistic: return "arrow.down.right.circle.fill"
         }
     }
@@ -73,6 +80,7 @@ struct OptimismCard: View {
         switch lean {
         case .optimistic: return .offshootPrimary
         case .calibrated: return .outcomeGood
+        case .noLean: return .offshootPrimary
         case .pessimistic: return .offshootPrimary
         }
     }
@@ -85,7 +93,12 @@ struct OptimismCard: View {
         case .pessimistic:
             return "On average, you expect \(steps) steps worse than the outcome you first mark, across \(bias.sample) decisions."
         case .calibrated:
-            return "On average, your predictions match the outcome you first mark, across \(bias.sample) decisions."
+            return "Your predictions match every outcome you first mark, across \(bias.sample) decisions."
+        case .noLean:
+            if bias.worse > 0 && bias.better > 0 {
+                return "Misses in both directions largely cancel out in the average."
+            }
+            return "The average gap is small, but some first outcomes differ from your predictions."
         }
     }
 }

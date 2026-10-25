@@ -433,3 +433,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-25 (Enable Hindsight for a TestFlight purchase evaluation)
 **Decision:** Enable Hindsight purchase and capture only in the 2.1.0 TestFlight archive by compiling with `HINDSIGHT_TESTFLIGHT`. Keep the default Release build and generated Reflection disabled.
 **Why:** Geoff wants to test the first Hindsight experience and sandbox purchase in TestFlight. He will use separate Debug installs and `-HindsightLocked` / `-HindsightPreview` for locked and owned states. AI-assisted Reflection remains a later build.
+
+## 2026-10-25 (Optimism separates balance from calibration)
+**Decision:** Show worse/as-predicted/better counts from first marked outcomes. Keep the quarter-step directional threshold; below it, use “No overall lean” when any miss remains and reserve “Well calibrated” for exact matches throughout.
+**Why:** Opposing misses cancel in the average. Revisits must not change prediction calibration; the three-marked-decision threshold stays unchanged.

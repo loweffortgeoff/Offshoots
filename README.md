@@ -46,7 +46,7 @@ Paid Reflection is dormant in 2.0. The earlier approved 2.1.0 design proposed ev
 
 ### Analytics & Insights
 - **Prediction Accuracy** — How often your guesses match reality, with near misses (one step off) shown apart (first rating)
-- **Optimism Bias** — Whether you tend to expect better or worse than what happens (first rating)
+- **Optimism Bias** — Whether you tend to expect better or worse than what happens, with worse/as-predicted/better counts (first rating). Small average gaps show “No overall lean” when misses remain.
 - **Outcome Distribution** — Positive vs. negative breakdown (latest rating)
 - **Category Breakdown** — Which areas you decide on most
 - **Trend** — Whether your accuracy is Improving, Declining or Stable over the last 30 days (first rating). Before that, from 6 marked decisions, a "So far" trend compares your older and newer decisions

@@ -59,7 +59,7 @@ struct LookBackStatsTests {
         #expect(stats(worse: 1, asPredicted: 4, better: 1).headline == "Your Work predictions tend to hold up")
     }
 
-    /// The free Optimism card averages the lean, so 6 worse and 7 better reads "Well calibrated".
+    /// A 6-worse / 7-better split has no clear direction.
     /// Look Back counts directions instead, and says nothing when no group is a majority.
     @Test func aSplitHasNoHeadline() {
         #expect(stats(worse: 6, better: 7).headline == nil)

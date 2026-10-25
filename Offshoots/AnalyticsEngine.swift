@@ -72,14 +72,19 @@ struct AnalyticsEngine {
         return AccuracyBreakdown(correct: correct, close: close, incorrect: incorrect)
     }
 
-    /// Average of expected minus first rating, in steps on the 5-point scale.
-    /// Positive means predictions run better than results. Nil below 3 decisions
+    /// Average expected-minus-first-rating gap and first outcomes split by direction.
+    /// Positive means predictions run better than results. Nil below 3 decisions.
     static func optimismBias(from decisions: [Decision]) -> OptimismBias? {
         let gaps = decisions.compactMap { decision in
             decision.actual.map { decision.expected.numericValue - $0.numericValue }
         }
         guard gaps.count >= minimumBiasSample else { return nil }
-        return OptimismBias(averageGap: Double(gaps.reduce(0, +)) / Double(gaps.count), sample: gaps.count)
+        return OptimismBias(
+            averageGap: Double(gaps.reduce(0, +)) / Double(gaps.count),
+            worse: gaps.filter { $0 > 0 }.count,
+            matched: gaps.filter { $0 == 0 }.count,
+            better: gaps.filter { $0 < 0 }.count
+        )
     }
 
     static let minimumBiasSample = 3
@@ -200,18 +205,23 @@ struct TrendResult: Equatable {
 
 struct OptimismBias: Equatable {
     let averageGap: Double
-    let sample: Int
+    let worse: Int
+    let matched: Int
+    let better: Int
+
+    var sample: Int { worse + matched + better }
 
     enum Lean: Equatable {
         case optimistic
         case calibrated
+        case noLean
         case pessimistic
     }
 
-    /// Within a quarter step either way counts as calibrated
+    /// A small average gap is not calibration unless every first outcome matches.
     var lean: Lean {
         if averageGap >= 0.25 { return .optimistic }
         if averageGap <= -0.25 { return .pessimistic }
-        return .calibrated
+        return matched == sample ? .calibrated : .noLean
     }
 }

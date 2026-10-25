@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2026-10-25: Fixed the free Optimism card on `fix/optimism-calibration`: show worse/as-predicted/better counts from first outcomes and distinguish cancelling misses from exact calibration. Build and 261 tests pass, with ten opt-in skips. iPhone 18 Pro (iOS 27.0) checks pass in dark/light and largest text; Desktop before/after captures support review.
+
 - 2026-10-25: Uploaded Offshoots 2.1.0 (11) for a Hindsight TestFlight evaluation. The archive-only `HINDSIGHT_TESTFLIGHT` flag enables real StoreKit purchase/capture in that build; normal Release builds and generated Reflection stay disabled. ASC reports the build as Valid and Testing in the internal Low Effort group. Saved and read back the approved What to Test notes, updated the Hindsight IAP localization, and answered export compliance from the checked code: no app-implemented encryption algorithms.
 
 - 2026-10-25: Moved the free Optimism calibration fix into the 2.1.0 TODO section. The existing Offshoots Bug Fixes task is scheduled for Today.

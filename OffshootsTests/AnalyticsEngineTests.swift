@@ -56,6 +56,61 @@ struct AnalyticsEngineTests {
         #expect(AnalyticsEngine.qualityTrend(from: decisions, now: Self.now) == TrendResult(trend: .tooEarly, isSoFar: false))
     }
 
+    @Test func opposingMissesAreNotCalibration() throws {
+        let bias = try #require(AnalyticsEngine.optimismBias(from: try Fixture.load("reflection-notes")))
+        #expect(bias.lean == .noLean)
+        #expect(bias.worse == 6)
+        #expect(bias.matched == 4)
+        #expect(bias.better == 7)
+        #expect(bias.sample == 17)
+    }
+
+    @Test func exactMatchesAreCalibratedDespiteLaterRevisits() throws {
+        var decisions = try Fixture.load("reflection-notes")
+        for index in decisions.indices where decisions[index].actual != nil {
+            decisions[index].actual = decisions[index].expected
+            decisions[index].revisits = [Revisit(outcome: .veryBad), Revisit(outcome: .veryGood)]
+        }
+        let bias = try #require(AnalyticsEngine.optimismBias(from: decisions))
+        #expect(bias.lean == .calibrated)
+        #expect(bias.matched == 17)
+        #expect(bias.worse == 0)
+        #expect(bias.better == 0)
+        #expect(bias.averageGap == 0)
+    }
+
+    @Test func directionalSplitIgnoresRevisitsAndPendingDecisions() throws {
+        var decisions = try Fixture.load("reflection-notes")
+        for index in decisions.indices {
+            decisions[index].revisits = [Revisit(outcome: .veryGood)]
+        }
+        decisions.append(Decision(title: "Pending", category: .work, expected: .veryBad, followUpDate: Date()))
+        let bias = try #require(AnalyticsEngine.optimismBias(from: decisions))
+        #expect(bias.worse == 6)
+        #expect(bias.matched == 4)
+        #expect(bias.better == 7)
+        #expect(bias.sample == 17)
+        #expect(bias.lean == .noLean)
+    }
+
+    @Test(arguments: [DecisionOutcome.bad, .good])
+    func aSmallOneSidedMissIsNotCalibration(actual: DecisionOutcome) throws {
+        var decisions = (0..<4).map { _ in
+            Decision(title: "Match", category: .work, expected: .neutral, actual: .neutral, followUpDate: Date())
+        }
+        decisions.append(Decision(title: "Miss", category: .work, expected: .neutral, actual: actual, followUpDate: Date()))
+        let bias = try #require(AnalyticsEngine.optimismBias(from: decisions))
+        #expect(bias.lean == .noLean)
+        #expect(bias.matched == 4)
+    }
+
+    @Test func fewerThanThreeMarkedDecisionsDoNotUnlockOptimism() {
+        let decisions = (0..<2).map { _ in
+            Decision(title: "Match", category: .work, expected: .good, actual: .good, followUpDate: Date())
+        }
+        #expect(AnalyticsEngine.optimismBias(from: decisions) == nil)
+    }
+
     // MARK: - Edge cases
 
     @Test func emptyInput() {
@@ -68,12 +123,12 @@ struct AnalyticsEngineTests {
 
     @Test(arguments: [
         (0.25, OptimismBias.Lean.optimistic),
-        (0.24, .calibrated),
-        (-0.24, .calibrated),
+        (0.24, .noLean),
+        (-0.24, .noLean),
         (-0.25, .pessimistic),
     ])
     func leanThresholds(gap: Double, lean: OptimismBias.Lean) {
-        #expect(OptimismBias(averageGap: gap, sample: 3).lean == lean)
+        #expect(OptimismBias(averageGap: gap, worse: 1, matched: 1, better: 1).lean == lean)
     }
 
     @Test func outcomePercentagesAddUpTo100() {

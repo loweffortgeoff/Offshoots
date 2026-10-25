@@ -32,7 +32,7 @@
 **Current direction:** Hindsight is the approved paid direction. Generated Reflection is outside its purchase promise; its existing work and six tasks below remain on hold. November was the prior target, not a delivery commitment. The six generated-Reflection Things tasks are parked in Someday with the `Offshoots` tag; the three Hindsight tasks are undated in Offshoots → Feature Work.
 
 ### Free bug fix
-- [ ] **Correct the Optimism card’s misleading calibration summary.** It shows the average gap, so 6 decisions that went worse and 7 that went better read as "Well calibrated" (seen on `reflection-notes.json`, 2026-10-05). Show the split as well, or say when the misses cancel out. This is the free card, separate from Reflection. Reflection no longer sends the average to the model (DECISIONS 2026-10-05). Keep this fix outside the accepted 2.0 RC.
+- [x] **Correct the Optimism card’s misleading calibration summary.** On `fix/optimism-calibration`, show first-outcome counts and “No overall lean” for cancelling misses; exact matches stay calibrated. 261 tests pass, ten opt-in tests skip. Before/after simulator screenshots are on the Desktop; awaiting Geoff’s comparison review. — 2026-10-25
 **Things:** Offshoots → Bug Fixes holds this task, scheduled for Today (2026-10-25).
 
 ### Prior generated-Reflection cycle — on hold
