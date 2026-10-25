@@ -67,6 +67,10 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
+            argument = "-HindsightStoreKitOff"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-HindsightStoreKit"
             isEnabled = "YES">
          </CommandLineArgument>

@@ -422,3 +422,10 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-24 (Hindsight local handoff; activation remains off)
 **Evidence:** 255 regular tests pass with ten opt-in skips; explicit local StoreKit/fixture tests and the Release build pass. Simulator flows and accessibility retests pass; the independent-review Restore finding is fixed with a failing-then-passing regression.
 **Boundary:** Keep production purchase/capture and generated Reflection disabled. Phone/VoiceOver/offline/sandbox checks, real-history usefulness, final customer copy, and distribution readiness remain open; original simulator files were restored and hash-checked.
+
+## 2026-10-25 (Hindsight owns the 2.1.0 roadmap)
+**Decision:** Track real-history value and customer copy, phone verification, then release preparation as the remaining Hindsight work. Park the six generated-Reflection Things tasks in Someday with the `Offshoots` tag; retain their repository history on hold.
+**Boundary:** November is not a delivery commitment. Production activation, upload, submission, and public release remain separate gates.
+
+## 2026-10-25 (Optimism fix belongs to 2.1.0)
+**Decision:** Track the free Optimism calibration fix under 2.1.0. Keep its existing Things task in Offshoots → Bug Fixes, scheduled for Today.
