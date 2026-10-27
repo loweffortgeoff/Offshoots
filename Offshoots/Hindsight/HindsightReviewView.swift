@@ -34,7 +34,8 @@ struct HindsightReviewView: View {
             }
             Section {
                 HindsightOutcomeFilter(selection: $filter.outcome)
-                if filter.answer != nil || filter.outcome != nil {
+                HindsightCategoryFilter(selection: $filter.category)
+                if filter.answer != nil || filter.outcome != nil || filter.category != nil {
                     Button("Clear filters") { filter = HindsightReviewFilter() }
                         .tint(Color.offshootPrimary)
                 }
