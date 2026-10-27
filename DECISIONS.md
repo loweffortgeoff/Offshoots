@@ -428,7 +428,7 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Boundary:** November is not a delivery commitment. Production activation, upload, submission, and public release remain separate gates.
 
 ## 2026-10-27 (Hindsight review direction)
-**Decision:** Show recorded notes alongside Hindsight answers and outcomes, and add a category filter. Geoff approved the direction; the [implementation plan](docs/superpowers/plans/2026-10-27-hindsight-review.md) awaits review. Paid-value acceptance remains open.
+**Decision:** Show recorded notes alongside Hindsight answers and outcomes, and add a category filter. Geoff approved the [implementation plan](docs/superpowers/plans/2026-10-27-hindsight-review.md) for native execution. Paid-value acceptance remains open.
 
 ## 2026-10-25 (Optimism fix belongs to 2.1.0)
 **Decision:** Track the free Optimism calibration fix under 2.1.0. Keep its existing Things task in Offshoots → Bug Fixes, scheduled for Today.

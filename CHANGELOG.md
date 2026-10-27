@@ -4,7 +4,7 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
-- 2026-10-27: Fast-forwarded `dev/paid-reflection` to include the Optimism fix. Planned a Hindsight review with event notes and category filtering; implementation awaits approval.
+- 2026-10-27: Fast-forwarded `dev/paid-reflection` to include the Optimism fix. Hindsight review now shows event notes and filters by current category; real-history value and phone acceptance remain open.
 
 - 2026-10-25: Fixed the free Optimism card on `fix/optimism-calibration`: show worse/as-predicted/better counts from first outcomes and distinguish cancelling misses from exact calibration. Build and 261 tests pass, with ten opt-in skips. iPhone 18 Pro (iOS 27.0) checks pass in dark/light and largest text; Desktop before/after captures support review.
 

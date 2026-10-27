@@ -1,5 +1,7 @@
 # Hindsight evaluation
 
+2026-10-27 update: Hindsight review shows the selected event's note and current decision category, with a category filter. Nine focused summary/review tests and a generic iOS Simulator build passed. A subsequent focused rerun stalled in the simulator test runner and was stopped. An independent review found no actionable issue in the new review changes; it was not exhaustive across the branch. On iPhone 18 Pro (iOS 27.0), checks showed expected counts, combined filters, empty results, reset, dated navigation, and notes. Saved answers remained readable in locked preview; the long note wrapped at largest text in light mode, and dark-mode filter labels were readable after scrolling. Original Documents and preferences were restored and compared to the backup. Spoken VoiceOver, real-history paid value, and phone checks remain open.
+
 Date: 2026-10-24. Status: local checks and independent-review fixes pass. Physical-device and paid-value acceptance remain open. Production purchase/capture remain disabled. Generated Reflection remains disabled separately.
 
 ## Scope and test inputs
