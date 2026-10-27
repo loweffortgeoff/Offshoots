@@ -58,7 +58,7 @@ final class ReflectionCenter {
         availability = availabilityProvider()
     }
 
-    /// The release switch runs before availability, StoreKit, and developer launch overrides.
+    /// DEBUG launch arguments come first for local evaluation; the release switch then runs before availability and StoreKit.
     static func make(arguments: [String] = ProcessInfo.processInfo.arguments) -> ReflectionCenter {
         #if DEBUG
         // Locked layout preview. Buying is disabled in this explicit developer configuration.

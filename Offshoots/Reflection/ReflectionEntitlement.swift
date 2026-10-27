@@ -28,9 +28,9 @@ final class ReflectionEntitlement {
         !entitled.isDisjoint(with: accepted)
     }
 
+    /// Safe to call from every owner of a shared entitlement: one listener per instance.
     func start() async {
-        listener?.cancel()
-        listener = listen()
+        if listener == nil { listener = listen() }
         await refresh()
     }
 

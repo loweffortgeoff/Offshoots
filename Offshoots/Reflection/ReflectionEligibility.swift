@@ -13,7 +13,6 @@ enum CleanUpStatus: Equatable {
 
 /// Decides which decisions and notes may produce Reflection output.
 enum ReflectionEligibility {
-    static let minimumResolvedForPatterns = 2
     /// Patterns read the notes, so with fewer than this there is nothing to compare
     static let minimumNotesForPatterns = 2
     static let minimumNoteWords = 3

@@ -64,6 +64,7 @@ struct ReflectionReadingCard: View {
                     canGenerate: { center.canGenerate }, currentDecisions: { store.decisions }, epoch: { store.revision })
             }
         }
-        .onDisappear { request?.cancel() }
+        // No cancel on disappear: pushing Saved Reflections or switching tabs must not drop a
+        // reading in flight. The worker keeps the controller alive and saves to history.
     }
 }

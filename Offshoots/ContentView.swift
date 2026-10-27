@@ -90,5 +90,6 @@ struct ContentView: View {
     ContentView()
         .environment(DecisionStore())
         .environment(ReflectionCenter.make())
+        .environment(ReflectionHistoryStore())
         .environment(HindsightAccess.make())
 }

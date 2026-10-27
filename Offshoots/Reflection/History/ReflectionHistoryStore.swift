@@ -27,9 +27,13 @@ final class ReflectionHistoryStore {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let envelope = try decoder.decode(Envelope.self, from: data)
-        guard envelope.version == 1, Set(envelope.readings.map(\.id)).count == envelope.readings.count else { throw ReflectionError.failed }
-        for reading in envelope.readings { try reading.validate() }
+        guard envelope.version == 1 else { throw ReflectionError.failed }
+        try validate(envelope.readings)
         return envelope.readings
+    }
+    static func validate(_ readings: [SavedReflection]) throws {
+        guard Set(readings.map(\.id)).count == readings.count else { throw ReflectionError.failed }
+        for reading in readings { try reading.validate() }
     }
     func append(_ reading: SavedReflection) throws {
         try reading.validate()
@@ -39,9 +43,8 @@ final class ReflectionHistoryStore {
     func delete(id: UUID) throws { try replaceAll(with: readings.filter { $0.id != id }) }
     func replaceAll(with values: [SavedReflection]) throws {
         guard loadError == nil else { throw ReflectionError.failed }
-        let bytes = try Self.encode(values)
-        _ = try Self.decode(bytes)
-        try write(bytes, saveURL)
+        try Self.validate(values)
+        try write(Self.encode(values), saveURL)
         readings = values
     }
     func recoveryData() throws -> Data { try Data(contentsOf: saveURL) }

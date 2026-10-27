@@ -34,8 +34,10 @@ final class HindsightAccess {
     /// DEBUG only. `-HindsightStoreKit` sets this key, so Home Screen launches stay enabled; `-HindsightStoreKitOff` clears it.
     static let debugStoreKitKey = "debugHindsightStoreKit"
 
+    /// Pass Reflection's entitlement when it has one, so a purchase or restore in either surface unlocks both.
     static func make(arguments: [String] = ProcessInfo.processInfo.arguments,
-                     defaults: UserDefaults = .standard) -> HindsightAccess {
+                     defaults: UserDefaults = .standard,
+                     sharedEntitlement: ReflectionEntitlement? = nil) -> HindsightAccess {
         #if DEBUG
         if arguments.contains("-HindsightStoreKitOff") { defaults.removeObject(forKey: debugStoreKitKey) }
         else if arguments.contains("-HindsightStoreKit") { defaults.set(true, forKey: debugStoreKitKey) }
@@ -46,14 +48,14 @@ final class HindsightAccess {
                 purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { false },
                     featureName: "Hindsight", purchaseBlockedMessage: "Purchases are disabled in this preview."))
         }
-        if defaults.bool(forKey: debugStoreKitKey) { return enabled() }
+        if defaults.bool(forKey: debugStoreKitKey) { return enabled(sharedEntitlement) }
         #endif
         guard productionEnabled else { return HindsightAccess(isEnabled: false, entitlement: nil, purchase: nil) }
-        return enabled()
+        return enabled(sharedEntitlement)
     }
 
-    private static func enabled() -> HindsightAccess {
-        let entitlement = ReflectionEntitlement()
+    private static func enabled(_ shared: ReflectionEntitlement?) -> HindsightAccess {
+        let entitlement = shared ?? ReflectionEntitlement()
         return HindsightAccess(isEnabled: true, entitlement: entitlement,
             purchase: ReflectionPurchase(entitlement: entitlement, canPurchase: { true },
                 featureName: "Hindsight", purchaseBlockedMessage: "Hindsight is not available for purchase yet."))

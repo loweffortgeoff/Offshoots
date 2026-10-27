@@ -107,15 +107,17 @@ final class DecisionStore {
         save()
     }
 
+    /// Returns false when the decision is gone or already has an outcome; nothing is written then.
+    @discardableResult
     func resolveDecision(
         id: UUID,
         actual: DecisionOutcome,
         reflection: String? = nil,
         secondaryFollowUpDate: Date? = nil,
         hindsight: HindsightAnswer? = nil
-    ) {
+    ) -> Bool {
         guard let index = decisions.firstIndex(where: { $0.id == id }),
-              decisions[index].actual == nil else { return }
+              decisions[index].actual == nil else { return false }
 
         ReminderManager.shared.cancelReminder(for: decisions[index])
 
@@ -132,6 +134,7 @@ final class DecisionStore {
         }
 
         save()
+        return true
     }
 
     /// Records a re-rating of an already-marked decision. Passing a next date

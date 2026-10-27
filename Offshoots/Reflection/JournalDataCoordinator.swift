@@ -33,9 +33,14 @@ final class JournalDataCoordinator {
               store.saveURL.lastPathComponent == "decisions.json", history.saveURL.lastPathComponent == "reflections.json"
         else { throw ReflectionError.failed }
         try Self.recover(directory: directory)
+        // The marker is deleted on success, so it cannot be the only copy of a file the app could not read.
+        if history.loadError != nil, FileManager.default.fileExists(atPath: history.saveURL.path) {
+            let aside = directory.appendingPathComponent("reflections-unreadable-\(Int(Date().timeIntervalSince1970)).json")
+            try FileManager.default.copyItem(at: history.saveURL, to: aside)
+        }
+        // `backup.validate()` already checked the readings; encoding cannot make them invalid.
         let decisionData = try DecisionStore.encode(backup.decisions)
         let historyData = try ReflectionHistoryStore.encode(backup.readings)
-        _ = try ReflectionHistoryStore.decode(historyData)
         func oldData(_ url: URL) throws -> Data? {
             FileManager.default.fileExists(atPath: url.path) ? try Data(contentsOf: url) : nil
         }

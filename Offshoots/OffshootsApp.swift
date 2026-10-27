@@ -16,8 +16,8 @@ struct OffshootsApp: App {
     /// Owned here, not in ContentView: App.init runs once, while ContentView is
     /// rebuilt when the splash ends and would decode the file again
     @State private var store: DecisionStore
-    @State private var reflection = ReflectionCenter.make()
-    @State private var hindsight = HindsightAccess.make()
+    @State private var reflection: ReflectionCenter
+    @State private var hindsight: HindsightAccess
     @State private var reflectionHistory: ReflectionHistoryStore
     @State private var startupError: String?
     @Environment(\.scenePhase) private var scenePhase
@@ -26,7 +26,13 @@ struct OffshootsApp: App {
         var recoveryError: String?
         do { try JournalDataCoordinator.recover(directory: .documentsDirectory) }
         catch { recoveryError = "The interrupted restore could not be recovered. Free storage or restore file access, then restart Offshoots. Your original files have been retained." }
-        _store = State(initialValue: DecisionStore())
+        let store = DecisionStore()
+        // The marker still holds the original files, so nothing may save over the half-restored journal.
+        if recoveryError != nil { store.blockAfterRestoreFailure() }
+        _store = State(initialValue: store)
+        let reflection = ReflectionCenter.make()
+        _reflection = State(initialValue: reflection)
+        _hindsight = State(initialValue: HindsightAccess.make(sharedEntitlement: reflection.entitlement))
         _reflectionHistory = State(initialValue: ReflectionHistoryStore())
         _startupError = State(initialValue: recoveryError)
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared

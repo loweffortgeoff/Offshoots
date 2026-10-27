@@ -2,7 +2,7 @@
 
 ## 2.0 release scope (2026-10-17)
 
-Free Look Back lives in `Offshoots/LookBack/` and reads first outcomes directly on iOS 18.6+. `ReflectionCenter.paidFeaturesEnabled` is false before availability, StoreKit, and debug overrides. Paid controls are hidden even with `-ReflectionFake` or `-ReflectionUnlockOnly`. Keep the flag off for build 10; paid Reflection belongs to the November 2.1.0 cycle. Historical model/purchase instructions below apply only when that cycle explicitly re-enables the package. No IAP submission with 2.0.
+Free Look Back lives in `Offshoots/LookBack/` and reads first outcomes directly on iOS 18.6+. `ReflectionCenter.paidFeaturesEnabled` is false and runs before availability and StoreKit. Since 2026-10-24 (`dev/paid-reflection`, commit 2a86e7f) the DEBUG launch arguments `-ReflectionFake`, `-ReflectionUnlockOnly` and `-ReflectionFakeLocked` run before the flag, so local evaluation works with it off; `ReflectionReleaseTests` pins both. Release builds and DEBUG launches without those arguments show no paid controls. Keep the flag off for build 10; paid Reflection belongs to the November 2.1.0 cycle. Historical model/purchase instructions below apply only when that cycle explicitly re-enables the package. No IAP submission with 2.0.
 
 
 Project notes for Offshoots. General guidelines live in `~/.claude/CLAUDE.md`.

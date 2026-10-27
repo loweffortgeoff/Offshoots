@@ -16,6 +16,7 @@ struct MarkOutcomeView: View {
     @Environment(HindsightAccess.self) private var hindsightAccess
     @State private var hindsight: HindsightAnswer?
     @State private var ownershipBlocked = false
+    @State private var alreadyResolved = false
 
     let decision: Decision
 
@@ -126,6 +127,10 @@ struct MarkOutcomeView: View {
                 // Save stays in view: above the keyboard, and never at the screen edge.
                 .safeAreaInset(edge: .bottom) {
                     VStack(spacing: 8) {
+                        if alreadyResolved {
+                            Text("This decision already has an outcome. Close this screen and revisit it instead.")
+                                .font(.callout).foregroundStyle(.secondary)
+                        }
                         if ownershipBlocked && hindsight != nil && !hindsightAccess.canCapture {
                             Text("Restore your purchase or clear the optional Hindsight answer before saving.")
                                 .font(.callout).foregroundStyle(.secondary)
@@ -176,8 +181,9 @@ struct MarkOutcomeView: View {
         let impact = UIImpactFeedbackGenerator(style: .medium)
         impact.impactOccurred()
 
+        var saved = false
         guard hindsightAccess.performSave(answer: hindsight, save: { answer in
-            store.resolveDecision(
+            saved = store.resolveDecision(
                 id: decision.id,
                 actual: selectedOutcome,
                 reflection: reflection.isEmpty ? nil : reflection,
@@ -186,6 +192,10 @@ struct MarkOutcomeView: View {
             )
         }) else {
             ownershipBlocked = true
+            return
+        }
+        guard saved else {
+            alreadyResolved = true
             return
         }
 

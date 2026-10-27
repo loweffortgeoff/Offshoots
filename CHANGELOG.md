@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2026-10-27: Fixed code-review findings on `dev/paid-reflection`: a reading in progress survives leaving its card; Hindsight shares Reflection's entitlement; a failed launch recovery blocks saves; Mark Outcome no longer closes as saved for an already-resolved decision; the Settings Hindsight sheet survives Restore; an unreadable reflections.json is copied aside before Restore or Delete All. CLAUDE.md now records that DEBUG Reflection launch arguments run before `paidFeaturesEnabled`. Full test suite passes; not checked on the simulator.
+
 - 2026-10-27: Fast-forwarded `dev/paid-reflection` to include the Optimism fix. Hindsight review now shows event notes and filters by current category; real-history value and phone acceptance remain open.
 
 - 2026-10-25: Fixed the free Optimism card on `fix/optimism-calibration`: show worse/as-predicted/better counts from first outcomes and distinguish cancelling misses from exact calibration. Build and 261 tests pass, with ten opt-in skips. iPhone 18 Pro (iOS 27.0) checks pass in dark/light and largest text; Desktop before/after captures support review.
