@@ -22,6 +22,7 @@
     - Foundation Models work is retained in the paused generated-Reflection cycle below.
 
 ## 2.1.0 — Hindsight
+- [ ] **Improve the Hindsight review.** Show the recorded note beside its answer and outcome, and add a category filter. Review the [plan](docs/superpowers/plans/2026-10-27-hindsight-review.md) before implementation. — 2026-10-27
 - [x] **Approve the Hindsight design.** Geoff approved the full [design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), including paid access and offline ownership rules. — 2026-10-24
 - [x] **Approve the Hindsight implementation plan.** Geoff approved [native execution](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) with a final independent review. — 2026-10-24
 - [x] **Set the Hindsight name and US price.** Name is Hindsight. United States price is $5.99 on `com.geoffrey.silva.Offshoots.reflection` (Apple ID 6818254209). App Store Connect reference name matches; status is Prepare for Submission. Family Sharing stays off. Local StoreKit files use the same name and a Hindsight description. — 2026-10-24
