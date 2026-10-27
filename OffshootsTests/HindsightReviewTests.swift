@@ -4,6 +4,22 @@ import Testing
 
 @MainActor
 struct HindsightReviewTests {
+    @Test func categoryCombinesWithOtherFiltersAndClear() {
+        var a = Make.marked(.good, .bad); a.hindsight = .sameApproach; a.category = .work
+        var b = Make.marked(.good, .bad); b.hindsight = .sameApproach; b.category = .home
+        let entries = HindsightSummary.entries(from: [a, b])
+        var filter = HindsightReviewFilter()
+        filter.toggle(.sameApproach)
+        filter.outcome = .bad
+        filter.category = .work
+        #expect(filter.apply(to: entries).map(\.decisionID) == [a.id])
+        #expect(HindsightSummary.count(.sameApproach, in: entries) == 2)
+        filter.category = .money
+        #expect(filter.apply(to: entries).isEmpty)
+        filter = HindsightReviewFilter()
+        #expect(filter.category == nil)
+        #expect(filter.apply(to: entries).count == 2)
+    }
     @Test func answerTogglesAndOutcomeCombinesWithoutChangingDenominator() {
         var a = Make.marked(.good, .bad); a.hindsight = .sameApproach
         var b = Make.marked(); b.hindsight = .differentChoice

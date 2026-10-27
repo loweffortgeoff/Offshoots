@@ -4,6 +4,7 @@ struct HindsightEntry: Identifiable, Equatable {
     let decisionID: UUID
     let revisitID: UUID?
     let title: String
+    let category: DecisionCategory
     let date: Date
     let answer: HindsightAnswer
     let outcome: DecisionOutcome

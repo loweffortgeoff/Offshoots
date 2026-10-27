@@ -50,4 +50,26 @@ struct HindsightSummaryTests {
         #expect(HindsightSummary.entries(from: [d]).isEmpty)
         #expect(HindsightSummary.entries(from: []).isEmpty)
     }
+
+    @Test func notesRemainPairedAndCategoryTracksTheDecision() throws {
+        var d = Make.marked(.good, .bad)
+        d.category = .work
+        d.hindsight = .differentApproach
+        d.reflection = "First note"
+        d.revisits = [Revisit(date: Make.day(12), outcome: .good, note: "Skipped note")]
+        var entry = try #require(HindsightSummary.entries(from: [d]).first)
+        #expect(entry.note == "First note")
+        #expect(entry.outcome == .bad)
+        #expect(entry.date == Make.day(7))
+        #expect(entry.category == .work)
+
+        d.revisits.append(Revisit(date: Make.day(2), outcome: .neutral, hindsight: .sameApproach))
+        d.category = .home
+        entry = try #require(HindsightSummary.entries(from: [d]).first)
+        #expect(entry.note == nil)
+        #expect(entry.answer == .sameApproach)
+        #expect(entry.outcome == .neutral)
+        #expect(entry.date == Make.day(2))
+        #expect(entry.category == .home)
+    }
 }
