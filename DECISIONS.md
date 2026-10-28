@@ -448,3 +448,13 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-27 (Settings Hindsight sheet sits on the Restore row)
 **Decision:** Attach the Settings purchase sheet to the Restore Purchase row.
 **Why:** A Section-level sheet repeats per row and a row rebuild dismisses it (9f89d50, reconfirmed on the simulator). The Explore button leaves the view when a Restore unlocks Hindsight, taking its sheet with it. The Restore row is always present.
+
+## 2026-10-28 (Reflection context prototype stays separate)
+**Decision:** Keep the Reflection context and pairing prototype apart from the paid-Reflection work, so Geoff can test each independently and decide whether the Foundation Models work is worth keeping. Paid Reflection stays disabled either way.
+**Why:** More context fixed the read-6-of-17 problem, but code-chosen pairs scored 20/23 against 21/23 for free choice, and embeddings measure topic, not behaviour. The result is not clear enough to merge into the baseline.
+**Alternative considered:** Commit it onto the paid-Reflection work. That would mix an unproven experiment with the reviewed baseline.
+> **Branch state:** prototype is on `dev/reflection-context-prototype`, baseline on `dev/paid-reflection`.
+
+## 2026-10-28 (OPEN: Hindsight may appear in the Reflection prompt)
+**Decision:** Pending, not decided. The prototype narrowed `hindsightDoesNotChangeFreeAnalyticsOrModelPrompt` to `hindsightDoesNotChangeFreeAnalyticsOrModelSelection`: Hindsight answers may now appear in the prompt but must not change analytics, which decisions are read, or the evidence.
+**Why:** This loosens the 2026-10-24 Hindsight design boundary. If the prototype is kept, Geoff decides whether to accept the looser boundary or restore the original test and take Hindsight out of the prompt. Hindsight labels did not improve the one sample tried.
