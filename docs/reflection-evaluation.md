@@ -93,3 +93,7 @@ PCC requires iOS 27+, eligible Apple Intelligence hardware/region, internet, and
 ## Context and pairing prototype (2026-10-28)
 
 Uncommitted prototype and results: [2026-10-28 findings](superpowers/archive/2026-10-28-reflection-context-findings.md). More context let Patterns read 17 of 17 decisions; code-chosen pairs scored 20 of 23 against 21 of 23 for free choice on the Patterns cases. Neither clears the quality gate.
+
+## PCC with full context (2026-10-28)
+
+`ReflectionPCCOutputTests.pairingComparison()` reruns the 23 Patterns cases on the token-budget snapshot with on-device and PCC (moderate, greedy) in the same pass. Free choice: PCC 22/23, on-device 21/23. Code-chosen pairs: PCC 20/23, on-device 19/23. PCC fixed the forced `unrelated` connection but not `same-outcome-different-notes`. The grade checks citations only, so this does not clear the quality gate. Frozen result: [2026-10-28-pcc-full-context.json](evaluations/2026-10-28-pcc-full-context.json). Run with `'-only-testing:OffshootsTests/ReflectionPCCOutputTests/pairingComparison()'` (parentheses required) and `-parallel-testing-enabled NO`.

@@ -1,0 +1,358 @@
+PCC availability available; quota QuotaUsage(status: FoundationModels.PrivateCloudComputeLanguageModel.QuotaUsage.Status.belowLimit(FoundationModels.PrivateCloudComputeLanguageModel.QuotaUsage.Status.BelowLimit(isApproachingLimit: false)), limitIncreaseSuggestion: nil, resetDate: nil); OS Version 27.0 (Build 24A434)
+
+CASE 1/23 price-deadlines eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free price-deadlines: GeneratedConnection(connection: "Both decisions involved a quick purchase made under time pressure.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free price-deadlines PASS in 4.0s: Both decisions involved a quick purchase made under time pressure.
+
+GRADE device-pairs price-deadlines FAIL in 0.2s: (abstained: insufficientEvidence)
+
+RAW pcc-free price-deadlines: GeneratedConnection(connection: "Both decisions were made quickly due to a time-limited price condition.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free price-deadlines PASS in 3.4s: Both decisions were made quickly due to a time-limited price condition.
+
+RAW pcc-pairs price-deadlines: GeneratedPairLink(connection: "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.")
+
+GRADE pcc-pairs price-deadlines PASS in 1.2s: In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.
+
+CASE 2/23 cross-category-immediacy eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free cross-category-immediacy: GeneratedConnection(connection: "Both decisions began with a quick action before checking broader context—one by saying yes in a meeting and the other by buying the laptop.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free cross-category-immediacy PASS in 1.8s: Both decisions began with a quick action before checking broader context—one by saying yes in a meeting and the other by buying the laptop.
+
+GRADE device-pairs cross-category-immediacy FAIL in 0.0s: (abstained: insufficientEvidence)
+
+RAW pcc-free cross-category-immediacy: GeneratedConnection(connection: "Both decisions were made quickly without delay, one before checking a calendar and one due to a closing sale.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free cross-category-immediacy PASS in 1.7s: Both decisions were made quickly without delay, one before checking a calendar and one due to a closing sale.
+
+GRADE pcc-pairs cross-category-immediacy FAIL in 0.0s: (abstained: insufficientEvidence)
+
+CASE 3/23 work-immediate-commitments eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free work-immediate-commitments: GeneratedConnection(connection: "Both decisions began with a quick response in a meeting or immediate conversation.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free work-immediate-commitments PASS in 1.5s: Both decisions began with a quick response in a meeting or immediate conversation.
+
+GRADE device-pairs work-immediate-commitments FAIL in 0.0s: (abstained: insufficientEvidence)
+
+RAW pcc-free work-immediate-commitments: GeneratedConnection(connection: "Both decisions began with immediate agreement during a work interaction.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free work-immediate-commitments PASS in 1.3s: Both decisions began with immediate agreement during a work interaction.
+
+GRADE pcc-pairs work-immediate-commitments FAIL in 0.0s: (abstained: insufficientEvidence)
+
+CASE 4/23 dread-across-categories eligible true: Read 3 of 3 marked decisions. 0 omitted from this reading.
+
+RAW device-free dread-across-categories: GeneratedConnection(connection: "Both decisions began with a note expressing dread about the upcoming event.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free dread-across-categories PASS in 1.5s: Both decisions began with a note expressing dread about the upcoming event.
+
+RAW device-pairs dread-across-categories: GeneratedPairLink(connection: "Both notes describe a conversation about a difficult topic.")
+
+GRADE device-pairs dread-across-categories PASS in 0.9s: Both notes describe a conversation about a difficult topic.
+
+RAW pcc-free dread-across-categories: GeneratedConnection(connection: "Both records describe dreading the action before it happened.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free dread-across-categories PASS in 1.6s: Both records describe dreading the action before it happened.
+
+RAW pcc-pairs dread-across-categories: GeneratedPairLink(connection: "")
+
+RAW pcc-pairs dread-across-categories: GeneratedPairLink(connection: "")
+
+GRADE pcc-pairs dread-across-categories FAIL in 1.9s: (abstained: insufficientEvidence)
+
+CASE 5/23 preparation-matched eligible true: Read 3 of 3 marked decisions. 0 omitted from this reading.
+
+RAW device-free preparation-matched: GeneratedConnection(connection: "Both decisions began with checking information before acting—one by buying sample pots, the other by getting two quotes and checking reviews.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free preparation-matched PASS in 1.6s: Both decisions began with checking information before acting—one by buying sample pots, the other by getting two quotes and checking reviews.
+
+RAW device-pairs preparation-matched: GeneratedPairLink(connection: "Both notes describe buying something first—sample pots for the bedroom and the car loan.")
+
+GRADE device-pairs preparation-matched PASS in 1.2s: Both notes describe buying something first—sample pots for the bedroom and the car loan.
+
+RAW pcc-free preparation-matched: GeneratedConnection(connection: "Both records begin with gathering external information before acting: samples in one and quotes in the other.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free preparation-matched PASS in 1.7s: Both records begin with gathering external information before acting: samples in one and quotes in the other.
+
+RAW pcc-pairs preparation-matched: GeneratedPairLink(connection: "Both repainting the bedroom and refinancing the car loan include a plan described in advance.")
+
+GRADE pcc-pairs preparation-matched PASS in 1.1s: Both repainting the bedroom and refinancing the car loan include a plan described in advance.
+
+CASE 6/23 single-three-notes eligible false: Read 1 of 1 marked decisions. 0 omitted from this reading.
+
+GRADE device-free single-three-notes PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs single-three-notes PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free single-three-notes PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs single-three-notes PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 7/23 empty eligible false: Read 0 of 0 marked decisions. 0 omitted from this reading.
+
+GRADE device-free empty PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs empty PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free empty PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs empty PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 8/23 pending-only eligible false: Read 0 of 0 marked decisions. 0 omitted from this reading.
+
+GRADE device-free pending-only PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs pending-only PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free pending-only PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs pending-only PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 9/23 pending-and-one-marked eligible false: Read 1 of 1 marked decisions. 0 omitted from this reading.
+
+GRADE device-free pending-and-one-marked PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs pending-and-one-marked PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free pending-and-one-marked PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs pending-and-one-marked PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 10/23 unrelated eligible false: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free unrelated: GeneratedConnection(connection: "Both decisions began with a small change or action that was framed as an initial step: one was reaching out to an old friend, the other was cutting caffeine.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free unrelated FAIL in 1.9s: Both decisions began with a small change or action that was framed as an initial step: one was reaching out to an old friend, the other was cutting caffeine.
+
+RAW device-pairs unrelated: GeneratedPairLink(connection: "Both notes describe a time spent on a specific activity: one is talking to an old friend, the other is cutting caffeine after noon.")
+
+GRADE device-pairs unrelated FAIL in 1.2s: Both notes describe a time spent on a specific activity: one is talking to an old friend, the other is cutting caffeine after noon.
+
+RAW pcc-free unrelated: GeneratedConnection(connection: "Both records describe a low-stakes trial with a neutral expectation.", firstSource: "R1.record", secondSource: "R2.record")
+
+GRADE pcc-free unrelated PASS in 1.5s: (abstained: emptyOutput)
+
+RAW pcc-pairs unrelated: GeneratedPairLink(connection: "")
+
+GRADE pcc-pairs unrelated PASS in 1.0s: (abstained: insufficientEvidence)
+
+CASE 11/23 titles-only eligible false: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+GRADE device-free titles-only PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs titles-only PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free titles-only PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs titles-only PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 12/23 whitespace-notes eligible false: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+GRADE device-free whitespace-notes PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs whitespace-notes PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free whitespace-notes PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs whitespace-notes PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 13/23 equal-dates eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free equal-dates: GeneratedConnection(connection: "Both decisions involved immediate action based on a perceived urgency about cost and time.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free equal-dates PASS in 1.5s: Both decisions involved immediate action based on a perceived urgency about cost and time.
+
+RAW device-pairs equal-dates: GeneratedPairLink(connection: "Both notes describe a purchase made quickly because of a time limit.")
+
+GRADE device-pairs equal-dates PASS in 1.0s: Both notes describe a purchase made quickly because of a time limit.
+
+RAW pcc-free equal-dates: GeneratedConnection(connection: "Both decisions were made quickly due to a stated time limit.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free equal-dates PASS in 1.5s: Both decisions were made quickly due to a stated time limit.
+
+RAW pcc-pairs equal-dates: GeneratedPairLink(connection: "In both Upgrade to the new laptop and Sign up for the annual gym plan, a time limit on price was noted before acting.")
+
+GRADE pcc-pairs equal-dates PASS in 1.1s: In both Upgrade to the new laptop and Sign up for the annual gym plan, a time limit on price was noted before acting.
+
+CASE 14/23 command-in-note eligible false: Read 0 of 2 marked decisions. 2 omitted from this reading.
+
+GRADE device-free command-in-note PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs command-in-note PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free command-in-note PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs command-in-note PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 15/23 spanish eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free spanish: GeneratedConnection(connection: "Both decisions began with a similar thought about the conversation at the start of the period.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free spanish PASS in 1.5s: Both decisions began with a similar thought about the conversation at the start of the period.
+
+RAW device-pairs spanish: GeneratedPairLink(connection: "Both notes describe a conversation where something was difficult.")
+
+GRADE device-pairs spanish PASS in 0.9s: Both notes describe a conversation where something was difficult.
+
+RAW pcc-free spanish: GeneratedConnection(connection: "Both records describe fearing the conversation at the start and a better result than expected later.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free spanish PASS in 1.6s: Both records describe fearing the conversation at the start and a better result than expected later.
+
+RAW pcc-pairs spanish: GeneratedPairLink(connection: "In both telling my sister I cannot host the holidays and taking the Friday off before the deadline, the notes describe fearing the conversation.")
+
+GRADE pcc-pairs spanish PASS in 1.1s: In both telling my sister I cannot host the holidays and taking the Friday off before the deadline, the notes describe fearing the conversation.
+
+CASE 16/23 french eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free french: GeneratedConnection(connection: "Both decisions involved immediate acceptance before a price increase, followed by a negative outcome.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free french PASS in 1.3s: Both decisions involved immediate acceptance before a price increase, followed by a negative outcome.
+
+RAW device-pairs french: GeneratedPairLink(connection: "J’ai accepté tout de suite avant la hausse du prix in both the gym plan and the laptop upgrade.")
+
+GRADE device-pairs french PASS in 1.0s: J’ai accepté tout de suite avant la hausse du prix in both the gym plan and the laptop upgrade.
+
+RAW pcc-free french: GeneratedConnection(connection: "Both decisions were accepted immediately to avoid a price increase.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free french PASS in 1.2s: Both decisions were accepted immediately to avoid a price increase.
+
+RAW pcc-pairs french: GeneratedPairLink(connection: "Dans la signature du plan annuel de gym et la mise à jour vers le nouvel ordinateur portable, l’acceptation a eu lieu tout de suite avant la hausse du prix.")
+
+GRADE pcc-pairs french PASS in 1.1s: Dans la signature du plan annuel de gym et la mise à jour vers le nouvel ordinateur portable, l’acceptation a eu lieu tout de suite avant la hausse du prix.
+
+CASE 17/23 long-negation eligible false: Read 1 of 2 marked decisions. 1 omitted from this reading.
+
+GRADE device-free long-negation PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE device-pairs long-negation PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-free long-negation PASS in 0.0s: (abstained: emptyOutput)
+
+GRADE pcc-pairs long-negation PASS in 0.0s: (abstained: emptyOutput)
+
+CASE 18/23 long-history eligible true: Read 17 of 17 marked decisions. 0 omitted from this reading.
+
+RAW device-free long-history: GeneratedConnection(connection: "Both decisions involved early planning with a focus on preparation before action: the bedroom repaint with buying sample pots first, and the plumber hire with getting two quotes and checking reviews first.", firstSource: "R2.log", secondSource: "R1.log")
+
+GRADE device-free long-history PASS in 3.1s: Both decisions involved early planning with a focus on preparation before action: the bedroom repaint with buying sample pots first, and the plumber hire with getting two quotes and checking reviews first.
+
+RAW device-pairs long-history: GeneratedPairLink(connection: "Both notes describe getting more money than asked for in different situations.")
+
+GRADE device-pairs long-history PASS in 1.1s: Both notes describe getting more money than asked for in different situations.
+
+RAW pcc-free long-history: GeneratedConnection(connection: "Both records describe preparing by gathering information before acting: one through sample items and one through multiple quotes.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free long-history PASS in 1.7s: Both records describe preparing by gathering information before acting: one through sample items and one through multiple quotes.
+
+RAW pcc-pairs long-history: GeneratedPairLink(connection: "In both asking for the raise and selling the old bike, the result exceeded the amount requested.")
+
+GRADE pcc-pairs long-history PASS in 1.2s: In both asking for the raise and selling the old bike, the result exceeded the amount requested.
+
+CASE 19/23 one-empty-in-group eligible true: Read 3 of 3 marked decisions. 0 omitted from this reading.
+
+RAW device-free one-empty-in-group: GeneratedConnection(connection: "Both decisions involved immediate action based on a specific detail: one based on a salesperson’s statement and the other on a sale ending time.", firstSource: "R2.log", secondSource: "R3.log")
+
+GRADE device-free one-empty-in-group PASS in 1.7s: Both decisions involved immediate action based on a specific detail: one based on a salesperson’s statement and the other on a sale ending time.
+
+RAW device-pairs one-empty-in-group: GeneratedPairLink(connection: "Both notes describe a purchase made quickly after noticing a time limit.")
+
+GRADE device-pairs one-empty-in-group PASS in 1.0s: Both notes describe a purchase made quickly after noticing a time limit.
+
+RAW pcc-free one-empty-in-group: GeneratedConnection(connection: "A time-limited price change led to an immediate choice in both records.", firstSource: "R2.log", secondSource: "R3.log")
+
+GRADE pcc-free one-empty-in-group PASS in 1.2s: A time-limited price change led to an immediate choice in both records.
+
+RAW pcc-pairs one-empty-in-group: GeneratedPairLink(connection: "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.")
+
+GRADE pcc-pairs one-empty-in-group PASS in 1.1s: In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.
+
+CASE 20/23 same-outcome-different-notes eligible false: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free same-outcome-different-notes: GeneratedConnection(connection: "Both decisions involved a clear timeline with expected outcomes tied to specific days.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free same-outcome-different-notes FAIL in 1.5s: Both decisions involved a clear timeline with expected outcomes tied to specific days.
+
+GRADE device-pairs same-outcome-different-notes PASS in 0.0s: (abstained: insufficientEvidence)
+
+RAW pcc-free same-outcome-different-notes: GeneratedConnection(connection: "Both records describe a concrete result occurring after a set time: one after a week and one after a month.", firstSource: "R1.outcome", secondSource: "R2.outcome")
+
+GRADE pcc-free same-outcome-different-notes FAIL in 1.6s: Both records describe a concrete result occurring after a set time: one after a week and one after a month.
+
+GRADE pcc-pairs same-outcome-different-notes PASS in 0.0s: (abstained: insufficientEvidence)
+
+CASE 21/23 changed-source-history eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free changed-source-history: GeneratedConnection(connection: "Both decisions involved a quick purchase made under time pressure.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free changed-source-history PASS in 1.4s: Both decisions involved a quick purchase made under time pressure.
+
+RAW device-pairs changed-source-history: GeneratedPairLink(connection: "Both situations involve a purchase made quickly after noticing a time limit.")
+
+GRADE device-pairs changed-source-history PASS in 0.9s: Both situations involve a purchase made quickly after noticing a time limit.
+
+RAW pcc-free changed-source-history: GeneratedConnection(connection: "Both decisions were made quickly due to a time-limited price condition.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free changed-source-history PASS in 1.6s: Both decisions were made quickly due to a time-limited price condition.
+
+RAW pcc-pairs changed-source-history: GeneratedPairLink(connection: "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.")
+
+GRADE pcc-pairs changed-source-history PASS in 1.0s: In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.
+
+CASE 22/23 deleted-source-history eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free deleted-source-history: GeneratedConnection(connection: "Both decisions involved a quick purchase made under time pressure.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free deleted-source-history PASS in 1.4s: Both decisions involved a quick purchase made under time pressure.
+
+RAW device-pairs deleted-source-history: GeneratedPairLink(connection: "Both situations involve a purchase made quickly after noticing a time limit.")
+
+GRADE device-pairs deleted-source-history PASS in 1.0s: Both situations involve a purchase made quickly after noticing a time limit.
+
+RAW pcc-free deleted-source-history: GeneratedConnection(connection: "Both decisions were made quickly due to a time-limited price condition.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free deleted-source-history PASS in 1.5s: Both decisions were made quickly due to a time-limited price condition.
+
+RAW pcc-pairs deleted-source-history: GeneratedPairLink(connection: "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.")
+
+GRADE pcc-pairs deleted-source-history PASS in 1.1s: In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.
+
+CASE 23/23 restore-history eligible true: Read 2 of 2 marked decisions. 0 omitted from this reading.
+
+RAW device-free restore-history: GeneratedConnection(connection: "Both decisions involved a quick purchase made under time pressure.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE device-free restore-history PASS in 1.4s: Both decisions involved a quick purchase made under time pressure.
+
+RAW device-pairs restore-history: GeneratedPairLink(connection: "Both situations involve a purchase made quickly after noticing a time limit.")
+
+GRADE device-pairs restore-history PASS in 0.9s: Both situations involve a purchase made quickly after noticing a time limit.
+
+RAW pcc-free restore-history: GeneratedConnection(connection: "Both decisions were made quickly due to a time-limited price condition.", firstSource: "R1.log", secondSource: "R2.log")
+
+GRADE pcc-free restore-history PASS in 1.5s: Both decisions were made quickly due to a time-limited price condition.
+
+RAW pcc-pairs restore-history: GeneratedPairLink(connection: "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.")
+
+GRADE pcc-pairs restore-history PASS in 1.1s: In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon.
+
+GRADE TOTAL of 23: device-free 21 (unmeasured 0), device-pairs 19 (unmeasured 0), pcc-free 22 (unmeasured 0), pcc-pairs 20 (unmeasured 0)
+
+JOURNAL reflection-notes: Read 17 of 17 marked decisions. 0 omitted from this reading.
+
+RAW device-free reflection-notes: GeneratedConnection(connection: "Both decisions involved early planning with a focus on preparation before action: the bedroom repaint with buying sample pots first, and the plumber hire with getting two quotes and checking reviews first.", firstSource: "R2.log", secondSource: "R1.log")
+
+JOURNAL device-free: Both decisions involved early planning with a focus on preparation before action: the bedroom repaint with buying sample pots first, and the plumber hire with getting two quotes and checking reviews first. ["Hire a plumber instead of fixing it myself", "Repaint the bedroom"]
+
+RAW pcc-free reflection-notes: GeneratedConnection(connection: "Both records describe preparing by gathering information before acting: one through sample items and one through multiple quotes.", firstSource: "R1.log", secondSource: "R2.log")
+
+JOURNAL pcc-free: Both records describe preparing by gathering information before acting: one through sample items and one through multiple quotes. ["Repaint the bedroom", "Hire a plumber instead of fixing it myself"]
+
+RAW pcc-pairs reflection-notes: GeneratedPairLink(connection: "In both asking for the raise and selling the old bike, the result exceeded the amount requested.")
+
+JOURNAL pcc-pairs: In both asking for the raise and selling the old bike, the result exceeded the amount requested. ["Ask for the raise", "Sell the old bike"]
+
+PCC quota after QuotaUsage(status: FoundationModels.PrivateCloudComputeLanguageModel.QuotaUsage.Status.belowLimit(FoundationModels.PrivateCloudComputeLanguageModel.QuotaUsage.Status.BelowLimit(isApproachingLimit: false)), limitIncreaseSuggestion: nil, resetDate: nil)
+
