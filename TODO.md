@@ -22,6 +22,7 @@
     - Foundation Models work is retained in the paused generated-Reflection cycle below.
 
 ## 2.1.0 — Hindsight
+- [x] **Fix the branch code-review findings.** Ten findings on `dev/paid-reflection`: nine code fixes (`6e50be5`, `752b360`) and a CLAUDE.md update for the DEBUG launch-argument order. Tests pass; simulator checks pass for failed recovery, unreadable reflections copied aside, a reading surviving a tab switch, and the Settings Hindsight sheet. Not checked: Mark Outcome on an already-resolved decision, and the shared entitlement with paid Reflection on. — 2026-10-27
 - [x] **Improve the Hindsight review.** Show the recorded note beside its answer and outcome, and add a category filter. Geoff approved the [plan](docs/superpowers/plans/2026-10-27-hindsight-review.md) for native execution. Paid-value and phone acceptance remain open. — 2026-10-27
 - [x] **Approve the Hindsight design.** Geoff approved the full [design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), including paid access and offline ownership rules. — 2026-10-24
 - [x] **Approve the Hindsight implementation plan.** Geoff approved [native execution](docs/superpowers/plans/2026-10-24-hindsight-check-ins.md) with a final independent review. — 2026-10-24

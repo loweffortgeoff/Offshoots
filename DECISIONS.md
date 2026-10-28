@@ -440,3 +440,11 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-25 (Optimism separates balance from calibration)
 **Decision:** Show worse/as-predicted/better counts from first marked outcomes. Keep the quarter-step directional threshold; below it, use “No overall lean” when any miss remains and reserve “Well calibrated” for exact matches throughout.
 **Why:** Opposing misses cancel in the average. Revisits must not change prediction calibration; the three-marked-decision threshold stays unchanged.
+
+## 2026-10-27 (DEBUG Reflection arguments run before the release switch)
+**Decision:** Keep `-ReflectionFake`, `-ReflectionUnlockOnly` and `-ReflectionFakeLocked` ahead of `paidFeaturesEnabled` in DEBUG builds, and update CLAUDE.md to match instead of restoring the old order.
+**Why:** Local evaluation of generated Reflection needs these arguments with the flag off (commit 2a86e7f), and `ReflectionReleaseTests` pins both orders. Release builds and DEBUG launches without the arguments still show no paid controls.
+
+## 2026-10-27 (Settings Hindsight sheet sits on the Restore row)
+**Decision:** Attach the Settings purchase sheet to the Restore Purchase row.
+**Why:** A Section-level sheet repeats per row and a row rebuild dismisses it (9f89d50, reconfirmed on the simulator). The Explore button leaves the view when a Restore unlocks Hindsight, taking its sheet with it. The Restore row is always present.
