@@ -27,4 +27,8 @@ final class ReflectionProviderCoordinator: ReflectionGenerating {
     func cleanUp(note: String) async throws -> CleanedNote {
         try await perform { try await base.cleanUp(note: note) }
     }
+    /// Counting tokens does not occupy the provider
+    func snapshot(for kind: SavedReflection.Kind, decisions: [Decision]) async -> ReflectionSourceSnapshot {
+        await base.snapshot(for: kind, decisions: decisions)
+    }
 }

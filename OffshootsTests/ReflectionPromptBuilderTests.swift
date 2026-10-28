@@ -12,7 +12,7 @@ struct ReflectionPromptBuilderTests {
         #expect(prompt.contains(snapshot.scope))
         for evidence in snapshot.evidence {
             #expect(prompt.contains("[" + evidence.key + "]"))
-            #expect(prompt.contains(evidence.text))
+            if evidence.stage == .log || evidence.stage == .outcome { #expect(prompt.contains(evidence.text)) }
         }
         #expect(prompt.contains("first"))
     }
@@ -46,10 +46,24 @@ struct ReflectionPromptBuilderTests {
         let decision = Make.decision(title: "Move cities", expected: .good, actual: .bad, notes: "Cheaper rent", createdAt: Make.day(0), resolvedAt: Make.day(10), revisits: [revisit])
         let prompt = ReflectionPromptBuilder.decisionPrompt(try #require(ReflectionDigestBuilder.decision(decision)))
 
-        #expect(prompt.contains("Move cities | work | expected Good, first Bad"))
-        #expect(prompt.contains("Good: Fine now"))
-        #expect(prompt.contains("Cheaper rent"))
-        #expect(prompt.contains(revisit.date.ISO8601Format()))
+        #expect(prompt.contains("Move cities | work, medium stakes | logged 2026-09-01 | expected Good, first Bad on day 10"))
+        #expect(prompt.contains("[R1.revisit1] revisit day 40, rated Good: Fine now"))
+        #expect(prompt.contains("[R1.log] log day 0: Cheaper rent"))
+        #expect(!prompt.contains("T12:00:00Z"))
+    }
+
+    @Test func hindsightAnswersReachThePromptButNotTheEvidence() throws {
+        let revisit = Revisit(date: Make.day(40), outcome: .good, note: "Fine now", hindsight: .differentApproach)
+        let decision = Make.decision(actual: .bad, notes: "Cheaper rent", resolvedAt: Make.day(10), revisits: [revisit])
+        var withAnswer = decision
+        withAnswer.hindsight = .differentChoice
+        let snapshot = ReflectionSourceSnapshot.capture(decisions: [withAnswer], subjectID: withAnswer.id)
+        #expect(snapshot.prompt.contains("| hindsight Different choice"))
+        #expect(snapshot.prompt.contains("rated Good, hindsight Different approach: Fine now"))
+        #expect(!snapshot.evidence.contains { $0.text.contains("Different") })
+        #expect(ReflectionPromptBuilder.patternsInstructions.contains("A hindsight answer"))
+        #expect(ReflectionPromptBuilder.decisionChangeInstructions.contains("A hindsight answer"))
+        #expect(!ReflectionPromptBuilder.lookBackInstructions.contains("hindsight"))
     }
 
     @Test func decisionPromptNamesTheSubjectAndSelectionScope() throws {

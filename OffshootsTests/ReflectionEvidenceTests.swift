@@ -78,6 +78,22 @@ struct ReflectionEvidenceTests {
         #expect(snapshot.evidence.first { $0.key == "R1.revisit2" }?.revisitID == last.id)
     }
 
+    @Test func aBudgetCaptureSkipsARecordThatDoesNotFitAndKeepsTrying() async {
+        let small = Make.decision(actual: .good, notes: "Short", createdAt: Make.day(3))
+        let huge = Make.decision(actual: .bad, notes: String(repeating: "word ", count: 400), createdAt: Make.day(2))
+        let other = Make.decision(actual: .bad, notes: "Also short", createdAt: Make.day(1))
+        let snapshot = await ReflectionSourceSnapshot.capture(decisions: [small, huge, other], subjectID: nil) { $0.prompt.utf8.count <= 600 }
+        #expect(snapshot.decisions.map(\.id) == [small.id, other.id])
+        #expect(snapshot.omittedCount == 1)
+        #expect(snapshot.eligibleDecisionIDs.count == 3)
+    }
+
+    @Test func aBudgetCaptureMatchesTheByteCaptureForTheSameBound() async {
+        let decisions = (0..<30).map { Make.decision(actual: .bad, notes: "Note number \($0) about a quick purchase", createdAt: Make.day($0)) }
+        let budget = await ReflectionSourceSnapshot.capture(decisions: decisions, subjectID: nil) { $0.prompt.utf8.count <= ReflectionSourceSnapshot.byteBudget }
+        #expect(budget == ReflectionSourceSnapshot.capture(decisions: decisions, subjectID: nil))
+    }
+
     @Test func tiedDatesHaveStableSelection() {
         let a = Make.decision(actual: .good, notes: "One", createdAt: Make.day(1))
         let b = Make.decision(actual: .bad, notes: "Two", createdAt: Make.day(1))

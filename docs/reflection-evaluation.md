@@ -89,3 +89,7 @@ The harness refuses to overwrite an existing capture. Each record is written aft
 Keep production paid Reflection disabled. Review the frozen failures before another prompt/schema experiment. Keep context expansion separate so it does not obscure this comparison. Do not choose a production backend from this result. Physical-device quality/latency, exact missing real-note cases, VoiceOver, and phone purchase/Restore/refund remain open.
 
 PCC requires iOS 27+, eligible Apple Intelligence hardware/region, internet, and daily user quota handling. Explain these limits before purchase; a one-time app unlock must not imply unlimited generations. Keep saved readings available offline or at quota exhaustion. Use local generated readings as a fallback only after they pass the same quality gate. See [Apple's access requirements](https://developer.apple.com/private-cloud-compute/) and [integration guidance](https://developer.apple.com/documentation/foundationmodels/adding-server-side-intelligence-with-private-cloud-compute).
+
+## Context and pairing prototype (2026-10-28)
+
+Uncommitted prototype and results: [2026-10-28 findings](superpowers/archive/2026-10-28-reflection-context-findings.md). More context let Patterns read 17 of 17 decisions; code-chosen pairs scored 20 of 23 against 21 of 23 for free choice on the Patterns cases. Neither clears the quality gate.

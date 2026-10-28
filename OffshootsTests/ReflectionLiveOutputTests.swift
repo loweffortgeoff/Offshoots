@@ -19,19 +19,49 @@ struct ReflectionLiveOutputTests {
     /// One decision that went worse, with a revisit, and one plain miss
     nonisolated static let decisionTitles = ["Say yes to leading the launch project", "Upgrade to the new laptop"]
 
-    @Test func patterns() async throws {
+    /// `reflection-hindsight` is `reflection-notes` with Hindsight answers added
+    @Test(arguments: ["reflection-notes", "reflection-hindsight"])
+    func patterns(fixture: String) async throws {
         guard #available(iOS 26.4, *) else { return }
         try requireModel()
-        let digest = ReflectionDigestBuilder.patterns(from: try Fixture.load("reflection-notes"))
+        let decisions = try Fixture.load(fixture)
+        let service = LiveReflectionService(rawOutput: { log("RAW: " + $0) })
+        var digest = ReflectionDigestBuilder.patterns(from: decisions)
+        let start = Date()
+        digest.snapshot = await service.snapshot(for: .patterns, decisions: decisions)
+        log("SNAPSHOT \(fixture): \(digest.snapshot?.scope ?? "") in \(Date().timeIntervalSince(start)) seconds")
         let prompt = ReflectionPromptBuilder.patternsPrompt(digest)
         try await report(
-            "Patterns",
+            "Patterns: \(fixture)",
             instructions: ReflectionPromptBuilder.patternsInstructions,
             prompt: prompt,
             schema: LiveReflectionService.GeneratedConnection.generationSchema
         )
-        let output = try await LiveReflectionService(rawOutput: { log("RAW: " + $0) }).patterns(digest: digest)
-        log("Patterns output:\n" + output.lines.map { "- \($0.label): \($0.text)" }.joined(separator: "\n"))
+        let generation = Date()
+        let output = try await service.patterns(digest: digest)
+        log("GENERATED \(fixture) in \(Date().timeIntervalSince(generation)) seconds")
+        log("Patterns output (\(fixture)):\n" + output.observations.map { "- \($0.text) \($0.evidenceKeys)" }.joined(separator: "\n"))
+    }
+
+    /// Times the token-budget selection on a large journal: the fixture repeated with new IDs
+    @Test func largeJournalSnapshotTime() async throws {
+        guard #available(iOS 26.4, *) else { return }
+        try requireModel()
+        let base = try Fixture.load("reflection-hindsight")
+        let decisions = (0..<9).flatMap { round in
+            base.map { d -> Decision in
+                var copy = Decision(title: d.title, category: d.category, stakes: d.stakes, expected: d.expected, actual: d.actual,
+                                    notes: d.notes, reflection: d.reflection, createdAt: d.createdAt.addingTimeInterval(Double(-round) * 86_400 * 60),
+                                    resolvedAt: d.resolvedAt.map { $0.addingTimeInterval(Double(-round) * 86_400 * 60) }, followUpDate: d.followUpDate,
+                                    revisits: d.revisits.map { Revisit(date: $0.date, outcome: $0.outcome, note: $0.note, hindsight: $0.hindsight) },
+                                    hindsight: d.hindsight)
+                copy.title = d.title + " \(round)"
+                return copy
+            }
+        }
+        let start = Date()
+        let snapshot = await LiveReflectionService().snapshot(for: .patterns, decisions: decisions)
+        log("LARGE SNAPSHOT \(decisions.count) decisions: \(snapshot.scope) in \(Date().timeIntervalSince(start)) seconds")
     }
 
     @Test(arguments: decisionTitles)
@@ -39,10 +69,11 @@ struct ReflectionLiveOutputTests {
         guard #available(iOS 26.4, *) else { return }
         try requireModel()
         let decision = try #require(try Fixture.load("reflection-notes").first { $0.title == title })
-        let digest = try #require(ReflectionDigestBuilder.decision(decision, among: try Fixture.load("reflection-notes")))
+        var digest = try #require(ReflectionDigestBuilder.decision(decision, among: try Fixture.load("reflection-notes")))
+        digest.snapshot = await LiveReflectionService().snapshot(for: .decision(decision.id), decisions: try Fixture.load("reflection-notes"))
         try await report(
             "Decision: \(title)",
-            instructions: ReflectionPromptBuilder.decisionInstructions + ReflectionPromptBuilder.historyRule,
+            instructions: ReflectionPromptBuilder.decisionChangeInstructions,
             prompt: ReflectionPromptBuilder.decisionPrompt(digest),
             schema: LiveReflectionService.GeneratedDecisionChange.generationSchema
         )
@@ -91,16 +122,19 @@ struct ReflectionLiveOutputTests {
         for value in cases {
             let start = Date()
             log("CASE \(value.id) | eligible \(value.eligible) | OS \(ProcessInfo.processInfo.operatingSystemVersionString) | device \(ProcessInfo.processInfo.environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "physical-device; record hardware manually") | scope \(value.decisions.map(\.id))")
-            let inputs = value.surface == "decision" ? Array(value.decisions.prefix(1)) : value.decisions
-            let selected = ReflectionSourceSnapshot.capture(decisions: inputs, subjectID: value.surface == "decision" ? inputs.first?.id : nil)
-            log("SELECTED \(value.id): \(selected.scope) keys \(selected.evidence.map { "\($0.key)=\($0.decisionID)" })")
             let service = LiveReflectionService(rawOutput: { log("RAW \(value.id): " + $0) })
+            let kind: SavedReflection.Kind = value.surface == "decision" ? .decision(value.decisions.first?.id ?? UUID()) : .patterns
+            let selected = await service.snapshot(for: kind, decisions: value.decisions)
+            log("SELECTED \(value.id): \(selected.scope) keys \(selected.evidence.map { "\($0.key)=\($0.decisionID)" })")
             do {
                 switch value.surface {
                 case "patterns":
-                    log("DISPLAY \(try await service.patterns(digest: ReflectionDigestBuilder.patterns(from: value.decisions)))")
+                    var digest = ReflectionDigestBuilder.patterns(from: value.decisions)
+                    digest.snapshot = selected
+                    log("DISPLAY \(try await service.patterns(digest: digest))")
                 case "decision":
-                    if let decision = value.decisions.first, let digest = ReflectionDigestBuilder.decision(decision, among: value.decisions) {
+                    if let decision = value.decisions.first, var digest = ReflectionDigestBuilder.decision(decision, among: value.decisions) {
+                        digest.snapshot = selected
                         log("DISPLAY \(try await service.reflect(on: digest))")
                     }
                 default:
@@ -111,6 +145,42 @@ struct ReflectionLiveOutputTests {
                 log("ERROR \(value.id) seconds \(Date().timeIntervalSince(start)): \(error)")
             }
         }
+    }
+
+    /// Grades free choice against code-chosen pairs on every Patterns acceptance case. A case
+    /// passes when an eligible case cites only expected decisions, or an ineligible one abstains.
+    @Test func pairingComparison() async throws {
+        guard #available(iOS 26.4, *) else { return }
+        try requireModel()
+        final class BundleToken {}
+        let url = try #require(Bundle(for: BundleToken.self).url(forResource: "reflection-acceptance", withExtension: "json"))
+        let cases = try ReflectionEvaluationCase.load(from: Data(contentsOf: url)).filter { $0.surface == "patterns" }
+        var passed = ["free": 0, "pairs": 0]
+        for value in cases {
+            let snapshot = await LiveReflectionService().snapshot(for: .patterns, decisions: value.decisions)
+            let pairs = ReflectionPairing.pairs(in: snapshot)
+            log("PAIRS \(value.id) [\(NoteSimilarity.lastMeasure)]: " + pairs.prefix(3).map { "\($0.firstKey)+\($0.secondKey) sim \(String(format: "%.2f", $0.similarity)) score \(String(format: "%.2f", $0.score)) \($0.reasons)" }.joined(separator: " | "))
+            for mode in ["free", "pairs"] {
+                var service = LiveReflectionService(rawOutput: { log("RAW \(mode) \(value.id): " + $0) })
+                service.choosesPairs = mode == "pairs"
+                var digest = ReflectionDigestBuilder.patterns(from: value.decisions)
+                digest.snapshot = snapshot
+                let cited: Set<UUID>
+                var text = ""
+                do {
+                    let observation = try await service.patterns(digest: digest).observations.first
+                    text = observation?.text ?? ""
+                    cited = Set((observation?.evidenceKeys ?? []).compactMap { key in snapshot.evidence.first { $0.key == key }?.decisionID })
+                } catch {
+                    cited = []
+                    text = "(abstained: \(error))"
+                }
+                let pass = value.eligible ? !cited.isEmpty && cited.isSubset(of: Set(value.expectedDecisionIDs)) : cited.isEmpty
+                if pass { passed[mode, default: 0] += 1 }
+                log("GRADE \(mode) \(value.id) \(pass ? "PASS" : "FAIL") eligible \(value.eligible): \(text)")
+            }
+        }
+        log("GRADE TOTAL of \(cases.count): free \(passed["free"] ?? 0), pairs \(passed["pairs"] ?? 0)")
     }
 
     // MARK: - Helpers

@@ -62,13 +62,20 @@ struct HindsightDataTests {
         #expect(throws: (any Error).self) { try DecisionStore.decode(invalidRevisit) }
     }
 
-    @Test func hindsightDoesNotChangeFreeAnalyticsOrModelPrompt() {
+    /// The prompt shows the answer (context prototype, 2026-10-28), but the selection and the
+    /// written evidence a connection must cite do not change.
+    @Test func hindsightDoesNotChangeFreeAnalyticsOrModelSelection() throws {
         var a = Make.decision(actual: .bad, notes: "Signed quickly.", reflection: "Cost too much.")
         let b = Make.decision(actual: .good, notes: "Checked quotes.", reflection: "Worked well.")
-        let before = ReflectionPromptBuilder.patternsPrompt(ReflectionDigestBuilder.patterns(from: [a, b]))
+        let before = try #require(ReflectionDigestBuilder.patterns(from: [a, b]).snapshot)
         let accuracy = AnalyticsEngine.predictionGap(for: a)
         a.hindsight = .sameApproach
-        #expect(ReflectionPromptBuilder.patternsPrompt(ReflectionDigestBuilder.patterns(from: [a, b])) == before)
+        let after = try #require(ReflectionDigestBuilder.patterns(from: [a, b]).snapshot)
+        #expect(after.eligibleDecisionIDs == before.eligibleDecisionIDs)
+        #expect(after.decisions.map(\.id) == before.decisions.map(\.id))
+        #expect(after.evidence.map(\.key) == before.evidence.map(\.key))
+        #expect(after.evidence.map(\.text) == before.evidence.map(\.text))
+        #expect(after.prompt.contains("hindsight Same approach"))
         #expect(AnalyticsEngine.predictionGap(for: a) == accuracy)
         #expect(a.currentOutcome == .bad)
     }
