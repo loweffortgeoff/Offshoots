@@ -92,3 +92,19 @@ struct HindsightStoreKitIntegrationTests {
         store.waitForPendingSaves()
     }
 }
+
+@Suite struct RestoreFailureMessageTests {
+    private enum FakeStoreError: Error { case noAccount, other }
+
+    @Test func aMissingAppStoreAccountSaysToSignIn() {
+        #expect(ReflectionPurchase.restoreFailureMessage(for: FakeStoreError.noAccount)
+            == "Sign in to the App Store in Settings, then try again.")
+    }
+
+    @Test func otherFailuresKeepTheGenericMessage() {
+        #expect(ReflectionPurchase.restoreFailureMessage(for: FakeStoreError.other)
+            == "Restore did not finish. Try again.")
+        #expect(ReflectionPurchase.restoreFailureMessage(for: URLError(.notConnectedToInternet))
+            == "Restore did not finish. Try again.")
+    }
+}

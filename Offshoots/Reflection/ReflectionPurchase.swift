@@ -108,6 +108,14 @@ final class ReflectionPurchase {
         return false
     }
 
+    /// StoreKit reports a missing App Store sign-in as `StoreKitInternalError.noAccount`, a type the SDK does not export.
+    nonisolated static func restoreFailureMessage(for error: Error) -> String {
+        if String(reflecting: error).contains("noAccount") {
+            return "Sign in to the App Store in Settings, then try again."
+        }
+        return "Restore did not finish. Try again."
+    }
+
     func restore() async {
         restoreMessage = nil
         diagnostic = nil
@@ -132,7 +140,7 @@ final class ReflectionPurchase {
             #if HINDSIGHT_TESTFLIGHT
             diagnostic = "Restore: sync threw \(String(reflecting: error)).\n" + (await StoreKitEntitlementSource.describe())
             #endif
-            restoreMessage = "Restore did not finish. Try again."
+            restoreMessage = Self.restoreFailureMessage(for: error)
         }
     }
 }
