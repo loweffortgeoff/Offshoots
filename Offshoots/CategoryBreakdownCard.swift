@@ -42,16 +42,26 @@ private struct CategoryBarChart: View {
 
     @Environment(\.colorScheme) private var colorScheme
     /// Each row holds a label above its bar, so the row grows with the (capped) text.
-    @ScaledMetric(relativeTo: .caption) private var rowHeight: CGFloat = 44
+    @ScaledMetric(relativeTo: .caption) private var rowHeight: CGFloat = 52
+    /// A fixed bar leaves room in the row for the name above it and a gap below.
+    @ScaledMetric(relativeTo: .caption) private var barHeight: CGFloat = 18
 
     var body: some View {
         Chart(data, id: \.category) { item in
             BarMark(
                 x: .value("Count", item.count),
-                y: .value("Category", item.category.rawValue.capitalized)
+                y: .value("Category", item.category.rawValue.capitalized),
+                height: .fixed(barHeight)
             )
             .foregroundStyle(Color.offshootPrimary)
             .cornerRadius(4)
+            // The name sits on its own bar, not centered between two bars, and in the
+            // label color so it does not blend into the green.
+            .annotation(position: .top, alignment: .leading, spacing: 4) {
+                Text(item.category.rawValue.capitalized)
+                    .font(.caption)
+                    .foregroundStyle(Color.primary)
+            }
             .annotation(position: .trailing, alignment: .leading, spacing: 8) {
                 Text("\(item.count)")
                     .font(.caption)
@@ -59,13 +69,8 @@ private struct CategoryBarChart: View {
             }
         }
         .chartXAxis(.hidden)
-        .chartYAxis {
-            AxisMarks { _ in
-                AxisValueLabel()
-                    .foregroundStyle(.primary)
-            }
-        }
-        // The axis labels keep their launch color when the color
+        .chartYAxis(.hidden)
+        // Chart text keeps its launch color when the color
         // scheme changes, so rebuild the chart on a change.
         .id(colorScheme)
         .frame(height: CGFloat(data.count) * rowHeight)

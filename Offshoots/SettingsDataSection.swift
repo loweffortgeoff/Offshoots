@@ -23,6 +23,26 @@ struct SettingsDataSection: View {
             Button { importFullBackup = false; showImporter = true } label: {
                 Label("Import Decisions", systemImage: "square.and.arrow.down")
             }
+            // On one always-present row: on the Section these repeat on every row, and on the
+            // ShareLink rows they stop the share sheet from opening.
+            .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in handleImport(result) }
+            .confirmationDialog(pendingBackup == nil ? "Replace decisions and clear saved reflections?" : "Replace all data with this full backup?", isPresented: Binding(
+                get: { pendingImport != nil || pendingBackup != nil },
+                set: { if !$0 { pendingImport = nil; pendingBackup = nil } }
+            ), titleVisibility: .visible) {
+                Button("Replace Data", role: .destructive) {
+                    if let pendingBackup { perform { try coordinator.restore(pendingBackup) } }
+                    else if let pendingImport { perform { try coordinator.importDecisions(pendingImport) } }
+                    pendingImport = nil; pendingBackup = nil
+                }
+            } message: {
+                Text(pendingBackup == nil
+                     ? "Decision-only import replaces current decisions and removes all saved reflections. Old reminders are replaced. Export a full backup first."
+                     : "This replaces all decisions, saved readings, retained evidence, and reminders. Export a full backup or recovery file first.")
+            }
+            .alert("Data operation failed", isPresented: Binding(get: { importError != nil }, set: { if !$0 { importError = nil } })) {
+                Button("OK", role: .cancel) {}
+            } message: { Text(importError ?? "") }
             if history.loadError == nil {
                 ShareLink(item: ReflectionBackupExport(decisions: store.decisions, readings: history.readings), preview: SharePreview("Offshoots Full Backup")) {
                     Label("Export Full Backup", systemImage: "externaldrive")
@@ -49,24 +69,6 @@ struct SettingsDataSection: View {
             Text("Export Decisions saves journal entries only. A full backup includes saved reflections and their evidence. Import replaces data; it does not merge.")
         }
         .listRowBackground(Color.offshootCardBackground)
-        .fileImporter(isPresented: $showImporter, allowedContentTypes: [.json]) { result in handleImport(result) }
-        .confirmationDialog(pendingBackup == nil ? "Replace decisions and clear saved reflections?" : "Replace all data with this full backup?", isPresented: Binding(
-            get: { pendingImport != nil || pendingBackup != nil },
-            set: { if !$0 { pendingImport = nil; pendingBackup = nil } }
-        ), titleVisibility: .visible) {
-            Button("Replace Data", role: .destructive) {
-                if let pendingBackup { perform { try coordinator.restore(pendingBackup) } }
-                else if let pendingImport { perform { try coordinator.importDecisions(pendingImport) } }
-                pendingImport = nil; pendingBackup = nil
-            }
-        } message: {
-            Text(pendingBackup == nil
-                 ? "Decision-only import replaces current decisions and removes all saved reflections. Old reminders are replaced. Export a full backup first."
-                 : "This replaces all decisions, saved readings, retained evidence, and reminders. Export a full backup or recovery file first.")
-        }
-        .alert("Data operation failed", isPresented: Binding(get: { importError != nil }, set: { if !$0 { importError = nil } })) {
-            Button("OK", role: .cancel) {}
-        } message: { Text(importError ?? "") }
     }
     private var coordinator: JournalDataCoordinator { JournalDataCoordinator(store: store, history: history) }
     private func perform(_ work: () throws -> Void) {
