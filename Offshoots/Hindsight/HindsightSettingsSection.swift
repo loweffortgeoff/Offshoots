@@ -13,11 +13,12 @@ struct HindsightSettingsSection: View {
                 }
                 Button("Restore Purchase") { Task { await purchase.restore() } }
                     .disabled(purchase.isRestoring)
+                    // One row that is always present: on the Section the sheet repeats per row and a
+                    // row rebuild dismisses it (9f89d50); on Explore it goes when a Restore unlocks.
+                    .sheet(isPresented: $showPurchase) { HindsightPurchaseSheet(purchase: purchase) }
                 if let message = purchase.restoreMessage { Text(message).font(.caption) }
             } header: { Text("Hindsight") }
             footer: { Text("Saved answers remain readable and exportable if ownership changes.") }
-            // On the Section, so a Restore inside the sheet does not remove it mid-flow.
-            .sheet(isPresented: $showPurchase) { HindsightPurchaseSheet(purchase: purchase) }
             .tint(Color.offshootPrimary)
             .listRowBackground(Color.offshootCardBackground)
         }
