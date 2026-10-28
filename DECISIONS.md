@@ -448,3 +448,9 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 ## 2026-10-27 (Settings Hindsight sheet sits on the Restore row)
 **Decision:** Attach the Settings purchase sheet to the Restore Purchase row.
 **Why:** A Section-level sheet repeats per row and a row rebuild dismisses it (9f89d50, reconfirmed on the simulator). The Explore button leaves the view when a Restore unlocks Hindsight, taking its sheet with it. The Restore row is always present.
+
+## 2026-10-28 (Hindsight uses no AI model; prototype code stays off the release path)
+**Decision:** Hindsight stays model-free: record what you would repeat or change, then review those answers beside decisions and outcomes. Keep the Reflection context and pairing prototype on `dev/reflection-context-prototype` and out of the release path; keep its findings and PCC evidence here as docs. `hindsightDoesNotChangeFreeAnalyticsOrModelPrompt` stays as written, so Hindsight answers never enter a model prompt.
+**Why:** A model adds a quality bar that needs ongoing testing, and PCC usage limits complicate an unrestricted one-time unlock. The results do not show enough added value for either cost: more context fixed the read-6-of-17 problem, but code-chosen pairs scored below free choice and Hindsight labels made the one sample worse. PCC's gain was in abstention, not pairing.
+**Alternative considered:** Merge the token-budget snapshot alone. It is independent of Hindsight and fixed the 6-of-17 read, but generated Reflection is on hold, so it has no consumer yet.
+**Follow-up:** Remove the PCC entitlement (`Offshoots/Offshoots.entitlements`) before 2.1.0; Geoff does this as a separate staged change.

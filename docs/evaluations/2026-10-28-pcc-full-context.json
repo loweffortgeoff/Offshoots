@@ -1,0 +1,608 @@
+{
+  "date": "2026-10-28",
+  "baseCommit": "aa31466c7cb30d5fa42d194cfd6f7012cbd9636a",
+  "branch": "dev/reflection-context-prototype",
+  "machine": "Geoffrey's MacBook Pro",
+  "macOS": "27.2 (26B123)",
+  "xcode": "27.1 (27A9275)",
+  "device": "iPhone 18 Pro simulator",
+  "deviceOS": "27.0 (24A434)",
+  "model": "PrivateCloudComputeLanguageModel (exact revision not exposed) and SystemLanguageModel.default",
+  "reasoning": "moderate (PCC)",
+  "sampling": "greedy",
+  "snapshot": "LiveReflectionService.snapshot(for:decisions:) token budget, min(contextSize, 4096) counted with the on-device tokenizer",
+  "grade": "pairingComparison rule: an eligible case passes when it cites only expected decisions; an ineligible case passes when it cites none. Wording is not judged.",
+  "captureSHA256": "0d613caac5cea35ea9c66d34af91b9860ba7faa4cf55896a576a989ad5def9a7",
+  "quota": "below limit before and after; not approaching limit",
+  "summary": {
+    "device-free": "21/23",
+    "device-pairs": "19/23",
+    "pcc-free": "22/23",
+    "pcc-pairs": "20/23"
+  },
+  "journal": {
+    "reflection-notes": {
+      "reflection-notes": "Read 17 of 17 marked decisions. 0 omitted from this reading.",
+      "device-free": "Both decisions involved early planning with a focus on preparation before action: the bedroom repaint with buying sample pots first, and the plumber hire with getting two quotes and checking reviews first. [\"Hire a plumber instead of fixing it myself\", \"Repaint the bedroom\"]",
+      "pcc-free": "Both records describe preparing by gathering information before acting: one through sample items and one through multiple quotes. [\"Repaint the bedroom\", \"Hire a plumber instead of fixing it myself\"]",
+      "pcc-pairs": "In both asking for the raise and selling the old bike, the result exceeded the amount requested. [\"Ask for the raise\", \"Sell the old bike\"]"
+    }
+  },
+  "results": [
+    {
+      "id": "price-deadlines",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 4.0,
+        "text": "Both decisions involved a quick purchase made under time pressure."
+      },
+      "device-pairs": {
+        "pass": false,
+        "seconds": 0.2,
+        "text": "(abstained: insufficientEvidence)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 3.4,
+        "text": "Both decisions were made quickly due to a time-limited price condition."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.2,
+        "text": "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon."
+      }
+    },
+    {
+      "id": "cross-category-immediacy",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.8,
+        "text": "Both decisions began with a quick action before checking broader context—one by saying yes in a meeting and the other by buying the laptop."
+      },
+      "device-pairs": {
+        "pass": false,
+        "seconds": 0.0,
+        "text": "(abstained: insufficientEvidence)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.7,
+        "text": "Both decisions were made quickly without delay, one before checking a calendar and one due to a closing sale."
+      },
+      "pcc-pairs": {
+        "pass": false,
+        "seconds": 0.0,
+        "text": "(abstained: insufficientEvidence)"
+      }
+    },
+    {
+      "id": "work-immediate-commitments",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions began with a quick response in a meeting or immediate conversation."
+      },
+      "device-pairs": {
+        "pass": false,
+        "seconds": 0.0,
+        "text": "(abstained: insufficientEvidence)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.3,
+        "text": "Both decisions began with immediate agreement during a work interaction."
+      },
+      "pcc-pairs": {
+        "pass": false,
+        "seconds": 0.0,
+        "text": "(abstained: insufficientEvidence)"
+      }
+    },
+    {
+      "id": "dread-across-categories",
+      "eligible": true,
+      "scope": "Read 3 of 3 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions began with a note expressing dread about the upcoming event."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.9,
+        "text": "Both notes describe a conversation about a difficult topic."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.6,
+        "text": "Both records describe dreading the action before it happened."
+      },
+      "pcc-pairs": {
+        "pass": false,
+        "seconds": 1.9,
+        "text": "(abstained: insufficientEvidence)"
+      }
+    },
+    {
+      "id": "preparation-matched",
+      "eligible": true,
+      "scope": "Read 3 of 3 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.6,
+        "text": "Both decisions began with checking information before acting—one by buying sample pots, the other by getting two quotes and checking reviews."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 1.2,
+        "text": "Both notes describe buying something first—sample pots for the bedroom and the car loan."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.7,
+        "text": "Both records begin with gathering external information before acting: samples in one and quotes in the other."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "Both repainting the bedroom and refinancing the car loan include a plan described in advance."
+      }
+    },
+    {
+      "id": "single-three-notes",
+      "eligible": false,
+      "scope": "Read 1 of 1 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "empty",
+      "eligible": false,
+      "scope": "Read 0 of 0 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "pending-only",
+      "eligible": false,
+      "scope": "Read 0 of 0 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "pending-and-one-marked",
+      "eligible": false,
+      "scope": "Read 1 of 1 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "unrelated",
+      "eligible": false,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": false,
+        "seconds": 1.9,
+        "text": "Both decisions began with a small change or action that was framed as an initial step: one was reaching out to an old friend, the other was cutting caffeine."
+      },
+      "device-pairs": {
+        "pass": false,
+        "seconds": 1.2,
+        "text": "Both notes describe a time spent on a specific activity: one is talking to an old friend, the other is cutting caffeine after noon."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.0,
+        "text": "(abstained: insufficientEvidence)"
+      }
+    },
+    {
+      "id": "titles-only",
+      "eligible": false,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "whitespace-notes",
+      "eligible": false,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "equal-dates",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions involved immediate action based on a perceived urgency about cost and time."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 1.0,
+        "text": "Both notes describe a purchase made quickly because of a time limit."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions were made quickly due to a stated time limit."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "In both Upgrade to the new laptop and Sign up for the annual gym plan, a time limit on price was noted before acting."
+      }
+    },
+    {
+      "id": "command-in-note",
+      "eligible": false,
+      "scope": "Read 0 of 2 marked decisions. 2 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "spanish",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions began with a similar thought about the conversation at the start of the period."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.9,
+        "text": "Both notes describe a conversation where something was difficult."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.6,
+        "text": "Both records describe fearing the conversation at the start and a better result than expected later."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "In both telling my sister I cannot host the holidays and taking the Friday off before the deadline, the notes describe fearing the conversation."
+      }
+    },
+    {
+      "id": "french",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.3,
+        "text": "Both decisions involved immediate acceptance before a price increase, followed by a negative outcome."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 1.0,
+        "text": "J’ai accepté tout de suite avant la hausse du prix in both the gym plan and the laptop upgrade."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.2,
+        "text": "Both decisions were accepted immediately to avoid a price increase."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "Dans la signature du plan annuel de gym et la mise à jour vers le nouvel ordinateur portable, l’acceptation a eu lieu tout de suite avant la hausse du prix."
+      }
+    },
+    {
+      "id": "long-negation",
+      "eligible": false,
+      "scope": "Read 1 of 2 marked decisions. 1 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: emptyOutput)"
+      }
+    },
+    {
+      "id": "long-history",
+      "eligible": true,
+      "scope": "Read 17 of 17 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 3.1,
+        "text": "Both decisions involved early planning with a focus on preparation before action: the bedroom repaint with buying sample pots first, and the plumber hire with getting two quotes and checking reviews first."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "Both notes describe getting more money than asked for in different situations."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.7,
+        "text": "Both records describe preparing by gathering information before acting: one through sample items and one through multiple quotes."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.2,
+        "text": "In both asking for the raise and selling the old bike, the result exceeded the amount requested."
+      }
+    },
+    {
+      "id": "one-empty-in-group",
+      "eligible": true,
+      "scope": "Read 3 of 3 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.7,
+        "text": "Both decisions involved immediate action based on a specific detail: one based on a salesperson’s statement and the other on a sale ending time."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 1.0,
+        "text": "Both notes describe a purchase made quickly after noticing a time limit."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.2,
+        "text": "A time-limited price change led to an immediate choice in both records."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon."
+      }
+    },
+    {
+      "id": "same-outcome-different-notes",
+      "eligible": false,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": false,
+        "seconds": 1.5,
+        "text": "Both decisions involved a clear timeline with expected outcomes tied to specific days."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: insufficientEvidence)"
+      },
+      "pcc-free": {
+        "pass": false,
+        "seconds": 1.6,
+        "text": "Both records describe a concrete result occurring after a set time: one after a week and one after a month."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 0.0,
+        "text": "(abstained: insufficientEvidence)"
+      }
+    },
+    {
+      "id": "changed-source-history",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.4,
+        "text": "Both decisions involved a quick purchase made under time pressure."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.9,
+        "text": "Both situations involve a purchase made quickly after noticing a time limit."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.6,
+        "text": "Both decisions were made quickly due to a time-limited price condition."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.0,
+        "text": "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon."
+      }
+    },
+    {
+      "id": "deleted-source-history",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.4,
+        "text": "Both decisions involved a quick purchase made under time pressure."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 1.0,
+        "text": "Both situations involve a purchase made quickly after noticing a time limit."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions were made quickly due to a time-limited price condition."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon."
+      }
+    },
+    {
+      "id": "restore-history",
+      "eligible": true,
+      "scope": "Read 2 of 2 marked decisions. 0 omitted from this reading.",
+      "device-free": {
+        "pass": true,
+        "seconds": 1.4,
+        "text": "Both decisions involved a quick purchase made under time pressure."
+      },
+      "device-pairs": {
+        "pass": true,
+        "seconds": 0.9,
+        "text": "Both situations involve a purchase made quickly after noticing a time limit."
+      },
+      "pcc-free": {
+        "pass": true,
+        "seconds": 1.5,
+        "text": "Both decisions were made quickly due to a time-limited price condition."
+      },
+      "pcc-pairs": {
+        "pass": true,
+        "seconds": 1.1,
+        "text": "In signing up for the annual gym plan and upgrading to the new laptop, both notes mention a time limit ending soon."
+      }
+    }
+  ]
+}
