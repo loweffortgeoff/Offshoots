@@ -23,6 +23,9 @@ struct HindsightCheckInSection: View {
                             Button("Restore Purchase") { Task { await purchase.restore() } }
                                 .disabled(purchase.isRestoring)
                             if let message = purchase.restoreMessage { Text(message).font(.caption) }
+                #if HINDSIGHT_TESTFLIGHT
+                if let diagnostic = purchase.diagnostic { Text(diagnostic).font(.caption2.monospaced()).textSelection(.enabled) }
+                #endif
                         }
                     }
                 } else {

@@ -59,6 +59,14 @@ struct HindsightPurchaseControls: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
+            #if HINDSIGHT_TESTFLIGHT
+            if let diagnostic = purchase.diagnostic {
+                Text(diagnostic)
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.secondary)
+                    .textSelection(.enabled)
+            }
+            #endif
         }
         .frame(maxWidth: .infinity)
     }

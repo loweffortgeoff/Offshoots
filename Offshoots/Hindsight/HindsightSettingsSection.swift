@@ -17,6 +17,9 @@ struct HindsightSettingsSection: View {
                     // row rebuild dismisses it (9f89d50); on Explore it goes when a Restore unlocks.
                     .sheet(isPresented: $showPurchase) { HindsightPurchaseSheet(purchase: purchase) }
                 if let message = purchase.restoreMessage { Text(message).font(.caption) }
+                #if HINDSIGHT_TESTFLIGHT
+                if let diagnostic = purchase.diagnostic { Text(diagnostic).font(.caption2.monospaced()).textSelection(.enabled) }
+                #endif
             } header: { Text("Hindsight") }
             footer: { Text("Saved answers remain readable and exportable if ownership changes.") }
             .tint(Color.offshootPrimary)

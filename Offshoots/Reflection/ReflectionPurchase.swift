@@ -23,6 +23,8 @@ final class ReflectionPurchase {
     /// Set after a restore: what happened, in words
     private(set) var restoreMessage: String?
     private(set) var isRestoring = false
+    /// TestFlight evaluation builds only: the raw StoreKit result behind a buy or restore, for the screen.
+    private(set) var diagnostic: String?
     @ObservationIgnored private var product: Product?
     @ObservationIgnored private let entitlement: ReflectionEntitlement
 
@@ -80,9 +82,17 @@ final class ReflectionPurchase {
                 await entitlement.refresh()
                 // An earlier "No earlier purchase was found." is now wrong
                 restoreMessage = nil
+                #if HINDSIGHT_TESTFLIGHT
+                if !entitlement.isUnlocked {
+                    diagnostic = await "Buy: verified, finished, still locked.\n" + StoreKitEntitlementSource.describe()
+                }
+                #endif
                 state = .ready(displayPrice: product.displayPrice)
                 return entitlement.isUnlocked
             case .success(.unverified):
+                #if HINDSIGHT_TESTFLIGHT
+                diagnostic = "Buy: unverified result.\n" + (await StoreKitEntitlementSource.describe())
+                #endif
                 state = .failed("The purchase could not be verified. If you were charged, tap Restore Purchase later or contact Apple Support.")
             case .pending:
                 state = .pending
@@ -100,11 +110,15 @@ final class ReflectionPurchase {
 
     func restore() async {
         restoreMessage = nil
+        diagnostic = nil
         isRestoring = true
         defer { isRestoring = false }
         do {
             try await AppStore.sync()
             await entitlement.refresh()
+            #if HINDSIGHT_TESTFLIGHT
+            diagnostic = "Restore: sync ok.\n" + (await StoreKitEntitlementSource.describe())
+            #endif
             if entitlement.latestVerificationFailed {
                 restoreMessage = "The purchase could not be verified. Try Restore Purchase again later."
             } else if entitlement.isUnlocked {
@@ -115,6 +129,9 @@ final class ReflectionPurchase {
                 restoreMessage = "The purchase could not be verified. Try Restore Purchase again later."
             }
         } catch {
+            #if HINDSIGHT_TESTFLIGHT
+            diagnostic = "Restore: sync threw \(String(reflecting: error)).\n" + (await StoreKitEntitlementSource.describe())
+            #endif
             restoreMessage = "Restore did not finish. Try again."
         }
     }

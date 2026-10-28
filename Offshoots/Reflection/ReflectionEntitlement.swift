@@ -84,6 +84,26 @@ struct StoreKitEntitlementSource: ReflectionEntitlementSource {
         return EntitlementSnapshot(verifiedProductIDs: ids, hasVerificationFailure: failedVerification)
     }
 
+    #if HINDSIGHT_TESTFLIGHT
+    /// One line per transaction StoreKit knows about, so a locked screen after a purchase can be explained.
+    static func describe() async -> String {
+        func line(_ result: VerificationResult<Transaction>, tag: String) -> String {
+            switch result {
+            case .verified(let t):
+                return "\(tag) verified \(t.productID) env=\(t.environment.rawValue) revoked=\(t.revocationDate != nil)"
+            case .unverified(let t, let error):
+                return "\(tag) UNVERIFIED \(t.productID) env=\(t.environment.rawValue) \(String(reflecting: error))"
+            }
+        }
+        var lines = [String]()
+        for await result in Transaction.currentEntitlements { lines.append(line(result, tag: "entitled")) }
+        if lines.isEmpty { lines.append("entitled: none") }
+        var all = [String]()
+        for await result in Transaction.all { all.append(line(result, tag: "all")) }
+        return (lines + (all.isEmpty ? ["all: none"] : all)).joined(separator: "\n")
+    }
+    #endif
+
     func updates() -> AsyncStream<EntitlementSnapshot> {
         AsyncStream { continuation in
             let task = Task {
