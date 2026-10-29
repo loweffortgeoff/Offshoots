@@ -3,11 +3,6 @@ import Observation
 
 @MainActor @Observable
 final class HindsightAccess {
-    #if HINDSIGHT_TESTFLIGHT
-    private static let productionEnabled = true
-    #else
-    private static let productionEnabled = false
-    #endif
     let isEnabled: Bool
     let entitlement: ReflectionEntitlement?
     let purchase: ReflectionPurchase?
@@ -50,7 +45,6 @@ final class HindsightAccess {
         }
         if defaults.bool(forKey: debugStoreKitKey) { return enabled(sharedEntitlement) }
         #endif
-        guard productionEnabled else { return HindsightAccess(isEnabled: false, entitlement: nil, purchase: nil) }
         return enabled(sharedEntitlement)
     }
 

@@ -94,13 +94,13 @@ struct HindsightAccessTests {
         store.waitForPendingSaves()
     }
 
-    @Test func disabledFactoryDoesNotCreatePurchaseOrExposeCapture() {
+    @Test func productionFactoryEnablesHindsightWithoutUnlockingIt() {
         let access = HindsightAccess.make(arguments: [], defaults: freshDefaults())
-        #expect(!access.isEnabled)
+        #expect(access.isEnabled)
         #expect(!access.canCapture)
-        #expect(access.entitlement == nil)
-        #expect(access.purchase == nil)
-        #expect(!access.showsInsights(hasSavedAnswers: false))
+        #expect(access.entitlement != nil)
+        #expect(access.purchase != nil)
+        #expect(access.showsInsights(hasSavedAnswers: false))
         #expect(access.showsInsights(hasSavedAnswers: true))
         #expect(!ReflectionCenter.make(arguments: []).canGenerate)
     }
@@ -119,8 +119,9 @@ struct HindsightAccessTests {
         let defaults = freshDefaults()
         #expect(HindsightAccess.make(arguments: ["-HindsightStoreKit"], defaults: defaults).isEnabled)
         #expect(HindsightAccess.make(arguments: [], defaults: defaults).isEnabled)
-        #expect(!HindsightAccess.make(arguments: ["-HindsightStoreKitOff"], defaults: defaults).isEnabled)
-        #expect(!HindsightAccess.make(arguments: [], defaults: defaults).isEnabled)
+        #expect(HindsightAccess.make(arguments: ["-HindsightStoreKitOff"], defaults: defaults).isEnabled)
+        #expect(!defaults.bool(forKey: HindsightAccess.debugStoreKitKey))
+        #expect(HindsightAccess.make(arguments: [], defaults: defaults).isEnabled)
         #endif
     }
 
