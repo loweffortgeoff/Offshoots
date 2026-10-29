@@ -454,3 +454,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Why:** A model adds a quality bar that needs ongoing testing, and PCC usage limits complicate an unrestricted one-time unlock. The results do not show enough added value for either cost: more context fixed the read-6-of-17 problem, but code-chosen pairs scored below free choice and Hindsight labels made the one sample worse. PCC's gain was in abstention, not pairing.
 **Alternative considered:** Merge the token-budget snapshot alone. It is independent of Hindsight and fixed the 6-of-17 read, but generated Reflection is on hold, so it has no consumer yet.
 **Follow-up:** Done in `34030dc`: the PCC entitlement is removed; `Offshoots/Offshoots.entitlements` stays as an empty plist.
+
+## 2026-10-29 (Enable Hindsight for 2.1.0)
+**Decision:** Enable Hindsight in standard Release builds after Geoff accepted the paid value and device checks. Keep generated Reflection disabled.
+**Why:** Hindsight is the approved one-time purchase; generated output did not meet its quality gate.
+**Alternative considered:** Keep the TestFlight-only gate. That would remove Hindsight from the release.

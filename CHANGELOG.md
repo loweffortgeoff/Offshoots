@@ -4,6 +4,26 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- 2.1.0 build 14 archived on the Mac mini (macOS 27.2, Xcode 27.1); upload succeeded and ASC reports processing Valid. Export compliance is unset; the version has no build attached. ASC listing copy was saved and read back on 2026-10-29.
+
+## Shipped
+
+### 2.1.0 — Hindsight
+
+**Prepared; not yet submitted or released.** Geoff reports that the device checks pass on 2026-10-29. The standard Release build enables Hindsight; generated Reflection remains disabled. The iPhone 18 Pro simulator passed 275 tests and a Release build on 2026-10-29.
+
+#### Added
+- Hindsight offers optional paid check-ins about what you would repeat or change, with dated answers and a review filtered by answer, outcome and category.
+
+#### Improved
+- The Optimism card separates worse, matched and better outcomes and identifies offsetting misses.
+- Category labels appear on their own bars. Restore explains when the App Store account is not signed in.
+
+#### Fixed
+- Settings exports open the share sheet. Recovery preserves unreadable reflection data before replacement.
+
+<details><summary>Development history</summary>
+
 - 2026-10-28: Restore now says "Sign in to the App Store in Settings, then try again." when StoreKit reports `noAccount`, instead of "Restore did not finish." Other failures keep the old message. `RestoreFailureMessageTests` covers both. Finding from build 13: on `geoff_silva@loweffortapps.dev` (Media & Purchases signed in) Restore threw `StoreKitError.systemError(StoreKitInternalError.noAccount)` and StoreKit's transaction lists were empty, on both of Geoff's phones. Geoff's spouse and Geoff's normal Apple ID both bought and unlocked Hindsight, so Geoff is treating `loweffortapps.dev` as a developer-only account quirk and closing the investigation; the sandbox buy is passed. Not checked: Restore and refund on a second device, and TODO items 1\u20133. Not in a build yet; the next archive carries it.
 
 - 2026-10-28: Uploaded Offshoots 2.1.0 (13) with on-screen StoreKit purchase and restore diagnostics (TestFlight flag only; compiled out of normal Release builds), archived with `HINDSIGHT_TESTFLIGHT` into `build/testflight/` and uploaded with an `upload` ExportOptions copy. Reason: on build 12 the sandbox buy on Geoff's iPhone 17 Pro (iOS 27.2 Beta 2, account `geoff_silva@loweffortapps.dev`) showed Apple's "purchase was successful" and later "already been bought", yet Hindsight stayed locked and Restore said "did not finish". Build 13 shows `Transaction.currentEntitlements` and `Transaction.all` both empty on that phone. The same build bought and unlocked Hindsight on Geoff's spouse's phone, so the app code, product and ASC rename are fine and the fault is specific to the 17 Pro (beta OS or that account's state). Not checked: whether the stable iPhone 17 unlocks under `loweffortapps.dev`, Restore and refund, and TODO items 1–3.
@@ -40,7 +60,7 @@ Release scope and development history. A prepared RC entry below does not establ
 
 - 2026-10-24: Added a test-only PCC comparison at moderate reasoning. All 36 cases captured; quality still fails at 7/17 useful core readings (local baseline 6/17). Regular tests and Release build pass; production Reflection remains disabled.
 
-Hindsight is the approved 2.1.0 paid direction after local and PCC quality failures; its implementation plan awaits approval. The prior generated-Reflection implementation and evaluation remain tracked; production paid Reflection remains disabled.
+Historical 2026-10-24 status: Hindsight was the approved direction after local and PCC quality failures; the implementation plan was then awaiting approval. Generated Reflection remains disabled.
 
 - 2026-10-24: Recorded PCC as the next comparative evaluation for paid readings. Geoff reports the branch pushed; `dev/paid-reflection` remains open work while he returns to `main` for website work.
 
@@ -54,7 +74,8 @@ Hindsight is the approved 2.1.0 paid direction after local and PCC quality failu
 
 - 2026-10-21: Groomed the 2.1.0 Reflection roadmap into six ordered tasks. Moved the Optimism fix outside RC scope and mapped release, feature, bug, and testing work to undated Things tasks.
 
-## Shipped
+</details>
+
 
 ### 2.0.0 — It Keeps Going After You Decide
 

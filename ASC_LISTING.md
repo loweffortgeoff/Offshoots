@@ -1,6 +1,6 @@
-# App Store Connect — Current Listing (v2.0.0)
+# App Store Connect — Current Listing (v2.1.0)
 
-Listing for the 2.0.0 relaunch. Version 1.0.0 was on the App Store before. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Build 10 is the accepted RC; GM is tentatively targeted for around 2026-10-24, tied to Geoff's Duo release plan. No release is scheduled by this document.
+Listing for 2.1.0. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Copy saved and verified in ASC on 2026-10-29. Build 14 is uploaded and Valid. Export compliance is unset; the version has no build attached.
 
 ## Subtitle (30 characters max)
 Decision Journal & Predictions — 30 characters
@@ -11,19 +11,17 @@ Rationale: the app name indexes "offshoots". Apple combines words across the nam
 Predict how a decision will turn out, record what happened, then revisit it months later. Insights show where your predictions land and where optimism gets ahead of you. — 169 characters
 
 ## What's New
-Offshoots 2.0 is a big update. It keeps going after you decide.
 
-• Built for iPhone Duo: content stays clear of the fold, with paired panes for Dashboard, Log, Decisions and Insights in supported open layouts.
-• Revisit any decision later and re-rate it. Every revisit stays on a timeline ("Bad → Good"), and each one can schedule the next check-in.
-• Ready to Review: due reviews show on the Dashboard and at the top of your Decisions list.
-• Pick a review date with one tap: tomorrow, 3 days, 1 week or 1 month.
-• Insights: near misses in Prediction Accuracy, a new Optimism card, and stats that count your revisits.
-• Each marked decision tells you how the result compared with your prediction.
-• Starter suggestions help you log your first decisions.
-• Choose Light, Dark or System appearance, and export your data as JSON.
-• Import your decisions back from an Export file.
-• Free Look Back: before you predict, compare past decisions in the same category with their first recorded outcomes. Counts and two bars show what you expected and what happened.
-• Larger text and VoiceOver improvements, plus many bug fixes.
+Meet Hindsight, a new way to learn from the decisions you have already made.
+
+• Record what you would repeat or change when you review or revisit a decision.
+• Review your answers and notes across decisions. Filter by answer, outcome or category.
+• The Optimism card now shows when outcomes went worse, matched your prediction or went better.
+
+Hindsight is available as a one-time purchase.
+
+Fixed:
+• Category labels are easier to read.
 
 ## Description
 Offshoots — Decide. Predict. Learn.
@@ -46,6 +44,9 @@ Give a decision a new rating and a note on what changed. Schedule the next check
 
 Look Back Before You Predict
 See how past decisions in the same category compared with your predictions. Counts and two simple bars compare what you expected with the first outcomes you recorded. Look Back is free and needs two marked decisions in that category.
+
+Hindsight
+When you review or revisit a decision, record what you would repeat or change. Explore your answers and notes across decisions, and filter them by answer, outcome or category. Hindsight is a one-time purchase.
 
 Made for iPhone Duo
 Content stays clear of the fold. Review a decision beside your Dashboard, browse a list beside its details, or see related Insights together. Paired panes work in wide landscape and partly open portrait. Settings stays in one pane.
@@ -139,3 +140,5 @@ Final iPhone marketing PNGs are 1290 × 2796; Duo PNGs are 2007 × 2853. `script
 - 2026-10-17 (approved ASC transfer): What's New and Description updated and read back; Promotional Text and Keywords already matched. Build 10 is uploaded/Valid, attached to 2.0.0, and available to internal Low Effort. Reflection remains a draft outside the version review setup. Neither beta nor App Store review was submitted; manual release remains selected. Screenshot replacement and restoring the app's removed-from-sale availability remain open.
 
 - 2026-10-17 (approved screenshot upload): the three replacements are promoted and verified in ASC; review state remains Prepare for Submission with manual release and no App Store review submission. Reflection remains a draft outside the version setup. Availability and the pre-existing duplicate Duo Accuracy entry remain open.
+
+- 2026-10-29: Saved and read back Promotional Text, What’s New and Description in ASC 2.1.0 en-US; Keywords already matched. Generated Reflection remains outside this release.

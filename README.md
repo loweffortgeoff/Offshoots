@@ -31,11 +31,11 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 - Needs two marked decisions in the category. Below that, the card says how many remain. From five, a clear majority adds a calculated headline. Results update directly, with Copy and no generation wait.
 - Works on iOS 18.6+ without Apple Intelligence, notes, or a purchase.
 
-### Paid feature direction (2.1.0 design approved)
-The approved design is [Hindsight check-ins](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md): record what you would repeat or change, then review answers and their notes across decisions. Filter the review by answer, outcome, and current category. Phone and paid-value acceptance remain open; production capture and purchase remain disabled. See [Hindsight evaluation](docs/hindsight-evaluation.md) for evidence and open acceptance gates. Generated Reflection is outside the proposed purchase promise.
+### Hindsight (one-time purchase)
+Record what you would repeat or change during a review or revisit. Review answers and notes across decisions, filtered by answer, outcome or category. Generated Reflection is not included.
 
 ### Generated Reflection (retained; activation blocked)
-Paid Reflection is dormant in 2.0. The earlier approved 2.1.0 design proposed evidence-linked Patterns across categories and readings of how a decision aged, generated on request and saved as dated history. Clean Up Note was part of that proposal; free Look Back stays free. See the [approved design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md), [implementation plan](docs/superpowers/plans/2026-10-24-paid-reflection.md), and TODO. Local engineering checks pass, but generated-text quality fails the release gate. `ReflectionCenter.paidFeaturesEnabled` remains false. See [evaluation status](docs/reflection-evaluation.md) for scored cases and the remaining real-note/device gates.
+Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 design proposed evidence-linked Patterns across categories and readings of how a decision aged, generated on request and saved as dated history. Clean Up Note was part of that proposal; free Look Back stays free. See the [approved design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md), [implementation plan](docs/superpowers/plans/2026-10-24-paid-reflection.md), and TODO. Local engineering checks pass, but generated-text quality fails the release gate. `ReflectionCenter.paidFeaturesEnabled` remains false. See [evaluation status](docs/reflection-evaluation.md) for scored cases and the remaining real-note/device gates.
 
 ### Revisits
 - **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.
@@ -67,8 +67,8 @@ Paid Reflection is dormant in 2.0. The earlier approved 2.1.0 design proposed ev
 | **SwiftUI** | All UI — views, navigation, charts |
 | **Charts** | Analytics visualizations |
 | **UserNotifications** | Follow-up reminders |
-| **FoundationModels** | Retained for 2.1.0; production Reflection is disabled in 2.0 |
-| **StoreKit** | Retained for 2.1.0; purchase setup is skipped in 2.0 |
+| **FoundationModels** | Retained for 2.1.0; generated Reflection remains disabled |
+| **StoreKit** | Retained for 2.1.0; Hindsight uses StoreKit for its one-time purchase |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification tap routing (`NotificationDelegate` only) |
 | **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |

@@ -1,3 +1,22 @@
+# Release Notes — v2.1.0
+
+**Status:** Build 14 archived, uploaded and Valid in ASC. Export compliance is unset; the version has no build attached and is not submitted.
+
+## NEW
+
+- Hindsight: record what you would repeat or change when you review or revisit a decision. Review your answers and notes across decisions, and filter by answer, outcome or category. Hindsight is a one-time purchase.
+
+## IMPROVED
+
+- The Optimism card shows how often outcomes went worse, matched your prediction or went better.
+- Restore gives clearer guidance when you need to sign in to the App Store.
+
+## FIXED
+
+- Category labels are easier to read.
+
+---
+
 # Release Notes — v2.0.0
 
 **RC:** build 10, accepted on Geoff's phone. **GM target:** around October 24, 2026, tentatively aligned with the Duo release. This is release preparation, not a public-release record.
