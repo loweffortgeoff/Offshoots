@@ -2,8 +2,8 @@
 # App Store capture setup for Offshoots. Raw captures only: captions and frames
 # happen in a separate finishing process.
 #
-# setup (the default) erases the iPhone 18 Pro Max (iOS 27.0), sets dark mode and
-# a 9:41 status bar, builds and installs the app, loads docs/fixtures/screenshots.json
+# setup (the default) creates and erases only this RUN_ID's dedicated Pro Max (or Duo)
+# simulator, sets dark mode and a 9:41 status bar, builds and installs the app, loads docs/fixtures/screenshots.json
 # shifted from its 2026-09-27 anchor to today, skips the splash, and launches.
 # Then drive the taps (Claude's simulator tool, or by hand) and capture each shot:
 #
@@ -31,9 +31,9 @@
 # Scroll with slow drags that pause before lifting (Claude's simulator tool:
 # touch_path), not flicks. A flick keeps moving after release.
 #
-# iPhone Duo: DEVICE="iPhone Duo" switches to Xcode 27.1 and iOS 27.1, and
-# writes to Captures/<date>/duo/. The Duo has two displays, and only Geoff can
-# fold it (in DeviceHub). App Store Connect sizes:
+# iPhone Duo: DEVICE="iPhone Duo" selects a Duo type/runtime and writes to
+# Captures/<date>/duo/. Agents may change posture only in the simulator instance
+# they created for this run; never operate Geoff's active Duo. App Store Connect sizes:
 #   closed  1398 x 2034 (the "closed" display)  shots 01-07, same list as above
 #   open    2007 x 2853 (the "open" display)    shot 08-decisions-open
 # 08: fold the Duo partly open in landscape (Decisions list and detail side by
@@ -41,16 +41,25 @@
 # are not tuned yet: check each closed shot after the first run.
 #
 # Usage:
+#   export RUN_ID="offshoots-store-$(date +%Y%m%d-%H%M%S)"  # once per capture run
 #   scripts/screenshots.sh              # setup
 #   scripts/screenshots.sh shot 01-dashboard
 #   scripts/screenshots.sh reload       # reset the data, no erase
 #   DEVICE="iPhone Duo" scripts/screenshots.sh shot 08-decisions-open open
 #
-# DEVICE, OS and SCREENSHOT_OUT_DIR override the defaults.
+# DEVICE, SIM_DEVICE_TYPE, SIM_RUNTIME, OS, RUN_ID and SCREENSHOT_OUT_DIR override the defaults.
+# Every RUN_ID creates a unique device instance; all commands in one run use the same RUN_ID.
 set -euo pipefail
 
 BUNDLE=com.geoffrey.silva.Offshoots
+ROOT=${0:A:h:h}
+RUN_ID=${RUN_ID:-"offshoots-store-$(date +%Y%m%d-%H%M%S)"}
 DEVICE=${DEVICE:-"iPhone 18 Pro Max"}
+SIM_NAME="offshoots-store-$RUN_ID"
+STATE="$ROOT/build/screenshots/$RUN_ID"
+UDID_FILE="$STATE/udid"
+DERIVED="$STATE/dd"
+SIM_DEVICE_TYPE=${SIM_DEVICE_TYPE:-}
 SUBDIR=
 if [[ $DEVICE == "iPhone Duo" ]]; then
   OS=${OS:-27.1}
@@ -59,27 +68,41 @@ if [[ $DEVICE == "iPhone Duo" ]]; then
 fi
 OS=${OS:-27.0}
 ANCHOR=2026-09-27
-ROOT=${0:A:h:h}
 FIXTURE="$ROOT/docs/fixtures/screenshots.json"
-DERIVED="$ROOT/build/screenshots-dd"
 OUT_DIR=${SCREENSHOT_OUT_DIR:-"$HOME/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/$(date +%F)$SUBDIR"}
 
-# UDID of the available simulator named $DEVICE on iOS $OS
-udid() {
-  xcrun simctl list devices available -j | python3 -c '
+# Resolve an available type from Xcode's inventory; create a new, uniquely named instance.
+resolve_device_type() {
+  if [[ -n $SIM_DEVICE_TYPE ]]; then echo "$SIM_DEVICE_TYPE"; return; fi
+  xcrun simctl list devicetypes available --json | python3 -c '
 import json, sys
-name, runtime = sys.argv[1], "iOS-" + sys.argv[2].replace(".", "-")
-for key, devices in json.load(sys.stdin)["devices"].items():
-    if key.endswith(runtime):
-        for device in devices:
-            if device["name"] == name:
-                print(device["udid"])
-                sys.exit(0)
-sys.exit(1)' "$DEVICE" "$OS"
+name = sys.argv[1]
+for device in json.load(sys.stdin)["devicetypes"]:
+    if device["name"] == name:
+        print(device["identifier"])
+        raise SystemExit(0)
+raise SystemExit(1)' "$DEVICE"
+}
+
+resolve_runtime() {
+  if [[ -n ${SIM_RUNTIME:-} ]]; then echo "$SIM_RUNTIME"; return; fi
+  xcrun simctl list runtimes available --json | python3 -c '
+import json, sys
+version = sys.argv[1]
+for runtime in json.load(sys.stdin)["runtimes"]:
+    if runtime["isAvailable"] and runtime["name"] == "iOS " + version:
+        print(runtime["identifier"])
+        raise SystemExit(0)
+raise SystemExit(1)' "$OS"
+}
+
+udid() {
+  [[ -s $UDID_FILE ]] || return 1
+  cat "$UDID_FILE"
 }
 
 require_udid() {
-  udid || { echo "No available simulator named '$DEVICE' on iOS $OS." >&2; exit 1; }
+  udid || { echo "No simulator recorded for RUN_ID=$RUN_ID; run scripts/screenshots.sh setup first." >&2; return 1; }
 }
 
 # The fixture with every ISO 8601 date moved by (today - anchor) in whole days
@@ -98,17 +121,30 @@ PY
 }
 
 setup() {
-  local id; id=$(require_udid)
+  mkdir -p "$STATE"
+  local id
+  if [[ ! -s $UDID_FILE ]]; then
+    local devtype runtime
+    devtype=$(resolve_device_type) || { echo "No available Xcode simulator type named '$DEVICE'; set SIM_DEVICE_TYPE to an available device type ID." >&2; exit 1; }
+    runtime=$(resolve_runtime) || { echo "No available iOS $OS runtime; set SIM_RUNTIME to a compatible installed runtime." >&2; exit 1; }
+    xcrun simctl create "$SIM_NAME" "$devtype" "$runtime" > "$UDID_FILE"
+    printf '%s\n' "$devtype" > "$STATE/device-type"
+    printf '%s\n' "$runtime" > "$STATE/runtime"
+  fi
+  id=$(require_udid)
+  xcrun simctl list devices available -j | python3 -c 'import json,sys
+id=sys.argv[1]
+if not any(d["udid"]==id for group in json.load(sys.stdin)["devices"].values() for d in group): raise SystemExit(1)' "$id" || { echo "Recorded simulator $id is missing; choose a fresh RUN_ID." >&2; exit 1; }
   local developer_dir; developer_dir=$(xcode-select -p)
   local simulator_app="$developer_dir/../Applications/DeviceHub.app"
   [[ -d $simulator_app ]] || simulator_app="$developer_dir/Applications/Simulator.app"
-  echo "📱 $DEVICE, iOS $OS ($id)"
+  echo "📱 $DEVICE ($(cat "$STATE/device-type" 2>/dev/null || echo custom), $(cat "$STATE/runtime" 2>/dev/null || echo unknown runtime); UDID $id)"
 
-  echo "🧹 Erasing for a clean state…"
+  echo "🧹 Erasing this run-owned simulator for a clean state…"
   xcrun simctl shutdown "$id" 2>/dev/null || true
   xcrun simctl erase "$id"
   xcrun simctl boot "$id"
-  open "$simulator_app"
+  open "$simulator_app" --args -CurrentDeviceUDID "$id"
   xcrun simctl bootstatus "$id" -b
 
   echo "🌙 Dark mode, 9:41 status bar…"

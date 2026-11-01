@@ -7,12 +7,14 @@ description: Build and drive the Offshoots iOS app (SwiftUI decision journal, bu
 
 Surface: iPhone app, five tabs (Dashboard, Log, Decisions, Insights, Settings). Data is one file, `Documents/decisions.json`, so every proof checks the screen and that file. Project facts (fixtures, launch args, simulator quirks) live in `CLAUDE.md`; read its "Simulator Testing" section if something odd happens.
 
-Everything below uses `.claude/skills/verify-offshoots/verify.sh` (call it `V`). Its state is in `/tmp/offshoots-verify`.
+`AGENTS.md` authorizes isolated simulator use without per-session approval. Any compatible iPhone, iPad, or Duo model is allowed; create a separate instance for Pro Max captures.
+
+Everything below uses `.claude/skills/verify-offshoots/verify.sh` (call it `V`). Export a unique `RUN_ID` once per task and reuse it for every command; state is isolated under `/tmp/offshoots-verify/$RUN_ID`.
 
 ## Launch
-1. `V up` builds Debug with Xcode 27.x (`/Applications/Xcode.app`), creates a **new** simulator `verify-offshoots-HHMMSS` (iPhone 18 Pro, iOS 27.2) and installs. Prints `READY sim=...`. First build is about 3 min. It starts from an empty data folder; the app launches with no decisions.
+1. `export RUN_ID="offshoots-$(date +%Y%m%d-%H%M%S)"`, then `V up` builds Debug with Xcode 27.x (`/Applications/Xcode.app`), creates a **new** `verify-offshoots-$RUN_ID` simulator using `SIM_DEVICE_TYPE` (defaults to iPhone 18 Pro) and the newest installed iOS runtime (or `SIM_RUNTIME`). It prints `READY sim=...`. First build is about 3 min. It starts from an empty data folder; the app launches with no decisions.
 2. `V seed screenshots` loads 12 decisions (4 "Ready to Review") and relaunches with the splash skipped. Other fixtures: `ls docs/fixtures`. `insights-seed` fills Insights only when today is 2026-09-25..30; `so-far-trend` and `screenshots` do not depend on the date.
-3. Open the simulator for driving: call the T3 `device_list` then `device_open` (deviceId from `/tmp/offshoots-verify/sim`, hostId `local`). It returns an `agent-device` command; use it for every tap, fill, scroll and screenshot. Without T3 tools, use the Xcode `DeviceInteractionStartSession` tools (see `device-verification-xcode27`). Then `agent-device open com.geoffrey.silva.Offshoots` (add `--relaunch` only if you want a fresh start; it keeps the seeded data).
+3. Open the simulator for driving: call `V sim` to get this run's UDID, then T3 `device_list` and `device_open` (deviceId is that UDID, hostId `local`). It returns an `agent-device` command; use it for every tap, fill, scroll and screenshot. Without T3 tools, use the Xcode `DeviceInteractionStartSession` tools (see `device-verification-xcode27`). Then `agent-device open com.geoffrey.silva.Offshoots` (add `--relaunch` only if you want a fresh start; it keeps the seeded data).
 
 Ready means the Dashboard snapshot shows "Your Decisions". Do not tap during the 2 s splash (seed skips it).
 
@@ -28,14 +30,14 @@ Ready means the Dashboard snapshot shows "Your Decisions". Do not tap during the
 - Feature walkthroughs: `features/README.md`.
 
 ## Evidence
-Save to `/tmp/offshoots-verify/evidence/<feature>-<step>.png` with `agent-device screenshot <path>` (1x points; add `--pixel-density 3` for full res). Per proof capture: the screen before the action, the screen after, and `V db "<title>"` output. Standards:
+Save to `/tmp/offshoots-verify/$RUN_ID/evidence/<feature>-<step>.png` with `agent-device screenshot <path>` (1x points; add `--pixel-density 3` for full res). Per proof capture: the screen before the action, the screen after, and `V db "<title>"` output. Standards:
 - Use the real UI path. Do not edit `decisions.json` to create the state you are testing; seeding fixtures before the run is fine.
 - The store writes `decisions.json` a few seconds after the UI changes, so `V db <title>` polls up to 20 s. A missing row after that is a failure.
 - A UI change with no matching file change (or the reverse) is a bug, not noise.
 - A saved decision schedules a local notification; that is the only external side effect, and it stays on the simulator.
 
 ## Isolation
-`V up` always uses its own simulator. Never boot, reuse or erase the user's `iPhone 18 Pro`, `iPhone Duo` or other `verify-*` simulators, and do not run two proofs in one `/tmp/offshoots-verify`. Tests (`xcodebuild test`) shut simulators down, so do not run them mid-proof.
+`V up` creates and uses a dedicated simulator for this `RUN_ID`. Never boot, reuse, erase, or interact with Geoff's active simulator instance, whether it is an iPhone, Pro Max, Duo, or another model. Unclear ownership means create another simulator. Distinct run IDs have separate state and can coexist. Tests (`xcodebuild test`) shut their target simulator down, so run tests against this task's owned UDID and do not interrupt an active proof.
 
 ## Cleanup
-Close the T3 device with `device_close` (shutdown true). Then `V down` deletes the throwaway simulator only; `/tmp/offshoots-verify/evidence` is kept. Build output (`dd/`) is also kept for the next run.
+Close this run's T3 device with `device_close` (shutdown true). Then `V down` deletes only this run's simulator; its evidence in `/tmp/offshoots-verify/$RUN_ID/evidence` and build output stay.

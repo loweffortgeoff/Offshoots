@@ -1,18 +1,28 @@
 #!/bin/zsh
 # Helper for the verify-offshoots skill. Usage: verify.sh <up|doctor|seed|db|down> [args]
-#   up                 build Debug for the simulator, create a throwaway iPhone 18 Pro (iOS 27.2), install
+#   up                 build Debug for the simulator, create an isolated compatible iOS simulator, install
 #   doctor             read-only: is the sim booted, app installed, build current?
 #   seed <fixture>     stop app, copy docs/fixtures/<fixture>.json in as decisions.json, relaunch (splash skipped)
 #   db [title]         print count + titles from decisions.json; with a title, poll up to 20 s until it appears
-#   down               delete the throwaway simulator. Evidence in $STATE/evidence is kept.
+#   sim                print this run's owned simulator UDID
+#   down               delete this run's simulator. Evidence in $STATE/evidence is kept.
 set -euo pipefail
 ROOT=${0:A:h:h:h:h}
-STATE=/tmp/offshoots-verify
+RUN_ID=${RUN_ID:-offshoots-$(date +%Y%m%d-%H%M%S)}
+STATE=${OFFSHOOTS_RUN_DIR:-/tmp/offshoots-verify/$RUN_ID}
 BUNDLE=com.geoffrey.silva.Offshoots
+SIM_DEVICE_TYPE=${SIM_DEVICE_TYPE:-com.apple.CoreSimulator.SimDeviceType.iPhone-18-Pro}
 export DEVELOPER_DIR=${DEVELOPER_DIR:-/Applications/Xcode.app/Contents/Developer}
 APP=$STATE/dd/Build/Products/Debug-iphonesimulator/Offshoots.app
-mkdir -p $STATE/evidence
-sim() { [[ -f $STATE/sim ]] || { echo "No simulator. Run: verify.sh up"; exit 1; }; cat $STATE/sim; }
+mkdir -p "$STATE/evidence"
+sim() { [[ -f $STATE/sim ]] || { echo "No simulator for RUN_ID=$RUN_ID. Run: verify.sh up"; exit 1; }; cat "$STATE/sim"; }
+runtime() {
+  if [[ -n ${SIM_RUNTIME:-} ]]; then print -r -- "$SIM_RUNTIME"; return; fi
+  xcrun simctl list runtimes available --json | /usr/bin/python3 -c 'import json,sys
+r=[x for x in json.load(sys.stdin)["runtimes"] if x["isAvailable"] and x["name"].startswith("iOS")]
+r.sort(key=lambda x:[int(p) for p in x["version"].split(".")])
+print(r[-1]["identifier"] if r else "")'
+}
 container() { xcrun simctl get_app_container "$(sim)" $BUNDLE data; }
 
 case ${1:-} in
@@ -22,7 +32,9 @@ up)
     || { grep -m5 "error:" $STATE/build.log; echo "BUILD FAILED, see $STATE/build.log"; exit 1; }
   git rev-parse --short HEAD > $STATE/built-at
   if [[ ! -f $STATE/sim ]]; then
-    xcrun simctl create verify-offshoots-$(date +%H%M%S) com.apple.CoreSimulator.SimDeviceType.iPhone-18-Pro com.apple.CoreSimulator.SimRuntime.iOS-27-2 > $STATE/sim
+    SIM_RUNTIME_ID=$(runtime)
+    [[ -n $SIM_RUNTIME_ID ]] || { echo "No available iOS runtime; set SIM_RUNTIME to an installed compatible runtime"; exit 1; }
+    xcrun simctl create "verify-offshoots-$RUN_ID" "$SIM_DEVICE_TYPE" "$SIM_RUNTIME_ID" > "$STATE/sim"
   fi
   xcrun simctl boot "$(sim)" 2>/dev/null || true
   xcrun simctl bootstatus "$(sim)" -b >/dev/null
@@ -56,5 +68,6 @@ down)
   [[ -f $STATE/sim ]] || exit 0
   xcrun simctl shutdown "$(sim)" 2>/dev/null || true; xcrun simctl delete "$(sim)"; rm -f $STATE/sim
   echo "deleted throwaway sim; evidence kept in $STATE/evidence";;
+sim) sim;;
 *) sed -n 2,8p $0; exit 1;;
 esac

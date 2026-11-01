@@ -2,12 +2,26 @@
 
 Project notes for Offshoots. General guidelines live in `~/.codex/AGENTS.md`.
 
+## Simulator access and isolation
+
+This project explicitly overrides the global iPhone 18 Pro simulator allowlist.
+Agents are authorized to choose and use any compatible iPhone, iPad, or Duo
+simulator for project work without per-session permission. Create a dedicated
+simulator instance when needed, including a separate Pro Max instance if that
+model is useful. The protected resource is Geoff's active simulator instance,
+identified by its UDID; never commandeer, erase, shut down, or interact with it.
+Treat a booted simulator with unclear ownership as someone else's and create an
+isolated instance instead. Use a unique run ID and only operate on the UDID
+recorded for that run. Select an installed runtime and device type compatible
+with the project's build/test requirements; install a missing runtime through
+Xcode's normal flow when needed. Follow any actual OS or tool approval prompt.
+
 # Development Commands
 
 ## Build Verification
 
 One shared scheme, `Offshoots`. Targets: `Offshoots` and `OffshootsTests`
-(Swift Testing). Unit tests cover logic. Check UI behavior on the simulator.
+(Swift Testing). Unit tests cover logic. Check UI behavior on an isolated simulator allowed by the Offshoots simulator policy.
 
 ```
 DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build

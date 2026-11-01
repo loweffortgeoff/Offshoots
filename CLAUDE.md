@@ -7,13 +7,27 @@ Free Look Back lives in `Offshoots/LookBack/` and reads first outcomes directly 
 
 Project notes for Offshoots. General guidelines live in `~/.claude/CLAUDE.md`.
 
+## Simulator access and isolation
+
+This project explicitly overrides the global iPhone 18 Pro simulator allowlist.
+Agents are authorized to choose and use any compatible iPhone, iPad, or Duo
+simulator for project work without per-session permission. Create a dedicated
+simulator instance when needed, including a separate Pro Max instance if that
+model is useful. The protected resource is Geoff's active simulator instance,
+identified by its UDID; never commandeer, erase, shut down, or interact with it.
+Treat a booted simulator with unclear ownership as someone else's and create an
+isolated instance instead. Use a unique run ID and only operate on the UDID
+recorded for that run. Select an installed runtime and device type compatible
+with the project's build/test requirements; install a missing runtime through
+Xcode's normal flow when needed. Follow any actual OS or tool approval prompt.
+
 # Development Commands
 
 ## Build Verification
 
 One shared scheme, `Offshoots`. Targets: `Offshoots` (the app) and
 `OffshootsTests` (Swift Testing, hosted by the app). Unit tests cover logic.
-Check UI behavior on the simulator.
+Check UI behavior on an isolated simulator allowed by the Offshoots simulator policy.
 
 ```
 DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'generic/platform=iOS Simulator' build
@@ -23,8 +37,21 @@ Leave the output verbose. Do not add `-quiet`.
 
 ## Tests
 
+Before a simulator test, export the run ID, create the owned simulator, and
+read its UDID:
+
 ```
-DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' test
+export RUN_ID="offshoots-$(date +%Y%m%d-%H%M%S)"
+V=.agents/skills/verify-offshoots/verify.sh
+$V up
+SIMULATOR_UDID="$($V sim)"
+```
+
+Use that `SIMULATOR_UDID` in the test commands below. Choose an installed iOS
+27 runtime; fold-specific checks require the Duo simulator and iOS 27.1 or later.
+
+```
+DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination "id=$SIMULATOR_UDID" test
 ```
 
 The tests load `docs/fixtures/*.json` from the test bundle. The folder is a
@@ -41,7 +68,7 @@ validation, so a missing sentence shows whether the model left it blank. It
 is off by default. Delete the output file first: the harness adds to the end of it.
 
 ```
-rm -f /tmp/reflection-live.txt; DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination 'platform=iOS Simulator,name=iPhone 18 Pro,OS=27.0' -only-testing:OffshootsTests/ReflectionLiveOutputTests test
+rm -f /tmp/reflection-live.txt; DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination "id=$SIMULATOR_UDID" -only-testing:OffshootsTests/ReflectionLiveOutputTests test
 ```
 
 Tests run in a cloned simulator, so `print` output from a test does not reach
@@ -57,6 +84,10 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
 
 ## Simulator Testing
 
+- **Native Mac scope:** the app target supports `iphoneos` and `iphonesimulator`,
+  with `SUPPORTS_MACCATALYST = NO`. The `os(macOS)` branch in shared source is
+  not a native Mac app target. Use iOS simulators for simulator verification.
+
 - **Do not wait on real time. Seed data instead.** The store reads
   `Documents/decisions.json` from the app's data folder. The file is an array of
   `Decision` with ISO 8601 dates. Write backdated decisions there, then relaunch
@@ -70,25 +101,25 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   decode to their defaults.
 - **Seed script:** `scripts/seed.sh <fixture>` closes the app, copies
   `docs/fixtures/<fixture>.json` in as `decisions.json` and relaunches.
-  Run it with no argument to list fixtures. `SIM=<UDID>` picks another
-  simulator. The app must be installed there first. The default UDID is the
-  Mac mini's iPhone 18 Pro. On the MacBook Pro, set
-  `SIM=22F3F961-2FD9-47A0-9158-24A94F6871B4`.
-- **One "iPhone 18 Pro" simulator per Mac.** A second simulator with the same
-  name makes `-destination '…,name=iPhone 18 Pro,OS=27.0'` fail with "Unable to
-  find a device matching". On 2026-10-05 the MacBook Pro had an unused duplicate
-  (`5BD73D53…`); Geoff approved deleting it. If the error comes back, run
-  `xcrun simctl list devices available | grep "iPhone 18 Pro"`, or use `id=`.
-- **App Store screenshots:** `scripts/screenshots.sh` erases the iPhone 18 Pro
-  Max (iOS 27.0), sets dark mode and a 9:41 status bar, builds, installs and
-  loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
+  Run it with no argument to list fixtures. `SIM=<UDID>` is required and must be the UDID recorded for this run's owned
+  simulator (get it with `.agents/skills/verify-offshoots/verify.sh sim`). The
+  app must be installed there first; there is no shared default simulator.
+- **Use the simulator UDID, not a model-name destination.** Model names may
+  have duplicates or be absent on a given Mac. The 2026-10-05 duplicate-device
+  incident is historical context; never delete a simulator just to make a name
+  destination unambiguous. Create/select a run-owned device and use `id=<UDID>`.
+- **App Store screenshots:** `scripts/screenshots.sh` creates a dedicated
+  Pro Max instance by default (or a separate Duo instance), sets dark mode and a
+  9:41 status bar, builds, installs and loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
   and the script moves every date by the number of days between the anchor
   and today, so the shots never drift. `scripts/seed.sh screenshots` loads
   the same fixture without the date shift, so its dates drift after
   2026-09-27. `ScreenshotFixtureTests` pins the numbers. Capture with
   `scripts/screenshots.sh shot 01-dashboard`; files go to
   `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/<date>/`.
-  The shot list and scroll positions are at the top of the script. Do not save
+  Export one unique `RUN_ID` for the setup and every `shot`/`reload` command.
+  The script only erases its own recorded UDID. The shot list and scroll positions
+  are at the top of the script. Do not save
   on 02 (Log) or 04 (Revisit): a save asks for notification permission.
   The 6.9" capture size is 1320 × 2868 px.
 - **iPhone Duo screenshots (2026-10-08):** run
@@ -96,8 +127,9 @@ Bundle ID: `com.geoffrey.silva.Offshoots`.
   and iOS 27.1, and writes to `Captures/<date>/duo/`. The Duo has two displays.
   `shot <name> closed` captures `primary` (1398 × 2034). `shot <name> open`
   captures `primary-1` (2007 × 2853, or 2853 × 2007 in landscape). Both are ASC
-  sizes. The script warns when the size is wrong. Only Geoff can fold the Duo
-  (DeviceHub). `scripts/screenshots.sh reload` puts the date-shifted fixture
+  sizes. The script warns when the size is wrong. Agents may fold or rotate only
+  the Duo instance created for their `RUN_ID` in DeviceHub; leave Geoff's active
+  Duo untouched. `scripts/screenshots.sh reload` puts the date-shifted fixture
   back and relaunches, with no erase. Use it after a stray save.
   - **Which posture:** use closed for the single-screen shots (01, 03–07).
     Use fully open landscape for Log (02) and for two-pane Decisions (08).
@@ -284,9 +316,9 @@ Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Of
   posture and the pane fit. Read them with `simctl spawn <UDID> log show --last
   30s --info --predicate 'eventMessage CONTAINS "FOLDPANE"'`. Use them, not
   pixel positions, to check pane edges.
-- **Only Geoff can fold and rotate the Duo**, in DeviceHub. The DeviceHub image
-  of a bent device is scaled differently on each axis, so do not measure points
-  from it. `simctl io screenshot` captures the display that is off in some
+- Agents may fold and rotate their own Duo simulator in DeviceHub for verification.
+  Never change Geoff's active Duo instance. The DeviceHub image of a bent device
+  is scaled differently on each axis, so do not measure points from it. `simctl io screenshot` captures the display that is off in some
   postures (black image); the simulator tool's `screenshot` follows the active
   screen.
 - **Gotchas found on the Duo.** A `NavigationStack` is a full-screen UIKit

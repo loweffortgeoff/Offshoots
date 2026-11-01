@@ -1,11 +1,11 @@
 #!/bin/zsh
 # Load a test-data fixture into Offshoots on the simulator, then relaunch the app.
 # Usage: scripts/seed.sh <fixture>   e.g. scripts/seed.sh insights-seed
-# Fixtures live in docs/fixtures/. Set SIM=<UDID> to use another simulator.
+# Fixtures live in docs/fixtures/. SIM=<UDID> is required and must be this run's owned simulator.
 set -euo pipefail
 
 BUNDLE=com.geoffrey.silva.Offshoots
-SIM=${SIM:-204520A6-E5B5-447D-8A6B-028317014DD8}   # iPhone 18 Pro, iOS 27.0, Mac mini
+SIM=${SIM:-}
 ROOT=${0:A:h:h}
 
 if [[ $# -ne 1 ]]; then
@@ -16,6 +16,7 @@ fi
 
 FIXTURE="$ROOT/docs/fixtures/${1%.json}.json"
 [[ -f $FIXTURE ]] || { echo "No fixture at $FIXTURE"; exit 1; }
+[[ -n $SIM ]] || { echo "Set SIM to this run's owned simulator UDID (see verify-offshoots/verify.sh sim)." >&2; exit 2; }
 
 xcrun simctl boot "$SIM" 2>/dev/null || true
 xcrun simctl terminate "$SIM" "$BUNDLE" 2>/dev/null || true
