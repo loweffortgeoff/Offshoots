@@ -1,6 +1,12 @@
 # TODO
 
-## Next — 2.0.0 free Look Back
+## Next
+
+**Release context (reconciled 2026-11-07):** 2.1.0 Hindsight is live, confirmed by Geoff on 2026-11-02. Remaining Duo checks stay in Backlog.
+
+- [ ] **Scope the first Siri actions.** Choose from logging a decision, recording an outcome, and showing revisits due; define indexing and privacy safeguards. Geoff approved scoping on 2026-11-07, not an implementation bundle, version, or date; Hindsight stays model-free and generated Reflection remains parked.
+
+## Done — 2.0.0 free Look Back
 - [x] **RC 10 release preparation.** Geoff accepted build 10 and selected it as the RC. GM is tentatively around 2026-10-24, aligned with his Duo release plan; do not schedule or declare it live from this date.
 - [x] **App Review and manual GM.** Build 10 is uploaded, processed and attached to 2.0.0. Internal/external TestFlight now report Testing. ASC remains Prepare for Submission with manual release; submit the App Store version only when authorized.
   - 2026-10-22: Geoff submitted 2.0 for App Store review. Manual GM still pending.
@@ -23,8 +29,7 @@
     - Foundation Models work is retained in the paused generated-Reflection cycle below.
 
 ## 2.1.0 — Hindsight
-- [ ] **Prepare the 2.1.0 release.** Build 14 was archived and uploaded on 2026-10-29. ASC reports Valid and the listing was saved and read back. Export compliance is unset; the version has no build attached. The IAP reviewer note and product attachment remain open; submission and public release require separate approval.
-**Current direction:** Hindsight is the approved paid direction. Generated Reflection is outside its purchase promise; its existing work and six tasks below remain on hold. November was the prior target, not a delivery commitment. The six generated-Reflection Things tasks are parked in Someday with the `Offshoots` tag; the three Hindsight tasks are undated in Offshoots → Feature Work.
+**Current direction (2026-11-07):** Hindsight has shipped and keeps its model-free purchase promise. The next planning action is Siri scoping above. The six generated-Reflection items below remain parked reference work; November was a prior target, not a delivery commitment.
 
 
 ### Prior generated-Reflection cycle — on hold
@@ -40,9 +45,11 @@
 **Status:** This PCC session passes 233 regular tests (eight opt-in skips), two PCC capture/access tests, and the Release build. Prior local StoreKit and UI evidence remains recorded. Quality fails at 6/17 local and 7/17 PCC core cases; real-note/device acceptance, phone purchase flow, and activation remain open.
 **PCC result:** Runtime access works on the allowed simulator. Moderate reasoning yields 7/17 useful core readings, 8/10 abstentions, and 5/5 synthetic cleanup cases. Quality still fails; keep production disabled. Review the [frozen PCC failures](docs/evaluations/2026-10-24-pcc-moderate.json) before another prompt/schema experiment; test larger context separately.
 **Outside this draft:** A separate feelings scale, App Intents, Siri/Spotlight, widgets, cloud sync/backup services, and scheduled monthly reviews. The Hindsight proposal adapts the Contrition concept; it does not port that app. Local export/import of saved readings is part of the approved persistence scope.
-**Things:** The six generated-Reflection tasks are in Someday with the `Offshoots` tag. Testing - Offshoots holds the remaining Duo checks. The Offshoots area holds the separate 2.0 release task. Hindsight task dates remain unset.
+**Things (checked 2026-11-07):** The old generated-Reflection tasks are no longer in Someday; several are in Trash. Do not recreate them from this reference list. Testing - Offshoots retains the remaining Duo checks; Feature Work holds the undated Siri scoping task.
 
 ## Done
+
+- [x] **Prepare and release 2.1.0 Hindsight.** Build 14 was uploaded on 2026-10-29; Geoff confirmed 2.1.0 live on 2026-11-02. The old submission checklist is closed in this 2026-11-07 reconciliation; no App Store Connect checks were repeated, and unresolved Duo checks are unchanged.
 - [x] **Fix the branch code-review findings.** Ten findings on `dev/paid-reflection`: nine code fixes (`6e50be5`, `752b360`) and a CLAUDE.md update for the DEBUG launch-argument order. Tests pass; simulator checks pass for failed recovery, unreadable reflections copied aside, a reading surviving a tab switch, and the Settings Hindsight sheet. Not checked: Mark Outcome on an already-resolved decision, and the shared entitlement with paid Reflection on. — 2026-10-27
 - [x] **Improve the Hindsight review.** Show the recorded note beside its answer and outcome, and add a category filter. Geoff approved the [plan](docs/superpowers/plans/2026-10-27-hindsight-review.md) for native execution. Geoff accepted the paid value and device checks. — 2026-10-27
 - [x] **Approve the Hindsight design.** Geoff approved the full [design](docs/superpowers/specs/2026-10-24-hindsight-check-ins-design.md), including paid access and offline ownership rules. — 2026-10-24
