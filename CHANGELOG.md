@@ -10,7 +10,7 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ### 2.1.0 — Hindsight
 
-**Prepared; not yet submitted or released.** Geoff reports that the device checks pass on 2026-10-29. The standard Release build enables Hindsight; generated Reflection remains disabled. The iPhone 18 Pro simulator passed 275 tests and a Release build on 2026-10-29.
+**Live on the App Store, as confirmed by Geoff on 2026-11-02.** Geoff reports that the device checks pass on 2026-10-29. The standard Release build enables Hindsight; generated Reflection remains disabled. The iPhone 18 Pro simulator passed 275 tests and a Release build on 2026-10-29.
 
 #### Added
 - Hindsight offers optional paid check-ins about what you would repeat or change, with dated answers and a review filtered by answer, outcome and category.
