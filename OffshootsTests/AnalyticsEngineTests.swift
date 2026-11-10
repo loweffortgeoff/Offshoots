@@ -9,7 +9,7 @@ import Foundation
 import Testing
 @testable import Offshoots
 
-/// Expected values match the Insights fixtures described in CLAUDE.md, so the
+/// Expected values match the Insights fixtures described in docs/simulator-notes.md, so the
 /// tests and `scripts/seed.sh` share one source of truth.
 @MainActor
 struct AnalyticsEngineTests {
