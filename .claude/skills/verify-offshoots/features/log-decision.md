@@ -17,4 +17,4 @@ Tap the Log tab. Form heading "Log a Decision".
 - Ref expiry: a press using a ref from before the previous action fails with "expired ref frame". Snapshot first.
 - `decisions.json` lags the UI by a few seconds; `V db` polls.
 - Review date defaults to Tomorrow; a past date is not selectable.
-- Do not save in the App Store screenshot flow (see CLAUDE.md); here saving is the point and the sim is disposable.
+- Do not save in the App Store screenshot flow (see `docs/simulator-notes.md`); here saving is the point and the sim is disposable.

@@ -1,0 +1,297 @@
+# Simulator and device notes — Offshoots
+
+Field notes moved out of `CLAUDE.md` on 2026-11-10. Each note is an observation
+from the date it gives, on the Mac and OS it names. It is not a rule. Later
+Xcode or iOS versions can change the behavior, so check a note again before
+you rely on it. The rules are in `CLAUDE.md`. The day-to-day driving flow is in
+`.claude/skills/verify-offshoots/SKILL.md`; the tapping notes here are older
+than that flow. Add a new finding here with its date and machine.
+
+## Tests
+
+`SIMULATOR_UDID` in the commands below is the run-owned simulator from
+`CLAUDE.md`, "Build and test".
+
+**Live output harness.** `ReflectionLiveOutputTests` runs the real on-device model
+on `docs/fixtures/reflection-notes.json` (Patterns, two decision reflections, Look
+Back for Money and Work) and writes token counts, prompts and output to a file.
+For Look Back it also writes the model's raw sentence for each group before
+validation, so a missing sentence shows whether the model left it blank. It
+is off by default. Delete the output file first: the harness adds to the end of it.
+
+```
+rm -f /tmp/reflection-live.txt; DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer" TEST_RUNNER_REFLECTION_LIVE=1 TEST_RUNNER_REFLECTION_LIVE_OUT=/tmp/reflection-live.txt xcodebuild -project Offshoots.xcodeproj -scheme Offshoots -destination "id=$SIMULATOR_UDID" -only-testing:OffshootsTests/ReflectionLiveOutputTests test
+```
+
+Tests run in a cloned simulator, so `print` output from a test does not reach
+the xcodebuild log (checked 2026-10-05). That is why the harness writes to the
+`REFLECTION_LIVE_OUT` file on the Mac. Prompt changes, measurements and output
+per version are in `docs/superpowers/archive/2026-10-05-reflection-depth.md`.
+
+**Context window.** The on-device model's context is 4,096 tokens on iOS 26
+(a fixed value in the SDK) and 8,192 on the iOS 27.0 simulator. Size every
+Reflection prompt for 4,096. `theWorstCasePatternsPromptStaysSmall` pins Patterns.
+
+Bundle ID: `com.geoffrey.silva.Offshoots`.
+
+## Simulator Testing
+
+- **Native Mac scope:** the app target supports `iphoneos` and `iphonesimulator`,
+  with `SUPPORTS_MACCATALYST = NO`. The `os(macOS)` branch in shared source is
+  not a native Mac app target. Use iOS simulators for simulator verification.
+
+- **Do not wait on real time. Seed data instead.** The store reads
+  `Documents/decisions.json` from the app's data folder. The file is an array of
+  `Decision` with ISO 8601 dates. Write backdated decisions there, then relaunch
+  the app:
+  ```
+  C=$(xcrun simctl get_app_container <UDID> com.geoffrey.silva.Offshoots data)
+  cp seed.json "$C/Documents/decisions.json"
+  ```
+  Terminate the app before you write the file, because the store saves on
+  every change. Keys that are missing (`stakes`, `revisits`, `resolvedAt`)
+  decode to their defaults.
+- **Seed script:** `scripts/seed.sh <fixture>` closes the app, copies
+  `docs/fixtures/<fixture>.json` in as `decisions.json` and relaunches.
+  Run it with no argument to list fixtures. `SIM=<UDID>` is required and must be the UDID recorded for this run's owned
+  simulator (get it with `.agents/skills/verify-offshoots/verify.sh sim`). The
+  app must be installed there first; there is no shared default simulator.
+- **Use the simulator UDID, not a model-name destination.** Model names may
+  have duplicates or be absent on a given Mac. The 2026-10-05 duplicate-device
+  incident is historical context; never delete a simulator just to make a name
+  destination unambiguous. Create/select a run-owned device and use `id=<UDID>`.
+- **App Store screenshots:** `scripts/screenshots.sh` creates a dedicated
+  Pro Max instance by default (or a separate Duo instance), sets dark mode and a
+  9:41 status bar, builds, installs and loads `docs/fixtures/screenshots.json`. The fixture is anchored to 2026-09-27,
+  and the script moves every date by the number of days between the anchor
+  and today, so the shots never drift. `scripts/seed.sh screenshots` loads
+  the same fixture without the date shift, so its dates drift after
+  2026-09-27. `ScreenshotFixtureTests` pins the numbers. Capture with
+  `scripts/screenshots.sh shot 01-dashboard`; files go to
+  `~/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/<date>/`.
+  Export one unique `RUN_ID` for the setup and every `shot`/`reload` command.
+  The script only erases its own recorded UDID. The shot list and scroll positions
+  are at the top of the script. Do not save
+  on 02 (Log) or 04 (Revisit): a save asks for notification permission.
+  The 6.9" capture size is 1320 × 2868 px.
+- **iPhone Duo screenshots (2026-10-08):** run
+  `DEVICE="iPhone Duo" scripts/screenshots.sh`. The script picks Xcode 27.1
+  and iOS 27.1, and writes to `Captures/<date>/duo/`. The Duo has two displays.
+  `shot <name> closed` captures `primary` (1398 × 2034). `shot <name> open`
+  captures `primary-1` (2007 × 2853, or 2853 × 2007 in landscape). Both are ASC
+  sizes. The script warns when the size is wrong. Agents may fold or rotate only
+  the Duo instance created for their `RUN_ID` in DeviceHub; leave Geoff's active
+  Duo untouched. `scripts/screenshots.sh reload` puts the date-shifted fixture
+  back and relaunches, with no erase. Use it after a stray save.
+  - **Which posture:** use closed for the single-screen shots (01, 03–07).
+    Use fully open landscape for Log (02) and for two-pane Decisions (08).
+    Partly open puts a single-pane screen in one half and leaves the other
+    half empty, which does not work as a promo image.
+  - **Wait for the model.** On a fresh install the Clean Up Note and
+    Reflection areas read "on-device model is still getting ready" and do not
+    clear on their own. Terminate and relaunch the app. The log then says
+    `Current availability state: available`, and the areas show a lock.
+  - **Typing drops characters on the Duo.** The simulator `text` action lost
+    letters ("Mo the Denver officev"). Type short chunks and check each
+    one, or paste. The Mac pasteboard overrides `simctl pbcopy`, so put the
+    text on the Mac with `pbcopy` first. Then long-press the field, tap
+    the caret, tap Select All, and tap Paste.
+  - **Wait after a tap.** The page can still be settling after a tab change
+    or fold, and a tap then misses the field. Take a screenshot first.
+  - **Do not save on 02 or 04.** A stray save adds a 13th decision. Run
+    `reload` to put the data back to 12.
+- **Insights fixtures:** `docs/fixtures/insights-seed.json` gives Good 50%,
+  Top Category Tied, Trend Improving, Accuracy 67% (4 correct, 1 close,
+  1 missed) and Optimistic (0.5 steps, 6 decisions) when today is 2026-09-25 to 2026-09-30. The trend windows move
+  with today's date, so update the dates later. `insights-seed-too-early.json`
+  gives Trend "Too early".
+  `so-far-trend.json` gives Trend "So far" Improving (6 marked in July 2026,
+  both 30-day windows empty), and it does not depend on today's date.
+- **Test pushes need permission first.** `xcrun simctl push` fails with "Source
+  is not authorized" until someone taps Allow in the app. The app asks the
+  first time it schedules a reminder. `simctl privacy grant notifications`
+  does not work. The push payload needs a `decisionID` key with the
+  decision's UUID.
+- **Toggle preset:** the Settings "Follow-up Reminders" toggle is the
+  UserDefaults key `notificationsEnabled`. `simctl spawn … defaults write`
+  before launch reaches the app. `defaults read` afterwards can return an
+  out-of-date value. Read the app's own plist instead:
+  `$C/Library/Preferences/com.geoffrey.silva.Offshoots.plist`.
+- **Tapping in the simulator:** Claude's own simulator tool (`tap`, `swipe`)
+  works on the Mac mini (checked 2026-09-25). Take screenshots with
+  `xcrun simctl io <UDID> screenshot`. Coordinates are device points: the
+  iPhone 18 Pro screen is 402 × 874 pt, and the iPhone 18 Pro Max screen is
+  440 × 956 pt. `sips -Z 956` scales a Pro Max capture to 1 px = 1 pt, so you
+  can read tap coordinates from it (`-Z 874` for the Pro). Xcode's
+  device-interaction tools (`XcodeOpenWorkspace`, then
+  `DeviceInteractionStartSession`) are the backup.
+- **Scrolling to an exact position:** use `touch_path` with slow steps and a
+  pause before the lift. A flick keeps moving after release. The first small
+  drag after the scroll stops is sometimes ignored; send it again (checked
+  2026-09-26). A large navigation title (Decisions, Insights) only stays fully
+  open or fully collapsed, so you cannot hold a small scroll offset there.
+- **Uninstalling resets both permission and data, but not a `defaults write`.**
+  A value written with `simctl spawn … defaults write` lives outside the app
+  container and survives an uninstall. On 2026-09-25 a leftover
+  `notificationsEnabled = 0` on the iPhone 18 Pro simulator turned reminders
+  off after a fresh install. Check with `simctl spawn <UDID> defaults read
+  com.geoffrey.silva.Offshoots`, and clear it with `defaults delete`.
+- **If every notification `add` fails, erase the simulator.** On 2026-09-25
+  the iPhone 18 Pro simulator logged `Added notification request: [ hasError: 1 ]`
+  on every add and showed no permission prompt. `simctl shutdown`, then
+  `simctl erase`, fixed it. The erase also resets the simulator to light mode.
+  Check with `simctl spawn <UDID> log show --last 1m --info --predicate
+  'process == "Offshoots" AND subsystem BEGINSWITH "com.apple.UserNotifications"'`.
+- **A test run shuts the simulator down.** After `xcodebuild … test`, the
+  iPhone 18 Pro is Shutdown (checked 2026-09-25, with `name=` and `id=`).
+  Boot it again with `xcrun simctl boot <UDID>` before `simctl ui`,
+  `install` or `seed.sh`.
+- **Reattach after a reinstall.** After `simctl install` or a reboot, the
+  simulator tool's taps can stop reaching the app. Call `attach` again.
+- **Do not start a swipe near the tab bar.** A swipe that starts at y ≥ 800
+  on the iPhone 18 Pro taps the tab under it. Start at y = 720 or higher up.
+- **Accessibility tree without VoiceOver:** `DeviceInteractionStartSession`
+  with the simulator UDID, then `DeviceInteractionSynthesize` (optionally
+  with `interactionCommand: "t x y"`) writes a hierarchy file with each
+  element's label and traits (`Selected`). End the session afterwards.
+  Coordinates in that file are device points.
+  The file also lists `accessibilityHidden` elements and the children of
+  a `.combine` or `.ignore` element, nested under it. Use it to check
+  labels and nesting, not what VoiceOver skips; only listening with
+  VoiceOver shows that (checked 2026-10-11). To swipe, send
+  `t x1 y1 f x2 y2 duration` (for example `t 200 700 f 200 150 0.5`).
+  There is no `s` command.
+- **Dynamic Type checks:** `xcrun simctl ui <UDID> content_size
+  accessibility-extra-extra-extra-large`, then `large` to reset. At
+  accessibility sizes, layouts switch with `dynamicTypeSize.isAccessibilitySize`
+  (AnyLayout: side by side, or stacked). Chart text is capped at `.xxxLarge`.
+- **Splash on the first cold launch of each day.** The splash shows for
+  2 seconds; taps in that time miss. Later cold launches that day, and
+  returns from the background, skip it. The day is `lastSplashDate` in the
+  app's plist (`SplashSchedule`). To see it again, launch with
+  `-lastSplashDate 0` (`simctl launch <UDID> <bundle> -lastSplashDate 0`,
+  or enable that argument in the scheme; do not commit it enabled). A
+  `simctl spawn … defaults write` after the app has run did not take
+  effect (checked 2026-10-09); the launch argument does. The launch screen
+  is the app background (`OffshootBackground`, `UILaunchScreen` in
+  `Offshoots/Info.plist`), so a launch with no splash shows no green. After
+  a launch-screen change, uninstall the app, then shut the simulator down
+  and boot it again: iOS caches the launch screen.
+- **Menus close on their own.** Take a screenshot after opening a Picker
+  menu and tap the item at once. A late tap can land on the row behind it;
+  on 2026-09-25 one opened an App Store link in Safari from Settings.
+- **Simulator tool taps:** pass `duration: 0.15`. Shorter taps sometimes miss
+  a Toggle. The tool's own screenshot can lag; `xcrun simctl io` is current.
+  The `text` action can drop characters: on 2026-09-26 "Test" arrived as
+  "Te". Check the field in a screenshot before you rely on the text.
+- **Calendar day taps need a free path.** Do not put an always-on tap
+  gesture on a container that holds a graphical `DatePicker`. It takes the
+  day taps, and only the month arrows still work (fixed 2026-09-26). The
+  forms turn their tap-to-close-the-keyboard gesture on only while a text
+  field has focus: `.gesture(_:including: focused ? .all : .subviews)`.
+- **The first tap after a launch is often lost.** After `simctl launch`
+  the first tap (often a tab-bar tap) did nothing several times on
+  2026-10-01. Take a screenshot, and send the tap again if the screen did
+  not change.
+- **Reflection launch arguments (DEBUG builds only).** `-ReflectionFake` gives
+  canned output, unlocked. `-ReflectionUnlockOnly` uses the real on-device
+  model, unlocked, with no purchase. Type the leading dash, also in Xcode's
+  scheme Arguments field: without it the argument does nothing. With no
+  argument the surfaces show the locked state. There is no `-ReflectionPaywall`
+  argument. In the shared scheme `-ReflectionUnlockOnly` is present but
+  disabled (`isEnabled = "NO"`). Do not enable it in a commit: every Xcode run
+  would start unlocked and the paywall could not be tested.
+- **Hindsight launch arguments (DEBUG builds only).** `-HindsightStoreKit`
+  turns Hindsight on with real StoreKit and saves the
+  `debugHindsightStoreKit` key, so later Home Screen launches stay on.
+  `-HindsightStoreKitOff` clears the key. Uninstalling also clears it.
+- **Look Back raw output (DEBUG builds).** Each Look Back call logs
+  `LOOKBACKRAW` with the model's three sentences before validation. In
+  Xcode's console, filter on `LOOKBACKRAW`. Use it when a card is missing
+  a sentence on a phone.
+- **Purchases need an Xcode run.** `Reflection.storekit` is on the scheme's
+  Run action. `simctl launch` ignores it. Run with ⌘R or the Xcode
+  `RunProject` tool. The test purchase sheet says you are not charged.
+- **On a phone, buy in the sandbox, not in Xcode test mode.** Xcode's test mode
+  fails on both phones with `ASDServerErrorDomain Code=2010`. Take
+  `Reflection.storekit` off the Run action by hand (do not commit that), sign in
+  under Settings > Developer > Sandbox Apple Account, and run from Xcode. See
+  DECISIONS 2026-10-01. The Xcode sheet reads "For testing purposes only. You will
+  not be charged for confirming this purchase." The TestFlight sheet (build 2, iPhone 17, 2026-10-02) has the same
+  testing line, headed "In-App Purchase", with no "[Environment: Sandbox]" text.
+- **Uninstalling clears the Xcode test purchase.** Buy again in the running
+  app. Manage Transactions is empty until then.
+- **Import test files on the simulator.** Copy a JSON file into each
+  `…/Containers/Shared/AppGroup/<id>/File Provider Storage/` folder of the
+  simulator. It shows in Files > On My iPhone.
+- **Long text input:** `simctl pbcopy` puts text on the simulator
+  pasteboard. Long-press the field and tap Paste.
+- **Xcode rewrites the shared scheme.** When Xcode opens the project, it
+  changes the `version` in `Offshoots.xcscheme` from 1.7 to 1.3. Do not
+  treat that diff as Geoff's edit.
+- **The simulator runs the real on-device model.** On the Mac mini
+  (checked 2026-10-01) and the MacBook Pro (checked 2026-10-05), the iOS 27.0
+  simulator reports `SystemLanguageModel` as available and gives real output.
+  A call takes 3 to 7 seconds. Greedy sampling gives the same output
+  for the same input, so a prompt change can be re-tested on the simulator.
+- **App theme on the simulator.** The Settings theme is the `appTheme` key
+  in the app's own plist. On 2026-10-01 a `plutil` edit of that key, made
+  with the app closed, did not take effect. The iPhone 18 Pro was on Dark.
+
+# iPhone Duo (fold layout)
+
+Spec: `docs/superpowers/archive/2026-10-07-duo-fold-layout-design.md`. Code: `Offshoots/Fold/`.
+
+- **Posture table** (iPhone Duo simulator, from the probe): the `.division`
+  region is active only when the device is partly open. Fully open it is still
+  reported, as inactive; any other device reports none. The app uses that to
+  tell the Duo from other iPhones (`FoldPosture`: `flat`, `unfolded`, `folded`). Closed 466 x 678, no
+  region. Partly open portrait 669 x 951, band at y 455, 40 pt tall, 20 pt
+  margins. Partly open landscape 951 x 669, band at x 455. Fully open: same
+  sizes, region inactive.
+- **Debug log lines** (DEBUG builds): `FOLDPOSTURE` and `FOLDPANE` show the
+  posture and the pane fit. Read them with `simctl spawn <UDID> log show --last
+  30s --info --predicate 'eventMessage CONTAINS "FOLDPANE"'`. Use them, not
+  pixel positions, to check pane edges.
+- Agents may fold and rotate their own Duo simulator in DeviceHub for verification.
+  Never change Geoff's active Duo instance. The DeviceHub image of a bent device
+  is scaled differently on each axis, so do not measure points from it. `simctl io screenshot` captures the display that is off in some
+  postures (black image); the simulator tool's `screenshot` follows the active
+  screen.
+- **Gotchas found on the Duo.** A `NavigationStack` is a full-screen UIKit
+  layer: a smaller `.frame` does not move its navigation bar, and the tab rail's
+  trailing inset (84 pt) still reaches its content. `FoldPane` handles both: it
+  gives a left pane extra width and cuts at the fold with a mask that reaches
+  the screen edge. Extra height on a top pane hides the last scrolling content.
+- **Two panes in wide landscape** (2026-10-16): Decisions, Dashboard, Log and
+  Insights split through `Fold/WidePanes.swift` (an `ArrangementView`) and
+  `Fold/TwoPaneReader.swift`; each passes `FoldPane(ownsWideLayout: true)`.
+  Settings stays in one pane. Inside the split, SwiftUI reports no rail inset
+  for the left pane, but its `NavigationStack` still keeps 84 pt clear;
+  `WidePanes` reads the inset outside the split and widens and masks the left
+  pane. Spec: `docs/superpowers/specs/2026-10-16-duo-wide-panes-design.md`.
+- **Two panes in partly open portrait** (2026-10-16): the same four tabs stack
+  their panes, first pane on top. `FoldPosture.arrangement(width:)` returns a
+  `PaneArrangement` (`single`, `sideBySide`, `stacked`); `TwoPaneReader` passes it
+  and `WidePanes(arrangement:)` sets the split axis. Stacked panes are about 456
+  pt tall, so Decisions and Insights use inline titles and Log hides its hero.
+  The bottom pane needs no tab bar inset (checked on the Duo). `FOLDPANE` debug
+  lines log each pane's size. Spec:
+  `docs/superpowers/specs/2026-10-16-duo-portrait-panes-design.md`.
+- **Reaching a tab on the Duo without taps:** build once with
+  `@State private var selectedTab: AppTab = .insights` (or `.log`, `.decisions`)
+  in `ContentView`, install, screenshot, then restore the file. Do not commit it.
+- **Checked on the Duo** (2026-10-07): a reminder tap in two-pane landscape opens
+  the tapped decision in the detail pane (send it with `simctl push`; the app
+  needs notification permission first). **Not checked:** the splash (launch with
+  `-lastSplashDate 0`).
+
+# Colors
+
+On iOS 27.0 the graphical `DatePicker` draws the selected day in the label
+color and ignores the tint. iOS 26.5 uses the tint (checked 2026-09-25).
+
+Swift Charts axis labels keep the color they had at launch when light and
+dark mode switch while the app runs. `CategoryBreakdownCard` uses
+`.id(colorScheme)` to rebuild. To test a color change, switch the appearance
+while the app is running, not only before launch.

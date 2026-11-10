@@ -5,7 +5,7 @@ description: Build and drive the Offshoots iOS app (SwiftUI decision journal, bu
 
 # Verify Offshoots
 
-Surface: iPhone app, five tabs (Dashboard, Log, Decisions, Insights, Settings). Data is one file, `Documents/decisions.json`, so every proof checks the screen and that file. Project facts (fixtures, launch args, simulator quirks) live in `CLAUDE.md`; read its "Simulator Testing" section if something odd happens.
+Surface: iPhone app, five tabs (Dashboard, Log, Decisions, Insights, Settings). Data is one file, `Documents/decisions.json`, so every proof checks the screen and that file. Project facts (fixtures, launch args, simulator quirks) live in `docs/simulator-notes.md`; read its "Simulator Testing" section if something odd happens.
 
 `AGENTS.md` authorizes isolated simulator use without per-session approval. Any compatible iPhone, iPad, or Duo model is allowed; create a separate instance for Pro Max captures.
 

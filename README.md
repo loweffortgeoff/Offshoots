@@ -154,7 +154,7 @@ scripts/screenshots.sh             # App Store capture setup on the iPhone 18 Pr
 scripts/archive-upload.sh          # Archive Release and upload to TestFlight (--archive-only to stop before upload)
 ```
 
-The app needs **Xcode 27.1 or later** (iOS 27.1 SDK) to build, on the Mac mini. It still supports iOS 18.6 at runtime. See `CLAUDE.md`, "iPhone Duo (fold layout)".
+The app needs **Xcode 27.1 or later** (iOS 27.1 SDK) to build. It still supports iOS 18.6 at runtime. See `docs/simulator-notes.md`, "iPhone Duo (fold layout)".
 
 ## Privacy
 
