@@ -198,6 +198,7 @@ struct MarkOutcomeView: View {
             alreadyResolved = true
             return
         }
+        ShortcutsDonation.recordedOutcome(selectedOutcome)
 
         dismiss()
     }

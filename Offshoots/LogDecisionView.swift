@@ -286,6 +286,7 @@ struct LogDecisionView: View {
             notes: trimmedNotes.isEmpty ? nil : trimmedNotes,
             followUpDate: followUpDate
         )
+        ShortcutsDonation.loggedDecision(category: category, stakes: stakes)
 
         withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
             showingSavedConfirmation = true

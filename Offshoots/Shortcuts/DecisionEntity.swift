@@ -16,6 +16,8 @@ struct DecisionEntity: AppEntity, IndexedEntity {
         numericFormat: "\(placeholder: .int) decisions"
     )
     static let defaultQuery = DecisionEntityQuery()
+    /// Listed under NSUserActivityTypes in Info.plist
+    static let viewingActivityType = "com.geoffrey.silva.Offshoots.decision"
 
     /// `Decision.id`: stable across launches, and stored by saved shortcuts
     let id: UUID

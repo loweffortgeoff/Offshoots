@@ -174,8 +174,9 @@ struct RevisitView: View {
         let impact = UIImpactFeedbackGenerator(style: .medium)
         impact.impactOccurred()
 
+        var saved = false
         guard hindsightAccess.performSave(answer: hindsight, save: { answer in
-            store.addRevisit(
+            saved = store.addRevisit(
                 id: decision.id,
                 outcome: selectedOutcome,
                 note: note,
@@ -186,6 +187,7 @@ struct RevisitView: View {
             ownershipBlocked = true
             return
         }
+        if saved { ShortcutsDonation.recordedOutcome(selectedOutcome) }
 
         dismiss()
     }
