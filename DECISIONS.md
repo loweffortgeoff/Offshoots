@@ -464,3 +464,23 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Drop AI-generated Reflection. Hindsight stays model-free and is unaffected.
 **Why:** The context limits of the on-device and PCC models make generation not worth it, and Apple's PCC usage caps are tied to iCloud+ subscription tiers.
 **Alternative considered:** Continuing the token-budget context prototype. The prototype is preserved as tag `archive/reflection-context-prototype` (`54d6bb5`). Branch `dev/reflection-context-prototype` was deleted on 2026-11-21 from GitHub, the Mini, and the MBP.
+
+## 2026-11-21 (Widgets read a summary file, not the journal)
+**Decision:** The app writes `widget-summary.json` (decision IDs, titles, due dates and a Hindsight-owned flag) into App Group `group.com.geoffrey.silva.Offshoots`. The widget extension reads only that file. `Documents/decisions.json` stays where it is.
+**Why:** Moving the journal would mean migrating every existing journal on first launch, and a failed move risks data loss. The widget needs no notes, outcomes or Hindsight answers.
+**Alternative considered:** Move the whole journal into the App Group container. Rejected for the migration risk and the privacy surface.
+
+## 2026-11-21 (Hindsight is a tile in a free widget, not a locked widget)
+**Decision:** The medium widget has a Hindsight tile. A tap opens the Hindsight review for owners and the purchase sheet for everyone else. There is no lock-only Hindsight widget.
+**Why:** Review guideline 2.5.16 asks that widgets relate to the app's content, and a link to our own purchase is not a display ad (3.1.7). A widget that is only a lock is the most ad-like option, and non-buyers would remove it. Widgets cannot present a sheet, so the tap opens the app, which checks the live entitlement.
+**Alternative considered:** A separate Hindsight widget with a preview and a lock icon.
+
+## 2026-11-21 (One router for links, notifications and later Siri)
+**Decision:** `AppRoute` (`Shared/AppRoute.swift`) is the only way to open the app at a place: notification taps, `offshoots://` widget links, and later Siri open intents. The app registers the `offshoots` URL scheme.
+**Why:** Without one router, widgets and then Siri would each add their own navigation code.
+**Alternative considered:** Widget links handled beside the existing `NotificationDelegate` decision ID.
+
+## 2026-11-21 (Widgets, Shortcuts and Control Center/Lock Screen are three sessions)
+**Decision:** Session 1 builds the Home Screen widgets (`dev/widgets`). Session 2 builds the Shortcuts starter set. Session 3 builds Control Center and Lock Screen widgets, after Shortcuts because the control is an App Intent. Each gets its own design and is tested by Geoff. `dev/widgets` stays unmerged for a device run-through and may carry Session 3.
+**Why:** Geoff's call: one concern per session, each judged on devices.
+**Alternative considered:** One combined effort with a single merge.

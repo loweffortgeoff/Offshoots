@@ -37,6 +37,12 @@ features. Current release state is in `CHANGELOG.md` and `TODO.md`, not here.
 - **Do not redeclare an asset color.** Xcode generates a `Color` symbol for each
   color in `Assets.xcassets` (`OutcomeGood` becomes `.outcomeGood`). The same
   name in `Color+Theme.swift` fails the build with "invalid redeclaration".
+- **`Shared/` builds into the app and the widget extension.** Keep it
+  Foundation-only and mark its types `nonisolated`. Both targets default to
+  main-actor isolation, and the extension cannot see app types such as
+  `Decision`. Put app-only helpers in `Offshoots/`.
+- **The widget sees only `widget-summary.json`.** Titles, IDs and due dates.
+  Never add notes, outcomes or Hindsight answers to it (DECISIONS 2026-11-21).
 - **Do not put an always-on tap gesture on a container that holds a graphical
   `DatePicker`.** It takes the day taps. The forms use
   `.gesture(_:including: focused ? .all : .subviews)`.
