@@ -283,8 +283,10 @@ Rules for every intent:
      unresolved restore.
   2. If `title` is blank after trimming, `throw $title.needsValueError(...)`
      so Siri asks again, rather than failing.
-  3. Reject a `reviewDate` before `Calendar.current.startOfDay(for: .now)`
-     (DECISIONS 2026-09-26).
+  3. Reject a `reviewDate` before the start of tomorrow, the same floor as
+     `LogDecisionView.earliestReviewDate`. A same-day review is ready as soon
+     as it is saved (DECISIONS 2026-09-26). Corrected 2026-11-21 from "start
+     of today" while planning.
   4. Only then call `store.createDecision(...)` (saves journal, schedules
      reminder if enabled), refresh `WidgetSummaryWriter`, and index the entity.
 - **Result**: `some ReturnsValue<DecisionEntity> & ProvidesDialog` —
