@@ -4,6 +4,10 @@
 
 **Release context (reconciled 2026-11-07):** 2.1.0 Hindsight is live, confirmed by Geoff on 2026-11-02. Remaining Duo checks stay in Backlog.
 
+- [x] **Build the Home Screen widgets (Session 1 of 3).** Medium and small widgets, App Group summary, shared `AppRoute` router. See the [design](docs/superpowers/specs/2026-11-21-widgets-design.md) and [plan](docs/superpowers/plans/2026-11-21-widgets.md). Simulator checks pass (iPhone 18 Pro, iOS 27.3). — 2026-11-21
+- [ ] **Widgets: device checks on the iPhone 17.** (1) Swipe right on the Lock Screen to Today View with the medium widget: titles stay hidden until the phone unlocks. (2) The due count changes at midnight without opening the app. (3) The first install from Xcode creates the App Group and the widget bundle ID. Not possible on the simulator.
+- [ ] **Session 2: Shortcuts.** App Intents starter set, Spotlight, donations. Needs its own short design first.
+- [ ] **Session 3: Control Center and Lock Screen widgets.** "Log a decision" control and Lock Screen accessory widgets. Needs a short design addendum first.
 - [ ] **Scope the first Siri actions.** Choose from logging a decision, recording an outcome, and showing revisits due; define indexing and privacy safeguards. Geoff approved scoping on 2026-11-07, not an implementation bundle, version, or date; Hindsight stays model-free and generated Reflection was dropped 2026-11-21 (see DECISIONS).
 
 ## Done — 2.0.0 free Look Back

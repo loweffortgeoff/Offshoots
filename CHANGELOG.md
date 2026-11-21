@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- **Home Screen widgets** (`dev/widgets`, not released). Medium widget: decisions ready to review, with links to log a decision or open Hindsight (the purchase sheet for people who have not bought it). Small widget: the count. Widgets read a small summary in a new App Group (titles and dates only); the journal does not move. Notification taps and widget links share one router (`AppRoute`). Checked on the iPhone 18 Pro simulator (iOS 27.3); device checks pending.
+
 - 2.1.0 build 14 archived on the Mac mini (macOS 27.2, Xcode 27.1); upload succeeded and ASC reports processing Valid. Export compliance is unset; the version has no build attached. ASC listing copy was saved and read back on 2026-10-29.
 
 ## Shipped

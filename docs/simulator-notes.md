@@ -295,3 +295,31 @@ Swift Charts axis labels keep the color they had at launch when light and
 dark mode switch while the app runs. `CategoryBreakdownCard` uses
 `.id(colorScheme)` to rebuild. To test a color change, switch the appearance
 while the app is running, not only before launch.
+
+## Widgets and links
+
+Checked 2026-11-21 on the MacBook Pro (Xcode 27.3, iOS 27.3 simulator).
+
+- **Links.** `xcrun simctl openurl <UDID> offshoots://decision/<uuid>` works
+  only because the app registers the `offshoots` scheme (`CFBundleURLTypes`).
+  Without it the call fails with `LSApplicationWorkspaceErrorDomain` code 115.
+  iOS then shows "Open in OffShoots?", which needs a tap on Open (the
+  `agent-device` CLI accepts it with `alert accept`). Widget taps do not show
+  this prompt. Routes: `log`, `revisits`, `hindsight`, `decision/<uuid>`.
+- **Summary file.** `xcrun simctl get_app_container <UDID>
+  com.geoffrey.silva.Offshoots groups` lists the App Group path. The file is
+  `widget-summary.json` in that folder.
+- **Adding a widget.** Drive SpringBoard with the `agent-device` CLI (`help
+  ios-system-ui`). Long-press empty Home Screen space, then Edit › Add Widget,
+  search "OffShoots", and tap the result row by coordinates (it has no
+  label). Swipe the size picker with `gesture fling left`. Run one step per
+  command and check a snapshot between steps; chained steps lost their
+  place.
+- **Splash date.** `simctl spawn … defaults write` writes the simulator's
+  shared domain, not the app's. To make the splash due before a cold launch,
+  terminate the app and edit
+  `<data container>/Library/Preferences/com.geoffrey.silva.Offshoots.plist`
+  with `plutil -replace lastSplashDate -float 0`.
+- **Tinted Home Screen.** A solid-colored capsule and its label render in the
+  same color in tinted mode. The widget pills switch to a translucent fill
+  outside `.fullColor`.
