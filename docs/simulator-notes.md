@@ -323,3 +323,31 @@ Checked 2026-11-21 on the MacBook Pro (Xcode 27.3, iOS 27.3 simulator).
 - **Tinted Home Screen.** A solid-colored capsule and its label render in the
   same color in tinted mode. The widget pills switch to a translucent fill
   outside `.fullColor`.
+
+## Shortcuts, Siri and Spotlight
+
+Checked 2026-11-21 on the Mac mini (Xcode 27.2, iOS 27.2 simulator).
+
+- **Driving.** `agent-device` was not installed on the Mac mini. The Xcode MCP
+  `DeviceInteractionStartSession` works headless, but its taps must come from
+  a subagent that loads the `device-interaction` skill. Shortcuts and Siri
+  dialogs are remote placeholders with no children in the hierarchy, so tap
+  them by screenshot position.
+- **Shortcuts app.** First launch shows "What's New in Shortcuts"; tap
+  Continue. App Shortcuts are under Library › Apps › OffShoots. A tile often
+  needs a second tap before its dialog appears; only one run happens. The new
+  shortcut editor opens in "Describe a shortcut" mode; tap Editor for the
+  action list. Offshoots lists a system "Find Decision" action for
+  `DecisionEntity` beside our five.
+- **Parameter order.** The system asks for every required parameter before
+  `perform()` runs, in declaration order. A check in `perform()` (such as a
+  blank title) re-asks only after the others.
+- **Spotlight.** Launching the app runs the full sync. Results sit low in the
+  list, under an "OffShoots" header; a slow drag scrolls past the keyboard
+  when a quick swipe does not. Results show the title only, no subtitle.
+  Spotlight matches words, so "the" finds nothing while "couch" does.
+- **Tests.** A test run shuts the simulator down. Boot it again before driving
+  it. Running a service-backed intent's `perform()` in a hosted test writes to
+  the simulator's real journal, because the app registers the real service.
+- **API names.** Core Spotlight has `deleteAppEntities(ofType:)` for a full
+  clear; there is no `deleteAllAppEntities`.

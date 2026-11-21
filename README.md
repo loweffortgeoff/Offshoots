@@ -60,6 +60,13 @@ Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 desig
 - **Control Center control** — "Log a Decision" button (`ControlWidgetButton`) that opens Offshoots straight to the Log tab from Control Center, a Lock Screen corner button, or the Action Button.
 - Widgets read a small summary (titles and dates only) from an App Group. Notes and Hindsight answers never leave the app.
 
+### Siri, Shortcuts & Spotlight
+- **Actions** — Log a Decision, Record Outcome (first outcome or a revisit), Show Decisions Ready to Review, Open Decision, Open Ready to Review. Every action needs an unlocked phone.
+- **Siri phrases** — work with no setup: "Log a decision in Offshoots", "Track a decision in Offshoots", "Record an outcome in Offshoots", "Review a decision in Offshoots", "Show decisions ready to review in Offshoots", "What decisions are ready to review in Offshoots".
+- **Spotlight** — finds decisions by title and opens the exact decision.
+- **Siri Suggestions** — logging, marking or revisiting in the app donates the action with only its category, stakes or outcome.
+- Notes, reflections, revisit notes and Hindsight answers never reach Siri, Shortcuts, Spotlight or donations. No App Intent schema is adopted (DECISIONS 2026-11-21).
+
 ### Navigation
 - **Dashboard** — Key stats and recent decisions
 - **Log Decision** — Quick entry form
@@ -79,9 +86,10 @@ Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 desig
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification and link routing (`NotificationDelegate` only) |
 | **WidgetKit** | Medium and small Home Screen widgets, Lock Screen accessory widgets, and Control Center control (`OffshootsWidgets` extension) |
-| **AppIntents** | Internal non-discoverable `OpenLogDecisionIntent` for the Control Center "Log a Decision" control |
+| **AppIntents** | Siri and Shortcuts actions, `DecisionEntity`, App Shortcuts phrases, donations; plus the internal non-discoverable `OpenLogDecisionIntent` for the Control Center control |
+| **CoreSpotlight** | Indexes `DecisionEntity` (title, category, outcomes; never notes) |
 | **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, `AppRoute`, `WidgetSummary` and its writer, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, `AppRoute`, `WidgetSummary` and its writer, the Shortcuts service, entity, intents and Spotlight indexer, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
 
 ## Project Structure
 
@@ -136,6 +144,9 @@ Offshoots/
 ├── ReviewDatePresetRow.swift      # Preset buttons on Log and Edit
 ├── PredictionResultBanner.swift   # How the first rating compared with the prediction
 │
+│  # Siri, Shortcuts and Spotlight (Shortcuts/ folder)
+├── Shortcuts/                     # ShortcutsService, DecisionEntity and query, AppEnums, intents, OffshootsShortcuts, Spotlight indexer, donations
+│
 │  # iPhone Duo fold layout (Fold/ folder)
 ├── Fold/                          # FoldRegion, FoldLayout, FoldPosture, FoldPostureReader, FoldPane
 │
@@ -160,7 +171,7 @@ Offshoots/
 
 Shared/                            # In the app and the widget extension: AppRoute, AppRouteDispatcher, LockScreenPresentation, OpenLogDecisionIntent, WidgetSummary, DueDay
 OffshootsWidgets/                  # WidgetKit extension: Home Screen widgets, Lock Screen widgets, Control Center control, timeline provider
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, AppRoute, WidgetSummary, LockScreenAndControl, Reflection policy, screenshot fixture
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, AppRoute, WidgetSummary, LockScreenAndControl, ShortcutsService, DecisionEntity, ShortcutsIntent, DecisionSpotlightIndexer, Reflection policy, screenshot fixture
 Reflection.storekit                # Local StoreKit test product; Hindsight on the existing product ID
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
