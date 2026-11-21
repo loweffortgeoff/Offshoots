@@ -12,6 +12,16 @@ enum DecisionRoute {
     }
 }
 
+/// A Hindsight link waiting for StoreKit. Any later link cancels it, so an old tap never jumps away from a newer one.
+nonisolated struct PendingHindsight {
+    private(set) var isWaiting = false
+
+    /// `target` is the resolved Hindsight target, or nil for any other route.
+    mutating func note(_ route: AppRoute, target: HindsightRouteTarget?) {
+        isWaiting = route == .hindsight && target == .wait
+    }
+}
+
 /// Where a Hindsight link lands. It waits for StoreKit, so an owner never sees the purchase sheet on a cold launch.
 nonisolated enum HindsightRouteTarget: Equatable {
     case wait, review, insights, purchase

@@ -33,6 +33,21 @@ import Testing
         #expect(DecisionRoute.path(for: UUID(), in: [kept]).isEmpty)
     }
 
+    @Test func laterRouteCancelsAWaitingHindsightLink() {
+        var pending = PendingHindsight()
+        pending.note(.hindsight, target: .wait)
+        #expect(pending.isWaiting)
+        pending.note(.log, target: nil)
+        #expect(!pending.isWaiting)
+    }
+
+    @Test func resolvedHindsightLinkStopsWaiting() {
+        var pending = PendingHindsight()
+        pending.note(.hindsight, target: .wait)
+        pending.note(.hindsight, target: .purchase)
+        #expect(!pending.isWaiting)
+    }
+
     @Test func hindsightTarget() {
         #expect(HindsightRouteTarget.resolve(hasResolvedOwnership: false, canCapture: false, entryCount: 3) == .wait)
         #expect(HindsightRouteTarget.resolve(hasResolvedOwnership: true, canCapture: true, entryCount: 3) == .review)

@@ -26,7 +26,7 @@ struct ContentView: View {
     @State private var logDraft: StarterSuggestion?
     @State private var showHindsightReview = false
     @State private var showHindsightPurchase = false
-    @State private var pendingHindsight = false
+    @State private var pendingHindsight = PendingHindsight()
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -79,8 +79,7 @@ struct ContentView: View {
         }
         // A Hindsight link that arrived before StoreKit answered
         .onChange(of: hindsight.entitlement?.hasResolvedOwnership) { _, resolved in
-            guard resolved == true, pendingHindsight else { return }
-            pendingHindsight = false
+            guard resolved == true, pendingHindsight.isWaiting else { return }
             handle(.hindsight)
         }
         .sheet(isPresented: $showHindsightPurchase) {
@@ -90,7 +89,10 @@ struct ContentView: View {
 
     private func handle(_ route: AppRoute) {
         // A purchase sheet left open from an earlier Hindsight link would hide the new destination
-        if route != .hindsight { showHindsightPurchase = false }
+        if route != .hindsight {
+            showHindsightPurchase = false
+            pendingHindsight.note(route, target: nil)
+        }
         switch route {
         case .log:
             selectedTab = .log
@@ -105,8 +107,10 @@ struct ContentView: View {
                 hasResolvedOwnership: hindsight.entitlement?.hasResolvedOwnership ?? false,
                 canCapture: hindsight.canCapture,
                 entryCount: HindsightSummary.entries(from: store.decisions).count)
+            pendingHindsight.note(route, target: target)
             switch target {
-            case .wait: pendingHindsight = true
+            // Insights is safe for owners and non-owners, so the tap shows something while StoreKit answers
+            case .wait: selectedTab = .insights
             case .review:
                 selectedTab = .insights
                 showHindsightReview = true

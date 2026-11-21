@@ -6,13 +6,13 @@
 import Foundation
 import WidgetKit
 
-struct RevisitsEntry: TimelineEntry {
+nonisolated struct RevisitsEntry: TimelineEntry {
     let date: Date
     let summary: WidgetSummary
 }
 
 /// Reads only the summary the app writes. The gallery and placeholder use sample data, never the journal.
-struct RevisitsProvider: TimelineProvider {
+nonisolated struct RevisitsProvider: TimelineProvider {
     func placeholder(in context: Context) -> RevisitsEntry {
         RevisitsEntry(date: .now, summary: .sample)
     }
@@ -39,7 +39,7 @@ struct RevisitsProvider: TimelineProvider {
 
 extension WidgetSummary {
     /// Widget gallery sample. Made up, so the gallery never shows a real decision.
-    static let sample: WidgetSummary = {
+    nonisolated static let sample: WidgetSummary = {
         let now = Date.now
         return WidgetSummary(version: currentVersion, hindsightOwned: false, items: [
             Item(id: UUID(), title: "Take the Denver job", dueDate: now.addingTimeInterval(-86_400)),
