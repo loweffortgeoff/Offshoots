@@ -457,3 +457,16 @@ git commit -m "docs: record Shortcuts and Siri starter set"
 ```
 
 - [ ] **Step 6: Hand off** — say the branch is `dev/shortcuts` in the main checkout, ready for Geoff to push and merge.
+
+---
+
+## Execution record
+
+**Status (2026-11-21):** implementation complete; iPhone 17 device checks pending. Not pushed, not merged.
+
+- Branch `dev/shortcuts` in the main checkout. Commits: `dc62563` (Task 1), `3aa1d8e` (Task 2), `c18c255` (Task 3), `abff3c2` (Task 4), `0173760` (Task 5), `96fe017` (review fixes), then the docs commit.
+- Machine: Mac mini (hostname `Mac`), Xcode 27.2 (27B52). Run-owned simulator `verify-offshoots-offshoots-20261121-080019` (0C13E201-16DF-416C-9601-E453E73B7A5D), iOS 27.2.
+- Last verified code state `96fe017`: full suite 331 tests in 51 suites passed; Release build and `scripts/archive-upload.sh --archive-only` succeeded at `0173760` (nothing uploaded); App Intents metadata lists six intents, `DecisionEntity`, three enums, three App Shortcuts.
+- Simulator checks (all pass): Spotlight finds "Book the dentist" and opens its Details; no note text or "Ready to review" in results (results show the title only); Shortcuts shows the three App Shortcuts; Ready to Review says "4 decisions are ready to review, starting with Ask for a four-day week."; exactly one "Log a Decision" action; Log Decision asks for the title first, then "How do you expect it to turn out?", and logs the decision. Evidence: `/tmp/offshoots-verify/offshoots-20261121-080019/evidence/shortcuts-*.png`.
+- Final review: fresh reviewer (Opus). Important findings fixed (stale Spotlight titles, iOS 27 reindex ordering, outcome prompts, title prompt order). Rulings and deferred minors are in the session ledger and the handoff message.
+- Next action: Geoff runs the device checks in TODO.md ("Shortcuts and Siri: iPhone 17 device checks"), then pushes and merges.

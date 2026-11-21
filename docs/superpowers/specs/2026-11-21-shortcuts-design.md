@@ -515,6 +515,14 @@ this run owns. Not required for v1.
   while locked requires Face ID / passcode before reading decision titles.
 - Spotlight search on-device: confirms titles appear, notes/Hindsight answers
   do **not** match Spotlight queries, and tapping opens the exact decision.
+- Locked-phone Spotlight (added 2026-11-21 after review): lock the phone,
+  open search, type a decision title. No title may show. If one does, create
+  the index with `CSSearchableIndex(name:protectionClass: .complete)` in every
+  index path.
+- Deleted decision in a saved shortcut: the system rejects the missing
+  decision when it resolves the parameter, before `perform()` runs, so its own
+  prompt or error shows rather than "That decision is no longer in Offshoots."
+  Nothing is written. Accepted 2026-11-21; record what the device shows.
 - Donations: after logging a few decisions in the app, check whether Siri
   Suggestions offer "Log a Decision" and that no decision title appears in the
   suggestion.
