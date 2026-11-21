@@ -45,6 +45,16 @@ features. Current release state is in `CHANGELOG.md` and `TODO.md`, not here.
   `Decision`. Put app-only helpers in `Offshoots/`.
 - **The widget sees only `widget-summary.json`.** Titles, IDs and due dates.
   Never add notes, outcomes or Hindsight answers to it (DECISIONS 2026-11-21).
+- **App Intents types in the app target take no `nonisolated`.** An intent,
+  entity, query or enum that stores `@Parameter`, `@Property` or `@Dependency`
+  values fails to compile with it ("'nonisolated' cannot be applied to mutable
+  stored properties"). These types are inferred nonisolated anyway, so main-actor
+  `Decision` helpers need `@MainActor` on the code that calls them (the entity's
+  init, the query's static helpers) and `@MainActor` on `perform()`.
+- **Hosted tests do not call `perform()` on intents backed by
+  `ShortcutsService`.** The test host registers the real service, so the intent
+  writes to the simulator's real journal. Test `ShortcutsService` directly; call
+  `perform()` only on the open intents, which write nothing.
 - **Do not put an always-on tap gesture on a container that holds a graphical
   `DatePicker`.** It takes the day taps. The forms use
   `.gesture(_:including: focused ? .all : .subviews)`.
