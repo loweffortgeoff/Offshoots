@@ -363,7 +363,7 @@ struct OffshootsShortcuts: AppShortcutsProvider {
             intent: LogDecisionIntent(),
             phrases: [
                 "Log a decision in \(.applicationName)",
-                "Track a decision in \(.applicationName)"
+                "Add a decision in \(.applicationName)"   // was "Track a decision"; changed 2026-11-21 after device testing (it sounded like following an existing decision)
             ],
             shortTitle: "Log Decision",
             systemImageName: "plus.circle"

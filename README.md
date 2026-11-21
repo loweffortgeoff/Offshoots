@@ -62,7 +62,7 @@ Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 desig
 
 ### Siri, Shortcuts & Spotlight
 - **Actions** — Log a Decision, Record Outcome (first outcome or a revisit), Show Decisions Ready to Review, Open Decision, Open Ready to Review. Every action needs an unlocked phone.
-- **Siri phrases** — work with no setup: "Log a decision in Offshoots", "Track a decision in Offshoots", "Record an outcome in Offshoots", "Review a decision in Offshoots", "Show decisions ready to review in Offshoots", "What decisions are ready to review in Offshoots".
+- **Siri phrases** — work with no setup: "Log a decision in Offshoots", "Add a decision in Offshoots", "Record an outcome in Offshoots", "Review a decision in Offshoots", "Show decisions ready to review in Offshoots", "What decisions are ready to review in Offshoots".
 - **Spotlight** — finds decisions by title and opens the exact decision.
 - **Siri Suggestions** — logging, marking or revisiting in the app donates the action with only its category, stakes or outcome.
 - Notes, reflections, revisit notes and Hindsight answers never reach Siri, Shortcuts, Spotlight or donations. No App Intent schema is adopted (DECISIONS 2026-11-21).
