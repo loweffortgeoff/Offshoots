@@ -89,6 +89,8 @@ struct ContentView: View {
     }
 
     private func handle(_ route: AppRoute) {
+        // A purchase sheet left open from an earlier Hindsight link would hide the new destination
+        if route != .hindsight { showHindsightPurchase = false }
         switch route {
         case .log:
             selectedTab = .log

@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5E1D6E7A2F1000000000001B /* OffshootsWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5E1D6E7A2F10000000000010 /* OffshootsWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		3AC851B1306709E700CE6291 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -14,11 +18,33 @@
 			remoteGlobalIDString = 3A33A2262EE6581F00ED220D;
 			remoteInfo = Offshoots;
 		};
+		5E1D6E7A2F1000000000001C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A33A21F2EE6581F00ED220D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5E1D6E7A2F10000000000013;
+			remoteInfo = OffshootsWidgets;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5E1D6E7A2F1000000000001A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5E1D6E7A2F1000000000001B /* OffshootsWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3A33A2272EE6581F00ED220D /* Offshoots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Offshoots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AC851AA306709E700CE6291 /* OffshootsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OffshootsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E1D6E7A2F10000000000010 /* OffshootsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OffshootsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -28,6 +54,13 @@
 				Info.plist,
 			);
 			target = 3A33A2262EE6581F00ED220D /* Offshoots */;
+		};
+		5E1D6E7A2F10000000000012 /* Exceptions for "OffshootsWidgets" folder in "OffshootsWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5E1D6E7A2F10000000000013 /* OffshootsWidgets */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -56,6 +89,14 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		5E1D6E7A2F10000000000011 /* OffshootsWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5E1D6E7A2F10000000000012 /* Exceptions for "OffshootsWidgets" folder in "OffshootsWidgets" target */,
+			);
+			path = OffshootsWidgets;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +114,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5E1D6E7A2F10000000000015 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -81,6 +129,7 @@
 			children = (
 				3A33A2292EE6581F00ED220D /* Offshoots */,
 				5E1D6E7A2F10000000000001 /* Shared */,
+				5E1D6E7A2F10000000000011 /* OffshootsWidgets */,
 				3AC851AB306709E700CE6291 /* OffshootsTests */,
 				3AC851B3306709E700CE6291 /* fixtures */,
 				3A3956E32F0AC3900092E3DF /* Frameworks */,
@@ -93,6 +142,7 @@
 			children = (
 				3A33A2272EE6581F00ED220D /* Offshoots.app */,
 				3AC851AA306709E700CE6291 /* OffshootsTests.xctest */,
+				5E1D6E7A2F10000000000010 /* OffshootsWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -114,10 +164,12 @@
 				3A33A2232EE6581F00ED220D /* Sources */,
 				3A33A2242EE6581F00ED220D /* Frameworks */,
 				3A33A2252EE6581F00ED220D /* Resources */,
+				5E1D6E7A2F1000000000001A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5E1D6E7A2F1000000000001D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3A33A2292EE6581F00ED220D /* Offshoots */,
@@ -154,6 +206,29 @@
 			productReference = 3AC851AA306709E700CE6291 /* OffshootsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		5E1D6E7A2F10000000000013 /* OffshootsWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E1D6E7A2F10000000000017 /* Build configuration list for PBXNativeTarget "OffshootsWidgets" */;
+			buildPhases = (
+				5E1D6E7A2F10000000000014 /* Sources */,
+				5E1D6E7A2F10000000000015 /* Frameworks */,
+				5E1D6E7A2F10000000000016 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5E1D6E7A2F10000000000011 /* OffshootsWidgets */,
+				5E1D6E7A2F10000000000001 /* Shared */,
+			);
+			name = OffshootsWidgets;
+			packageProductDependencies = (
+			);
+			productName = OffshootsWidgets;
+			productReference = 5E1D6E7A2F10000000000010 /* OffshootsWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -169,6 +244,9 @@
 					};
 					3AC851A9306709E700CE6291 = {
 						CreatedOnToolsVersion = 27.0;
+					};
+					5E1D6E7A2F10000000000013 = {
+						CreatedOnToolsVersion = 27.3;
 					};
 				};
 			};
@@ -188,6 +266,7 @@
 			targets = (
 				3A33A2262EE6581F00ED220D /* Offshoots */,
 				3AC851A9306709E700CE6291 /* OffshootsTests */,
+				5E1D6E7A2F10000000000013 /* OffshootsWidgets */,
 			);
 		};
 /* End PBXProject section */
@@ -201,6 +280,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		3AC851A8306709E700CE6291 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5E1D6E7A2F10000000000016 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -224,6 +310,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5E1D6E7A2F10000000000014 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -231,6 +324,11 @@
 			isa = PBXTargetDependency;
 			target = 3A33A2262EE6581F00ED220D /* Offshoots */;
 			targetProxy = 3AC851B1306709E700CE6291 /* PBXContainerItemProxy */;
+		};
+		5E1D6E7A2F1000000000001D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5E1D6E7A2F10000000000013 /* OffshootsWidgets */;
+			targetProxy = 5E1D6E7A2F1000000000001C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -484,6 +582,74 @@
 			};
 			name = Release;
 		};
+		5E1D6E7A2F10000000000018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = OffshootsWidgets/OffshootsWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 14;
+				DEVELOPMENT_TEAM = 2R5TZD4XAH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OffshootsWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OffShoots;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.geoffrey.silva.Offshoots.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		5E1D6E7A2F10000000000019 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = OffshootsWidgets/OffshootsWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 14;
+				DEVELOPMENT_TEAM = 2R5TZD4XAH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OffshootsWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OffShoots;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.geoffrey.silva.Offshoots.Widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -510,6 +676,15 @@
 			buildConfigurations = (
 				3AC851AE306709E700CE6291 /* Debug */,
 				3AC851AF306709E700CE6291 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5E1D6E7A2F10000000000017 /* Build configuration list for PBXNativeTarget "OffshootsWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E1D6E7A2F10000000000018 /* Debug */,
+				5E1D6E7A2F10000000000019 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
