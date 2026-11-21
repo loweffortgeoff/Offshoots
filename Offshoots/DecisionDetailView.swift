@@ -5,6 +5,7 @@
 //  Created by Geoffrey Silva on 12/8/25.
 //
 
+import AppIntents
 internal import SwiftUI
 
 struct DecisionDetailView: View {
@@ -345,6 +346,10 @@ struct DecisionDetailView: View {
         }
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
+        // Tells the system which decision is on screen, for "this decision" requests
+        .userActivity(DecisionEntity.viewingActivityType) { activity in
+            activity.appEntityIdentifier = EntityIdentifier(for: DecisionEntity(decision, now: store.today))
+        }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
