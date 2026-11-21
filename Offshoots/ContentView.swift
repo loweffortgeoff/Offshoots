@@ -17,12 +17,16 @@ enum AppTab: Hashable {
 
 struct ContentView: View {
     @Environment(DecisionStore.self) private var store
+    @Environment(HindsightAccess.self) private var hindsight
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var notificationDelegate = NotificationDelegate.shared
     @State private var selectedTab: AppTab = .dashboard
     @State private var decisionsPath: [Decision] = []
     /// A starter suggestion on its way from the Dashboard to the Log form
     @State private var logDraft: StarterSuggestion?
+    @State private var showHindsightReview = false
+    @State private var showHindsightPurchase = false
+    @State private var pendingHindsight = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -44,7 +48,7 @@ struct ContentView: View {
                     Label("Decisions", systemImage: "checklist")
                 }
 
-            FoldPane(ownsWideLayout: true) { AnalyticsView() }
+            FoldPane(ownsWideLayout: true) { AnalyticsView(showHindsightReview: $showHindsightReview) }
                 .tag(AppTab.insights)
                 .tabItem {
                     Label("Insights", systemImage: "brain.head.profile")
@@ -63,20 +67,51 @@ struct ContentView: View {
                 store.refreshReviewState()
             }
         }
+        .onOpenURL { url in
+            notificationDelegate.pendingRoute = AppRoute(url: url)
+        }
         // initial: true catches a tap that cold-launched the app before this view existed
-        .onChange(of: notificationDelegate.pendingDecisionID, initial: true) { _, id in
-            guard let id else { return }
-            openDecision(id)
+        .onChange(of: notificationDelegate.pendingRoute, initial: true) { _, route in
+            guard let route else { return }
+            // Clear it so the same link or reminder tapped again still fires
+            notificationDelegate.pendingRoute = nil
+            handle(route)
+        }
+        // A Hindsight link that arrived before StoreKit answered
+        .onChange(of: hindsight.entitlement?.hasResolvedOwnership) { _, resolved in
+            guard resolved == true, pendingHindsight else { return }
+            pendingHindsight = false
+            handle(.hindsight)
+        }
+        .sheet(isPresented: $showHindsightPurchase) {
+            if let purchase = hindsight.purchase { HindsightPurchaseSheet(purchase: purchase) }
         }
     }
 
-    private func openDecision(_ id: UUID) {
-        // Clear it so tapping a reminder for the same decision again still fires
-        notificationDelegate.pendingDecisionID = nil
-
-        guard let target = store.decisions.first(where: { $0.id == id }) else { return }
-
-        show(target)
+    private func handle(_ route: AppRoute) {
+        switch route {
+        case .log:
+            selectedTab = .log
+        case .decision(let id):
+            selectedTab = .decisions
+            decisionsPath = DecisionRoute.path(for: id, in: store.decisions)
+        case .readyToReview:
+            selectedTab = .decisions
+            decisionsPath = []
+        case .hindsight:
+            let target = HindsightRouteTarget.resolve(
+                hasResolvedOwnership: hindsight.entitlement?.hasResolvedOwnership ?? false,
+                canCapture: hindsight.canCapture,
+                entryCount: HindsightSummary.entries(from: store.decisions).count)
+            switch target {
+            case .wait: pendingHindsight = true
+            case .review:
+                selectedTab = .insights
+                showHindsightReview = true
+            case .insights: selectedTab = .insights
+            case .purchase: showHindsightPurchase = true
+            }
+        }
     }
 
     /// Opens a decision in the Decisions tab
