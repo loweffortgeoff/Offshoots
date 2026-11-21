@@ -25,8 +25,8 @@ use it.
 ## Scope update (2026-11-21)
 
 Geoff added Shortcuts, Control Center and Lock Screen widgets to this effort.
-The work runs as three stops on `dev/widgets`. Geoff tests at the end of each
-stop before the next starts.
+The work runs as three separate implementation sessions, each with its own
+branch. Geoff tests each one.
 
 1. **Widgets:** this design (router, summary file, medium and small Home
    Screen widgets).
