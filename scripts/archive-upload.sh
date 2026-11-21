@@ -41,6 +41,14 @@ VERSION=$(plutil -extract ApplicationProperties.CFBundleShortVersionString raw "
 BUILD=$(plutil -extract ApplicationProperties.CFBundleVersion raw "$ARCHIVE/Info.plist")
 echo "Archived Offshoots $VERSION ($BUILD) at $ARCHIVE"
 
+# App Store Connect rejects an upload whose widget extension version or build differs from the app's.
+APPEX="$ARCHIVE/Products/Applications/Offshoots.app/PlugIns/OffshootsWidgets.appex/Info.plist"
+EXT_VERSION=$(plutil -extract CFBundleShortVersionString raw "$APPEX")
+EXT_BUILD=$(plutil -extract CFBundleVersion raw "$APPEX")
+if [[ $EXT_VERSION != "$VERSION" || $EXT_BUILD != "$BUILD" ]]; then
+  echo "OffshootsWidgets is $EXT_VERSION ($EXT_BUILD) but the app is $VERSION ($BUILD). Bump both targets."; exit 1
+fi
+
 if [[ $UPLOAD -eq 0 ]]; then
   echo "Archive only. Nothing was uploaded."; exit 0
 fi

@@ -102,7 +102,9 @@ the store saves on every change.
 ## Release
 
 - `scripts/archive-upload.sh` archives Release and uploads to App Store Connect.
-  Bump `CURRENT_PROJECT_VERSION` first. `--archive-only` stops before the
+  Bump `CURRENT_PROJECT_VERSION` (and `MARKETING_VERSION` for a new version)
+  in both the `Offshoots` and `OffshootsWidgets` targets first; the script
+  refuses an archive where they differ. `--archive-only` stops before the
   upload. The upload is outward-facing: run it only when Geoff asks.
 - `scripts/screenshots.sh` builds its own Pro Max or Duo simulator and loads a
   date-shifted fixture. Do not save on Log (02) or Revisit (04); run `reload`
