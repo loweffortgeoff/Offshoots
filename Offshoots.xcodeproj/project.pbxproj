@@ -219,8 +219,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5E1D6E7A2F10000000000011 /* OffshootsWidgets */,
 				5E1D6E7A2F10000000000001 /* Shared */,
+				5E1D6E7A2F10000000000011 /* OffshootsWidgets */,
 			);
 			name = OffshootsWidgets;
 			packageProductDependencies = (
