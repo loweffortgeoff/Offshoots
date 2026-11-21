@@ -168,7 +168,7 @@ struct WidgetSummary: Codable {
 
 ```
 ┌──────────────────────────────────────────┐
-│ ↺ Ready to revisit                     2 │
+│ ↺ Ready to Review                     2 │
 │   Take the Denver job              ›     │
 │   Refinance the car                ›     │
 │ ──────────────────────────────────────── │
@@ -176,13 +176,14 @@ struct WidgetSummary: Codable {
 └──────────────────────────────────────────┘
 ```
 
-- Header: "Ready to revisit" and the due count. Tapping the header or the
+- Header: "Ready to Review" and the due count. Tapping the header or the
   widget background opens `.readyToReview`.
 - Up to 2 due titles, each a `Link` to `.decision(id)`. Titles use
   `.privacySensitive()`, so iOS hides them on a locked phone.
-- With nothing due: "Nothing to revisit today" and, if one exists, "Next:
-  <title> · <weekday or date>". Without any upcoming item: "Log a decision to
-  get started."
+- With nothing due: "Nothing to review today" and, if one exists, "Next:
+  <title> · <weekday or date>". Without any upcoming item: "Nothing
+  scheduled. Log a decision." The header uses the app's own "Ready to Review"
+  label, because the count includes first reviews as well as revisits.
 - Bottom row: a "Log a decision" `Link` to `.log` and a Hindsight `Link` to
   `.hindsight`.
   - Not owned: the label "Hindsight" with a small lock.
@@ -194,7 +195,7 @@ struct WidgetSummary: Codable {
 
 ### 5. Small widget
 
-- The due count, large, and "Ready to revisit". With nothing due: "Nothing
+- The due count, large, and "Ready to Review". With nothing due: "Nothing
   due" and the next date, if any.
 - One tap target (`widgetURL`): `.readyToReview`.
 - No titles, so nothing private shows.
