@@ -79,6 +79,7 @@ struct DecisionEntityQuery: EntityStringQuery {
     }
 
     /// Ready to review (soonest first), then pending decisions not yet due (newest first)
+    /// Shared by `suggestedEntities()`; static and pure so tests need no dependency
     @MainActor
     static func suggestions(from decisions: [Decision], now: Date) -> [Decision] {
         let due = decisions
@@ -101,5 +102,25 @@ struct DecisionEntityQuery: EntityStringQuery {
             $0.title.range(of: query, options: options) != nil
                 || DecisionCategoryAppEnum($0.category).label.range(of: query, options: options) != nil
         }
+    }
+}
+
+/// iOS 27 lets the system ask for a Spotlight reindex. Earlier versions rely on
+/// the store's change hook and the once-per-launch sync in `OffshootsApp`.
+@available(iOS 27.0, *)
+extension DecisionEntityQuery: IndexedEntityQuery {
+    func reindexEntities(for identifiers: [UUID], indexDescription: CSSearchableIndexDescription) async throws {
+        guard await MainActor.run(body: { !service.isBlocked }) else { return }
+        try await CSSearchableIndex.default().indexAppEntities(entities(for: identifiers))
+    }
+
+    func reindexAllEntities(indexDescription: CSSearchableIndexDescription) async throws {
+        let all: [DecisionEntity]? = await MainActor.run {
+            guard !service.isBlocked else { return nil }
+            let now = Date.now
+            return service.decisions.map { DecisionEntity($0, now: now) }
+        }
+        guard let all else { return }
+        try await CSSearchableIndex.default().indexAppEntities(all)
     }
 }

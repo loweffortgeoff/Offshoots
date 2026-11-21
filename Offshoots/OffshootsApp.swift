@@ -5,6 +5,7 @@
 //  Created by Geoffrey Silva on 12/7/25.
 //
 
+import AppIntents
 internal import SwiftUI
 
 @main
@@ -20,7 +21,9 @@ struct OffshootsApp: App {
     @State private var hindsight: HindsightAccess
     @State private var reflectionHistory: ReflectionHistoryStore
     @State private var startupError: String?
-    @State private var widgetSummary = WidgetSummaryWriter(fileURL: WidgetSummary.containerFileURL)
+    /// Built in init so Siri intents (through ShortcutsService) and the UI share one writer
+    @State private var widgetSummary: WidgetSummaryWriter
+    private let spotlight: DecisionSpotlightIndexer
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -38,6 +41,15 @@ struct OffshootsApp: App {
         _startupError = State(initialValue: recoveryError)
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
         AppRouteDispatcher.shared.register { NotificationDelegate.shared.pendingRoute = $0 }
+
+        let widgetSummary = WidgetSummaryWriter(fileURL: WidgetSummary.containerFileURL)
+        _widgetSummary = State(initialValue: widgetSummary)
+        let spotlight = DecisionSpotlightIndexer()
+        self.spotlight = spotlight
+        store.onChange = { [unowned store] change in spotlight.handle(change, decisions: store.decisions) }
+        // Here, not in a view: Siri can launch the app with no scene, and an
+        // unregistered @Dependency is a fatalError
+        AppDependencyManager.shared.add(dependency: ShortcutsService(store: store, widgetSummary: widgetSummary))
     }
 
     var body: some Scene {
@@ -65,6 +77,8 @@ struct OffshootsApp: App {
             .preferredColorScheme(theme.colorScheme)
             .task { await reflection.start() }
             .task { await hindsight.start() }
+            // Once per launch, so a journal from before Spotlight support becomes searchable
+            .task { spotlight.syncAll(decisions: store.decisions, blocked: startupError != nil || store.recoveryError != nil) }
             .onAppear {
                 guard showSplash else { return }
                 // Wait 2 seconds, then dismiss splash

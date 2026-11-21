@@ -9,9 +9,19 @@ import Foundation
 import Observation
 internal import SwiftUI
 
+/// What changed in a store mutation, for observers such as the Spotlight indexer
+enum DecisionStoreChange: Equatable {
+    case upserted([UUID])
+    case deleted([UUID])
+    case replacedAll
+}
+
 @Observable
 final class DecisionStore {
     private(set) var decisions: [Decision] = []
+
+    /// Called after each saved mutation; never while a restore needs recovery
+    @ObservationIgnored var onChange: ((DecisionStoreChange) -> Void)?
     private(set) var revision = UUID()
     private(set) var recoveryError: String?
 
@@ -56,6 +66,7 @@ final class DecisionStore {
     func add(_ decision: Decision) {
         decisions.insert(decision, at: 0)
         save()
+        notify(.upserted([decision.id]))
     }
 
     func update(_ decision: Decision) {
@@ -71,14 +82,17 @@ final class DecisionStore {
         }
 
         save()
+        notify(.upserted([decision.id]))
     }
 
     func delete(at offsets: IndexSet) {
+        let ids = offsets.map { decisions[$0].id }
         for index in offsets {
             ReminderManager.shared.cancelReminder(for: decisions[index])
         }
         decisions.remove(atOffsets: offsets)
         save()
+        notify(.deleted(ids))
     }
 
     func delete(_ decision: Decision) {
@@ -90,6 +104,7 @@ final class DecisionStore {
         
         decisions.remove(at: index)
         save()
+        notify(.deleted([decision.id]))
     }
 
     /// Removes every decision and every pending reminder. The view asks for confirmation first.
@@ -97,6 +112,7 @@ final class DecisionStore {
         ReminderManager.shared.cancelAllReminders()
         decisions = []
         save()
+        notify(.replacedAll)
     }
 
     /// Replaces every decision with an import. Old reminders go, and the imported decisions'
@@ -107,6 +123,7 @@ final class DecisionStore {
         decisions = imported
         ReminderManager.shared.rescheduleAll(for: imported)
         save()
+        notify(.replacedAll)
     }
 
     /// Returns false when the decision is gone or already has an outcome; nothing is written then.
@@ -136,6 +153,7 @@ final class DecisionStore {
         }
 
         save()
+        notify(.upserted([id]))
         return true
     }
 
@@ -166,6 +184,7 @@ final class DecisionStore {
         }
 
         save()
+        notify(.upserted([id]))
         return true
     }
 
@@ -284,6 +303,12 @@ final class DecisionStore {
         decisions = imported
         revision = UUID()
         ReminderManager.shared.rescheduleAll(for: imported)
+        notify(.replacedAll)
+    }
+
+    private func notify(_ change: DecisionStoreChange) {
+        guard recoveryError == nil else { return }
+        onChange?(change)
     }
 
     // MARK: - File format
