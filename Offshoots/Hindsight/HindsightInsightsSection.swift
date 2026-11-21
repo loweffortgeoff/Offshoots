@@ -2,6 +2,8 @@ internal import SwiftUI
 
 struct HindsightInsightsSection: View {
     let entries: [HindsightEntry]
+    /// Set by a Hindsight widget link to open the review without a tap
+    var showReview: Binding<Bool> = .constant(false)
     @Environment(HindsightAccess.self) private var access
     @State private var showPurchase = false
 
@@ -36,6 +38,7 @@ struct HindsightInsightsSection: View {
             .sheet(isPresented: $showPurchase) {
                 if let purchase = access.purchase { HindsightPurchaseSheet(purchase: purchase) }
             }
+            .navigationDestination(isPresented: showReview) { HindsightReviewDestination() }
         }
     }
 }

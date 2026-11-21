@@ -13,9 +13,9 @@ final class NotificationDelegate: NSObject, ObservableObject, UNUserNotification
 
     static let shared = NotificationDelegate()
 
-    /// Decision the user tapped a reminder for. Held until ContentView consumes it,
+    /// Where a reminder tap or a widget link wants to go. Held until ContentView consumes it,
     /// so a tap that cold-launches the app isn't lost before the UI is listening.
-    @Published var pendingDecisionID: UUID?
+    @Published var pendingRoute: AppRoute?
 
     private override init() {}
 
@@ -37,7 +37,7 @@ final class NotificationDelegate: NSObject, ObservableObject, UNUserNotification
 
         if let idString = userInfo["decisionID"] as? String,
            let uuid = UUID(uuidString: idString) {
-            pendingDecisionID = uuid
+            pendingRoute = .decision(uuid)
         }
     }
 }

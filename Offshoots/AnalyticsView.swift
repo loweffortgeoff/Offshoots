@@ -12,6 +12,8 @@ struct AnalyticsView: View {
     @Environment(DecisionStore.self) private var store
     @Environment(ReflectionCenter.self) private var reflection
     @Environment(ReflectionHistoryStore.self) private var history
+    /// Opens the Hindsight review from a widget link
+    var showHindsightReview: Binding<Bool> = .constant(false)
 
     var body: some View {
         TwoPaneReader { arrangement in
@@ -85,7 +87,7 @@ struct AnalyticsView: View {
         if ReflectionVisibility.showEntry(gate: reflection.gate, savedCount: history.readings.count) {
             PatternsCard()
         }
-        HindsightInsightsSection(entries: HindsightSummary.entries(from: store.decisions))
+        HindsightInsightsSection(entries: HindsightSummary.entries(from: store.decisions), showReview: showHindsightReview)
     }
 
     /// One scrolling column of cards under a title. Each pane on a Duo with two panes has its

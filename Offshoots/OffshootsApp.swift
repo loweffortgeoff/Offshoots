@@ -20,6 +20,7 @@ struct OffshootsApp: App {
     @State private var hindsight: HindsightAccess
     @State private var reflectionHistory: ReflectionHistoryStore
     @State private var startupError: String?
+    @State private var widgetSummary = WidgetSummaryWriter(fileURL: WidgetSummary.containerFileURL)
     @Environment(\.scenePhase) private var scenePhase
 
     init() {
@@ -36,6 +37,7 @@ struct OffshootsApp: App {
         _reflectionHistory = State(initialValue: ReflectionHistoryStore())
         _startupError = State(initialValue: recoveryError)
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
+        AppRouteDispatcher.shared.register { NotificationDelegate.shared.pendingRoute = $0 }
     }
 
     var body: some Scene {
@@ -78,8 +80,19 @@ struct OffshootsApp: App {
                 if phase == .active {
                     reflection.refreshAvailability()
                     Task { await hindsight.refresh() }
+                    updateWidgetSummary()
                 }
             }
+            // Launch, every save, Delete All and a restore all change the revision
+            .onChange(of: store.revision, initial: true) { updateWidgetSummary() }
+            // nil until StoreKit answers, so the widget keeps its last known value meanwhile
+            .onChange(of: hindsight.entitlement?.hasResolvedOwnership == true ? hindsight.canCapture : nil, initial: true) { _, owned in
+                if let owned { widgetSummary.update(hindsightOwned: owned) }
+            }
         }
+    }
+
+    private func updateWidgetSummary() {
+        widgetSummary.update(decisions: store.decisions, blocked: startupError != nil || store.recoveryError != nil)
     }
 }

@@ -53,6 +53,13 @@ Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 desig
 - **Outcome Trends** — Positive, neutral and negative outcomes by week (latest rating)
 - **Visual Charts** — Built with the Charts framework
 
+### Widgets & Controls
+- **Medium Home Screen widget** — Decisions ready to review (titles hidden while the phone is locked), with links to log a decision or open Hindsight. People who have not bought Hindsight get the purchase sheet.
+- **Small Home Screen widget** — How many decisions are ready to review.
+- **Lock Screen widgets** — Circular (count or checkmark), inline (count or next review date), and rectangular (soonest due title hidden while locked, plus "+ N more" or next due date).
+- **Control Center control** — "Log a Decision" button (`ControlWidgetButton`) that opens Offshoots straight to the Log tab from Control Center, a Lock Screen corner button, or the Action Button.
+- Widgets read a small summary (titles and dates only) from an App Group. Notes and Hindsight answers never leave the app.
+
 ### Navigation
 - **Dashboard** — Key stats and recent decisions
 - **Log Decision** — Quick entry form
@@ -70,9 +77,11 @@ Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 desig
 | **FoundationModels** | Retained for 2.1.0; generated Reflection remains disabled |
 | **StoreKit** | Retained for 2.1.0; Hindsight uses StoreKit for its one-time purchase |
 | **Observation** | App state (`@Observable` store) |
-| **Combine** | Notification tap routing (`NotificationDelegate` only) |
+| **Combine** | Notification and link routing (`NotificationDelegate` only) |
+| **WidgetKit** | Medium and small Home Screen widgets, Lock Screen accessory widgets, and Control Center control (`OffshootsWidgets` extension) |
+| **AppIntents** | Internal non-discoverable `OpenLogDecisionIntent` for the Control Center "Log a Decision" control |
 | **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, `AppRoute`, `WidgetSummary` and its writer, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
 
 ## Project Structure
 
@@ -94,7 +103,10 @@ Offshoots/
 ├── DecisionsImport.swift          # Restore an Export file
 ├── AnalyticsEngine.swift          # Insights calculations
 ├── ReminderManager.swift          # Follow-up notification scheduling
-├── NotificationDelegate.swift     # Notification tap routing
+├── NotificationDelegate.swift     # Holds the pending route from a reminder tap or link
+├── AppRoute+App.swift             # Decision and Hindsight route targets
+├── WidgetSummary+Decisions.swift  # Builds the widget summary from the journal
+├── WidgetSummaryWriter.swift      # Writes the summary to the App Group, reloads widgets
 │
 │  # Dashboard
 ├── DashboardView.swift            # Dashboard screen
@@ -146,7 +158,9 @@ Offshoots/
 ├── SettingsView.swift             # Settings screen
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, Reflection policy, screenshot fixture
+Shared/                            # In the app and the widget extension: AppRoute, AppRouteDispatcher, LockScreenPresentation, OpenLogDecisionIntent, WidgetSummary, DueDay
+OffshootsWidgets/                  # WidgetKit extension: Home Screen widgets, Lock Screen widgets, Control Center control, timeline provider
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, AppRoute, WidgetSummary, LockScreenAndControl, Reflection policy, screenshot fixture
 Reflection.storekit                # Local StoreKit test product; Hindsight on the existing product ID
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator

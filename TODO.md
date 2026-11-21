@@ -4,6 +4,11 @@
 
 **Release context (reconciled 2026-11-07):** 2.1.0 Hindsight is live, confirmed by Geoff on 2026-11-02. Remaining Duo checks stay in Backlog.
 
+- [x] **Build the Home Screen widgets (Session 1 of 3).** Medium and small widgets, App Group summary, shared `AppRoute` router. See the [design](docs/superpowers/specs/2026-11-21-widgets-design.md) and [plan](docs/superpowers/plans/2026-11-21-widgets.md). Simulator checks pass (iPhone 18 Pro, iOS 27.3). — 2026-11-21
+- [x] **Build Lock Screen widgets and Control Center control (`dev/lockscreen-controls`).** Circular, inline and rectangular Lock Screen accessory widgets plus the "Log a Decision" `ControlWidgetButton` (via non-discoverable `OpenLogDecisionIntent` routing through `AppRoute.log`). See the [design](docs/superpowers/specs/2026-11-21-lock-screen-and-control-center-design.md). — 2026-11-21
+- [x] **Widgets & Control Center: iPhone 17 device checks.** Verified on Geoff's iPhone 17: Lock Screen rectangular redaction while locked/AOD, circular & inline legibility + tap-to-unlock routing, Control Center / Lock Screen / Action Button "Log a Decision" opening Log, Shortcuts hiding the internal intent (`isDiscoverable = false`), Today View redaction, and first Xcode signed install. — 2026-11-21
+- [ ] **Widgets: overnight midnight rollover check on iPhone 17.** Confirm the due count updates at midnight without opening the app.
+- [ ] **Session 2: Shortcuts.** App Intents starter set, Spotlight, donations. Needs its own short design first.
 - [ ] **Scope the first Siri actions.** Choose from logging a decision, recording an outcome, and showing revisits due; define indexing and privacy safeguards. Geoff approved scoping on 2026-11-07, not an implementation bundle, version, or date; Hindsight stays model-free and generated Reflection was dropped 2026-11-21 (see DECISIONS).
 
 ## Done — 2.0.0 free Look Back

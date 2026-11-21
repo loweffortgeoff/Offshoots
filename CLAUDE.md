@@ -37,6 +37,14 @@ features. Current release state is in `CHANGELOG.md` and `TODO.md`, not here.
 - **Do not redeclare an asset color.** Xcode generates a `Color` symbol for each
   color in `Assets.xcassets` (`OutcomeGood` becomes `.outcomeGood`). The same
   name in `Color+Theme.swift` fails the build with "invalid redeclaration".
+- **`Shared/` builds into the app and the widget extension.** Keep `AppRoute.swift`,
+  `AppRouteDispatcher.swift`, `LockScreenPresentation.swift` and `WidgetSummary.swift`
+  Foundation-only (`OpenLogDecisionIntent.swift` also imports `AppIntents`), and mark
+  shared types `nonisolated` unless they are main-actor routing helpers. Both targets
+  default to main-actor isolation, and the extension cannot see app types such as
+  `Decision`. Put app-only helpers in `Offshoots/`.
+- **The widget sees only `widget-summary.json`.** Titles, IDs and due dates.
+  Never add notes, outcomes or Hindsight answers to it (DECISIONS 2026-11-21).
 - **Do not put an always-on tap gesture on a container that holds a graphical
   `DatePicker`.** It takes the day taps. The forms use
   `.gesture(_:including: focused ? .all : .subviews)`.
@@ -102,7 +110,9 @@ the store saves on every change.
 ## Release
 
 - `scripts/archive-upload.sh` archives Release and uploads to App Store Connect.
-  Bump `CURRENT_PROJECT_VERSION` first. `--archive-only` stops before the
+  Bump `CURRENT_PROJECT_VERSION` (and `MARKETING_VERSION` for a new version)
+  in both the `Offshoots` and `OffshootsWidgets` targets first; the script
+  refuses an archive where they differ. `--archive-only` stops before the
   upload. The upload is outward-facing: run it only when Geoff asks.
 - `scripts/screenshots.sh` builds its own Pro Max or Duo simulator and loads a
   date-shifted fixture. Do not save on Log (02) or Revisit (04); run `reload`
