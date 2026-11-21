@@ -1,6 +1,6 @@
 # Shortcuts and Siri Starter Set — Design
 
-Date: 2026-11-21. Status: draft, awaiting Geoff's approval.
+Date: 2026-11-21. Status: approved by Geoff 2026-11-21.
 
 Revised 2026-11-21 against Apple's current App Intents guidance (the
 `app-intents-specialist` and `app-intents-whats-new-27` references, iOS 26 and
