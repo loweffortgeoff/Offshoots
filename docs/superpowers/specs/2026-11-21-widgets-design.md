@@ -22,13 +22,30 @@ use it.
 - The Hindsight tile opens the Hindsight review for owners and the existing
   purchase sheet for everyone else.
 
+## Scope update (2026-11-21)
+
+Geoff added Shortcuts, Control Center and Lock Screen widgets to this effort.
+The work runs as three stops on `dev/widgets`. Geoff tests at the end of each
+stop before the next starts.
+
+1. **Widgets:** this design (router, summary file, medium and small Home
+   Screen widgets).
+2. **Shortcuts:** the App Intents starter set (log a decision, record an
+   outcome, show revisits due), Spotlight indexing and donations. It needs its
+   own short design first.
+3. **Control Center and Lock Screen widgets:** a "Log a decision" control and
+   Lock Screen accessory widgets. They come after Shortcuts because the control
+   is an App Intent. They need a short design addendum first.
+
 ## Non-goals
 
-- Lock Screen (accessory) widgets. Possible follow-up.
-- A Control Center "Log a decision" control. It needs an App Intent, so it
-  belongs to the Siri chapter.
+These are out of Stop 1 only. Stops 2 and 3 cover the first four.
+
+- Lock Screen (accessory) widgets. Stop 3.
+- A Control Center "Log a decision" control. It needs an App Intent: Stop 3.
+- App Intents, Spotlight indexing, donations. Stop 2.
 - Interactive widget buttons (`Button(intent:)`) and configurable widgets.
-- App Intents, Spotlight indexing, donations. Those are the Siri starter set.
+  Not planned.
 - Moving the journal (`Documents/decisions.json`) to a shared container.
 
 ## Anti-goals
