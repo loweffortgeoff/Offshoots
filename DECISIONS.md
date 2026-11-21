@@ -459,3 +459,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Enable Hindsight in standard Release builds after Geoff accepted the paid value and device checks. Keep generated Reflection disabled.
 **Why:** Hindsight is the approved one-time purchase; generated output did not meet its quality gate.
 **Alternative considered:** Keep the TestFlight-only gate. That would remove Hindsight from the release.
+
+## 2026-11-21 (Drop AI-generated Reflection)
+**Decision:** Drop AI-generated Reflection. Hindsight stays model-free and is unaffected.
+**Why:** The context limits of the on-device and PCC models make generation not worth it, and Apple's PCC usage caps are tied to iCloud+ subscription tiers.
+**Alternative considered:** Continuing the token-budget context prototype. The prototype is preserved as tag `archive/reflection-context-prototype` (`54d6bb5`). Branch `dev/reflection-context-prototype` was deleted on 2026-11-21 from GitHub, the Mini, and the MBP.
