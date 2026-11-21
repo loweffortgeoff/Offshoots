@@ -462,7 +462,7 @@ git commit -m "docs: record Shortcuts and Siri starter set"
 
 ## Execution record
 
-**Status (2026-11-21):** implementation complete; iPhone 17 device checks pending. Not pushed, not merged.
+**Status (2026-11-21):** complete. Device checks passed on Geoff's iPhone 17 (the "Track a decision" phrase was replaced with "Add a decision", `9105803`). Merged into `main`.
 
 - Branch `dev/shortcuts` in the main checkout. Commits: `dc62563` (Task 1), `3aa1d8e` (Task 2), `c18c255` (Task 3), `abff3c2` (Task 4), `0173760` (Task 5), `96fe017` (review fixes), then the docs commit.
 - Machine: Mac mini (hostname `Mac`), Xcode 27.2 (27B52). Run-owned simulator `verify-offshoots-offshoots-20261121-080019` (0C13E201-16DF-416C-9601-E453E73B7A5D), iOS 27.2.
