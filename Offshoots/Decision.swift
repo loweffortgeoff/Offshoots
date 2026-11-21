@@ -204,6 +204,6 @@ extension Decision {
     /// Its review or revisit day has arrived (dates are day-granular in the UI)
     func isReadyForReview(asOf now: Date) -> Bool {
         guard let nextReviewDate else { return false }
-        return Calendar.current.startOfDay(for: nextReviewDate) <= now
+        return DueDay.isDue(nextReviewDate, asOf: now)
     }
 }
