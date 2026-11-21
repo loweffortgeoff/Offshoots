@@ -76,15 +76,27 @@ struct RevisitsMediumView: View {
         .containerBackground(Color(.widgetBackground), for: .widget)
     }
 
+    @Environment(\.widgetRenderingMode) private var renderingMode
+
+    /// Tinted and clear Home Screens flatten solid colors, so a solid capsule would hide its own label there
     private func pill(_ title: String, systemImage: String) -> some View {
-        Label(title, systemImage: systemImage)
-            .font(.caption.weight(.semibold))
-            .lineLimit(1)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(Color(.offshootCardBackground), in: Capsule())
-            .foregroundStyle(Color(.accent))
-            .widgetAccentable()
+        Label {
+            Text(title)
+        } icon: {
+            Image(systemName: systemImage).widgetAccentable()
+        }
+        .font(.caption.weight(.semibold))
+        .lineLimit(1)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .foregroundStyle(renderingMode == .fullColor ? AnyShapeStyle(Color(.accent)) : AnyShapeStyle(.primary))
+        .background {
+            if renderingMode == .fullColor {
+                Capsule().fill(Color(.offshootCardBackground))
+            } else {
+                Capsule().fill(.quaternary)
+            }
+        }
     }
 }
 
