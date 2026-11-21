@@ -11,6 +11,19 @@ struct OffshootsWidgetsBundle: WidgetBundle {
     var body: some Widget {
         RevisitsMediumWidget()
         RevisitsSmallWidget()
+        RevisitsLockScreenWidget()
+        LogDecisionControl()
+    }
+}
+
+struct RevisitsLockScreenWidget: Widget {
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: "RevisitsLockScreen", provider: RevisitsProvider()) { entry in
+            RevisitsLockScreenView(entry: entry)
+        }
+        .configurationDisplayName("Ready to Review")
+        .description("See decisions ready to review on your Lock Screen.")
+        .supportedFamilies([.accessoryCircular, .accessoryInline, .accessoryRectangular])
     }
 }
 

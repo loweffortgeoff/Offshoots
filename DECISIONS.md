@@ -484,3 +484,8 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** Session 1 builds the Home Screen widgets (`dev/widgets`). Session 2 builds the Shortcuts starter set. Session 3 builds Control Center and Lock Screen widgets, after Shortcuts because the control is an App Intent. Each gets its own design and is tested by Geoff. `dev/widgets` stays unmerged for a device run-through and may carry Session 3.
 **Why:** Geoff's call: one concern per session, each judged on devices.
 **Alternative considered:** One combined effort with a single merge.
+
+## 2026-11-21 (Control Center uses a non-discoverable open intent ahead of Shortcuts)
+**Decision:** Build Lock Screen accessory widgets and the Control Center "Log a Decision" control on `dev/lockscreen-controls` (branched off `dev/widgets`) ahead of Shortcuts, using an internal `OpenLogDecisionIntent` (`openAppWhenRun = true`, `isDiscoverable = false`) that hands off to `AppRoute.log` via `AppRouteDispatcher`. No Hindsight widget on the Lock Screen or in Control Center.
+**Why:** Lock Screen widgets need no App Intents, and a Control Center button only needs to open the Log tab. Setting `isDiscoverable = false` keeps it invisible in the Shortcuts app so Stop 2 can ship the real parameterized `LogDecisionIntent` with zero collision or rework, and lets Geoff test Home Screen, Lock Screen and Control Center in one iPhone 17 pass.
+**Alternative considered:** Waiting for the full Shortcuts stop first, or making the open-only intent discoverable in Shortcuts (which would duplicate or clash with Stop 2's parameterized logging action).

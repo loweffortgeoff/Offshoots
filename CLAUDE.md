@@ -37,9 +37,11 @@ features. Current release state is in `CHANGELOG.md` and `TODO.md`, not here.
 - **Do not redeclare an asset color.** Xcode generates a `Color` symbol for each
   color in `Assets.xcassets` (`OutcomeGood` becomes `.outcomeGood`). The same
   name in `Color+Theme.swift` fails the build with "invalid redeclaration".
-- **`Shared/` builds into the app and the widget extension.** Keep it
-  Foundation-only and mark its types `nonisolated`. Both targets default to
-  main-actor isolation, and the extension cannot see app types such as
+- **`Shared/` builds into the app and the widget extension.** Keep `AppRoute.swift`,
+  `AppRouteDispatcher.swift`, `LockScreenPresentation.swift` and `WidgetSummary.swift`
+  Foundation-only (`OpenLogDecisionIntent.swift` also imports `AppIntents`), and mark
+  shared types `nonisolated` unless they are main-actor routing helpers. Both targets
+  default to main-actor isolation, and the extension cannot see app types such as
   `Decision`. Put app-only helpers in `Offshoots/`.
 - **The widget sees only `widget-summary.json`.** Titles, IDs and due dates.
   Never add notes, outcomes or Hindsight answers to it (DECISIONS 2026-11-21).

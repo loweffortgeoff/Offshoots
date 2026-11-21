@@ -37,6 +37,7 @@ struct OffshootsApp: App {
         _reflectionHistory = State(initialValue: ReflectionHistoryStore())
         _startupError = State(initialValue: recoveryError)
         UNUserNotificationCenter.current().delegate = NotificationDelegate.shared
+        AppRouteDispatcher.shared.register { NotificationDelegate.shared.pendingRoute = $0 }
     }
 
     var body: some Scene {

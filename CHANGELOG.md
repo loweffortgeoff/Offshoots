@@ -4,6 +4,8 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+- **Lock Screen widgets and Control Center control** (`dev/lockscreen-controls`, branched off `dev/widgets`, not released). Circular, inline and rectangular Lock Screen accessory widgets reuse the App Group summary and `AppRoute` (rectangular title uses `.privacySensitive()`; circular, inline and empty states show no titles). Control Center "Log a Decision" button (`ControlWidgetButton`, also usable as a Lock Screen corner button or Action Button) opens the Log tab via a non-discoverable `OpenLogDecisionIntent` (`isDiscoverable = false`) so Stop 2's Shortcuts actions have zero collision. Device checks on the iPhone 17 pending.
+
 - **Home Screen widgets** (`dev/widgets`, not released). Medium widget: decisions ready to review, with links to log a decision or open Hindsight (the purchase sheet for people who have not bought it). Small widget: the count. Widgets read a small summary in a new App Group (titles and dates only); the journal does not move. Notification taps and widget links share one router (`AppRoute`). Checked on the iPhone 18 Pro simulator (iOS 27.3); device checks pending.
 
 - 2.1.0 build 14 archived on the Mac mini (macOS 27.2, Xcode 27.1); upload succeeded and ASC reports processing Valid. Export compliance is unset; the version has no build attached. ASC listing copy was saved and read back on 2026-10-29.

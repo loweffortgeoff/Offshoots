@@ -5,8 +5,8 @@
 
 import Foundation
 
-/// A place in the app that a widget link, a notification tap or (later) a Siri open intent can open.
-nonisolated enum AppRoute: Equatable, Hashable {
+/// A place in the app that a widget link, a notification tap, a Control Center button or (later) a Siri open intent can open.
+nonisolated enum AppRoute: Equatable, Hashable, Sendable {
     case log
     case decision(UUID)
     case readyToReview
