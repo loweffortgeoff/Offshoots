@@ -19,15 +19,30 @@ final class ShortcutsService {
 
     private let store: DecisionStore
     private let widgetSummary: WidgetSummaryWriter
+    private let spotlight: DecisionSpotlightIndexer?
     private let now: () -> Date
     private let calendar: Calendar
 
-    init(store: DecisionStore, widgetSummary: WidgetSummaryWriter,
+    init(store: DecisionStore, widgetSummary: WidgetSummaryWriter, spotlight: DecisionSpotlightIndexer? = nil,
          now: @escaping () -> Date = { .now }, calendar: Calendar = .current) {
         self.store = store
         self.widgetSummary = widgetSummary
+        self.spotlight = spotlight
         self.now = now
         self.calendar = calendar
+    }
+
+    /// Answers the system's iOS 27 reindex requests (nil = everything) through the
+    /// indexer's ordered queue, so a delete made meanwhile is never undone.
+    /// Returns once the queued work is done. Does nothing while blocked.
+    func reindexSpotlight(ids: [UUID]?) async {
+        guard let spotlight, !isBlocked else { return }
+        if let ids {
+            spotlight.handle(.upserted(ids), decisions: store.decisions)
+        } else {
+            spotlight.syncAll(decisions: store.decisions, blocked: isBlocked)
+        }
+        await spotlight.drain()
     }
 
     /// True while a restore needs recovery

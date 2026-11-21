@@ -90,12 +90,32 @@ final class DecisionSpotlightIndexerTests {
         indexer.handle(.replacedAll, decisions: [b])
         indexer.handle(.replacedAll, decisions: [])
         await indexer.drain()
+        // replacedAll with an empty journal only clears
         #expect(fake.calls == [.index([a.id]), .delete([b.id]), .deleteAll, .index([b.id]), .deleteAll])
     }
 
-    @Test func syncAllIndexesEverything() async {
+    /// A full sync clears first, so titles of decisions no longer in the journal
+    /// (an unreadable file, a delete lost to a killed process) leave Spotlight
+    @Test func syncAllReplacesTheWholeIndex() async {
         indexer.syncAll(decisions: [a, b], blocked: false)
         await indexer.drain()
-        #expect(fake.calls == [.index([a.id, b.id])])
+        #expect(fake.calls == [.deleteAll, .index([a.id, b.id])])
+    }
+
+    /// The iOS 27 reindex requests go through the same ordered queue as store
+    /// changes, so a delete made meanwhile cannot be undone by a stale snapshot
+    @Test func serviceReindexUsesTheIndexerQueue() async throws {
+        let writer = WidgetSummaryWriter(fileURL: folder.appending(path: "widget-summary.json")) {}
+        let service = ShortcutsService(store: store, widgetSummary: writer, spotlight: indexer, now: { Make.day(26) })
+        store.add(a)
+        store.add(b)
+
+        await service.reindexSpotlight(ids: nil)
+        await service.reindexSpotlight(ids: [b.id])
+        #expect(fake.calls == [.deleteAll, .index([b.id, a.id]), .index([b.id])])
+
+        store.blockAfterRestoreFailure()
+        await service.reindexSpotlight(ids: nil)
+        #expect(fake.calls.count == 3)
     }
 }

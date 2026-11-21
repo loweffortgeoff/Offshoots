@@ -16,11 +16,14 @@ struct LogDecisionIntent: AppIntent {
     )
     static let authenticationPolicy: IntentAuthenticationPolicy = .requiresAuthentication
 
-    /// Optional in code so a blank title can ask again instead of failing
+    /// Required, so Siri asks for it before the outcome; a blank answer asks again in perform()
     @Parameter(title: "Title", requestValueDialog: "What decision are you making?")
-    var title: String?
+    var title: String
 
-    @Parameter(title: "Expected Outcome", requestValueDialog: "How do you expect it to turn out?")
+    /// A multi-case AppEnum gets a picker, which speaks the disambiguation dialog
+    @Parameter(title: "Expected Outcome",
+               requestValueDialog: "How do you expect it to turn out?",
+               requestDisambiguationDialog: "How do you expect it to turn out?")
     var expected: DecisionOutcomeAppEnum
 
     @Parameter(title: "Category", default: .other)
@@ -58,7 +61,7 @@ struct LogDecisionIntent: AppIntent {
     func perform() async throws -> some ReturnsValue<DecisionEntity> & ProvidesDialog {
         // Every check comes before the write: a value request re-runs perform()
         guard !service.isBlocked else { throw ShortcutsError.blocked }
-        guard let title, !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+        guard !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw $title.needsValueError("What decision are you making?")
         }
         let decision = try service.logDecision(

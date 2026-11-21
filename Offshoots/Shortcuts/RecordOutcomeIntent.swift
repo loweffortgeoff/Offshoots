@@ -19,7 +19,10 @@ struct RecordOutcomeIntent: AppIntent {
     @Parameter(title: "Decision", requestValueDialog: "Which decision?")
     var decision: DecisionEntity
 
-    @Parameter(title: "Outcome", requestValueDialog: "How did it turn out?")
+    /// A multi-case AppEnum gets a picker, which speaks the disambiguation dialog
+    @Parameter(title: "Outcome",
+               requestValueDialog: "How did it turn out?",
+               requestDisambiguationDialog: "How did it turn out?")
     var outcome: DecisionOutcomeAppEnum
 
     @Parameter(title: "Note", description: "Optional note about what happened.")

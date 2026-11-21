@@ -111,18 +111,13 @@ struct DecisionEntityQuery: EntityStringQuery {
 /// the store's change hook and the once-per-launch sync in `OffshootsApp`.
 @available(iOS 27.0, *)
 extension DecisionEntityQuery: IndexedEntityQuery {
+    // Both go through the indexer's ordered queue (via the service), so a store
+    // change made while Spotlight works is applied after, never undone
     func reindexEntities(for identifiers: [UUID], indexDescription: CSSearchableIndexDescription) async throws {
-        guard await MainActor.run(body: { !service.isBlocked }) else { return }
-        try await CSSearchableIndex.default().indexAppEntities(entities(for: identifiers))
+        await service.reindexSpotlight(ids: identifiers)
     }
 
     func reindexAllEntities(indexDescription: CSSearchableIndexDescription) async throws {
-        let all: [DecisionEntity]? = await MainActor.run {
-            guard !service.isBlocked else { return nil }
-            let now = Date.now
-            return service.decisions.map { DecisionEntity($0, now: now) }
-        }
-        guard let all else { return }
-        try await CSSearchableIndex.default().indexAppEntities(all)
+        await service.reindexSpotlight(ids: nil)
     }
 }

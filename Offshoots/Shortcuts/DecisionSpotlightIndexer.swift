@@ -60,12 +60,12 @@ final class DecisionSpotlightIndexer {
         }
     }
 
-    /// Makes an existing journal searchable, e.g. after updating to the first
-    /// version with Spotlight. Does nothing while a restore needs recovery.
+    /// Replaces the whole index with the journal: makes an existing journal
+    /// searchable after updating, and removes titles of decisions that are no
+    /// longer there. Does nothing while a restore needs recovery.
     func syncAll(decisions: [Decision], blocked: Bool) {
         guard !blocked else { return }
-        let entities = entities(decisions)
-        enqueue { index in try await index.index(entities) }
+        handle(.replacedAll, decisions: decisions)
     }
 
     /// Waits for queued operations. Tests use it before reading what was indexed.
