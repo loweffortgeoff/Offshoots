@@ -30,6 +30,7 @@ final class DecisionStore {
 
     // MARK: - Public API
 
+    @discardableResult
     func createDecision(
         title: String,
         category: DecisionCategory,
@@ -37,7 +38,7 @@ final class DecisionStore {
         expected: DecisionOutcome,
         notes: String? = nil,
         followUpDate: Date
-    ) {
+    ) -> Decision {
         let decision = Decision(
             title: title,
             category: category,
@@ -49,6 +50,7 @@ final class DecisionStore {
 
         add(decision)
         ReminderManager.shared.scheduleFollowUp(for: decision)
+        return decision
     }
 
     func add(_ decision: Decision) {
@@ -138,16 +140,18 @@ final class DecisionStore {
     }
 
     /// Records a re-rating of an already-marked decision. Passing a next date
-    /// schedules another revisit; nil ends the chain.
+    /// schedules another revisit; nil ends the chain. Returns false when the decision
+    /// is gone or has no outcome yet; nothing is written then.
+    @discardableResult
     func addRevisit(
         id: UUID,
         outcome: DecisionOutcome,
         note: String? = nil,
         nextRevisitDate: Date? = nil,
         hindsight: HindsightAnswer? = nil
-    ) {
+    ) -> Bool {
         guard let index = decisions.firstIndex(where: { $0.id == id }),
-              decisions[index].actual != nil else { return }
+              decisions[index].actual != nil else { return false }
 
         ReminderManager.shared.cancelReminder(for: decisions[index])
 
@@ -162,6 +166,7 @@ final class DecisionStore {
         }
 
         save()
+        return true
     }
 
     /// Call after the Settings toggle changes. Turning reminders on re-creates
