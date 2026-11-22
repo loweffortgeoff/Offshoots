@@ -49,7 +49,8 @@ struct OffshootsApp: App {
         store.onChange = { [unowned store] change in spotlight.handle(change, decisions: store.decisions) }
         // Here, not in a view: Siri can launch the app with no scene, and an
         // unregistered @Dependency is a fatalError
-        AppDependencyManager.shared.add(dependency: ShortcutsService(store: store, widgetSummary: widgetSummary, spotlight: spotlight))
+        let shortcuts = ShortcutsService(store: store, widgetSummary: widgetSummary, spotlight: spotlight)
+        AppDependencyManager.shared.add(dependency: shortcuts)
     }
 
     var body: some Scene {
