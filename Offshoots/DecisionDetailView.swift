@@ -13,7 +13,7 @@ struct DecisionDetailView: View {
     @Environment(ReflectionCenter.self) private var reflection
     @Environment(ReflectionHistoryStore.self) private var history
     @Environment(\.dismiss) private var dismiss
-    @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 56
+    @ScaledMetric(relativeTo: .largeTitle) private var heroIconSize: CGFloat = 32
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .largeTitle) private var outcomeIconSize: CGFloat = 40
     private let decisionID: UUID
@@ -136,8 +136,9 @@ struct DecisionDetailView: View {
                             .accessibilityHidden(true)
                             .font(.system(size: heroIconSize))
                             .foregroundStyle(heroIconColor.opacity(0.4))
+                            .padding(.vertical, 12)
                     }
-                    .frame(height: 140)
+                    .frame(minHeight: 64)
                     .frame(maxWidth: .infinity)
 
                     // Content
