@@ -66,15 +66,17 @@ if [[ $DEVICE == "iPhone Duo" ]]; then
   SUBDIR=/duo
   export DEVELOPER_DIR=${DEVELOPER_DIR:-"/Applications/Xcode.app/Contents/Developer"}
 fi
-OS=${OS:-27.0}
+OS=${OS:-}  # empty: the newest installed iOS runtime
 ANCHOR=2026-09-27
 FIXTURE="$ROOT/docs/fixtures/screenshots.json"
 OUT_DIR=${SCREENSHOT_OUT_DIR:-"$HOME/Documents/Dev Workstation/App Images/ASC Screenshots/Offshoots/Captures/$(date +%F)$SUBDIR"}
 
-# Resolve an available type from Xcode's inventory; create a new, uniquely named instance.
+# Resolve a type from Xcode's inventory; create a new, uniquely named instance.
+# Do not pass "available" to "list devicetypes": simctl reads it as a name filter
+# and returns nothing (Xcode 27.2).
 resolve_device_type() {
   if [[ -n $SIM_DEVICE_TYPE ]]; then echo "$SIM_DEVICE_TYPE"; return; fi
-  xcrun simctl list devicetypes available --json | python3 -c '
+  xcrun simctl list devicetypes --json | python3 -c '
 import json, sys
 name = sys.argv[1]
 for device in json.load(sys.stdin)["devicetypes"]:
@@ -89,11 +91,14 @@ resolve_runtime() {
   xcrun simctl list runtimes available --json | python3 -c '
 import json, sys
 version = sys.argv[1]
-for runtime in json.load(sys.stdin)["runtimes"]:
-    if runtime["isAvailable"] and runtime["name"] == "iOS " + version:
-        print(runtime["identifier"])
-        raise SystemExit(0)
-raise SystemExit(1)' "$OS"
+ios = [r for r in json.load(sys.stdin)["runtimes"]
+       if r["isAvailable"] and r["name"].startswith("iOS ")]
+if version:
+    ios = [r for r in ios if r["name"] == "iOS " + version]
+if not ios:
+    raise SystemExit(1)
+key = lambda r: tuple(int(p) for p in r["version"].split(".") if p.isdigit())
+print(max(ios, key=key)["identifier"])' "$OS"
 }
 
 udid() {
@@ -126,7 +131,7 @@ setup() {
   if [[ ! -s $UDID_FILE ]]; then
     local devtype runtime
     devtype=$(resolve_device_type) || { echo "No available Xcode simulator type named '$DEVICE'; set SIM_DEVICE_TYPE to an available device type ID." >&2; exit 1; }
-    runtime=$(resolve_runtime) || { echo "No available iOS $OS runtime; set SIM_RUNTIME to a compatible installed runtime." >&2; exit 1; }
+    runtime=$(resolve_runtime) || { echo "No available iOS ${OS:-} runtime; set SIM_RUNTIME to a compatible installed runtime." >&2; exit 1; }
     xcrun simctl create "$SIM_NAME" "$devtype" "$runtime" > "$UDID_FILE"
     printf '%s\n' "$devtype" > "$STATE/device-type"
     printf '%s\n' "$runtime" > "$STATE/runtime"
