@@ -4,6 +4,10 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+### Unreleased
+
+- **We Also Make lists every other live app** (branch `cleanup/we-also-make`, not merged, not in build 16). Settings > We Also Make now shows Task(ed), EveryPaw, AisleWise, Weather in Words and Tucked, in the same order as AisleWise's list. Weather in Words and Tucked are new, each with its own icon (Tucked has one icon for both modes). The App Store IDs match the hub site and an App Store lookup. The Task(ed) link now uses the slug `task-ed`; the old link used `task(ed)`. Offshoots is not in its own list; the unused `currentAppName` and `appsToShow` options are gone. New `LowEffortAppsTests` pin the list, links and icons. Checked on an iPhone 18 Pro simulator, iOS 27.2 (Mac mini, Xcode 27.2), in light and dark. Not checked: a device.
+
 ### 2.2.0 (build 16, uploaded 2026-11-22, not released)
 
 - **Slim Details header** (merged into `main` from `fix/detail-header`, not released). The outcome band above the title card on the decision Details screen is 64 pt instead of 140 pt, with a 32 pt icon instead of 56 pt. The status badge already shows the outcome. The band uses a minimum height, so it grows with Dynamic Type. Checked on an iPhone 18 Pro Max simulator, iOS 27.2 (Mac mini, Xcode 27.2), at the default text size: 331 tests passed. Not checked: large Dynamic Type sizes, the Duo, and a device.

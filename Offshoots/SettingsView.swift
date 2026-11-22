@@ -46,7 +46,7 @@ struct SettingsView: View {
                 HindsightSettingsSection()
 
                 // MARK: - About Section
-                AboutSectionView(currentAppName: "Offshoots")
+                AboutSectionView()
                     // Row fills are set per section: on the Form itself the modifier has no effect
                     .listRowBackground(Color.offshootCardBackground)
             }

@@ -6,44 +6,45 @@ struct LowEffortApp: Identifiable {
     let name: String
     let iconName: String
     let appStoreID: String
+    /// The App Store URL slug when it differs from the lowercased, hyphenated name
+    /// (Task(ed) drops its parentheses; Tucked's name carries a subtitle).
+    let slug: String?
+
+    init(name: String, iconName: String, appStoreID: String, slug: String? = nil) {
+        self.name = name
+        self.iconName = iconName
+        self.appStoreID = appStoreID
+        self.slug = slug
+    }
 
     var id: String { appStoreID }
 
     var appStoreURL: URL? {
-        URL(string: "https://apps.apple.com/us/app/\(name.lowercased().replacingOccurrences(of: " ", with: "-"))/id\(appStoreID)")
+        let urlSlug = slug ?? name.lowercased().replacingOccurrences(of: " ", with: "-")
+        return URL(string: "https://apps.apple.com/us/app/\(urlSlug)/id\(appStoreID)")
     }
 }
 
 // MARK: - App Catalog
 
+/// The other released Low Effort Apps. Offshoots is not listed, so the section never shows the app itself.
 enum LowEffortApps {
-   
-    // Icons have light and dark variants in the asset catalog, like each app's own icon
+    // Icons have light and dark variants where the app's own icon does.
+    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "tasked", appStoreID: "6755186421", slug: "task-ed")
     static let everyPaw = LowEffortApp(name: "EveryPaw", iconName: "everypaw", appStoreID: "6754781167")
     static let aisleWise = LowEffortApp(name: "AisleWise", iconName: "aislewise", appStoreID: "6755057084")
-    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "tasked", appStoreID: "6755186421")
-   
+    static let weatherInWords = LowEffortApp(name: "Weather in Words", iconName: "weatherinwords", appStoreID: "6806063498")
+    // Tucked has one icon for both modes.
+    static let tucked = LowEffortApp(name: "Tucked", iconName: "tucked", appStoreID: "6792490401", slug: "tucked-stuff-for-whenever")
 
     static let all: [LowEffortApp] = [
- everyPaw, aisleWise, tasked,  
+        tasked, everyPaw, aisleWise, weatherInWords, tucked,
     ]
 }
 
 // MARK: - About Section View
 
 struct AboutSectionView: View {
-    /// The bundle identifier prefix to exclude the current app from "Other Apps"
-    /// Pass your app's name (e.g., "Task(ed)") to exclude it from the list
-    let currentAppName: String?
-
-    /// Optional custom list of apps to display. If nil, shows all apps except current.
-    let appsToShow: [LowEffortApp]?
-
-    init(currentAppName: String? = nil, appsToShow: [LowEffortApp]? = nil) {
-        self.currentAppName = currentAppName
-        self.appsToShow = appsToShow
-    }
-
     private var appVersion: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
     }
@@ -52,23 +53,11 @@ struct AboutSectionView: View {
         Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "—"
     }
 
-    private var otherApps: [LowEffortApp] {
-        if let appsToShow = appsToShow {
-            return appsToShow
-        }
-
-        guard let currentAppName = currentAppName else {
-            return LowEffortApps.all
-        }
-
-        return LowEffortApps.all.filter { $0.name != currentAppName }
-    }
-
     var body: some View {
         Group {
             // MARK: - We Also Make Section
             Section {
-                ForEach(otherApps) { app in
+                ForEach(LowEffortApps.all) { app in
                     OtherAppRow(app: app)
                 }
             } header: {
@@ -160,7 +149,7 @@ struct OtherAppRow: View {
 #Preview {
     NavigationStack {
         Form {
-            AboutSectionView(currentAppName: "Task(ed)")
+            AboutSectionView()
         }
         .navigationTitle("Settings")
     }
