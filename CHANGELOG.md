@@ -4,17 +4,19 @@ Release scope and development history. A prepared RC entry below does not establ
 
 ## In Progress
 
+### 2.2.0 (build 16, uploaded 2026-11-22, not released)
+
 - **Slim Details header** (merged into `main` from `fix/detail-header`, not released). The outcome band above the title card on the decision Details screen is 64 pt instead of 140 pt, with a 32 pt icon instead of 56 pt. The status badge already shows the outcome. The band uses a minimum height, so it grows with Dynamic Type. Checked on an iPhone 18 Pro Max simulator, iOS 27.2 (Mac mini, Xcode 27.2), at the default text size: 331 tests passed. Not checked: large Dynamic Type sizes, the Duo, and a device.
+
+- **No export compliance question.** `Offshoots/Info.plist` declares `ITSAppUsesNonExemptEncryption` = NO. The app uses no CryptoKit, CommonCrypto, Security or networking, which matches the answer given by hand on builds 11 and 15, so App Store Connect stops asking from build 16.
 
 - 2.2.0 build 16 archived on the Mac mini (macOS 27.2, Xcode 27.2) and uploaded on 2026-11-22; Apple was still processing it at last check. Build 15 predates the encryption declaration and the slim Details header. `scripts/screenshots.sh` now works on Xcode 27.2: it no longer passes `available` to `simctl list devicetypes`, and it defaults to the newest installed iOS runtime.
 
 - **Shortcuts, Siri and Spotlight starter set** (merged into `main` from `dev/shortcuts`, not released). Siri and Shortcuts can log a decision, record an outcome or revisit, and list decisions ready to review; Open Decision and Open Ready to Review open the app. Three App Shortcuts work with no setup ("Log a decision in Offshoots", and others). Spotlight finds decisions by title and opens the exact decision. Every action needs an unlocked phone. Notes, reflections, revisit notes and Hindsight answers never reach Siri, Spotlight or donations. In-app saves donate the action (category, stakes or outcome only) for Siri Suggestions. Checked on an iOS 27.2 simulator (Mac mini, Xcode 27.2): 331 tests, archive, and the Shortcuts and Spotlight flows. All device checks passed on Geoff's iPhone 17 (2026-11-21), after "Track a decision" was replaced with "Add a decision".
 
-- **Lock Screen widgets and Control Center control** (`dev/lockscreen-controls`, branched off `dev/widgets`, not released). Circular, inline and rectangular Lock Screen accessory widgets reuse the App Group summary and `AppRoute` (rectangular title uses `.privacySensitive()`; circular, inline and empty states show no titles). Control Center "Log a Decision" button (`ControlWidgetButton`, also usable as a Lock Screen corner button or Action Button) opens the Log tab via a non-discoverable `OpenLogDecisionIntent` (`isDiscoverable = false`) so Stop 2's Shortcuts actions have zero collision. Verified on Geoff's iPhone 17 (2026-11-21); only the overnight midnight rollover check remains.
+- **Lock Screen widgets and Control Center control** (merged into `main` from `dev/lockscreen-controls` together with the Home Screen widgets, not released). Circular, inline and rectangular Lock Screen accessory widgets reuse the App Group summary and `AppRoute` (rectangular title uses `.privacySensitive()`; circular, inline and empty states show no titles). Control Center "Log a Decision" button (`ControlWidgetButton`, also usable as a Lock Screen corner button or Action Button) opens the Log tab via a non-discoverable `OpenLogDecisionIntent` (`isDiscoverable = false`) so it never collides with the Shortcuts actions. Verified on Geoff's iPhone 17 (2026-11-21); only the overnight midnight rollover check remains.
 
-- **Home Screen widgets** (`dev/widgets`, not released). Medium widget: decisions ready to review, with links to log a decision or open Hindsight (the purchase sheet for people who have not bought it). Small widget: the count. Widgets read a small summary in a new App Group (titles and dates only); the journal does not move. Notification taps and widget links share one router (`AppRoute`). Checked on the iPhone 18 Pro simulator (iOS 27.3); device checks pending.
-
-- 2.1.0 build 14 archived on the Mac mini (macOS 27.2, Xcode 27.1); upload succeeded and ASC reports processing Valid. Export compliance is unset; the version has no build attached. ASC listing copy was saved and read back on 2026-10-29.
+- **Home Screen widgets** (merged into `main` with the Lock Screen widgets, not released). Medium widget: decisions ready to review, with links to log a decision or open Hindsight (the purchase sheet for people who have not bought it). Small widget: the count. Widgets read a small summary in a new App Group (titles and dates only); the journal does not move. Notification taps and widget links share one router (`AppRoute`). Checked on the iPhone 18 Pro simulator (iOS 27.3) and on Geoff's iPhone 17 (2026-11-21); only the overnight midnight rollover check remains.
 
 ## Shipped
 
@@ -33,6 +35,8 @@ Release scope and development history. A prepared RC entry below does not establ
 - Settings exports open the share sheet. Recovery preserves unreadable reflection data before replacement.
 
 <details><summary>Development history</summary>
+
+- 2026-10-29: 2.1.0 build 14 archived on the Mac mini (macOS 27.2, Xcode 27.1); upload succeeded and ASC reported processing Valid. At that point export compliance was unset and the version had no build attached. ASC listing copy was saved and read back.
 
 - 2026-10-28: Restore now says "Sign in to the App Store in Settings, then try again." when StoreKit reports `noAccount`, instead of "Restore did not finish." Other failures keep the old message. `RestoreFailureMessageTests` covers both. Finding from build 13: on `geoff_silva@loweffortapps.dev` (Media & Purchases signed in) Restore threw `StoreKitError.systemError(StoreKitInternalError.noAccount)` and StoreKit's transaction lists were empty, on both of Geoff's phones. Geoff's spouse and Geoff's normal Apple ID both bought and unlocked Hindsight, so Geoff is treating `loweffortapps.dev` as a developer-only account quirk and closing the investigation; the sandbox buy is passed. Not checked: Restore and refund on a second device, and TODO items 1\u20133. Not in a build yet; the next archive carries it.
 
