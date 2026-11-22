@@ -494,3 +494,13 @@ Newest last. Format: `## YYYY-MM-DD (title)`, then **Decision** / **Why** / **Al
 **Decision:** The Siri and Shortcuts intents are plain App Intents with App Shortcuts phrases. No schema domain is adopted. Every intent requires authentication, and donations carry only category, stakes or outcome.
 **Why:** No schema domain that reaches Siri or Apple Intelligence fits a decision journal, and `journal` reaches only the Shortcuts app. App Shortcuts phrases are the Siri path for intents without a schema. Keeping titles and notes out of donations keeps them out of Siri Suggestions on a locked phone.
 **Alternative considered:** Adopting the `journal` schema (Shortcuts-only, and it may push entry text into the system), or donating full intents with the title (personal text in suggestions, and stale donations after a delete).
+
+## 2026-11-22 (Widgets, Lock Screen/Control Center and Shortcuts all merged for 2.2.0)
+**Decision:** Follow-up to "Widgets, Shortcuts and Control Center/Lock Screen are three sessions" (2026-11-21). The order changed: Lock Screen and Control Center came before Shortcuts (see "Control Center uses a non-discoverable open intent ahead of Shortcuts"). `dev/widgets` did not stay unmerged: it reached `main` with `dev/lockscreen-controls` (`297be42`), then `dev/shortcuts` merged (`2e2b571`). All three ship together in 2.2.0.
+**Why:** Device checks for all three passed on Geoff's iPhone 17 on 2026-11-21, so there was no reason to keep the branches apart.
+**Alternative considered:** Keeping `dev/widgets` open for a longer device run-through, as first planned. Only the overnight midnight rollover check is still open, and it does not need a separate branch.
+
+## 2026-11-22 (Declare no non-exempt encryption in Info.plist)
+**Decision:** Set `ITSAppUsesNonExemptEncryption` to NO in `Offshoots/Info.plist` (`81efbdb`, first in build 16).
+**Why:** The app uses no CryptoKit, CommonCrypto, Security framework or networking, and the same answer was given by hand on builds 11 and 15. Declaring it in the plist stops App Store Connect asking on every upload.
+**Alternative considered:** Keep answering the export compliance question by hand on each upload. Revisit this key if the app ever adds networking, sync or its own encryption.

@@ -34,8 +34,8 @@ Over time, Insights shows your patterns: where your predictions land, where you'
 ### Hindsight (one-time purchase)
 Record what you would repeat or change during a review or revisit. Review answers and notes across decisions, filtered by answer, outcome or category. Generated Reflection is not included.
 
-### Generated Reflection (retained; activation blocked)
-Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 design proposed evidence-linked Patterns across categories and readings of how a decision aged, generated on request and saved as dated history. Clean Up Note was part of that proposal; free Look Back stays free. See the [approved design](docs/superpowers/specs/2026-10-24-paid-reflection-design.md), [implementation plan](docs/superpowers/plans/2026-10-24-paid-reflection.md), and TODO. Local engineering checks pass, but generated-text quality fails the release gate. `ReflectionCenter.paidFeaturesEnabled` remains false. See [evaluation status](docs/reflection-evaluation.md) for scored cases and the remaining real-note/device gates.
+### Generated Reflection (dropped)
+Dropped on 2026-11-21 (DECISIONS): the on-device and PCC model context limits made it not worth shipping. The code stays in `Offshoots/Reflection/` and is switched off (`ReflectionCenter.paidFeaturesEnabled` is false). Hindsight and free Look Back use no AI model.
 
 ### Revisits
 - **Re-rate any time.** Give a marked decision a new rating and a note on what changed, as many times as you want.
@@ -81,19 +81,19 @@ Generated Reflection remains disabled in 2.1.0. The earlier approved 2.1.0 desig
 | **SwiftUI** | All UI — views, navigation, charts |
 | **Charts** | Analytics visualizations |
 | **UserNotifications** | Follow-up reminders |
-| **FoundationModels** | Retained for 2.1.0; generated Reflection remains disabled |
-| **StoreKit** | Retained for 2.1.0; Hindsight uses StoreKit for its one-time purchase |
+| **FoundationModels** | Used only by the dropped generated Reflection code, which is switched off |
+| **StoreKit** | Hindsight one-time purchase and Restore |
 | **Observation** | App state (`@Observable` store) |
 | **Combine** | Notification and link routing (`NotificationDelegate` only) |
 | **WidgetKit** | Medium and small Home Screen widgets, Lock Screen accessory widgets, and Control Center control (`OffshootsWidgets` extension) |
 | **AppIntents** | Siri and Shortcuts actions, `DecisionEntity`, App Shortcuts phrases, donations; plus the internal non-discoverable `OpenLogDecisionIntent` for the Control Center control |
 | **CoreSpotlight** | Indexes `DecisionEntity` (title, category, outcomes; never notes) |
 | **ReservedRegion, ArrangementView** | iPhone Duo fold layout (iOS 27.1 SDK, behind `#available`) |
-| **Swift Testing** | Unit tests for `AnalyticsEngine`, `DecisionStore`, `FoldPosture`, `DecisionsSelection`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, `AppRoute`, `WidgetSummary` and its writer, the Shortcuts service, entity, intents and Spotlight indexer, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
+| **Swift Testing** | Unit tests for `AnalyticsEngine`, `ChartSummary`, `DecisionStore`, `FoldPosture`, `DashboardSelection`, `DecisionsSelection`, `LogRecentList`, `ReviewDatePreset`, `StarterSuggestion`, `PredictionResultBanner`, `SplashSchedule`, `LookBackStats`, Hindsight (access, capture, data, review, summary, StoreKit), `AppRoute`, `WidgetSummary` and its writer, the Shortcuts service, entity, intents and Spotlight indexer, the Reflection policy (gate, eligibility, digest, prompts, entitlement), and the screenshot and Reflection notes fixtures. `ReflectionLiveOutputTests` runs the real on-device model and is off unless `REFLECTION_LIVE=1` (see `docs/superpowers/archive/2026-10-05-reflection-depth.md`) |
 
 ## Project Structure
 
-App sources sit in `Offshoots/`, with LookBack, Reflection and Fold feature folders.
+App sources sit in `Offshoots/`, with LookBack, Hindsight, Reflection, Shortcuts and Fold feature folders.
 
 ```
 Offshoots/
@@ -101,6 +101,7 @@ Offshoots/
 ├── OffshootsApp.swift             # Entry point, theme, first-launch splash
 ├── ContentView.swift              # Tab navigation (AppTab)
 ├── SplashScreenView.swift         # First-launch splash
+├── SplashSchedule.swift           # Splash on the first cold launch of each day
 ├── AppTheme.swift                 # System / Light / Dark setting
 ├── Color+Theme.swift              # Raw palette, outcome colors
 │
@@ -118,6 +119,8 @@ Offshoots/
 │
 │  # Dashboard
 ├── DashboardView.swift            # Dashboard screen
+├── DashboardSelection.swift       # Which decision the Duo detail pane shows
+├── DashboardRowSelection.swift    # Row behavior beside a Duo detail pane
 ├── DashboardHeaderView.swift      # Pending / Completed / Total card
 ├── ReadyToReviewSection.swift     # Decisions due for review
 ├── StarterSuggestion.swift        # Starter suggestion model, availability rule
@@ -129,6 +132,9 @@ Offshoots/
 │
 │  # Decisions
 ├── LogDecisionView.swift          # Log a new decision
+├── StakesPickerView.swift         # Stakes control, scaled choices at accessibility sizes
+├── LogRecentList.swift            # Which recent decisions the Duo Log pane lists
+├── LogRecentPane.swift            # Recent decisions beside the Log form (Duo)
 ├── DecisionsListView.swift        # Ready to Review, Upcoming, History
 ├── DecisionsSplitView.swift       # List and detail side by side in wide landscape (iPhone Duo)
 ├── DecisionsSelection.swift       # Which decision the detail pane shows
@@ -148,10 +154,11 @@ Offshoots/
 ├── Shortcuts/                     # ShortcutsService, DecisionEntity and query, AppEnums, intents, OffshootsShortcuts, Spotlight indexer, donations
 │
 │  # iPhone Duo fold layout (Fold/ folder)
-├── Fold/                          # FoldRegion, FoldLayout, FoldPosture, FoldPostureReader, FoldPane
+├── Fold/                          # FoldRegion, FoldLayout, FoldPosture, FoldPostureReader, FoldPane, TwoPaneReader, WidePanes
 │
 │  # Insights
 ├── AnalyticsView.swift            # Insights screen, empty state, Decision Activity card
+├── ChartSummary.swift             # VoiceOver summaries for the charts
 ├── CardTitle.swift                # Title row for Insights cards
 ├── PrimaryCard.swift              # Card container
 ├── OverallStatsCard.swift         # Overview numbers
@@ -161,17 +168,19 @@ Offshoots/
 ├── CategoryBreakdownCard.swift    # Decisions by category
 ├── OutcomeTrendCard.swift         # Outcomes by week
 │
-│  # Free Look Back and deferred Reflection
+│  # Free Look Back, Hindsight and dropped Reflection
 ├── LookBack/                      # Free card, statistics and comparison bars
-├── Reflection/                    # Deferred 2.1.0 policy, generators, paid cards, note cleanup and purchase UI
+├── Hindsight/                     # Check-in answers, review, filters, purchase sheet and Settings section
+├── Reflection/                    # Dropped generated Reflection (switched off); shared entitlement and purchase code
 │
 │  # Settings
 ├── SettingsView.swift             # Settings screen
+├── SettingsDataSection.swift      # Export, import and Delete All
 └── AboutSectionView.swift         # Other Low Effort Apps, About links
 
-Shared/                            # In the app and the widget extension: AppRoute, AppRouteDispatcher, LockScreenPresentation, OpenLogDecisionIntent, WidgetSummary, DueDay
+Shared/                            # In the app and the widget extension: AppRoute, AppRouteDispatcher, LockScreenPresentation, OpenLogDecisionIntent, WidgetSummary (with the DueDay rule)
 OffshootsWidgets/                  # WidgetKit extension: Home Screen widgets, Lock Screen widgets, Control Center control, timeline provider
-OffshootsTests/                    # Swift Testing: AnalyticsEngine, DecisionStore, FoldPosture, DecisionsSelection, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, AppRoute, WidgetSummary, LockScreenAndControl, ShortcutsService, DecisionEntity, ShortcutsIntent, DecisionSpotlightIndexer, Reflection policy, screenshot fixture
+OffshootsTests/                    # Swift Testing: AnalyticsEngine, ChartSummary, DecisionStore, FoldPosture, DashboardSelection, DecisionsSelection, LogRecentList, ReviewDatePreset, StarterSuggestion, PredictionResultBanner, SplashSchedule, LookBackStats, Hindsight, AppRoute, WidgetSummary, LockScreenAndControl, ShortcutsService, DecisionEntity, ShortcutsIntent, DecisionSpotlightIndexer, Reflection policy, screenshot fixture
 Reflection.storekit                # Local StoreKit test product; Hindsight on the existing product ID
 docs/fixtures/                     # Seed data for tests and the simulator
 scripts/seed.sh                    # Load a fixture into the simulator
