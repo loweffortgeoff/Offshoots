@@ -124,6 +124,11 @@ the store saves on every change.
   in both the `Offshoots` and `OffshootsWidgets` targets first; the script
   refuses an archive where they differ. `--archive-only` stops before the
   upload. The upload is outward-facing: run it only when Geoff asks.
+- An Xcode Organizer upload renumbers the build when "Manage Version and
+  Build Number" is on (the default). Clear that option, or bump the project
+  to the number ASC shows afterwards.
+- Every version auto-releases (Geoff, 2026-11-15). A new ASC version can start
+  as Manual; the release pass sets it to automatic.
 - `scripts/screenshots.sh` builds its own Pro Max or Duo simulator and loads a
   date-shifted fixture. Do not save on Log (02) or Revisit (04); run `reload`
   after a stray save.

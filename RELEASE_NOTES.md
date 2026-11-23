@@ -1,6 +1,6 @@
 # Release Notes — v2.1.0
 
-**Status:** Build 14 archived, uploaded and Valid in ASC. Export compliance is unset; the version has no build attached and is not submitted.
+**Status:** 2.1.0 (build 14) is live on the App Store since 2026-11-02. The 2.2.0 release pass replaces this file.
 
 ## NEW
 

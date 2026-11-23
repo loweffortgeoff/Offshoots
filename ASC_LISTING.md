@@ -1,6 +1,6 @@
 # App Store Connect — Current Listing (v2.1.0)
 
-Listing for 2.1.0. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Copy saved and verified in ASC on 2026-10-29. Build 14 is uploaded and Valid. Export compliance is unset; the version has no build attached.
+Listing for 2.1.0. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Copy saved and verified in ASC on 2026-10-29. 2.1.0 (build 14) is live on the App Store since 2026-11-02. The 2.2.0 release pass replaces this file.
 
 ## Subtitle (30 characters max)
 Decision Journal & Predictions — 30 characters

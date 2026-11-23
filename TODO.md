@@ -2,7 +2,10 @@
 
 ## Next
 
-**Release context (reconciled 2026-11-22):** 2.1.0 Hindsight is live (confirmed 2026-11-02). 2.2.0 build 16 (widgets, Lock Screen and Control Center, Shortcuts/Siri/Spotlight, slim Details header, encryption declaration) was uploaded on 2026-11-22 and was still processing at last check. Remaining Duo checks stay in Backlog.
+**Release context (reconciled 2026-11-23):** 2.1.0 Hindsight is live (confirmed 2026-11-02). 2.2.0 is Prepare for Submission in ASC. ASC read 2026-11-23 shows builds 15, 16 and 17 Valid. Build 16 (widgets, Lock Screen and Control Center, Shortcuts/Siri/Spotlight, slim Details header, encryption declaration) came from `scripts/archive-upload.sh`. Build 17 is inferred to be the Xcode Organizer archive of `8e5cdc1` (We Also Make), which Xcode renumbered from 16 to 17 at upload; see CHANGELOG. Remaining Duo checks stay in Backlog.
+
+- [ ] **Release pass: attach the 2.2.0 build.** Build 17 has We Also Make (inferred); build 16 does not. Geoff picks.
+- [ ] **Release pass: set 2.2.0 to automatic release.** ASC read 2026-11-23 shows 2.2.0 set to Manual. Every app auto-releases (Geoff, 2026-11-15). Likely cause, not checked: ASC copied the release type from 2.1.0, which is also Manual. Geoff changes it in ASC.
 
 - [ ] **Widgets: overnight midnight rollover check on iPhone 17.** Confirm the due count updates at midnight without opening the app.
 - [ ] **Slim Details header: remaining checks.** Checked only on an iPhone 18 Pro Max simulator at the default text size. Not checked: large Dynamic Type sizes (the band should grow), the Duo, and a device.
