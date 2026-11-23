@@ -53,6 +53,8 @@ if [[ $UPLOAD -eq 0 ]]; then
   echo "Archive only. Nothing was uploaded."; exit 0
 fi
 
+# manageAppVersionAndBuildNumber defaults to YES, which lets Xcode renumber a taken build
+# at upload (build 17 on 2026-11-22). Keep it off so ASC shows the number the project has.
 cat > "$OUT/ExportOptions.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -62,6 +64,7 @@ cat > "$OUT/ExportOptions.plist" <<'PLIST'
 <key>teamID</key><string>2R5TZD4XAH</string>
 <key>signingStyle</key><string>automatic</string>
 <key>uploadSymbols</key><true/>
+<key>manageAppVersionAndBuildNumber</key><false/>
 </dict></plist>
 PLIST
 
