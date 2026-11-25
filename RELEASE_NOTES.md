@@ -1,6 +1,24 @@
+# Release Notes — v2.2.0
+
+**Status:** 2.2.0 is live on the App Store (confirmed by Geoff 2026-11-25). Builds 16 and 17 were uploaded on 2026-11-22, both Valid; which one was attached is not recorded here. We Also Make (Weather in Words and Tucked) is in build 17 only (inferred), so it is left out below.
+
+## NEW
+
+- Home Screen widgets show the decisions ready to review, with a link to log a new one. The small widget shows the count.
+- Lock Screen widgets show what is due. A Control Center button opens Log in one tap; it also works as a Lock Screen button or on the Action Button.
+- Ask Siri or use Shortcuts to log a decision, record an outcome or revisit, and see what is ready to review.
+- Spotlight finds your decisions by title and opens the one you tap.
+- Notes, reflections, revisit notes and Hindsight answers stay in the app.
+
+## IMPROVED
+
+- The decision Details header is slimmer, so more of the decision fits on screen.
+
+---
+
 # Release Notes — v2.1.0
 
-**Status:** 2.1.0 (build 14) is live on the App Store since 2026-11-02. The 2.2.0 release pass replaces this file.
+**Status:** 2.1.0 (build 14) is live on the App Store since 2026-11-02. Superseded by 2.2.0 (live 2026-11-25).
 
 ## NEW
 

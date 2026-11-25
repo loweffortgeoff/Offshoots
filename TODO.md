@@ -2,9 +2,9 @@
 
 ## Next
 
-**Release context (reconciled 2026-11-23):** 2.1.0 Hindsight is live (confirmed 2026-11-02). 2.2.0 is Prepare for Submission in ASC. ASC read 2026-11-23 shows builds 15, 16 and 17 Valid. Build 16 (widgets, Lock Screen and Control Center, Shortcuts/Siri/Spotlight, slim Details header, encryption declaration) came from `scripts/archive-upload.sh`. Build 17 is inferred to be the Xcode Organizer archive of `8e5cdc1` (We Also Make), which Xcode renumbered from 16 to 17 at upload; see CHANGELOG. Remaining Duo checks stay in Backlog.
+**Release context (reconciled 2026-11-23):** 2.1.0 Hindsight is live (confirmed 2026-11-02). 2.2.0 is live on the App Store (confirmed by Geoff 2026-11-25); it was Prepare for Submission at the 2026-11-23 read. ASC read 2026-11-23 shows builds 15, 16 and 17 Valid. Build 16 (widgets, Lock Screen and Control Center, Shortcuts/Siri/Spotlight, slim Details header, encryption declaration) came from `scripts/archive-upload.sh`. Build 17 is inferred to be the Xcode Organizer archive of `8e5cdc1` (We Also Make), which Xcode renumbered from 16 to 17 at upload; see CHANGELOG. Remaining Duo checks stay in Backlog.
 
-- [ ] **Release pass: attach the 2.2.0 build.** Build 17 has We Also Make (inferred); build 16 does not. Geoff picks.
+- [x] **Release pass: attach the 2.2.0 build.** Build 17 has We Also Make (inferred); build 16 does not. Geoff picks. Live on the App Store (confirmed by Geoff 2026-11-25); which build was attached is not recorded here. — 2026-11-25
 - [x] **Release pass: set 2.2.0 to automatic release.** ASC read 2026-11-23 showed 2.2.0 set to Manual. Every app auto-releases (Geoff, 2026-11-15). Likely cause, not checked: ASC copied the release type from 2.1.0, which is also Manual. Geoff set it; ASC read shows `AFTER_APPROVAL`. — 2026-11-23
 
 - [ ] **Widgets: overnight midnight rollover check on iPhone 17.** Confirm the due count updates at midnight without opening the app.
