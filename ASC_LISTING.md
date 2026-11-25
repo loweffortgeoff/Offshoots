@@ -1,6 +1,6 @@
-# App Store Connect — Current Listing (v2.1.0)
+# App Store Connect — Current Listing (v2.2.0)
 
-Listing for 2.1.0. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Copy saved and verified in ASC on 2026-10-29. 2.1.0 (build 14) is live on the App Store since 2026-11-02. The 2.2.0 release pass replaces this file.
+Listing for 2.2.0. Bundle ID `com.geoffrey.silva.Offshoots`. App ID 6757363128. Primary locale en-US. Copy saved and verified in ASC on 2026-11-25 (Promotional Text, What's New, Description); Keywords already matched.
 
 ## Subtitle (30 characters max)
 Decision Journal & Predictions — 30 characters
@@ -8,20 +8,21 @@ Decision Journal & Predictions — 30 characters
 Rationale: the app name indexes "offshoots". Apple combines words across the name, the subtitle and the keyword field. "Decision" and "journal" are the two terms people type to find this kind of app. "Predictions" replaces "Tracker": prediction trackers (Foresee, ClaimCheck, Prediction Tracker & Journal) are their own search niche, and the prediction step is what sets Offshoots apart from a plain decision journal. "Tracker" moves to the keyword field, where it still combines with "decision" and "prediction". It still reads as a subtitle, not a list.
 
 ## Promotional Text (170 characters max)
-Predict how a decision will turn out, record what happened, then revisit it months later. Insights show where your predictions land and where optimism gets ahead of you. — 169 characters
+Now on your Home Screen, Lock Screen and in Siri. Predict how a decision will turn out, record what happened, then revisit it later to see where your predictions land. — 167 characters
 
 ## What's New
 
-Meet Hindsight, a new way to learn from the decisions you have already made.
+Offshoots now reaches you outside the app.
 
-• Record what you would repeat or change when you review or revisit a decision.
-• Review your answers and notes across decisions. Filter by answer, outcome or category.
-• The Optimism card now shows when outcomes went worse, matched your prediction or went better.
+• Home Screen widgets show the decisions ready to review, with a link to log a new one.
+• Lock Screen widgets show what is due. A Control Center button opens Log in one tap.
+• Ask Siri or use Shortcuts to log a decision, record an outcome or revisit, and see what is ready to review.
+• Spotlight finds your decisions by title and opens the one you tap.
 
-Hindsight is available as a one-time purchase.
+Notes, reflections and Hindsight answers stay in the app.
 
-Fixed:
-• Category labels are easier to read.
+Improved:
+• The decision Details header is slimmer, so more of the decision fits on screen.
 
 ## Description
 Offshoots — Decide. Predict. Learn.
@@ -47,6 +48,9 @@ See how past decisions in the same category compared with your predictions. Coun
 
 Hindsight
 When you review or revisit a decision, record what you would repeat or change. Explore your answers and notes across decisions, and filter them by answer, outcome or category. Hindsight is a one-time purchase.
+
+Widgets, Siri and Shortcuts
+See decisions ready to review on your Home Screen and Lock Screen, and log a decision from Control Center. Ask Siri to log a decision, record an outcome or show what is ready to review. Spotlight finds decisions by title. Notes, reflections and Hindsight answers stay in the app.
 
 Made for iPhone Duo
 Content stays clear of the fold. Review a decision beside your Dashboard, browse a list beside its details, or see related Insights together. Paired panes work in wide landscape and partly open portrait. Settings stays in one pane.
@@ -142,3 +146,5 @@ Final iPhone marketing PNGs are 1290 × 2796; Duo PNGs are 2007 × 2853. `script
 - 2026-10-17 (approved screenshot upload): the three replacements are promoted and verified in ASC; review state remains Prepare for Submission with manual release and no App Store review submission. Reflection remains a draft outside the version setup. Availability and the pre-existing duplicate Duo Accuracy entry remain open.
 
 - 2026-10-29: Saved and read back Promotional Text, What’s New and Description in ASC 2.1.0 en-US; Keywords already matched. Generated Reflection remains outside this release.
+
+- 2026-11-25 (2.2.0 release pass, copy only): Saved and read back Promotional Text, What's New and Description in ASC 2.2.0 en-US; Keywords already matched. Copy covers widgets, Lock Screen and Control Center, Siri, Shortcuts and Spotlight, and the slim Details header. "We Also Make" is left out because only build 17 has it. No archive or upload in this pass; the attached build was not read.
