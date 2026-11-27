@@ -1,6 +1,8 @@
 # Feedback Assistant draft — iPhone Duo "buttons down"
 
-Draft for Geoff to paste into Feedback Assistant. Source: `docs/superpowers/archive/2026-10-07-iphone-duo-findings.md`, finding 1, and DECISIONS 2026-10-07. Not filed yet.
+Draft for Geoff to paste into Feedback Assistant. Source: `docs/superpowers/archive/2026-10-07-iphone-duo-findings.md`, finding 1, and DECISIONS 2026-10-07.
+
+**Filed:** FB25750993, by Geoff on 2026-11-27 at 06:29, with this text. Area: Xcode. Type: Incorrect/Unexpected Behavior. App Apple ID: 6757363128. Screenshots attached from DeviceHub (iPhone Duo simulator, iOS 27.1, Mac mini, Xcode 27.2).
 
 ## Fields
 
