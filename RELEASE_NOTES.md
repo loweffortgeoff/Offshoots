@@ -1,6 +1,6 @@
 # Release Notes — v2.2.0
 
-**Status:** 2.2.0 is live on the App Store (confirmed by Geoff 2026-11-25). Builds 16 and 17 were uploaded on 2026-11-22, both Valid; which one was attached is not recorded here. We Also Make (Weather in Words and Tucked) is in build 17 only (inferred), so it is left out below.
+**Status:** 2.2.0 is live on the App Store (confirmed by Geoff 2026-11-25). Builds 16 and 17 were uploaded on 2026-11-22, both Valid; build 17 was attached (ASC read 2026-11-27); build 16 was not. We Also Make (Weather in Words and Tucked) is in build 17 only (inferred).
 
 ## NEW
 
